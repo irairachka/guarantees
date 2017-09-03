@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blockchain PDF Index - Find Talent for Blockchain Development</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+</head>
+<body onload="App.listRequests();App.listSigned()">
+  <h1>Admin Panel</h1>
+  <h3>There are <span id="activeRequestPDFs"></span> PDFs requests waiting  .</h3>
+  <br />
+<br />
+  <h3> Active requests </h3>
+  <span id="activerequests"></span>
+  <button onclick="App.listRequests();">Reload</button>
+  <br />
+  <br />
+  <h3> signed pdfs</h3>
+  <span id="signedpdf"></span>
+  <button onclick="App.listSigned();">Reload</button>
+  <br />
+  <br />
+  <h3> errored pdfs</h3>
+  <span id="erroredpdf"></span>
+  <button onclick="App.listErrors();">Reload</button>
+
+  <br/>
+  <h3>There are last sign status: <span class="status" id="registerStatus"></span></h3>
+  <br/>
+
+</body>
+</html>

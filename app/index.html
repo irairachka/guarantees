@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Blockchain PDF Index - sign dfs</title>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+  <script src="./app.js"></script>
+</head>
+<body onload="App.listSigned();App.listErrors();App.listRequests();App.startRequestListener();">
+<h1>show Panel</h1>
+<h3>There are <span id="activeRequestPDFs"></span> PDFs requests submited  .</h3>
+<br />
+<br />
+<br />
+<a href="addRequestPDF.html"><b>Add YOUR pdf request now!<b></a>
+<br />
+<br />
+<br />
+<h3> Active requests </h3>
+<span id="activerequests"></span>
+<button onclick="App.listRequests();">Reload</button>
+<br />
+<br />
+<h3> signed pdfs</h3>
+<span id="signedpdf"></span>
+<button onclick="App.listSigned();">Reload</button>
+<br />
+<br />
+<h3> errored pdfs</h3>
+<span id="erroredpdf"></span>
+<button onclick="App.listErrors();">Reload</button>
+
+
+<!--<button onclick="App.signPdfGethttpHashTest();">signPdfGethttpHashTest</button>-->
+
+<br />
+<br />
+<h3>There are last sign status: <span class="status" id="registerStatus"></span></h3>
+
+
+</body>
+</html>

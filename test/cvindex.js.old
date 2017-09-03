@@ -1,0 +1,291 @@
+var Registry = artifacts.require("./Registry.sol");
+
+contract('Registry', function(accounts) {
+
+
+  // it("should be empty at the beginning", function() {
+  //   return Registry.deployed().then(function(instance) {
+  //     return instance.getPDFAllCount.call();
+  //   }).then(function(amount_active_PDFs) {
+  //       console.log(amount_active_PDFs);
+  //     assert.equal(amount_active_PDFs, 0, "Registry wasn't empty!");
+  //   }).catch(function(error) {
+  //     console.error(e);
+  //       assert.equal(error.toString(),'',
+  //           'Error detected')
+  //   });
+  // });
+
+
+  it("should add request pdf", function() {
+      var Registry_instance;
+      return Registry.deployed().then(function (instance) {
+          Registry_instance = instance;
+          return Registry_instance.requestPdf("the_request");
+        }).then(function (tx_id) {
+          // console.log("id:"+id.valueOf());
+          // assert.equal(id, 1, "Registry should get id 1 !");
+           return Registry_instance.requestPdf("the_other_request");
+        })
+        .then(function (id_new) {
+             console.log("id_new:"+id_new.valueOf());
+            // assert.equal(id_new.valueOf(), 2, "Registry should get id 2 !");
+        })
+        .catch(function(error) {
+            assert.equal(error.toString(),'',
+                'Error detected')
+        });
+
+
+
+  });
+
+
+  // it("should throw   exception same request! ", function() {
+  //
+  //   return Registry.deployed()
+  //       .then(function(instance) {
+  //
+  //          return instance.addPDFRequest("the_other_request");
+  //       })
+  //       .then(function(error,event)
+  //       {
+  //           if(error)
+  //              assert.fail("No error was thrown!");
+  //       })
+  //       .catch(function(error) {
+  //           assert.equal(error.toString(),'',
+  //               'Error detected')
+  //       });
+  // });
+
+
+
+  it("shouldn't throw  the exception ", function() {
+    return Registry.deployed()
+        .then(function(instance) {
+          return instance.lookupid("the_request")
+        })
+
+        .catch(function(error) {
+            assert.equal(error.toString(),'',
+                'Error detected')
+        });
+  });
+
+  it(" should get first index ", function() {
+    return Registry.deployed()
+        .then(function(instance) {
+          return instance.lookupid("the_request")
+        })
+        // .then(assert.fail("can't get index!"))
+        .then(function(response){
+          assert.equal(response.valueOf(), 1, "indexplace should be 1 !");
+
+        }).catch(function(error) {
+            console.log("error "+error)
+            assert.equal(error.toString(),'',
+                'Error detected')
+    });
+
+  });
+
+
+  it("should check sign pdf", function() {
+      var Registry_instance;
+    return Registry.deployed()
+        .then(function(instance) {
+            Registry_instance=instance;
+          return Registry_instance.lookupid("the_request");
+        })
+        // .then(assert.fail)
+        .then(function(response){
+          assert.equal(response.valueOf(), 1, "indexplace should be 1 !");
+        //     return Registry_instance.hexStrToBytes( "5b81c01797e876e1cb174ce846e0a9daedf460259b328af10d34401a506310e2",{gas: 100000});
+        // })
+        // .then(function (_hash) {
+        //     console.log("_hash",_hash)
+          return Registry_instance.signPDF(response.valueOf(),"the_request","the_new_request_sign","0x5b81c01797e876e1cb174ce846e0a9daedf460259b328af10d34401a506310e2",{gas: 500000});
+        })
+        .then(function (tx_id) {
+             console.log("tx_id");
+            // console.log(tx_id.valueOf())
+          return Registry_instance.lookupHash("the_new_request_sign");
+        })
+        .then(function (hash) {
+            // console.log("tx_id")
+            // console.log(tx_id.valueOf())
+            assert.equal(hash, "0x5b81c01797e876e1cb174ce846e0a9daedf460259b328af10d34401a506310e2", "hash mismatched");
+        })
+        .catch(function(error) {
+            console.log("error "+error);
+          assert.equal(error.toString(),'',
+              'Error detected');
+        });
+
+  });
+
+    it("should check error pdf", function() {
+        var Registry_instance;
+        return Registry.deployed()
+            .then(function(instance) {
+                Registry_instance=instance;
+                Registry_instance=instance;
+                return Registry_instance.lookupid("the_request");
+            })
+            // .then(assert.fail)
+            .then(function(response){
+                assert.equal(response.valueOf(), 1, "indexplace should be 1 !");
+                return Registry_instance.error(response.valueOf(),"the_request", "asaasasas","the error mesg",{gas: 100000});
+            })
+            .then(function(response) {
+                console.log("response "+response);
+            })
+            .catch(function(error) {
+                console.log("error "+error);
+                assert.equal(error.toString(),'',
+                    'Error detected')
+            });
+
+    });
+
+
+  it("should check events watcher", function() {
+      var watcher;
+      return Registry.deployed().then(function(instance) {
+       watcher = instance.RequestedPDF({},  {fromBlock: 0, toBlock: 'latest'});
+      
+      watcher.watch(function(error, event) {
+
+        if (!error) {
+            console.log("event.args");
+          console.log(event.args);
+            var index_t=event.args.PDFRequestindex.valueOf();
+            if (index_t!=1 && index_t!=2)
+            {
+                fail("event number failed!")
+            }
+          // assert.equal(event.args.PDFRequestindex.valueOf(), sicle, "Event number should be 3");
+          // assert.equal(event.args.pdfURIaddress, "the_event_check_request", "Event number should be 2");
+
+        } else {
+          assert.fail(error);
+        }
+
+          watcher.stopWatching();
+
+        //once the event has been detected, take actions as desired
+        //   var data = 'from: ' + response.args._from+"<br>candidateName: "+web3.toUtf8(response.args._candidateName) +"<br>";
+        //  assert.equal(response, 1 , "Event number should be 1");
+
+      })
+
+      // Registry_instance.addPDFRequest('the_event_check_watcher_request');
+    })
+
+        .catch(function(error) {
+            console.log(error);
+            assert.equal(error.toString(),'',
+                'Error detected')
+        });
+  });
+
+
+    it("should check events Registry SignedPDF  watcher", function() {
+        var watcher;
+        return Registry.deployed().then(function(instance) {
+            watcher = instance.SignedPDF({},  {fromBlock: 0, toBlock: 'latest'});
+            var sicle=1;
+            watcher.watch(function(error, event) {
+
+                if (!error) {
+                    console.log("event.args");
+                    console.log(event.args);
+                    assert.equal(event.args.PDFRequestindex.valueOf(), sicle, "Event number should be 1");
+                    // assert.equal(event.args.pdfURIaddress, "the_event_check_request", "Event number should be 2");
+                    sicle++;
+                } else {
+                    assert.fail(error);
+                }
+
+                watcher.stopWatching();
+
+                //once the event has been detected, take actions as desired
+                //   var data = 'from: ' + response.args._from+"<br>candidateName: "+web3.toUtf8(response.args._candidateName) +"<br>";
+                //  assert.equal(response, 1 , "Event number should be 1");
+
+            })
+
+            // Registry_instance.addPDFRequest('the_event_check_watcher_request');
+        })
+
+            .catch(function(error) {
+                console.log(error);
+                assert.equal(error.toString(),'',
+                    'Error detected')
+            });
+    });
+
+
+    it("should check events  RegistrarError watcher", function() {
+        var watcher;
+        return Registry.deployed().then(function(instance) {
+            watcher = instance.RegistrarError({},  {fromBlock: 0, toBlock: 'latest'});
+            var sicle=2;
+            watcher.watch(function(error, event) {
+                watcher.stopWatching();
+                if (!error) {
+                    console.log("event.args");
+                    console.log(event.args);
+                    assert.equal(event.args.PDFRequestindex.valueOf(), 1, "Event number should be 1");
+                    // assert.equal(event.args.pdfURIaddress, "the_event_check_request", "Event number should be 2");
+                    // sicle++;
+
+                    
+                } else {
+                    console.log("erro in watcher");
+                    
+                    assert.fail(error);
+                }
+
+
+                //once the event has been detected, take actions as desired
+                //   var data = 'from: ' + response.args._from+"<br>candidateName: "+web3.toUtf8(response.args._candidateName) +"<br>";
+                //  assert.equal(response, 1 , "Event number should be 1");
+
+            })
+
+            // watcher.stopWatching();
+            // Registry_instance.addPDFRequest('the_event_check_watcher_request');
+        })
+
+            .catch(function(error) {
+                console.log(error);
+                assert.equal(error.toString(),'',
+                    'Error detected')
+            });
+    });
+
+  // it("should check events", function() {
+  //     var watcher2;
+  //   return Registry.deployed().then(function(instance) {
+  //
+  //      watcher2 = instance.AddedPDF( {}, {fromBlock: 0, toBlock: 'latest'});
+  //
+  //       return watcher2.get() ;
+  //   })
+  //       .then(function(events) {
+  //         console.log("event>"+event.args);
+  //         // now we'll check that the events are correct
+  //         assert.equal(events.length, 1,"Should be 1 event");
+  //         //    assert.equal(events[0].args.beneficiary.valueOf(), 1);
+  //         //    assert.equal(events[0].args.value.valueOf(), 10000);
+  //       })
+  //       .catch(function(error) {
+  //           assert.equal(error.toString(),'',
+  //               'Error detected')
+  //       });
+  // });
+    
+});
+
