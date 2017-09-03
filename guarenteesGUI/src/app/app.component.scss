@@ -1,0 +1,16 @@
+.wrapper {
+  max-width: 70%;
+  margin: 0 auto;
+
+  &.user-container {
+    background: #309a83;
+  }
+
+  &.bank-container {
+    background: #cc6600;
+  }
+
+  &.benef-container {
+    background: #cc9900;
+  }
+}

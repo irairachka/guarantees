@@ -1,0 +1,219 @@
+$htmlDirection: ltr;
+// Base spacing
+$ui-space-prefix: unquote('.ui-space');
+
+$ui-spacing-tiny: 5px;
+$ui-spacing-small: 10px;
+$ui-spacing-regular: 15px;
+$ui-spacing-medium: 25px;
+$ui-spacing-large: 30px;
+
+@function htmlDirection() {
+  @if ($htmlDirection == ltr) {
+    @return left;
+  } @else {
+    @return right;
+  }
+}
+
+@function htmlDirection-rev() {
+  @if ($htmlDirection == ltr) {
+    @return right;
+  } @else {
+    @return left;
+  }
+}
+
+@mixin ui-space($prefix, $suffix, $size) {
+
+  $suffix: unquote($suffix);
+
+  #{$prefix}-#{$suffix} {
+    padding: #{$size} !important;;
+  }
+
+  // top and bottom, left and right.
+  #{$prefix}-tb-#{$suffix} {
+    padding-top: #{$size} !important;
+    padding-bottom: #{$size} !important;;
+  }
+  #{$prefix}-lr-#{$suffix} {
+    padding-#{htmlDirection-rev()}: #{$size} !important;
+    padding-#{htmlDirection()}: #{$size} !important;;
+  }
+
+  // top, bottom, left, right
+  #{$prefix}-t-#{$suffix} {
+    padding-top: #{$size} !important;
+  }
+  #{$prefix}-b-#{$suffix} {
+    padding-bottom: #{$size} !important;
+  }
+  #{$prefix}-l-#{$suffix} {
+    padding-#{htmlDirection()}: #{$size} !important;
+  }
+  #{$prefix}-r-#{$suffix} {
+    padding-#{htmlDirection-rev()}: #{$size} !important;
+  }
+
+  #{$prefix}-verti-#{$suffix} {
+    @extend #{$prefix}-t-#{$suffix};
+  }
+
+  // inner box spacing. for performance sake we use limited selectors
+  #{$prefix}-inner-horiz-#{$suffix} {
+    margin-#{htmlDirection()}: -#{$size};
+    > * {
+      padding-#{htmlDirection()}: #{$size};;
+    }
+  }
+
+}
+
+@include ui-space($suffix: 'tiny', $prefix: $ui-space-prefix, $size: $ui-spacing-tiny);
+@include ui-space($suffix: 'small', $prefix: $ui-space-prefix, $size: $ui-spacing-small);
+@include ui-space($suffix: 'regular', $prefix: $ui-space-prefix, $size: $ui-spacing-regular);
+@include ui-space($suffix: 'medium', $prefix: $ui-space-prefix, $size: $ui-spacing-medium);
+@include ui-space($suffix: 'large', $prefix: $ui-space-prefix, $size: $ui-spacing-large);
+
+.fs50 {
+  font-size: 50px !important;
+}
+.fs42 {
+  font-size: 42px !important;
+}
+.fs32 {
+  font-size: 32px !important;
+}
+.fs31{
+  font-size: 31px !important;
+}
+.fs30 {
+  font-size: 30px !important;
+}
+
+.fs28 {
+  font-size: 28px !important;
+}
+
+.fs26 {
+  font-size: 26px !important;
+}
+
+.fs24 {
+  font-size: 24px !important;
+}
+
+.fs22 {
+  font-size: 22px !important;
+}
+
+.fs20 {
+  font-size: 20px !important;
+}
+
+.fs18 {
+  font-size: 18px !important;
+}
+
+.fs16 {
+  font-size: 16px !important;
+}
+
+.fs15 {
+  font-size: 15px !important;
+}
+
+.fs14 {
+  font-size: 14px !important;
+}
+
+.fs13 {
+  font-size: 13px !important;
+}
+
+.fs12 {
+  font-size: 12px !important;
+}
+
+.fs11 {
+  font-size: 11px !important;
+}
+
+.fs10 {
+  font-size: 10px !important;
+}
+
+.fs9 {
+  font-size: 9px !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.stretch-width {
+  width: 100%;
+}
+
+.stretch-height {
+  height: 100%;
+}
+
+.text-bold {
+  font-weight: bold;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+.inline-block{
+  display: inline-block;
+}
+.vertical-middle{
+  vertical-align: middle;
+}
+.scroll-y{
+  overflow-y: auto;
+}
+.scroll-x{
+  overflow-x: auto;
+}
+span.search-input {
+  i {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #5e6d7f;
+  }
+}
+.icon {
+  &.actionIcon {
+    color: #00afef;
+    &:hover {
+      color: #51bdef;
+    }
+  }
+}
+
+hr{
+  background: transparent;
+  border: 0;
+  width: 95%;
+  border-top: 1px solid #D1DFDE;
+}

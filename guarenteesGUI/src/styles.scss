@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/sass/ui-brands';
+@import './assets/sass/ui-flex';
+@import './assets/sass/ui-helpers';
+
+body {
+  margin: 0;
+  color: #fff;
+  font-family: 'Open Sans Hebrew';
+}

@@ -1,0 +1,44 @@
+<div class="ui-layout-column" [ngClass]="user !== undefined ? user : ''">
+  <header class="view-header text-center ui-space-tb-large">
+    <label>
+      -----------{{user}}-----------
+    </label>
+    <div class="header-text ui-layout" ui-layout-align="space-between center">
+      <label>דשבורד ערבויות</label>
+      <button>בקשה חדשה</button>
+    </div>
+  </header>
+  <main>
+    <div class="for-treatment ui-space-tb-large">
+      <label>
+        לטיפול כרגע (שלי) - {{numForTreatment}} ערבויות
+      </label>
+      <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'status':'for-treatment'">
+        <request-item [request]="req">
+          <request-details [request]="req"></request-details>
+        </request-item>
+      </div>
+    </div>
+
+    <div class="pending">
+      <label>
+        בהמתנה - (לטיפול הבנק)
+      </label>
+      <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'status':'pending'">
+        <request-item [request]="req">
+          <label>מתאריך {{req.startDate}}</label>
+        </request-item>
+      </div>
+    </div>
+
+    <div class="guarantees">
+      <label>
+        היסטורית ערבויות
+      </label>
+      <div class="req-pending" *ngFor="let req of allGuarantees">
+        <request-item [request]="req">
+        </request-item>
+      </div>
+    </div>
+  </main>
+</div>
