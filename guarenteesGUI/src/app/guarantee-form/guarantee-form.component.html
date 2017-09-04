@@ -1,3 +1,42 @@
-<p>
-  guarantee-form works!
-</p>
+<div class="form">
+  <header class="ui-space-medium">
+    <label><strong>בקשת ערבות</strong> למילוי ע"י מבקש הערבות</label>
+  </header>
+  <div class="status-wizard ui-space-medium">
+    <label class="form-label">סטטוס</label>
+    <div class="ui-layout-column ui-space-r-large">
+      <label class="ui-space-b-small">ברגע זה הטיפול נמצא אצל:</label>
+      <p-selectButton [options]="state" value="selectedState"
+                      multiple="false"></p-selectButton>
+    </div>
+  </div>
+
+  <div class="user-details ui-space-medium">
+    <label class="form-label">פרטי לקוח</label>
+    <div class="ui-layout-column ui-space-r-large">
+      <input placeholder="שם הלקוח">
+      <input placeholder="חפ / תז">
+      <input placeholder="כתובת">
+    </div>
+  </div>
+  <div class="guarantee-details ui-space-medium">
+    <label class="form-label">פרטי הערבות</label>
+    <div class="ui-layout-column ui-space-r-large">
+      <div class="ui-layout double-input ui-space-b-small">
+        <input placeholder="המוטב">
+        <input placeholder="כתובת">
+      </div>
+      <input placeholder="מטרת הערבות">
+      <input placeholder="סכום">
+      <div class="ui-layout double-input ui-space-t-small">
+        <input placeholder="תאריך התחלת ערבות">
+        <input placeholder="תאריך סיום">
+      </div>
+      <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
+    </div>
+  </div>
+  <div class="actions ui-layout-column ui-space-medium">
+    <button>שליחה - הגשת הבקשה</button>
+    <button>ביטול הבקשה (במידה וטרם הונפקה ערבות)</button>
+  </div>
+</div>

@@ -9,7 +9,7 @@ import { GuaranteeItemComponent } from './guarantee-item/guarantee-item.componen
 import { GuaranteeFormComponent } from './guarantee-form/guarantee-form.component';
 import { FilterByKeyValuePipe } from './filter-by-key-value.pipe';
 import { RequestDetailsComponent } from './request-details/request-details.component';
-import {TabViewModule} from 'primeng/primeng';
+import {DialogModule, FileUploadModule, SelectButtonModule, TabViewModule} from 'primeng/primeng';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,10 @@ import {TabViewModule} from 'primeng/primeng';
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    TabViewModule
+    TabViewModule,
+    DialogModule,
+    FileUploadModule,
+    SelectButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

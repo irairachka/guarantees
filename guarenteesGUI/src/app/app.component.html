@@ -18,6 +18,25 @@
 
 
 <!-- accordion -->
-<div class="user-container wrapper">
-  <app-guarantee-view user="user"></app-guarantee-view>
+<div class="acc-container">
+  <div class="benef-container wrapper ui-space-lr-large"
+       (click)="selected = 2" [class.selected]="selected === 2">
+    <label class="title">המוטב</label>
+    <app-guarantee-view class="content" user="beneficiary" (triggerModal)="openModal($event)"></app-guarantee-view>
+  </div>
+  <div class="bank-container wrapper ui-space-lr-large"
+       (click)="selected = 1" [class.selected]="selected === 1">
+    <label class="title">הבנק</label>
+    <app-guarantee-view class="content" user="bank" (triggerModal)="openModal($event)"></app-guarantee-view>
+  </div>
+  <div class="user-container wrapper ui-space-lr-large"
+       (click)="selected = 0" [class.selected]="selected === 0">
+    <label class="title">המבקש</label>
+    <app-guarantee-view class="content" user="user" (triggerModal)="openModal($event)"></app-guarantee-view>
+  </div>
 </div>
+
+<p-dialog [(visible)]="showCard" dir="rtl" styleClass="dialog-wrapper" [ngClass]="modalType"
+          draggable="false" modal="true" dismissableMask="true">
+  <guarantee-form></guarantee-form>
+</p-dialog>

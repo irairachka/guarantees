@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-guarantee-view',
@@ -7,6 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class GuaranteeViewComponent implements OnInit {
   @Input() user: string; // TODO - handle enum and convert to string
+  @Output() triggerModal: EventEmitter<any> = new EventEmitter();
 
   // temp value
   numForTreatment: number = 2; // get from length of arr
@@ -84,4 +85,7 @@ export class GuaranteeViewComponent implements OnInit {
     ]
   }
 
+  openModal() {
+    this.triggerModal.emit(this.user);
+  }
 }
