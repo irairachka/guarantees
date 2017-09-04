@@ -1,5 +1,5 @@
 <div class="ui-layout ui-space-tb-medium request-item" ui-layout-align="space-between center">
-  <label>ערבות - {{request.id}}</label>
+  <label class="text-bold">ערבות - {{request.id}}</label>
   <ng-content></ng-content>
-  <button>פתח</button>
+  <button (click)="openRequest()">פתח</button>
 </div>

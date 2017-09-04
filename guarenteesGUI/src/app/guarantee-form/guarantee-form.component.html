@@ -11,32 +11,60 @@
     </div>
   </div>
 
-  <div class="user-details ui-space-medium">
-    <label class="form-label">פרטי לקוח</label>
-    <div class="ui-layout-column ui-space-r-large">
-      <input placeholder="שם הלקוח">
-      <input placeholder="חפ / תז">
-      <input placeholder="כתובת">
-    </div>
-  </div>
-  <div class="guarantee-details ui-space-medium">
-    <label class="form-label">פרטי הערבות</label>
-    <div class="ui-layout-column ui-space-r-large">
-      <div class="ui-layout double-input ui-space-b-small">
-        <input placeholder="המוטב">
-        <input placeholder="כתובת">
+  <form [formGroup]="newGuarantee" novalidate *ngIf="!data">
+    <div class="user-details ui-space-medium">
+      <label class="form-label">פרטי לקוח</label>
+      <div class="ui-layout-column ui-space-r-large">
+        <input placeholder="שם הלקוח" formControlName="userName">
+        <input placeholder="חפ / תז" formControlName="userId">
+        <input placeholder="כתובת" formControlName="userAddress">
       </div>
-      <input placeholder="מטרת הערבות">
-      <input placeholder="סכום">
-      <div class="ui-layout double-input ui-space-t-small">
-        <input placeholder="תאריך התחלת ערבות">
-        <input placeholder="תאריך סיום">
-      </div>
-      <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
     </div>
-  </div>
-  <div class="actions ui-layout-column ui-space-medium">
-    <button>שליחה - הגשת הבקשה</button>
-    <button>ביטול הבקשה (במידה וטרם הונפקה ערבות)</button>
+    <div class="guarantee-details ui-space-medium">
+      <label class="form-label">פרטי הערבות</label>
+      <div class="ui-layout-column ui-space-r-large">
+        <div class="ui-layout double-input ui-space-b-small">
+          <input placeholder="המוטב" formControlName="beneficiary">
+          <input placeholder="כתובת" formControlName="beneficiaryAddress">
+        </div>
+        <input placeholder="מטרת הערבות" formControlName="purpose">
+        <input placeholder="סכום" formControlName="amount">
+        <div class="ui-layout double-input ui-space-t-small">
+          <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
+          <input placeholder="תאריך סיום" formControlName="endDate">
+        </div>
+        <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
+      </div>
+    </div>
+    <div class="actions ui-layout-column ui-space-medium">
+      <button (click)="submitGuarantee()">שליחה - הגשת הבקשה</button>
+      <button>ביטול הבקשה (במידה וטרם הונפקה ערבות)</button>
+    </div>
+  </form>
+  <!-- Read Only Display -->
+  <div class="read-only" *ngIf="data">
+    <div class="user-details ui-space-medium">
+      <label class="form-label">פרטי לקוח</label>
+      <div class="ui-layout-column ui-space-r-large">
+        <label placeholder="שם הלקוח">שם לקוח: {{data.id}}</label>
+        <label placeholder="חפ / תז">חפ . תז: {{data.id}}</label>
+        <label placeholder="כתובת">כתובת: {{data.id}}</label>
+      </div>
+    </div>
+    <div class="guarantee-details ui-space-medium">
+      <label class="form-label">פרטי הערבות</label>
+      <div class="ui-layout-column ui-space-r-large">
+        <div class="ui-layout double-input ui-space-b-small">
+          <label placeholder="המוטב">המוטב: {{data.beneficiary}}</label>
+          <label placeholder="כתובת">כתובת: {{data.beneficiaryAddress}}</label>
+        </div>
+        <label placeholder="מטרת הערבות">מטרת הערבות: {{data.purpose}}</label>
+        <label placeholder="סכום">סכום: {{data.amount}}</label>
+        <div class="ui-layout double-input ui-space-t-small">
+          <label placeholder="תאריך התחלת ערבות">תאריך התחלת ערבות: {{data.amount}}</label>
+          <label placeholder="תאריך סיום">תאריך סיום: {{data.amount}}</label>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

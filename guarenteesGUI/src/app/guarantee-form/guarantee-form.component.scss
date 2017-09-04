@@ -20,10 +20,21 @@
       margin-top: 10px;
     }
   }
+  label {
+    &+label {
+      margin-top: 10px;
+    }
+  }
 
   .double-input {
     input {
       &+input {
+        margin-top: 0;
+        margin-right: 10px;
+      }
+    }
+    label {
+      &+label {
         margin-top: 0;
         margin-right: 10px;
       }

@@ -1,44 +1,82 @@
 <div class="ui-layout-column" [ngClass]="user !== undefined ? user : ''">
   <header class="view-header text-center ui-space-tb-large">
     <label>
-      -----------{{user}}-----------
+      ----------- {{user}} -----------
     </label>
-    <div class="header-text ui-layout" ui-layout-align="space-between center">
+    <div class="header-text ui-layout ui-space-t-medium" ui-layout-align="space-around center">
       <label>דשבורד ערבויות</label>
-      <button (click)="openModal()">בקשה חדשה</button>
+      <button *ngIf="user==='user'"  (click)="openModal()">בקשה חדשה</button>
     </div>
   </header>
   <main>
-    <div class="for-treatment ui-space-tb-large">
-      <label>
-        לטיפול כרגע (שלי) - {{numForTreatment}} ערבויות
-      </label>
-      <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'status':'for-treatment'">
-        <request-item [request]="req">
-          <request-details [request]="req"></request-details>
-        </request-item>
+    <div class="requests-section" *ngIf="user !== 'beneficiary'">
+      <div class="for-treatment ui-space-tb-large">
+        <div class="section-header ui-space-tb-small text-bold">
+          <label>
+            לטיפול כרגע (שלי) - {{numForTreatment}} ערבויות
+          </label>
+        </div>
+        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'status':'for-treatment'">
+          <request-item [request]="req" (emitRequest)="openModal($event)">
+            <request-details [request]="req"></request-details>
+          </request-item>
+        </div>
+      </div>
+
+      <div class="pending">
+        <div class="section-header ui-space-tb-small text-bold">
+          <label>
+            בהמתנה - (לטיפול הבנק)
+          </label>
+        </div>
+        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'status':'pending'">
+          <request-item [request]="req" (emitRequest)="openModal($event)">
+            <label>מתאריך {{req.startDate}}</label>
+          </request-item>
+        </div>
+      </div>
+
+      <div class="guarantees">
+        <div class="section-header ui-space-tb-small text-bold">
+          <label>
+            היסטורית ערבויות
+          </label>
+        </div>
+        <div class="curr-guarantees" *ngFor="let req of allGuarantees">
+          <request-item [request]="req" (emitRequest)="openModal($event)">
+          </request-item>
+        </div>
       </div>
     </div>
 
-    <div class="pending">
-      <label>
-        בהמתנה - (לטיפול הבנק)
-      </label>
-      <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'status':'pending'">
-        <request-item [request]="req">
-          <label>מתאריך {{req.startDate}}</label>
-        </request-item>
+    <div class="guarantees-section" *ngIf="user === 'beneficiary'">
+      <div class="active ui-space-tb-large">
+        <div class="section-header ui-space-tb-small text-bold">
+          <label>
+            ערבויות פעילות
+          </label>
+        </div>
+        <div class="active-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':'Valid'">
+          <request-item [request]="req" (emitRequest)="openModal($event)">
+            <request-details [request]="req"></request-details>
+          </request-item>
+        </div>
+      </div>
+
+      <div class="inactive ui-space-tb-large">
+        <div class="section-header ui-space-tb-small text-bold">
+          <label>
+            ערבויות לא פעילות
+          </label>
+        </div>
+        <div class="inactive-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':'Expaired'">
+          <request-item [request]="req" (emitRequest)="openModal($event)">
+            <request-details [request]="req"></request-details>
+          </request-item>
+        </div>
       </div>
     </div>
 
-    <div class="guarantees">
-      <label>
-        היסטורית ערבויות
-      </label>
-      <div class="req-pending" *ngFor="let req of allGuarantees">
-        <request-item [request]="req">
-        </request-item>
-      </div>
-    </div>
+
   </main>
 </div>

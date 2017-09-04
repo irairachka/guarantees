@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'guarantee-form',
   templateUrl: './guarantee-form.component.html',
   styleUrls: ['./guarantee-form.component.scss']
 })
-export class GuaranteeFormComponent implements OnInit {
+export class GuaranteeFormComponent implements OnInit, OnChanges {
+  @Input() data: any;
+  newGuarantee: FormGroup;
   state: any[] = [
     {
       label: "המבקש",
@@ -20,14 +24,40 @@ export class GuaranteeFormComponent implements OnInit {
       value: "המוטב",
     },
   ];
-  selectedState: string = null;
-  constructor() { }
+  constructor(private fb: FormBuilder) {
+    this.createForm();
+  }
 
   ngOnInit() {
+  }
+
+  createForm() {
+    if(isNullOrUndefined(this.data)){
+      this.newGuarantee = this.fb.group({
+        userName: '',
+        userId: '',
+        userAddress: '',
+        beneficiary: '',
+        beneficiaryAddress: '',
+        purpose: '',
+        amount: '',
+        startDate: '',
+        endDate: ''
+      })
+    }
   }
 
   onBasicUploadAuto(e) {
     console.log('e', e);
     console.log('File Uploaded');
+  }
+
+  submitGuarantee() {
+    console.log('this.newGuarantee.value', this.newGuarantee.value);
+  }
+
+  ngOnChanges() {
+    console.log('destroy');
+    this.newGuarantee.reset();
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-root',
@@ -10,11 +11,20 @@ export class AppComponent {
   selected: number;
   showCard: boolean = false;
   modalType: string = 'user';
+  data: any;
 
   openModal(e) {
     console.log('e', e);
-    this.modalType = e;
-    console.log('this.modalType', this.modalType);
+    this.modalType = e.user;
+    if(!isNullOrUndefined(e.request)) {
+      this.data = e.request
+    }
     this.showCard = true;
+
   }
+
+  clearData() {
+    this.data = null;
+  }
+
 }

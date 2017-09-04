@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-guarantee-view',
@@ -85,7 +86,11 @@ export class GuaranteeViewComponent implements OnInit {
     ]
   }
 
-  openModal() {
-    this.triggerModal.emit(this.user);
+  openModal(e) {
+    let modalData = {
+      user: this.user,
+      request: e
+    };
+    this.triggerModal.emit(modalData);
   }
 }

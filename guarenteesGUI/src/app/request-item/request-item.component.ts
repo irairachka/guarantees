@@ -1,15 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'request-item',
   templateUrl: './request-item.component.html',
   styleUrls: ['./request-item.component.scss']
 })
-export class RequestItemComponent implements OnInit {
+export class RequestItemComponent {
   @Input() request: any;
-  constructor() { }
+  @Output() emitRequest: EventEmitter<any> = new EventEmitter();
 
-  ngOnInit() {
+  openRequest() {
+    this.emitRequest.emit(this.request);
   }
-
 }
