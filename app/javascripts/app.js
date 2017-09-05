@@ -6,11 +6,13 @@ import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract';
 
 // Import our contract artifacts and turn them into usable abstractions.
-import Registry_artifact from '../../build/contracts/Registry.json'
+import  GuaranteeRequest_artifact from '../../build/contracts/GuaranteeRequest.json'
+import  Regulator_artifact from '../../build/contracts/Regulator.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 
-var Registry = contract(Registry_artifact);
+var Regulator = contract(Regulator_artifact);
+var GuaranteeRequest = contract(GuaranteeRequest_artifact);
 
 const http=require('http');
 const web3providera=new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
@@ -32,8 +34,8 @@ window.App = {
     var self = this;
 
     // Bootstrap the MetaCoin abstraction for Use.
-    Registry.setProvider(web3.currentProvider);
-    // Registry.setProvider(web3providera);
+    Regulator.setProvider(web3.currentProvider);
+    GuaranteeRequest.setProvider(web3.currentProvider);
 
     // web3.eth.getBlock(48, function(error, result){
     //   if(!error)
@@ -82,373 +84,135 @@ window.App = {
     //
     // });
   },
+  
+  initBlockChain: function() {
+    var self = this;
+    self.submitCustomerCall(account ,"מושה ישראלי","הרצל 1 ראשון לציון");
+    self.submitIssuerCall(account ,"בנק הפועלים","הנגב 11");
+    self.submitBeneficiaryCall(account ,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
+    
+  },
 
+  submitCustomerCall: function(theAccount,theName,theAddress) {
+    var self = this;
+    Regulator.deployed().then(function (instance) {
+      console.log("submitCustomer ");
+      return instance.submitCustomer.call(theAccount,theName,theAddress,{from: account});
+    }).then(function (result) {
+      console.log("submitCustomer end :");
+      console.log(result);
+    }).catch(function (e) {
+      console.log(e);
+      self.setRegisterStatus("Unable to submitCustomer ; see log.",e);
+    });
+
+
+  },
+
+  submitIssuerCall: function(theAccount,theName,theAddress) {
+
+    var self = this;
+    Regulator.deployed().then(function (instance) {
+      console.log("submitIssuer ");
+      return instance.submitIssuer.call(theAccount,theName,theAddress,{from: account});
+    }).then(function (result) {
+      console.log("submitIssuer end :");
+      console.log(result);
+    }).catch(function (e) {
+      console.log(e);
+      self.setRegisterStatus("Unable to submitIssuer ; see log.",e);
+    });
+
+  },
+
+  submitBeneficiaryCall: function(theAccount,theName,theAddress) {
+    var self = this;
+    Regulator.deployed().then(function (instance) {
+      console.log("submitBeneficiary ");
+      return instance.submitBeneficiary.call(theAccount,theName,theAddress,{from: account});
+    }).then(function (result) {
+      console.log("submitBeneficiary :");
+      console.log(result);
+    }).catch(function (e) {
+      console.log(e);
+      self.setRegisterStatus("Unable to submitBeneficiary ; see log.",e);
+    });
+  },
   
 
-  // refreshBalance: function () {
-  //   var self = this;
-  //   var Registry_instance;
-  //   Registry.deployed().then(function (instance) {
-  //     Registry_instance = instance;
-  //     return Registry_instance.getPDFAllCount.call({from: account});
-  //   }).then(function (value) {
-  //     console.log("waiting active uri requests:" + value);
-  //     var balance_element = document.getElementById("activeRequestPDFs");
-  //     balance_element.innerHTML = value;
-  //   }).catch(function (e) {
-  //     // console.log(e);
-  //     self.setRegisterStatus("Unable to refresh balance; see log.",e);
-  //   });
-  // },
+  listGRequests: function () {
+  var self = this;
+    document.getElementById("activeRequests").innerHTML = '';
+      var Regulator_instance;
+      console.log("begin");
+      Regulator.deployed().then(function (instance) {
+        Regulator_instance = instance;
+        console.log("instance");
+        return Regulator_instance.getRequestsAddress.call({from: account});
+      }).then(function (guaranteeRequestAddresses) {
+         console.log(guaranteeRequestAddresses);
 
-
-
-  addRequestPDF: function () {
-    var self = this;
-    var Registry_instance;
-    var uri_requested_value = document.getElementById("uri_requested").value;
-    console.log("addRequestPDF:"+uri_requested_value );
-    return Registry.deployed()
-    .then(function (instance) {
-          Registry_instance = instance;
-      
-          return Registry_instance.requestPdf(uri_requested_value,{from: account});
-          })
-    .then(function (tx_id) {
-          console.log(" uri request" + uri_requested_value + " added.txid:" + tx_id);
-          // self.refreshBalance();
-          })
-    .catch(function (e) {
-
-          console.log(e);
-          self.setRegisterStatus("Unable to add request; see log.",e);
-
-        })
-  },
-
-
-
-
-  signPdfGethttpHashTest:function (pdf_id,pdf_uri) {
-    var self = this;
-
-
-
-    self.signPdfGethttpHash(pdf_id,pdf_uri)
-        .then(function(data){ console.log(JSON.parse(data));})
-        .catch(function(error) { console.log("error"); console.log(error);})
-  },
-
-  signPdfGethttpHash:function (pdf_id,pdf_uri) {
-
-      var options = {
-        host: '52.59.219.164',
-        // host: '0.0.0.0',
-        port: 9080,
-        path: '/remotesignhash?pdflocation=' + pdf_uri + '&id=' + pdf_id,
-        // headers: headers
-      };
-
-    // return new Promise(function (resolve, reject) {
-      //     resolve("http://52.59.219.164:9080/signed/pdf.pdf");
-      //
-      // });
-
-      return new Promise(function (resolve, reject) {
-        http.get(options, function (response) {
-          response.setEncoding('utf8')
-          response.on('error', function (e) {
-            //do something with chunk
-            var textChunk = chunk.toString('utf8');
-            console.log("Got error: " + e);
-            reject("Got error: " + e);
-          });
-          response.on('data', function (chunk) {
-            if (response.statusCode == 200)
-            {
-              //do something with chunk
-              // var textChunk = chunk.toString('utf8');
-              console.log(chunk);
-              console.log('after send');
-              resolve(chunk);
-            }
-            else
-            {
-              console.log("Got error: " + chunk);
-              reject(JSON.parse(chunk).message);
-              // throws('can\'t sign pdf');
-            }
-
-          });
-          // response.on('end', function (chank) {
-          //   //do something with chunk
-          //   // var textChunk = chunk.toString('utf8');
-          //   console.log("Got error: " + chunk);
+        // requestAddress=guaranteeRequestAddresses[0];
+        guaranteeRequestAddresses.forEach(function(requestAddress) {
+          console.log("requestAddress:"+requestAddress);
+          GuaranteeRequest.at(requestAddress).then(function (guaranteeRequestinstance) {
+          var guaranteeRequest_instance = guaranteeRequestinstance;
+          return guaranteeRequest_instance.getGuaranteeRequestData();
+        }).then(function (result) {
+            console.log("result:"+result);
+          document.getElementById("activeRequests").innerHTML += "<br> guarantee for " + result[4] + " ammount: " + result[5] + " othere:" + result[6] +  "<br />";
           //
-          // });
-
-        }).on("error", function (e) {
-          console.log("Got error: " + e);
-          reject("Got error: " + e);
-           // throws('can\'t sign pdf');
+          // console.log("getGuaranteeRequestData result for type:" + typeof(result));
+          // console.log(result);
+          // console.log(result[0], result[2], result[3], result[4], result[5]);
+          // console.log(result[6]);
+          //
+          // console.log(result[10]);
+          
+        }).catch(function (e) {
+          // console.log(e);
+          self.setRegisterStatus("Unable to refresh balance; see log.",e);
         });
       });
-
-  },
-
-
-
-  signPDF: function (pdf_id,pdf_uri) {
-    var self = this;
-    var Registry_instance;
-    var pdf_rec_index;
-    var  _hash_num;
-    var signed_pdf_uri;
-    self.signPdfGethttpHash(pdf_id,pdf_uri)
-        .then(function(data){
-          var dataJson=JSON.parse(data);
-          console.log("data",data);
-          signed_pdf_uri=dataJson.filename;
-          _hash_num =dataJson.hashcode;
-          if (_hash_num)
-          {
-            _hash_num="0x"+_hash_num;
-            console.log("_hash_num"+_hash_num)
-          }
-          else
-          {
-            console.log("else _hash_num"+_hash_num)
-          }
-
-          console.log("create contract:" +signed_pdf_uri + " uri:"+ pdf_uri.toString() + " index:" + pdf_id.valueOf() + " hash" + _hash_num);
-          
-          return Registry.deployed()
-              .then(function (instance) {
-                Registry_instance = instance;
-                return Registry_instance.lookupid(pdf_uri,{from: account})
-              })
-              .then(function (response) {
-                console.log("signPDF" + response);
-                pdf_rec_index = response.valueOf();
-                return Registry_instance.signPDF(pdf_rec_index, pdf_uri, signed_pdf_uri,_hash_num, {from: account , gas: 500000 });
-              })
-              .then(function (result) {
-
-                console.log(result);
-
-              })
-              .catch(function (error) {
-                console.log("error signature");
-                // console.log(e);
-                self.setRegisterStatus("Unable to sign pdf ; see log.", error);
-              });
-
-        })
-        .catch(function(error) {
-          console.log("error signature:" + error);
-          // console.log(e);
-          return Registry.deployed()
-              .then(function (instance) {
-
-                console.log("signerror sign PDF" );
-
-                return instance.error(pdf_id,pdf_uri, "",error,{from: account,gas: 500000});
-              })
-              .then(function (result) {
-
-                console.log(result);
-                self.setRegisterStatus("Unable to sign pdf ; error is provided.");
-
-              })
-              .catch(function (error) {
-                console.log("error signature");
-                // console.log(e);
-                self.setRegisterStatus("Unable to write error  ; see log.", error);
-              });
-        })
-
-  },
-
-
-
-
-  //
-  // signDemoPDF: function () {
-  //   var self = this;
-  //   var Registry_instance;
-  //   Registry.deployed().then(function (instance) {
-  //     Registry_instance = instance;
-  //     return Registry_instance.isPDFRequestExist("test", {from: account})
-  //   })
-  //       .then(function (response) {
-  //         if (!response) {
-  //           Registry_instance.addPDFRequest("test", {from: account});
-  //         }
-  //         return Registry_instance.getRegistryByURI("test", {from: account})
-  //       })
-  //      
-  //       .then(function (response) {
-  //         return (exampleContract.new("test", "0213213123"), response);
-  //       })
-  //       .then(function (pdfExtender, PDFs_index) {
-  //         return Registry_instance.addPDF(pdfExtender.address, PDFs_index, {from: account});
-  //       })
-  //       .then(function (result) {
-  //         console.log(" address" + new_PDF_address + " added");
-  //         console.log(result.args());
-  //         self.refreshBalance();
-  //       })
-  //       .catch(function (e) {
-  //         console.error("error" + e);
-  //       });
-  // },
-
-
-  startRequestListener: function (fromBlock) {
-    var self = this;
-    var Registry_instance;
-
-    Registry.deployed().then(function (instance) {
-      Registry_instance = instance;
-      if(!fromBlock) {
-        if (!latestWatched) {
-          self.listSigned();
-          console.log("latestWatched updated:" + latestWatched);
-          fromBlock=latestWatched;
-
-        }
-        else {
-          console.log("latestWatched:" + latestWatched);
-          fromBlock=latestWatched;
-        }
-      }
-
-      watcherReq = Registry_instance.RequestedPDF({}, {
-        fromBlock: fromBlock.valueOf(),
-        toBlock: 'latest'
+    }).catch(function (e) {
+        // console.log(e);
+        self.setRegisterStatus("Unable to refresh balance; see log.",e);
       });
-      watcherReq.watch(function (error, event) {
 
-        if (!error) {
-
-
-          if (event.blockNumber >= latestWatched) {
-            console.log(event.args);
-            console.log("in watcher requests");
-            self.signPDF(event.args.PDFRequestindex,event.args.pdfURIaddress);
+    },
 
 
-          }
-          // self.refreshBalance();
-          //
-          // assert.equal(event.args.PDFRequestindex.valueOf(), sicle, "Event number should be 2");
-          // // assert.equal(event.args.pdfURIaddress, "the_event_check_request", "Event number should be 2");
+  addRequest: function ( account1 ,account2,account3,purpose, amount, beginDate,endDate,indexType,indexDate){
+    var self = this;
 
-        } else {
-          // console.log("error in request watcher");
-          self.setRegisterStatus("Unable to watch events; see log.",error);
+    console.log("begin");
+    Regulator.deployed().then(function (instance) {
+      console.log("instance");
 
-        }
-        //once the event has been detected, take actions as desired
-        //   var data = 'from: ' + response.args._from+"<br>candidateName: "+web3.toUtf8(response.args._candidateName) +"<br>";
-        //  assert.equal(response, 1 , "Event number should be 1");
 
-      })
+     // var timestamp = 1301090400,
+        // date = new Date(timestamp * 1000),
+        // datevalues = [
+        //     date.getFullYear(),
+        //     date.getMonth()+1,
+        //     date.getDate(),
+        //     date.getHours(),
+        //     date.getMinutes(),
+        //     date.getSeconds(),
+        // ];
+         var dt=(Date.now()/1000);
 
-    }).catch(function (error) {
-      self.setRegisterStatus("Unable to watch events; see log.",error);
+        return instance.createGuaranteeRequest(account1 ,account2,account3,purpose, amount,beginDate,endDate,indexType,indexDate,{from: account ,gas: 6000000});
+    }).then(function (guaranteeRequestAddresses) {
+          console.log(guaranteeRequestAddresses);
 
+    }).catch(function (e) {
+      console.log(e);
+      self.setRegisterStatus("Unable to refresh balance; see log.",e);
     });
-  },
-
-
-  stopRequestListener: function () {
-    if (watcherReq != null)
-      watcherReq.stopWatching();
-  },
-
-  setSignStatus: function(message) {
-    var status = document.getElementById("SignStatus");
-    status.innerHTML = message;
-  },
-
-  startSignListener: function (fromBlock) {
-    var self = this;
-    var Registry_instance;
-    Registry.deployed().then(function (instance) {
-      Registry_instance = instance;
-
-      watcherSign = Registry_instance.UpdatePDF({}, {
-        fromBlock: latestWatched.valueOf(),
-        toBlock: 'latest'
-      });
-      watcherSign.watch(function (error, event) {
-
-        if (!error) {
-          console.log(event.args);
-          console.log("in watcher sig");
-          
-          if (event.blockNumber >= latestWatched) {
-            // self.refreshRegister();
-            // self.setRegisterStatus(result.event);
-            latestWatched = event.blockNumber;
-          }
-          // self.signPDF(event.args.pdfURIaddress);
-          // self.refreshBalance();
-          //
-          // assert.equal(event.args.PDFRequestindex.valueOf(), sicle, "Event number should be 2");
-          // // assert.equal(event.args.pdfURIaddress, "the_event_check_request", "Event number should be 2");
-
-        } else {
-          self.setRegisterStatus("Unable to watch events; see log.",error);
-
-        }
-        //once the event has been detected, take actions as desired
-        //   var data = 'from: ' + response.args._from+"<br>candidateName: "+web3.toUtf8(response.args._candidateName) +"<br>";
-        //  assert.equal(response, 1 , "Event number should be 1");
-
-      })
-
-    }).catch(function (error) {
-      self.setRegisterStatus("Unable to watch events; see log.",error);
-
-    });
-  },
-
-  stopSignListener: function () {
-    if (watcherSign != null)
-      watcherSign.stopWatching();
-  },
-
-
-
-    listRequests: function () {
-    console.log("listrequest");
-    var self = this;
-    Registry.deployed().then(function (instance) {
-      document.getElementById("activerequests").innerHTML = '';
-      return instance.RequestedPDF({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
-        for (var i = result.length - 1; i >= 0; i--) {
-          var cur_result = result[i];
-          self.listRequestsInner(cur_result);
-        }
-      });
-    }).catch(function (error) {
-      console.log("listrequest error"+error);
-      self.setRegisterStatus("Unable to create  request list; see log.",error);
-
-    })
-  },
-
-  listRequestsInner: function (result) {
-    console.log("listRequestsInner");
-    console.log(result.args);
-    var _uri_address=result.args._uri;
-    var _added_by=result.args._added_by;
-    var _index_of_request=result.args.PDFRequestindex;
-    document.getElementById("activerequests").innerHTML += '<h3><a href="' + _uri_address + '" target="_blank"> '+_uri_address+' added by ' + _added_by +' in place:' +_index_of_request+ '</a> '+   " <button onclick='App.signPDF("+_index_of_request+",\""+ _uri_address + "\")'>Sign</button></h3><br />";
 
   },
+
 
   setRegisterStatus: function(message,error) {
     console.log(error);
@@ -456,80 +220,7 @@ window.App = {
     status.innerHTML = message + " =>"+ error;
   },
 
-  listSigned: function () {
 
-    var self = this;
-    var Registry_instance;
-    document.getElementById("signedpdf").innerHTML = '';
-    Registry.deployed().then(function (instance) {
-      Registry_instance = instance;
-      console.log("listSigned");
-      return Registry_instance.SignedPDF({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
-        for (var i = result.length - 1; i >= 0; i--) {
-          var cur_result = result[i];
-          self.listSignedInner(cur_result);
-        }
-      })
-    }).catch(function (error) {
-        self.setRegisterStatus("Unable to create signed pdfs list ; see log.", error);
-      });
-  },
-
-  listSignedInner: function (result) {
-
-    if ( !latestWatched || latestWatched<result.blockNumber)
-    {
-      latestWatched=result.blockNumber;
-      console.log("latestWatched:",latestWatched);
-    }
-    else
-    {
-      console.log("latestWatched<result.blockNumber",latestWatched,result.blockNumber);
-    }
-    console.log(result.args.);
-    var _PDFRequestindex=result.args.PDFRequestindex;
-    var _uri=result.args._uri;
-    var _signedUri=result.args._signedUri;
-    var _hash=result.args._hash;
-    document.getElementById("signedpdf").innerHTML += '<h3><a href="' + _signedUri +'" target="_blank"> ' +_signedUri + '</a></h3> biy place:'+_PDFRequestindex+' hash:'+ _hash+'<br />';
-
-  },
-
-
-
-
-  listErrors: function () {
-
-    var self = this;
-    var Registry_instance;
-    document.getElementById("erroredpdf").innerHTML = '';
-    Registry.deployed().then(function (instance) {
-      Registry_instance = instance;
-      return Registry_instance.RegistrarError({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
-        for (var i = result.length - 1; i >= 0; i--) {
-          var cur_result = result[i];
-          self.listErrorsInner(cur_result);
-        }
-      })
-    }).catch(function (error) {
-      self.setRegisterStatus("Unable to create signed pdfs list ; see log.", error);
-    });
-  },
-
-  listErrorsInner: function (result) {
-
-    if ( !latestWatched || latestWatched<result.blockNumber)
-    {
-      latestWatched=result.blockNumber;
-    }
-    console.log(result.args);
-    var _uri_address=result.args._uri;
-    // var _added_by=result.args._added_by;
-    var _index_of_request=result.args.PDFRequestindex;
-    document.getElementById("erroredpdf").innerHTML += '<h3><a href="' + _uri_address + '" target="_blank"> '+_uri_address+'< in place:>' +_index_of_request+ '</a> '+"</h3><br />";
-
-
-  },
 
 
 };

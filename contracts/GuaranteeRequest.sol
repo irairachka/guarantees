@@ -66,32 +66,32 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
 
     }
 
-    function getId() constant returns (address _contract_id)
+    function getId() constant public returns (address _contract_id)
     {
         return this;
     }
 
-    function getCustomer() constant returns (address _customer)
+    function getCustomer() constant public returns (address _customer)
     {
         return addresses.customer;
     }
 
-    function getBank() constant returns (address _bank)
+    function getBank() constant public returns (address _bank)
     {
         return addresses.bank;
     }
-    function getBeneficiary() constant returns (address _beneficiary)
+    function getBeneficiary() constant public returns (address _beneficiary)
     {
         return addresses.beneficiary;
     }
 
-    function getEndDate() constant returns (uint _date)
+    function getEndDate() constant public returns (uint _date)
     {
         return endDate;
     }
 
 
-    function getGuaranteeRequestData() constant returns (address _contract_id,address _customer,address _bank, address _beneficiary,
+    function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
     string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status)
     {
 
@@ -124,42 +124,42 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         return status;
     }
 
-    event State(RequestState state);
-    function getRequestStateTranslated() public constant returns (uint _thestate)
-    {
-        State(status);
-        _thestate= uint(status);
-        if (_thestate==0 && status!=RequestState.created)
-        {
-            if  (status==RequestState.waitingtobank) {
-                return 1;
-            }
-            if  (status==RequestState.handling) {
-                return 2;
-            }
-            if  (status==RequestState.waitingtocustomer)
-            {
-                return 3;
-            }
-            if  (status==RequestState.withdrawed)
-            {
-                return 5;
-            }
-
-            if  (status==RequestState.accepted)
-            {
-                return 6;
-            }
-            if  (status==RequestState.rejected)
-            {
-                return 8;
-            }
-
-        //waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest }
-
-        }
-
-    }
+//    event State(RequestState state);
+//    function getRequestStateTranslated() public constant returns (uint _thestate)
+//    {
+//        State(status);
+//        _thestate= uint(status);
+//        if (_thestate==0 && status!=RequestState.created)
+//        {
+//            if  (status==RequestState.waitingtobank) {
+//                return 1;
+//            }
+//            if  (status==RequestState.handling) {
+//                return 2;
+//            }
+//            if  (status==RequestState.waitingtocustomer)
+//            {
+//                return 3;
+//            }
+//            if  (status==RequestState.withdrawed)
+//            {
+//                return 5;
+//            }
+//
+//            if  (status==RequestState.accepted)
+//            {
+//                return 6;
+//            }
+//            if  (status==RequestState.rejected)
+//            {
+//                return 8;
+//            }
+//
+//        //waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest }
+//
+//        }
+//
+//    }
 
 
 
@@ -176,7 +176,7 @@ function getCommentsForStep(int step) constant returns (string)
         return "";
     }
 
-    function addCommentsForStep(int _step,string _commentline)
+    function addCommentsForStep(int _step,string _commentline) public
     {
         Comment memory comment ;
         comment.step   = _step;
@@ -192,7 +192,7 @@ function getCommentsForStep(int step) constant returns (string)
     event Submitted(address  requestId,address msgSender,string comment ,RequestState _newstate);
 
     //submit function to initiat the request
-    function submit(string comment) onlyCustomer returns (bool result)
+    function submit(string comment) onlyCustomer public returns (bool result)
 
     {
         require(status==RequestState.created);
@@ -208,7 +208,7 @@ function getCommentsForStep(int step) constant returns (string)
 
     event Withdrawal(address  requestId,address msgSender,string comment);
     //customer withdrawal request
-    function withdrawal(string comment) onlyCustomer returns (bool result)
+    function withdrawal(string comment) onlyCustomer public returns (bool result)
     {
         require(status!=RequestState.accepted);
         stepNumber++;
@@ -221,7 +221,7 @@ function getCommentsForStep(int step) constant returns (string)
 
     event Termination(address  requestId,address msgSender,string comment);
     //bank reject request
-    function termination(string _comment) onlyBeneficiary returns (bool result)
+    function termination(string _comment) onlyBeneficiary public returns (bool result)
     {
         require(status==RequestState.accepted );
         stepNumber++;
@@ -239,7 +239,7 @@ function getCommentsForStep(int step) constant returns (string)
 
     event Rejected(address  requestId,address msgSender,string comment);
     //bank reject request
-    function reject(string comment) onlyBank returns (bool result)
+    function reject(string comment) onlyBank public returns (bool result)
     {
         require(status!=RequestState.accepted);
         stepNumber++;
@@ -254,7 +254,7 @@ function getCommentsForStep(int step) constant returns (string)
 
     event BankStateChange(address  requestId,address msgSender,string comment,RequestState _newStat);
     //bank reject request
-    function bankStateChange(string comment ,RequestState _newState) onlyBank returns (bool result)
+    function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result)
     {
         require((status==RequestState.waitingtobank      ||
                 status==RequestState.handling           ) &&
@@ -273,7 +273,7 @@ function getCommentsForStep(int step) constant returns (string)
 
     event Accepted(address  requestId,address msgSender,string comment,bytes _guaranteeIPFSHash);
     //bank accept request
-    function accept(string comment,bytes _guaranteeIPFSHash) onlyBank returns (bool result)
+    function accept(string comment,bytes _guaranteeIPFSHash) onlyBank public returns (bool result)
     {
         require((status==RequestState.waitingtobank || status==RequestState.handling || status==RequestState.changeRequested) && _checkArray(_guaranteeIPFSHash) && guarantee==address(0));
         stepNumber++;

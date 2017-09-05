@@ -4,10 +4,10 @@ import "./GuaranteeConst.sol";
 
 contract GuaranteeExtender is GuaranteeConst {
 
-    function getId() constant returns (address _contract_id);
+    function getId() constant public returns (address _contract_id);
     // function getCustomer() constant returns (address);
     // function getBank() constant returns (address);
-    function getBeneficiary() constant returns (address);
+    function getBeneficiary() constant public returns (address);
 
     //premissions modifier for beneficiary functions
     modifier onlyBeneficiary() {
@@ -23,23 +23,23 @@ contract GuaranteeExtender is GuaranteeConst {
     //    function getPurpose() constant returns (string);
     //    function getAmount() constant returns (uint);
     //    function getStartDate() constant returns (uint);
-    function getEndDate() constant returns (uint);
+    function getEndDate() constant public returns (uint);
     //    function getIndexType() constant returns (IndexType);
     //    function getIndexDate() constant returns (uint);
 
-    function getGuaranteeData() constant returns (address _contract_id,address _customer,address _bank ,address _beneficiary, string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState);
-    function getGuaranteeIPFSHash() constant returns (bytes);
+    function getGuaranteeData() constant public returns (address _contract_id,address _customer,address _bank ,address _beneficiary, string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState);
+    function getGuaranteeIPFSHash() constant public returns (bytes);
 
 
     // function endRequest(string comment) onlyBeneficiary returns (bool);
 
-    function isExpired() constant returns (bool) {
+    function isExpired() constant public returns (bool) {
         return (getEndDate()>now);
     }
 
-    function getGuaranteeState() constant returns (GuaranteeState _guaranteeState);
+    function getGuaranteeState() constant public returns (GuaranteeState _guaranteeState);
 
-    function terminate(string _comment) onlyBeneficiary returns (bool);
+    function terminate(string _comment) onlyBeneficiary public returns (bool);
 
     //    function changeRequest(uint amount, string endDate, string comment) onlyBeneficiary returns (bool);
 

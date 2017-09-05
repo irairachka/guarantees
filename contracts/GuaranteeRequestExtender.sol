@@ -42,39 +42,39 @@ contract GuaranteeRequestExtender is GuaranteeConst {
 
 
     //    function getId() constant returns (address);
-    function getCustomer() constant returns (address);
-    function getBank() constant returns (address);
-    function getBeneficiary() constant returns (address);
+    function getCustomer() constant public returns (address);
+    function getBank() constant public returns (address);
+    function getBeneficiary() constant public returns (address);
 
     //    function getPurpose() constant returns (bytes32);
     //    function getAmount() constant returns (uint);
     //    function getStartDate() constant returns (uint);
-    function getEndDate() constant returns (uint);
+    function getEndDate() constant public returns (uint);
     //    function getIndexType() constant returns (IndexType);
     //    function getIndexDate() constant returns (uint);
 
 
     //    function getAddresses() constant returns (Addresses);
 
-    function getGuaranteeRequestData() constant returns (address _contract_id,address _customer,address _bank, address _beneficiary,
+    function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
     string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status);
-    function getProposalIPFSHash() constant returns (bytes _proposalIPFSHash);
+    function getProposalIPFSHash() constant public returns (bytes _proposalIPFSHash);
 
-//    function getRequestState() public constant returns (RequestState);
-    function getCommentsForStep(int step) constant returns (string);
-    function addCommentsForStep(int _step,string _commentline) ;
+    function getRequestState() public constant returns (RequestState);
+    function getCommentsForStep(int step) constant public returns (string);
+    function addCommentsForStep(int _step,string _commentline) public ;
     //    function setRequestState(RequestState)  returns (RequestState);
 
-    function isExpired() constant returns (bool) {
+    function isExpired() constant public returns (bool) {
         return (getEndDate()>now);
     }
 
-    function submit(string comment) onlyCustomer returns (bool result) ;
-    function termination(string comment) onlyBeneficiary returns (bool result);
-    function reject(string comment) onlyBank returns (bool result);
-    function accept(string comment,bytes _guaranteeIPFSHash) onlyBank returns (bool result);
-    function withdrawal(string comment) onlyCustomer returns (bool result);
-    function bankStateChange(string comment ,RequestState _newState) onlyBank returns (bool result);
+    function submit(string comment) onlyCustomer public returns (bool result) ;
+    function termination(string comment) onlyBeneficiary public returns (bool result);
+    function reject(string comment) onlyBank public returns (bool result);
+    function accept(string comment,bytes _guaranteeIPFSHash) onlyBank public returns (bool result);
+    function withdrawal(string comment) onlyCustomer public returns (bool result);
+    function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);
 
     //    function changeRequested(bytes32 comment) onlyBank returns (bool result);
 

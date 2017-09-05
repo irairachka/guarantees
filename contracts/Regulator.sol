@@ -41,28 +41,28 @@ contract Regulator is owned,GuaranteeConst{
     //guarantee request states
     enum issuerStatus { submited,  accepted, rejected }
 
-    modifier issuersOnly {
-        bool found = false;
-        for(uint32 i=0; i<issuers.length; i++) {
-            if(issuers[i].addr == msg.sender && issuers[i].status == issuerStatus.accepted) {
-                found = true;
-                break;
-            }
-        }
-        if(!found) throw;
-        _;
-    }
+//    modifier issuersOnly {
+//        bool found = false;
+//        for(uint32 i=0; i<issuers.length; i++) {
+//            if(issuers[i].addr == msg.sender && issuers[i].status == issuerStatus.accepted) {
+//                found = true;
+//                break;
+//            }
+//        }
+//        if(!found) throw;
+//        _;
+//    }
 
-    //premissions modifier for customer functions
-    modifier onlyCustomer() {
-        if (!_checkString(customers[msg.sender].name))
-        {
-            loga("###ERROR-not performd by CUSTOMER address",msg.sender);
-            throw;
-        }
-        loga("#pass CUSTOMER action check",msg.sender);
-        _;
-    }
+//    //premissions modifier for customer functions
+//    modifier onlyCustomer() {
+//        if (!_checkString(customers[msg.sender].name))
+//        {
+//            loga("###ERROR-not performd by CUSTOMER address",msg.sender);
+//            throw;
+//        }
+//        loga("#pass CUSTOMER action check",msg.sender);
+//        _;
+//    }
 
 
 
@@ -70,6 +70,7 @@ contract Regulator is owned,GuaranteeConst{
     struct Customer {
         string name;
         string localAddress;
+        address []   guaranteeRequests;
 //    string id;
     }
     //holds all customers by their address
@@ -79,6 +80,7 @@ contract Regulator is owned,GuaranteeConst{
     struct Beneficiary {
         string name;
         string localAddress;
+        address []   guarantees;
 //    string id;
     }
     //holds all the benefiieries by their address
@@ -90,6 +92,7 @@ contract Regulator is owned,GuaranteeConst{
         string localAddress;
         address addr;
         issuerStatus status;
+        address []   guaranteeRequests;
     }
     //holds all customers by their address
     Issuer   [] issuers;
@@ -97,14 +100,20 @@ contract Regulator is owned,GuaranteeConst{
     event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
         owner = msg.sender;
+
+
+        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
+        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
+        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
+
         RegulatoryContractDeployed(msg.sender,"Mined",now);
     }
 
 
     event AddBeneficiary (address msgSender,string _name,uint timestamp);
 
-    function submitBeneficiary(address _addr , string _name, string _localAddres )  onlyOwner {
-        Beneficiary memory beneficiary=beneficiaries[_addr];
+    function submitBeneficiary(address _addr , string _name, string _localAddres ) public  onlyOwner {
+        Beneficiary beneficiary=beneficiaries[_addr];
         beneficiary.name   = _name;
         beneficiary.localAddress    = _localAddres;
 //        beneficiary.id = _id;
@@ -112,7 +121,7 @@ contract Regulator is owned,GuaranteeConst{
         AddBeneficiary(_addr,_name,block.timestamp);
     }
 
-    function getBeneficiary(address _addr) constant returns(string _name, string _localAddress)
+    function getBeneficiary(address _addr) public constant returns(string _name, string _localAddress)
     {
 
         Beneficiary memory beneficiary=beneficiaries[_addr];
@@ -122,7 +131,7 @@ contract Regulator is owned,GuaranteeConst{
     }
 
     event AddCustomer (address msgSender,string msgstr,uint timestamp);
-    function submitCustomer(address _addr , string _name, string _localAddres ) onlyOwner {
+    function submitCustomer(address _addr , string _name, string _localAddres ) onlyOwner public {
         Customer  customer=customers[_addr];
         customer.name   = _name;
         customer.localAddress    = _localAddres;
@@ -131,7 +140,7 @@ contract Regulator is owned,GuaranteeConst{
         AddCustomer(msg.sender,_name,block.timestamp);
     }
 
-    function getCustomer(address _addr) constant returns(string _name, string _localAddress)//, string  _id)
+    function getCustomer(address _addr) constant public returns(string _name, string _localAddress) //, string  _id)
     {
 
         Customer memory ci = customers[_addr];
@@ -142,7 +151,7 @@ contract Regulator is owned,GuaranteeConst{
 
     event AddIssuer (address msgSender,string msgstr,uint timestamp);
 
-    function submitIssuer(address _addr , string _name, string _localAddres) onlyOwner {
+    function submitIssuer(address _addr , string _name, string _localAddres) onlyOwner public {
         Issuer memory issuer;
         issuer.name   = _name;
         issuer.localAddress    = _localAddres;
@@ -155,7 +164,7 @@ contract Regulator is owned,GuaranteeConst{
 
     event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
 
-    function changeIssuerStatus(address _addr, issuerStatus _status) {
+    function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
         for(uint32 i=0; i<issuers.length; i++) {
             if(issuers[i].addr == _addr) {
                 issuers[i].status = _status;
@@ -177,7 +186,7 @@ contract Regulator is owned,GuaranteeConst{
         return issuers.length;
     }
 
-    function getIssuerById(uint _id) constant returns(string , string , address , issuerStatus ) {
+    function getIssuerById(uint _id) constant public returns(string , string , address , issuerStatus )  {
 
         if(_id >= issuers.length) {
             throw;
@@ -193,25 +202,38 @@ contract Regulator is owned,GuaranteeConst{
 
 
     //describes the customer object
-    address [] guaranteeRequests;
+//    address [] public  guaranteeRequests;
 
-    function getAcctiveRequestsAddress() returns (address[])
+    function getRequestsAddressForCustomer() public constant returns (address[])
     {
-        //todo
-        return guaranteeRequests;
+        return customers[msg.sender].guaranteeRequests;
+
     }
 
-    function getAcctiveGuaranteesAddress() returns (address[])
+    function getRequestsAddressForIssuer() public constant returns (address[])
     {
-        //todo
-        return guaranteeRequests;
+        return Issuer[msg.sender].guaranteeRequests;
+
     }
+
+
+//    function getActiveGuaranteesAddress() constant returns (string[])
+//    {
+//        string[] memory _guarantees = new string();
+//
+//                for(uint32 i=0; i<guaranteeRequests.length; i++) {
+//                    if(GuaranteeRequestExtender(guaranteeRequests[i]).getRequestState()==RequestState.accepted)
+//                    _guarantees.push(guaranteeRequests[i]);
+//                }
+//                return _guarantees;
+//
+//    }
 
     event GuaranteeRequestCreated (address  requestId,address msgSender,address _customer ,address _bank ,address _beneficiary ,string _purpose,
         uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,uint timestamp);
 
     function createGuaranteeRequest(address _customer ,address _bank ,address _beneficiary ,string _purpose,
-    uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate) onlyCustomer returns (address)
+    uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate)  public returns (address)
     {
         GuaranteeRequest greq=new  GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
         guaranteeRequests.push(address(greq));
