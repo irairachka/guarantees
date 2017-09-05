@@ -95,7 +95,8 @@ contract Regulator is owned,GuaranteeConst{
         address []   guaranteeRequests;
     }
     //holds all customers by their address
-    Issuer   [] issuers;
+  mapping (address=>Issuer) public issuers;
+  address   [] issuerList;
 
     event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
@@ -149,49 +150,50 @@ contract Regulator is owned,GuaranteeConst{
 //        _id = ci.id;
     }
 
-    event AddIssuer (address msgSender,string msgstr,uint timestamp);
+    event AddIssuer (address msgSender,address issuerAdr,string msgstr,uint timestamp);
 
     function submitIssuer(address _addr , string _name, string _localAddres) onlyOwner public {
-        Issuer memory issuer;
+
+        Issuer  issuer = issuers[_addr];
         issuer.name   = _name;
         issuer.localAddress    = _localAddres;
         issuer.addr = _addr;
         issuer.status = issuerStatus.accepted;
-        issuers.push(issuer);
+        issuerList.push(_addr);
 
-        AddIssuer(msg.sender,_name,block.timestamp);
+        AddIssuer(msg.sender, _addr ,_name,block.timestamp);
     }
 
-    event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
-
-    function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
-        for(uint32 i=0; i<issuers.length; i++) {
-            if(issuers[i].addr == _addr) {
-                issuers[i].status = _status;
-                // if(issuers[i].status == issuerStatus)
-                // {
-                //     UpdateIssuersStatus(msg.sender,"Approved",block.timestamp);
-                // }
-                // else
-                // {
-                //     UpdateIssuersStatus(msg.sender,"Rejected",block.timestamp);
-                // }
-                break;
-            }
-        }
-
-    }
+//    event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
+//
+//    function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
+//        for(uint32 i=0; i<issuers.length; i++) {
+//            if(issuers[i].addr == _addr) {
+//                issuers[i].status = _status;
+//                // if(issuers[i].status == issuerStatus)
+//                // {
+//                //     UpdateIssuersStatus(msg.sender,"Approved",block.timestamp);
+//                // }
+//                // else
+//                // {
+//                //     UpdateIssuersStatus(msg.sender,"Rejected",block.timestamp);
+//                // }
+//                break;
+//            }
+//        }
+//
+//    }
 
     function getIssuerCounter() public constant returns (uint ) {
-        return issuers.length;
+        return issuerList.length;
     }
 
     function getIssuerById(uint _id) constant public returns(string , string , address , issuerStatus )  {
 
-        if(_id >= issuers.length) {
+        if(_id >= issuerList.length) {
             throw;
         }
-        Issuer memory ci = issuers[_id];
+        Issuer memory ci = issuers[issuerList[_id]];
 
         return (ci.name,ci.localAddress,ci.addr,ci.status);
 //        _name = ci.name;

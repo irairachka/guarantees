@@ -11,6 +11,8 @@ body {
 /* Dialog css overrides */
 
 .dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
+  top: 10px;
+  margin: 0 auto;
   .ui-dialog-titlebar {
     .ui-dialog-titlebar-icon {
       color: #eee;

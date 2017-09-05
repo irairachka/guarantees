@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, Output, OnDestroy, OnInit, EventEmitter} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {isNullOrUndefined} from "util";
 
@@ -9,6 +9,7 @@ import {isNullOrUndefined} from "util";
 })
 export class GuaranteeFormComponent implements OnInit, OnChanges {
   @Input() data: any;
+  @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
   state: any[] = [
     {
@@ -54,7 +55,9 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   submitGuarantee() {
-    console.log('this.newGuarantee.value', this.newGuarantee.value);
+    console.log('this.newGuarantee', this.newGuarantee);
+    let formValues = Object.assign({}, this.newGuarantee.value);
+    this.postNewRequest.emit(formValues);
   }
 
   ngOnChanges() {

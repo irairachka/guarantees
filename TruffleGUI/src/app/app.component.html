@@ -106,7 +106,8 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="openFormDialog" dir="rtl" width="450" height="400" positionTop="10" styleClass="dialog-wrapper" [ngClass]="modalType"
+<p-dialog appendTo="body" [(visible)]="openFormDialog"  styleClass="dialog-wrapper"
+          [ngClass]="modalType" positionTop="0"
           draggable="false" modal="true" dismissableMask="true" (onHide)="clearData()">
-  <guarantee-form [data]="data"></guarantee-form>
+  <guarantee-form [data]="data" (postNewRequest)="handleCreateRequest($event)"></guarantee-form>
 </p-dialog>
