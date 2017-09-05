@@ -35,8 +35,10 @@
     "webpack-dev-server": "^2.5.1"
   },
   "dependencies": {
+    "body-parser": "^1.17.2",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-node": "^5.1.1",
+    "express": "^4.15.4",
     "request": "^2.81.0",
     "truffle": "^3.4.5",
     "truffle-blockchain-utils": "0.0.1"

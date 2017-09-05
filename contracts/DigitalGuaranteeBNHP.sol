@@ -27,25 +27,25 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
 
 
 
-    function getId() constant returns (address _contract_id)
+    function getId() constant public returns (address _contract_id)
     {
         return this;
     }
 
-    function getBeneficiary() constant returns (address _addr)
+    function getBeneficiary() constant public returns (address _addr)
     {
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
         return gr.getBeneficiary();
     }
 
-    function getEndDate() constant returns (uint _enddate)
+    function getEndDate() constant public returns (uint _enddate)
     {
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
         return gr.getEndDate();
     }
 
 
-    function getGuaranteeData() constant returns
+    function getGuaranteeData() constant public returns
     (address _contract_id,address _customer,address _bank ,address _beneficiary, string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState)
     {
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
@@ -61,7 +61,7 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
 
     }
 
-    function getGuaranteeIPFSHash() constant returns (bytes)
+    function getGuaranteeIPFSHash() constant public returns (bytes)
     {
         return guaranteeIPFSHash;
     }
@@ -69,7 +69,7 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
 
 
 
-    function getGuaranteeState() constant returns (GuaranteeState _guaranteeState)
+    function getGuaranteeState() constant  public returns (GuaranteeState _guaranteeState)
     {
         if (isExpired())
         {
@@ -84,7 +84,7 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
 
 
 
-    function terminate(string _comment) onlyBeneficiary returns (bool)
+    function terminate(string _comment) onlyBeneficiary public returns (bool)
     {
         Terminated(guaranteeRequestExtender,this,msg.sender, _comment);
         state=GuaranteeState.Terminated;

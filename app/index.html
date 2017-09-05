@@ -5,36 +5,32 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
 </head>
-<body onload="App.listSigned();App.listErrors();App.listRequests();App.startRequestListener();">
+<body onload="App.listGRequests()">
 <h1>show Panel</h1>
-<h3>There are <span id="activeRequestPDFs"></span> PDFs requests submited  .</h3>
+<h3>There are <span id="activeRequests"></span>  requests   .</h3>
 <br />
 <br />
 <br />
-<a href="addRequestPDF.html"><b>Add YOUR pdf request now!<b></a>
-<br />
-<br />
-<br />
-<h3> Active requests </h3>
-<span id="activerequests"></span>
-<button onclick="App.listRequests();">Reload</button>
-<br />
-<br />
-<h3> signed pdfs</h3>
-<span id="signedpdf"></span>
-<button onclick="App.listSigned();">Reload</button>
-<br />
-<br />
-<h3> errored pdfs</h3>
-<span id="erroredpdf"></span>
-<button onclick="App.listErrors();">Reload</button>
 
+<button onclick="App.listGRequests();">Reload</button>
 
-<!--<button onclick="App.signPdfGethttpHashTest();">signPdfGethttpHashTest</button>-->
 
 <br />
 <br />
 <h3>There are last sign status: <span class="status" id="registerStatus"></span></h3>
+
+<h3>init</h3>
+<button onclick="App.initBlockChain()">init</button>
+<br/>
+
+<br />
+<br />
+<h3>There are last sign status: <span class="status" id="registerStatus"></span></h3>
+
+<h3>add test requests</h3>
+<button onclick="App.addRequest(0x006FbaFdAdF4ef72AeBf71666537a6315FE24cAE ,0x006FbaFdAdF4ef72AeBf71666537a6315FE24cAE,0x006FbaFdAdF4ef72AeBf71666537a6315FE24cAE,'test request', 10000, (Date.now()/1000),(Date.now()/1000)+1000000,1,0);">add_test_Request</button>
+<br/>
+
 
 
 </body>
