@@ -29,6 +29,7 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    console.log('hello');
   }
 
   createForm() {

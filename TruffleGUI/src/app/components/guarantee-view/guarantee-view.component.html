@@ -10,13 +10,13 @@
   </header>
   <main>
     <div class="requests-section" *ngIf="user !== 'beneficiary'">
-      <div class="for-treatment ui-space-tb-large">
+      <div *ngIf="allRequests"  class="for-treatment ui-space-tb-large">
         <div class="section-header ui-space-tb-small text-bold">
           <label>
             לטיפול כרגע (שלי) - {{numForTreatment}} ערבויות
           </label>
         </div>
-        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'RequestState':6">
+        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'RequestState':0">
           <request-item [request]="req" (emitRequest)="openModal($event)">
             <request-details [request]="req"></request-details>
           </request-item>
@@ -24,14 +24,14 @@
       </div>
 
       <div class="pending">
-        <div class="section-header ui-space-tb-small text-bold">
+        <div *ngIf="allRequests"  class="section-header ui-space-tb-small text-bold">
           <label>
             בהמתנה - (לטיפול הבנק)
           </label>
         </div>
-        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'status':'pending'">
+        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'RequestState':1">
           <request-item [request]="req" (emitRequest)="openModal($event)">
-            <label>מתאריך {{req.startDate}}</label>
+            <label>מתאריך {{req.StartDate | parseDate}}</label>
           </request-item>
         </div>
       </div>
@@ -56,7 +56,7 @@
             ערבויות פעילות
           </label>
         </div>
-        <div class="active-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':'Valid'">
+        <div class="active-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':0">
           <request-item [request]="req" (emitRequest)="openModal($event)">
             <request-details [request]="req"></request-details>
           </request-item>
@@ -69,7 +69,7 @@
             ערבויות לא פעילות
           </label>
         </div>
-        <div class="inactive-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':'Expaired'">
+        <div class="inactive-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':1">
           <request-item [request]="req" (emitRequest)="openModal($event)">
             <request-details [request]="req"></request-details>
           </request-item>

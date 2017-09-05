@@ -6,6 +6,7 @@ import { canBeNumber } from '../util/validation';
 
 import {allRequests, allRequests as Requests} from '../../tempData/data';
 import {GRequest} from "./interfaces/request";
+import {isNullOrUndefined} from "util";
 
 declare let window: any;
 
@@ -24,6 +25,9 @@ export class AppComponent {
 
   balance: number;
   myRequests: GRequest[];
+  data: any; // Dialog data
+  openFormDialog: boolean = false; // show dialog
+  modalType: string = 'user'; // dialog types
   sendingAmount: number;
   recipientAddress: string;
   status: string;
@@ -41,7 +45,7 @@ export class AppComponent {
 
     // TODO - remove after binded to web3
     // skipping to bind to gui
-    this.refreshBalance();
+    this.getAllGRequests();
   }
 
   checkAndInstantiateWeb3 = () => {
@@ -85,13 +89,18 @@ export class AppComponent {
 
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
-      this._ngZone.run(() =>
-        this.refreshBalance()
-      );
+      this._ngZone.run(() => {
+        this.getAllGRequests();
+        this.getAllGuarantees();
+      });
     });
   };
 
-  refreshBalance = () => {
+  getAllGuarantees = () => {
+
+  };
+
+  getAllGRequests = () => {
     /** Get current user balance */
     /** re-write to get user Grequests and guarantees */
     // let meta;
@@ -113,11 +122,39 @@ export class AppComponent {
     this.myRequests = allRequests;
   };
 
+  getGRequestData = (GRequestId, type: number) => {
+    //type = user, bank or beneficiary
+  };
+
+  getGuaranteesData = (GRequestId, type: number) => {
+    //type = user, bank or beneficiary
+  };
+
+  withdrawalRequest = (requestId) => {
+    // ביטול של יוזר
+  };
+
+  rejectRequest = (requestId) => {
+    // ביטול של בנק
+  };
+
+  terminateRequest = (requestId) => {
+    // ביטול של מוטב
+  };
+
+  guaranteeUpdateRequest = () => {
+
+  };
+
+  acceptRequest = (requestId) => {
+    // אישור של בנק
+  };
+
   setStatus = message => {
     this.status = message;
   };
 
-  sendCoin = () => {
+  createRequest = () => {
     const amount = this.sendingAmount;
     const receiver = this.recipientAddress;
     let meta;
@@ -134,11 +171,26 @@ export class AppComponent {
       })
       .then(() => {
         this.setStatus('Transaction complete!');
-        this.refreshBalance();
+        // this.getAllGRequests();
       })
       .catch(e => {
         console.log(e);
         this.setStatus('Error sending coin; see log.');
       });
   };
+
+  /** Handle form modal */
+  openModal(e) {
+    console.log('e', e);
+    this.modalType = e.user;
+    if(!isNullOrUndefined(e.request)) {
+      this.data = e.request
+    }
+    this.openFormDialog = true;
+console.log('this.openFormDialog', this.openFormDialog);
+  }
+
+  clearData() {
+    this.data = null;
+  }
 }

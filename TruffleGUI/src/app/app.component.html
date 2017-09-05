@@ -106,7 +106,7 @@
   </div>
 </div>
 
-<p-dialog [(visible)]="showCard" dir="rtl" width="450" height="400" positionTop="10" styleClass="dialog-wrapper" [ngClass]="modalType"
+<p-dialog [(visible)]="openFormDialog" dir="rtl" width="450" height="400" positionTop="10" styleClass="dialog-wrapper" [ngClass]="modalType"
           draggable="false" modal="true" dismissableMask="true" (onHide)="clearData()">
   <guarantee-form [data]="data"></guarantee-form>
 </p-dialog>

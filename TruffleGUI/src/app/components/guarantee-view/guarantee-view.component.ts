@@ -69,7 +69,7 @@ export class GuaranteeViewComponent implements OnInit {
     this.allGuarantees = [
       {
         id: 15211,
-        status: 'for-treatment',
+        status: 0,
         beneficiary: 'עיריית ת"א',
         purpose: 'מכרז עבוודת החינוך',
         amount: 50000,
@@ -78,7 +78,7 @@ export class GuaranteeViewComponent implements OnInit {
       },
       {
         id: 15441,
-        status: 'for-treatment',
+        status: 1,
         beneficiary: 'עיריית ת"א',
         purpose: 'מכרז עבוודת החינוך',
         amount: 50000,

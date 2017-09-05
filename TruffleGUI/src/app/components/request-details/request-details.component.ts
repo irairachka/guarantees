@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {GRequest} from "../../interfaces/request";
 
 @Component({
   selector: 'request-details',
@@ -6,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./request-details.component.scss']
 })
 export class RequestDetailsComponent implements OnInit {
-  @Input() request: any;
+  @Input() request: GRequest;
   constructor() { }
 
   ngOnInit() {
