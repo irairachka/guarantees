@@ -1,0 +1,61 @@
+@import './assets/sass/ui-brands';
+@import './assets/sass/ui-flex';
+@import './assets/sass/ui-helpers';
+
+body {
+  margin: 0;
+  color: #fff;
+  font-family: 'Open Sans Hebrew';
+}
+
+/* Dialog css overrides */
+
+.dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
+  .ui-dialog-titlebar {
+    .ui-dialog-titlebar-icon {
+      color: #eee;
+      border: none;
+      &:hover {
+        color: #fff;
+        background: none;
+        border: none;
+      }
+    }
+  }
+}
+
+.user {
+  .dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
+    border-color: #309a83;
+    .ui-dialog-titlebar {
+      background: #309a83;
+    }
+    .ui-dialog-content {
+      background: #309a83;
+    }
+  }
+}
+
+.bank {
+  .dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
+    border-color: #cc6600;
+    .ui-dialog-titlebar {
+      background: #cc6600;
+    }
+    .ui-dialog-content {
+      background: #cc6600;
+    }
+  }
+}
+
+.beneficiary {
+  .dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
+    border-color: #cc9900;
+    .ui-dialog-titlebar {
+      background: #cc9900;
+    }
+    .ui-dialog-content {
+      background: #cc9900;
+    }
+  }
+}

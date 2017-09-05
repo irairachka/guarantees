@@ -4,11 +4,15 @@ const contract = require('truffle-contract');
 const metaincoinArtifacts = require('../../build/contracts/MetaCoin.json');
 import { canBeNumber } from '../util/validation';
 
-declare var window: any;
+import {allRequests, allRequests as Requests} from '../../tempData/data';
+import {GRequest} from "./interfaces/request";
+
+declare let window: any;
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
   MetaCoin = contract(metaincoinArtifacts);
@@ -19,6 +23,7 @@ export class AppComponent {
   web3: any;
 
   balance: number;
+  myRequests: GRequest[];
   sendingAmount: number;
   recipientAddress: string;
   status: string;
@@ -30,8 +35,13 @@ export class AppComponent {
 
   @HostListener('window:load')
   windowLoaded() {
-    this.checkAndInstantiateWeb3();
-    this.onReady();
+    /** setup web3 connection and get accounts **/
+    // this.checkAndInstantiateWeb3();
+    // this.onReady();
+
+    // TODO - remove after binded to web3
+    // skipping to bind to gui
+    this.refreshBalance();
   }
 
   checkAndInstantiateWeb3 = () => {
@@ -82,22 +92,25 @@ export class AppComponent {
   };
 
   refreshBalance = () => {
-    let meta;
-    this.MetaCoin
-      .deployed()
-      .then(instance => {
-        meta = instance;
-        return meta.getBalance.call(this.account, {
-          from: this.account
-        });
-      })
-      .then(value => {
-        this.balance = value;
-      })
-      .catch(e => {
-        console.log(e);
-        this.setStatus('Error getting balance; see log.');
-      });
+    /** Get current user balance */
+    /** re-write to get user Grequests and guarantees */
+    // let meta;
+    // this.MetaCoin
+    //   .deployed()
+    //   .then(instance => {
+    //     meta = instance;
+    //     return meta.getBalance.call(this.account, {
+    //       from: this.account
+    //     });
+    //   })
+    //   .then(value => {
+    //     this.balance = value;
+    //   })
+    //   .catch(e => {
+    //     console.log(e);
+    //     this.setStatus('Error getting balance; see log.');
+    //   });
+    this.myRequests = allRequests;
   };
 
   setStatus = message => {

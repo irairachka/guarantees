@@ -1,6 +1,6 @@
 import {IndexType, RequestState} from "./enum";
 
-export interface Request {
+export interface GRequest {
   customer: string;
   beneficiary: string;
   bank: string;
