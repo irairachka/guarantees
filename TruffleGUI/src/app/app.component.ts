@@ -174,10 +174,6 @@ export class AppComponent {
     });
   };
 
-  getOwnerAddress= (requestAddress) => {
-    return this.account;
-  }
-
   getCustomerData = (requestAddress) => {
 
     this.Regulator
@@ -205,7 +201,7 @@ export class AppComponent {
       }).then((issuer) => {
       console.log(customer);
       return {
-        customerID: requestAddress,
+        BankID: requestAddress,
         Name: resultArr[0],
         Address: resultArr[1]
       };
