@@ -138,6 +138,9 @@ export class AppComponent {
       });
   };
 
+
+
+
   getAllGRequests = () => {
     /** Gets all guarantee requests for customer */
     /** parses the data and sends to UI */
@@ -170,6 +173,62 @@ export class AppComponent {
       console.log(e);
     });
   };
+
+  getOwnerAddress= (requestAddress) => {
+    return this.account;
+  }
+
+  getCustomerData = (requestAddress) => {
+
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getCustomer.call(requestAddress,{from: this.account});
+      }).then((customer) => {
+      console.log(customer);
+      return {
+        customerID: requestAddress,
+        Name: resultArr[0],
+        Address: resultArr[1]
+      };
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+  getBankData = (requestAddress) => {
+
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getIssuer.call(requestAddress,{from: this.account});
+      }).then((issuer) => {
+      console.log(customer);
+      return {
+        customerID: requestAddress,
+        Name: resultArr[0],
+        Address: resultArr[1]
+      };
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+  getBeneficiaries = () => {
+
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getBeneficiaries.call({from: this.account});
+      }).then((beneficiaryAddress) => {
+      console.log(beneficiaryAddress);
+      return beneficiaryAddress;
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+
 
   getOneGuaranty = (guarantyAddress) => {
     /** Gets one guarantee requests by id */
