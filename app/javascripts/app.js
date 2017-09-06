@@ -148,7 +148,7 @@ window.App = {
       Regulator.deployed().then(function (instance) {
         Regulator_instance = instance;
         console.log("instance");
-        return Regulator_instance.getRequestsAddress.call({from: account});
+        return Regulator_instance.getRequestsAddressForCustomer.call({from: account});
       }).then(function (guaranteeRequestAddresses) {
          console.log(guaranteeRequestAddresses);
 

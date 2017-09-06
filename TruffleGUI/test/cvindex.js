@@ -20,7 +20,7 @@ contract('Regulator', function(accounts) {
         return Regulator.deployed().then(function(instance) {
             return instance.getIssuerCounter.call();
         }).then(function(amount_issuer_counter) {
-            assert.equal(amount_issuer_counter, 0, "Registry wasn't empty!");
+            assert.equal(amount_issuer_counter, 1, "Registry wasn't empty!");
         }).catch(function(error) {
             console.error(error);
             assert.equal(error.toString(),'',
@@ -122,7 +122,7 @@ contract('Regulator', function(accounts) {
                 console.log("createGuaranteeRequest:");
                 console.log(log.args);
                 // break;
-                return Regulator_instance.getRequestsAddress.call();
+                return Regulator_instance.getRequestsAddressForCustomer.call();
             }
         }
         console.log("AddCustomer error:");
@@ -151,7 +151,7 @@ contract('Regulator', function(accounts) {
             return Regulator_instance.getOwner.call();
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
-            return Regulator_instance.getRequestsAddress.call();
+            return Regulator_instance.getRequestsAddressForCustomer.call();
         }).then(function (guaranteeRequestAddresses) {
             requestAddress=guaranteeRequestAddresses[0];
             console.log("guaranteeRequestAddresses:"+requestAddress);
@@ -247,7 +247,7 @@ contract('Regulator', function(accounts) {
             return Regulator_instance.getOwner.call();
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
-            return Regulator_instance.getRequestsAddress.call();
+            return Regulator_instance.getRequestsAddressForCustomer.call();
         }).then(function (guaranteeRequestAddresses) {
             console.log(guaranteeRequestAddresses);
             requestAddress=guaranteeRequestAddresses[0];
@@ -394,24 +394,24 @@ contract('Regulator', function(accounts) {
     // });
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // it("should change state to (wait for a customer ) ", function() {
     //     var Regulator_instance;

@@ -214,13 +214,13 @@ contract Regulator is owned,GuaranteeConst{
 
     function getRequestsAddressForIssuer() public constant returns (address[])
     {
-        return Issuer[msg.sender].guaranteeRequests;
+        return issuers[msg.sender].guaranteeRequests;
 
     }
 
   function getGuarantieAddressForBeneficiary() public constant returns (address[])
   {
-    return Issuer[msg.sender].guaranteeRequests;
+    return issuers[msg.sender].guaranteeRequests;
 
   }
 

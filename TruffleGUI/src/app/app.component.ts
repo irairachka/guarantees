@@ -4,8 +4,8 @@ const contract = require('truffle-contract');
 
 
 // Import our contract artifacts and turn them into usable abstractions.
-import * as GuaranteeRequest_artifact from '../../build/contracts/GuaranteeRequest.json'
-import * as Regulator_artifact from '../../build/contracts/Regulator.json'
+const GuaranteeRequest_artifact = require('../../build/contracts/GuaranteeRequest.json');
+const Regulator_artifact = require('../../build/contracts/Regulator.json');
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 
 
@@ -71,7 +71,7 @@ export class AppComponent {
 
     // TODO - remove after binded to web3
     // skipping to bind to gui
-    this.getAllGRequests();
+    // this.getAllGRequests();
   }
 
   checkAndInstantiateWeb3 = () => {
@@ -129,8 +129,41 @@ export class AppComponent {
   };
 
   getAllGRequests = () => {
-    /** Get current user balance */
-    /** re-write to get user Grequests and guarantees */
+    debugger;
+    this.myRequests = [...allRequests];
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+      // Regulator_instance = instance;
+      // console.log("instance");
+      return instance.getRequestsAddressForCustomer.call({from: this.account});
+    }).then((guaranteeRequestAddresses) => {
+      console.log(guaranteeRequestAddresses);
+
+
+      // requestAddress=guaranteeRequestAddresses[0];
+      guaranteeRequestAddresses.forEach((requestAddress) =>
+      {
+        console.log("requestAddress:"+requestAddress);
+        this.GuaranteeRequest.at(requestAddress)
+          .then((guaranteeRequestinstance) => {
+          // var guaranteeRequest_instance = guaranteeRequestinstance;
+          return guaranteeRequestinstance.getGuaranteeRequestData();
+        }).then((result) => {
+
+          console.log("getGuaranteeRequestData result for :" + typeof(result));
+          console.log(result);
+
+        }).catch((e) => {
+          console.log(e);
+          // self.setRegisterStatus("Unable to refresh balance; see log.",e);
+        });
+      });
+    }).catch((e) => {
+      console.log(e);
+      // self.setRegisterStatus("Unable to refresh balance; see log.",e);
+    });
+
     // let meta;
     // this.MetaCoin
     //   .deployed()
@@ -147,7 +180,7 @@ export class AppComponent {
     //     console.log(e);
     //     this.setStatus('Error getting balance; see log.');
     //   });
-    this.myRequests = allRequests;
+
   };
 
   getGRequestData = (GRequestId, type: number) => {
@@ -185,21 +218,20 @@ export class AppComponent {
   createRequest = ( userId , bankId, benefId , purpose,
                     amount, StartDate, EndDate, indexType, indexDate) => {
     console.log("begin");
-    // Regulator.deployed().then(function (instance) {
-    //   console.log("instance");
-    //   var dt = (Date.now() / 1000);
-    //
-    //   return instance.createGuaranteeRequest(account1, account2, account3, purpose, amount, beginDate, endDate, indexType, indexDate, {
-    //     from: account,
-    //     gas: 6000000
-    //   });
-    // }).then(function (guaranteeRequestAddresses) {
-    //   console.log(guaranteeRequestAddresses);
-    //
-    // }).catch(function (e) {
-    //   console.log(e);
-    //   this.setRegisterStatus("Unable to refresh balance; see log.", e);
-    // });
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        console.log("instance", instance);
+        console.log('this.account', this.account);
+        return instance.createGuaranteeRequest(userId, bankId, benefId, purpose, amount, StartDate, EndDate, indexType, indexDate,
+          { from: this.account, gas: 6000000});
+      }).then((guaranteeRequestAddresses) => {
+      console.log(guaranteeRequestAddresses);
+
+    }).catch((e) => {
+      console.log(e);
+      // this.setRegisterStatus("Unable to refresh balance; see log.", e);
+    });
   };
 
   /** Handle form modal */
@@ -220,7 +252,8 @@ console.log('this.openFormDialog', this.openFormDialog);
 
   handleCreateRequest = (e) => {
     console.log('e', e);
-    this.createRequest('USERID', 'BANKID', 'BENEFID',
-      e.purpose, e.amount, e.startDate, e.endDate, 0, 0);
+    this.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
+      '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
+      e.purpose, e.amount, (Date.now()/1000), (Date.now()/1000)+100000, 0, 0);
   }
 }
