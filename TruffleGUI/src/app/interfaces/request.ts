@@ -33,3 +33,23 @@ export interface Guarantee {
   GuaranteeState: GuaranteeState;
 }
 
+
+export interface Customer {
+  customerID: string,
+  Name: string
+  Address: string
+}
+
+
+export interface Bank {
+  bankID: string,
+  Name: string
+  Address: string
+}
+
+
+export interface Beneficiary {
+  beneficiaryID: string,
+  Name: string
+  Address: string
+}

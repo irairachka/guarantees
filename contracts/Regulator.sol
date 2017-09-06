@@ -85,6 +85,7 @@ contract Regulator is owned,GuaranteeConst{
     }
     //holds all the benefiieries by their address
     mapping (address=>Beneficiary) public beneficiaries;
+    address   [] beneficiaryList;
 
     //describes the customer object
     struct Issuer {
@@ -117,6 +118,7 @@ contract Regulator is owned,GuaranteeConst{
         Beneficiary beneficiary=beneficiaries[_addr];
         beneficiary.name   = _name;
         beneficiary.localAddress    = _localAddres;
+        beneficiaryList.push(_addr);
 //        beneficiary.id = _id;
 
         AddBeneficiary(_addr,_name,block.timestamp);
@@ -129,6 +131,25 @@ contract Regulator is owned,GuaranteeConst{
         _name = beneficiary.name;
         _localAddress  = beneficiary.localAddress;
 //        _id = beneficiary.id;
+    }
+
+    function getBeneficiaryById(uint id) public constant returns(string _name, string _localAddress)
+    {
+
+        if(_id >= beneficiaryList.length) {
+            throw;
+        }
+        Beneficiary memory ci = beneficiaries[beneficiaryList[_id]];
+
+        return (ci.name,ci.localAddress);
+
+    }
+
+    function getBeneficiaries() public constant returns(address[] beneficiaries)
+    {
+
+        return beneficiaryList;
+
     }
 
     event AddCustomer (address msgSender,string msgstr,uint timestamp);
@@ -200,6 +221,15 @@ contract Regulator is owned,GuaranteeConst{
 //        _localAddress  = ci.localAddress;
 //        _addr = ci.addr;
 //        _status = ci.status;
+    }
+
+    function getIssuer(address _addr) constant public returns(string , string ,  issuerStatus )  {
+
+
+        Issuer memory ci = issuers[_addr];
+
+        return (ci.name,ci.localAddress,ci.status);
+
     }
 
 
