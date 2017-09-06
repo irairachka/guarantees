@@ -53,6 +53,7 @@ export class AppComponent {
   balance: number;
   myRequests: GRequest[] = [];
   myGuaranties: Guarantee[] = [];
+  myBeneficiaries:Beneficiary[] =[];
   data: any; // Dialog data
   openFormDialog: boolean = false; // show dialog
   modalType: string = 'user'; // dialog types
@@ -210,19 +211,38 @@ export class AppComponent {
     });
   };
 
-  getBeneficiaries = () => {
-
+  getAllBeneficiaries = () => {
     this.Regulator
       .deployed()
       .then((instance) => {
-        return instance.getBeneficiaries.call({from: this.account});
+        return instance.getBeneficiaryAddresses.call({from: this.account});
       }).then((beneficiaryAddress) => {
-      console.log(beneficiaryAddress);
-      return beneficiaryAddress;
+      beneficiaryAddress.forEach((beneficiaryAddres) => {
+          this.getOneBeneficiary(beneficiaryAddres);
+        });
     }).catch((e) => {
       console.log(e);
     });
   };
+
+
+  getOneBeneficiary = (beneficiaryAddress) => {
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    console.log('beneficiaryAddress', beneficiaryAddress);
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getBeneficiaries.call({from: this.account});
+      }).then((result) => {
+      let parsedResult = this.populateBeneficiaryData(beneficiaryAddress,result);
+      this.myBeneficiaries = [...this.myBeneficiaries, parsedResult];
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+
 
 
 
@@ -351,6 +371,16 @@ console.log('this.openFormDialog', this.openFormDialog);
       indexType: resultArr[8].valueOf(),
       indexDate: resultArr[9].valueOf(),
       GuarantyState: resultArr[10].valueOf()
+    };
+  };
+
+  populateBeneficiaryData= (beneAddress,resultArr) => {
+
+    return {
+      beneficiaryID: beneAddress,
+      name: resultArr[0],
+      address: resultArr[1],
+
     };
   };
 

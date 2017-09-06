@@ -133,7 +133,7 @@ contract Regulator is owned,GuaranteeConst{
 //        _id = beneficiary.id;
     }
 
-    function getBeneficiaryById(uint id) public constant returns(string _name, string _localAddress)
+    function getBeneficiaryById(uint _id) public constant returns(string _name, string _localAddress)
     {
 
         if(_id >= beneficiaryList.length) {
@@ -145,7 +145,7 @@ contract Regulator is owned,GuaranteeConst{
 
     }
 
-    function getBeneficiaries() public constant returns(address[] beneficiaries)
+    function getBeneficiaryAddresses() public constant returns(address[] )
     {
 
         return beneficiaryList;
