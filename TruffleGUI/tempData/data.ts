@@ -1,5 +1,5 @@
 import {GRequest} from "../src/app/interfaces/request";
-import {IndexType, RequestState} from "../../guarenteesGUI/src/app/interfaces/enum";
+import {IndexType, RequestState} from "../src/app/interfaces/enum";
 
 export const allRequests: GRequest[] = [
   {

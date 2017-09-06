@@ -4,8 +4,9 @@ const contract = require('truffle-contract');
 
 
 // Import our contract artifacts and turn them into usable abstractions.
-const GuaranteeRequest_artifact = require('../../build/contracts/GuaranteeRequest.json');
-const Regulator_artifact = require('../../build/contracts/Regulator.json');
+const GuaranteeRequest_artifact = require('../../../build/contracts/GuaranteeRequest.json');
+const Regulator_artifact = require('../../../build/contracts/Regulator.json');
+const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 
 
@@ -26,7 +27,7 @@ const http=require('http');
 import { canBeNumber } from '../util/validation';
 
 import {allRequests, allRequests as Requests} from '../../tempData/data';
-import {GRequest} from "./interfaces/request";
+import {GRequest, Guarantee} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
 
 declare let window: any;
@@ -40,7 +41,7 @@ export class AppComponent {
   // MetaCoin: any;
   Regulator = contract(Regulator_artifact);
   GuaranteeRequest = contract(GuaranteeRequest_artifact);
-
+  DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
 
   // TODO add proper types these variables
   account: any;
@@ -50,7 +51,8 @@ export class AppComponent {
   temp: boolean = false;
 
   balance: number;
-  myRequests: GRequest[];
+  myRequests: GRequest[] = [];
+  myGuaranties: Guarantee[] = [];
   data: any; // Dialog data
   openFormDialog: boolean = false; // show dialog
   modalType: string = 'user'; // dialog types
@@ -68,10 +70,6 @@ export class AppComponent {
     /** setup web3 connection and get accounts **/
     this.checkAndInstantiateWeb3();
     this.onReady();
-
-    // TODO - remove after binded to web3
-    // skipping to bind to gui
-    // this.getAllGRequests();
   }
 
   checkAndInstantiateWeb3 = () => {
@@ -94,8 +92,6 @@ export class AppComponent {
   };
 
   onReady = () => {
-    // Bootstrap the MetaCoin abstraction for Use.
-    // this.MetaCoin.setProvider(this.web3.currentProvider);
     this.Regulator.setProvider(this.web3.currentProvider);
     this.GuaranteeRequest.setProvider(this.web3.currentProvider);
 
@@ -125,63 +121,73 @@ export class AppComponent {
   };
 
   getAllGuarantees = () => {
-
-  };
-
-  getAllGRequests = () => {
-    debugger;
-    this.myRequests = [...allRequests];
+    console.log('getting guarantees');
     this.Regulator
       .deployed()
       .then((instance) => {
-      // Regulator_instance = instance;
-      // console.log("instance");
-      return instance.getRequestsAddressForCustomer.call({from: this.account});
-    }).then((guaranteeRequestAddresses) => {
-      console.log(guaranteeRequestAddresses);
+        return instance.getGuarantieAddressForBeneficiary.call({from: this.account});
+      }).then((guaranteeAddresses) => {
+        console.log('guaranteeAddresses', guaranteeAddresses);
+        if(guaranteeAddresses.length > 0) {
+          guaranteeAddresses.forEach((guaranteeAddress) => {
+            this.getOneGuaranty(guaranteeAddress);
+          });
+        }
+      }).catch((e) => {
+        console.log(e);
+      });
+  };
 
+  getAllGRequests = () => {
+    /** Gets all guarantee requests for customer */
+    /** parses the data and sends to UI */
 
-      // requestAddress=guaranteeRequestAddresses[0];
-      guaranteeRequestAddresses.forEach((requestAddress) =>
-      {
-        console.log("requestAddress:"+requestAddress);
-        this.GuaranteeRequest.at(requestAddress)
-          .then((guaranteeRequestinstance) => {
-          // var guaranteeRequest_instance = guaranteeRequestinstance;
-          return guaranteeRequestinstance.getGuaranteeRequestData();
-        }).then((result) => {
-
-          console.log("getGuaranteeRequestData result for :" + typeof(result));
-          console.log(result);
-
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getRequestsAddressForCustomer.call({from: this.account});
+      }).then((guaranteeRequestAddresses) => {
+        console.log(guaranteeRequestAddresses);
+        guaranteeRequestAddresses.forEach((requestAddress) => {
+          this.getOneGRequests(requestAddress);
+          });
         }).catch((e) => {
           console.log(e);
-          // self.setRegisterStatus("Unable to refresh balance; see log.",e);
-        });
       });
+  };
+
+  getOneGRequests = (requestAddress) => {
+  /** Gets one guarantee requests by id */
+  /** parses the data and sends to UI */
+  console.log('requestAddress', requestAddress)
+  this.GuaranteeRequest.at(requestAddress)
+    .then((guaranteeRequestinstance) => {
+      return guaranteeRequestinstance.getGuaranteeRequestData();
+    }).then((result) => {
+    let parsedResult = this.populateRequestData(result);
+    this.myRequests = [...this.myRequests, parsedResult];
     }).catch((e) => {
       console.log(e);
-      // self.setRegisterStatus("Unable to refresh balance; see log.",e);
     });
-
-    // let meta;
-    // this.MetaCoin
-    //   .deployed()
-    //   .then(instance => {
-    //     meta = instance;
-    //     return meta.getBalance.call(this.account, {
-    //       from: this.account
-    //     });
-    //   })
-    //   .then(value => {
-    //     this.balance = value;
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //     this.setStatus('Error getting balance; see log.');
-    //   });
-
   };
+
+  getOneGuaranty = (guarantyAddress) => {
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    console.log('guarantyAddress', guarantyAddress);
+    this.DigitalGuaranteeBNHP.at(guarantyAddress)
+      .then((guaranteeinstance) => {
+        return guaranteeinstance.getGuaranteeData();
+      }).then((result) => {
+      let parsedResult = this.populateGuarantyData(result);
+      console.log('parsedResult', parsedResult);
+      // this.myGuaranties = [...this.myGuaranties, parsedResult];
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+
 
   getGRequestData = (GRequestId, type: number) => {
     //type = user, bank or beneficiary
@@ -221,13 +227,11 @@ export class AppComponent {
     this.Regulator
       .deployed()
       .then((instance) => {
-        console.log("instance", instance);
-        console.log('this.account', this.account);
-        return instance.createGuaranteeRequest(userId, bankId, benefId, purpose, amount, StartDate, EndDate, indexType, indexDate,
+        return instance.createGuaranteeRequest.call(userId, bankId, benefId, purpose, amount, StartDate, EndDate, indexType, indexDate,
           { from: this.account, gas: 6000000});
-      }).then((guaranteeRequestAddresses) => {
-      console.log(guaranteeRequestAddresses);
-
+      }).then((guaranteeRequestAddress) => {
+        console.log(guaranteeRequestAddress);
+        this.onNewRequestSuccess(guaranteeRequestAddress);
     }).catch((e) => {
       console.log(e);
       // this.setRegisterStatus("Unable to refresh balance; see log.", e);
@@ -255,5 +259,54 @@ console.log('this.openFormDialog', this.openFormDialog);
     this.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
       '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
       e.purpose, e.amount, (Date.now()/1000), (Date.now()/1000)+100000, 0, 0);
+  };
+
+  populateRequestData = (resultArr) => {
+    const startDate = this.transformDateSolToJS(resultArr[6]);
+    const endDate = this.transformDateSolToJS(resultArr[7]);
+
+    return {
+      GRequestID: resultArr[0],
+      customer: resultArr[1],
+      beneficiary: resultArr[2],
+      bank: resultArr[3],
+      purpose: resultArr[4],
+      amount: resultArr[5].valueOf(),
+      StartDate: startDate,
+      EndDate: endDate,
+      indexType: resultArr[8].valueOf(),
+      indexDate: resultArr[9].valueOf(),
+      RequestState: resultArr[10].valueOf()
+    };
+  }
+
+  populateGuarantyData= (resultArr) => {
+    const startDate = this.transformDateSolToJS(resultArr[6]);
+    const endDate = this.transformDateSolToJS(resultArr[7]);
+
+    return {
+      GuaranteeID: resultArr[0],
+      customer: resultArr[1],
+      beneficiary: resultArr[2],
+      bank: resultArr[3],
+      purpose: resultArr[4],
+      amount: resultArr[5].valueOf(),
+      StartDate: startDate,
+      EndDate: endDate,
+      indexType: resultArr[8].valueOf(),
+      indexDate: resultArr[9].valueOf(),
+      GuarantyState: resultArr[10].valueOf()
+    };
+  };
+
+  transformDateSolToJS = (longDate) => {
+    const date = new Date(longDate * 1000);
+    return date.toLocaleDateString('en-GB');
+  }
+
+  onNewRequestSuccess = (requestAddress) => {
+    // toaster = success;
+    // close modal
+    this.getOneGRequests(requestAddress);
   }
 }
