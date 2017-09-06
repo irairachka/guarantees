@@ -1,7 +1,7 @@
 import {GRequest} from "../src/app/interfaces/request";
 import {IndexType, RequestState} from "../src/app/interfaces/enum";
 
-export const allRequests: GRequest[] = [
+export const allRequests = [
   {
     customer: 'XXXX',
     beneficiary: 'YYYY',

@@ -10,9 +10,7 @@ body {
 
 /* Dialog css overrides */
 
-.dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
-  top: 10px;
-  margin: 0 auto;
+.ui-dialog.ui-widget-content.ui-widget {
   .ui-dialog-titlebar {
     .ui-dialog-titlebar-icon {
       color: #eee;
@@ -26,38 +24,32 @@ body {
   }
 }
 
-.user {
-  .dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
-    border-color: #309a83;
-    .ui-dialog-titlebar {
-      background: #309a83;
-    }
-    .ui-dialog-content {
-      background: #309a83;
-    }
+.user.ui-dialog.ui-widget-content.ui-widget {
+  border-color: #309a83;
+  .ui-dialog-titlebar {
+    background: #309a83;
+  }
+  .ui-dialog-content {
+    background: #309a83;
   }
 }
 
-.bank {
-  .dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
-    border-color: #cc6600;
-    .ui-dialog-titlebar {
-      background: #cc6600;
-    }
-    .ui-dialog-content {
-      background: #cc6600;
-    }
+.bank.ui-dialog.ui-widget-content.ui-widget {
+  border-color: #cc6600;
+  .ui-dialog-titlebar {
+    background: #cc6600;
+  }
+  .ui-dialog-content {
+    background: #cc6600;
   }
 }
 
-.beneficiary {
-  .dialog-wrapper.ui-dialog.ui-widget-content.ui-widget {
-    border-color: #cc9900;
-    .ui-dialog-titlebar {
-      background: #cc9900;
-    }
-    .ui-dialog-content {
-      background: #cc9900;
-    }
+.beneficiary.ui-dialog.ui-widget-content.ui-widget {
+  border-color: #cc9900;
+  .ui-dialog-titlebar {
+    background: #cc9900;
+  }
+  .ui-dialog-content {
+    background: #cc9900;
   }
 }
