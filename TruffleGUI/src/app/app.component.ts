@@ -10,11 +10,12 @@ const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalG
 
 // Interfaces, mock data and utils
 import {
-  mockBankGuaranties, mockBankRequests, mockCustomerGuaranties,
+  mockBankGuaranties, mockBankRequests,
+  mockBeneficiaryGuaranties, mockCustomerGuaranties,
   mockCustomerRequests
 } from '../../tempData/mockData';
 
-import {GRequest, Guarantee, Beneficiary} from "./interfaces/request";
+import {GRequest, Guarantee, Beneficiary, Customer} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
 import {GuaranteeState, RequestState} from "./interfaces/enum";
 
@@ -39,7 +40,7 @@ export class AppComponent {
   customerGuaranties: Guarantee[] = mockCustomerGuaranties || [];
   bankRequests: GRequest[] = mockBankRequests || [];
   bankGuaranties: Guarantee[] = mockBankGuaranties || [];
-  beneficiaryGuaranties: Guarantee[] = [];
+  beneficiaryGuaranties: Guarantee[] = mockBeneficiaryGuaranties || [];
 
   // User type data
   beneficiaries: Beneficiary[] =[];
@@ -235,7 +236,7 @@ export class AppComponent {
     return;
   };
 
-  getCustomerData = (requestAddress) => {
+  getCustomerData = (requestAddress): Customer => {
     this.Regulator
       .deployed()
       .then((instance) => {
@@ -250,6 +251,7 @@ export class AppComponent {
     }).catch((e) => {
       console.log(e);
     });
+    return;
   };
 
   getBankData = (requestAddress) => {
@@ -347,7 +349,7 @@ export class AppComponent {
       customer: resultArr[1],
       beneficiary: resultArr[2],
       bank: resultArr[3],
-      customerName: this.getCustomerData(resultArr[2]).name,
+      customerName: this.getCustomerData(resultArr[2]).Name,
       purpose: resultArr[4],
       amount: resultArr[5].valueOf(),
       StartDate: startDate,
@@ -370,41 +372,36 @@ export class AppComponent {
 
 
 
-  getBeneficiaryData= (beneAddress) => {
-
+  getBeneficiaryData= (beneAddress): Beneficiary => {
     this.beneficiaries.forEach((beneficiary) => {
       if (beneficiary.beneficiaryID==beneAddress)
       {
         return beneficiary;
       }
     });
+    return;
   };
 
-  getCustomerData= (customerAddress) => {
-
-
-    this.customers.forEach((customer) => {
-      if (customer.customerID==customerAddress)
-      {
-        return customer;
-      }
-    });
-
-    this.Regulator
-      .deployed()
-      .then((instance) => {
-        return instance.getCustomer.call(customerAddress,{from: this.account});
-      }).then((result) => {
-      let customer=this.populateCustomerData(customerAddress,result);
-      this.customers=[...this.customers, customer ];
-      return customer;
-    }).catch((e) => {
-      console.log(e);
-    });
-    return null;
-
-
-  };
+  // getCustomerData = (customerAddress): Customer => {
+  //   this.customers.forEach((customer) => {
+  //     if (customer.customerID==customerAddress)
+  //     {
+  //       return customer;
+  //     }
+  //   });
+  //   this.Regulator
+  //     .deployed()
+  //     .then((instance) => {
+  //       return instance.getCustomer.call(customerAddress,{from: this.account});
+  //     }).then((result) => {
+  //     let customer=this.populateCustomerData(customerAddress,result);
+  //     this.customers=[...this.customers, customer ];
+  //     return customer;
+  //   }).catch((e) => {
+  //     console.log(e);
+  //   });
+  //   return null;
+  // };
 
   populateCustomerData= (customerAddress,resultArr) => {
 
@@ -561,7 +558,7 @@ export class AppComponent {
           { from: this.account, gas: 6000000});
       }).then((guaranteeRequestAddress) => {
         console.log(guaranteeRequestAddress);
-        this.onNewRequestSuccess(guaranteeRequestAddress);
+        // this.onNewRequestSuccess(guaranteeRequestAddress);
     }).catch((e) => {
       console.log(e);
     });
@@ -618,14 +615,16 @@ export class AppComponent {
     }
   };
 
+
+
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);
     return date.toLocaleDateString('en-GB');
   }
 
-  onNewRequestSuccess = (requestAddress) => {
-    // toaster = success;
-    // close modal
-    this.getOneGRequests(requestAddress);
-  }
+  // onNewRequestSuccess = (requestAddress) => {
+  //   // toaster = success;
+  //   // close modal
+  //   this.getOneGRequests(requestAddress);
+  // }
 }
