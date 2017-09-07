@@ -137,18 +137,104 @@ export const expandedRequest: ExpandedRequest[] =[
   shortrequest: customerRequests[0],
   log: [
     {
-      date: customerRequests[0].StartDate-10000,
+      date: customerRequests[0].StartDate-100000,
       state: RequestState.created,
       comment: null
     },
     {
-      date: customerRequests[0].StartDate-100,
-      state: RequestState.accepted,
+      date: customerRequests[0].StartDate-90000,
+      state: RequestState.waitingtobank,
+      comment: null
+    },
+    {
+      date: customerRequests[0].StartDate-80000,
+      state: customerRequests[0].requestState,
       comment: "הכל מאושר על ידי משפטיט"
     }
   ]
 
-}
+},
+  {
+    shortrequest: customerRequests[1],
+    log: [
+      {
+        date: customerRequests[1].StartDate-10000,
+        state: RequestState.created,
+        comment: null
+      },
+
+      {
+        date: customerRequests[1].StartDate-10000,
+        state: customerRequests[1].requestState,
+        comment: null
+      }
+    ]
+
+  },
+  {
+    shortrequest: customerRequests[2],
+    log: [
+      {
+        date: customerRequests[2].StartDate-10000,
+        state: RequestState.created,
+        comment: null
+      },
+      {
+        date: customerRequests[2].StartDate-90000,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: customerRequests[2].StartDate-100,
+        state: customerRequests[2].requestState,
+        comment: "לא מאושר על ידי משפטיט"
+      }
+    ]
+
+  },
+  {
+    shortrequest: customerRequests[3],
+    log: [
+      {
+        date: customerRequests[3].StartDate-10000,
+        state: RequestState.created,
+        comment: null
+      },
+      {
+        date: customerRequests[3].StartDate-90000,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: customerRequests[3].StartDate-100,
+        state: customerRequests[3].requestState,
+        comment: "ממתין למשפטית לאישור"
+      }
+    ]
+
+  },
+  {
+    shortrequest: customerRequests[4],
+    log: [
+      {
+        date: customerRequests[4].StartDate-10000,
+        state: RequestState.created,
+        comment: null
+      },
+
+      {
+        date: customerRequests[4].StartDate-10000,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: customerRequests[4].StartDate-100,
+        state: customerRequests[4].requestState,
+        comment: null
+      }
+    ]
+
+  }
 ];
 
 
