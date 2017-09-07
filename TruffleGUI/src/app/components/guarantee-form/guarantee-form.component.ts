@@ -7,7 +7,7 @@ import {isNullOrUndefined} from "util";
   templateUrl: './guarantee-form.component.html',
   styleUrls: ['./guarantee-form.component.scss']
 })
-export class GuaranteeFormComponent implements OnInit, OnChanges {
+export class GuaranteeFormComponent implements OnChanges {
   @Input() data: any;
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
@@ -27,10 +27,6 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   ];
   constructor(private fb: FormBuilder) {
     this.createForm();
-  }
-
-  ngOnInit() {
-    console.log('hello');
   }
 
   createForm() {
@@ -61,7 +57,6 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('destroy');
     this.newGuarantee.reset();
   }
 }

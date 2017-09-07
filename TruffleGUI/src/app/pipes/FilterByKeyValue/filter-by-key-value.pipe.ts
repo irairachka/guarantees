@@ -12,10 +12,10 @@ export class FilterByKeyValuePipe implements PipeTransform {
       return;
     }
     return arr.filter(item => {
-      if(key === 'RequestState') {
+      if(key === 'requestState') {
         let mappedStatus = mapRequestState[item[key]];
         return mappedStatus === value;
-      } else if(key === 'GuaranteeState') {
+      } else if(key === 'guaranteeState') {
         let mappedStatus = mapRequestState[item[key]];
         return mappedStatus === value;
       } else {

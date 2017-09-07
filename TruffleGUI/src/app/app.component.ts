@@ -9,7 +9,7 @@ const Regulator_artifact = require('../../../build/contracts/Regulator.json');
 const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
 
 // Interfaces, mock data and utils
-import { userData, bankData, } from '../../tempData/mockData';
+import {mockCustomerRequests} from '../../tempData/mockData';
 import {GRequest, Guarantee, Beneficiary} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
 import {GuaranteeState, RequestState} from "./interfaces/enum";
@@ -31,7 +31,7 @@ export class AppComponent {
   web3: any;
 
   // Requests and Guarantees
-  customerRequests: GRequest[] = [];
+  customerRequests: GRequest[] = mockCustomerRequests;
   customerGuaranties: Guarantee[] = [];
   bankRequests: GRequest[] = [];
   bankGuaranties: Guarantee[] = [];

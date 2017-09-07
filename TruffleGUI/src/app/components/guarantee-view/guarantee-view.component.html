@@ -13,10 +13,10 @@
       <div *ngIf="allRequests"  class="for-treatment ui-space-tb-large">
         <div class="section-header ui-space-tb-small text-bold">
           <label>
-            לטיפול כרגע (שלי) - {{numForTreatment}} ערבויות
+            לטיפול כרגע (שלי) - {{(allRequests | filterByKeyValue:'requestState':0)?.length}} ערבויות
           </label>
         </div>
-        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'RequestState':0">
+        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'requestState':0">
           <request-item [request]="req" (emitRequest)="openModal($event)">
             <request-details [request]="req"></request-details>
           </request-item>
@@ -29,7 +29,7 @@
             בהמתנה - (לטיפול הבנק)
           </label>
         </div>
-        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'RequestState':1">
+        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'requestState':1">
           <request-item [request]="req" (emitRequest)="openModal($event)">
             <label>מתאריך {{req.StartDate   }}</label>
           </request-item>
@@ -42,40 +42,40 @@
             היסטורית ערבויות
           </label>
         </div>
-        <div class="curr-guarantees" *ngFor="let req of allGuarantees">
+        <div class="curr-guarantees" *ngFor="let req of allGuaranties">
           <request-item [request]="req" (emitRequest)="openModal($event)">
           </request-item>
         </div>
       </div>
     </div>
 
-    <div class="guarantees-section" *ngIf="user === 'beneficiary'">
-      <div class="active ui-space-tb-large">
-        <div class="section-header ui-space-tb-small text-bold">
-          <label>
-            ערבויות פעילות
-          </label>
-        </div>
-        <div class="active-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':0">
-          <request-item [request]="req" (emitRequest)="openModal($event)">
-            <request-details [request]="req"></request-details>
-          </request-item>
-        </div>
-      </div>
+    <!--<div class="guarantees-section" *ngIf="user === 'beneficiary'">-->
+      <!--<div class="active ui-space-tb-large">-->
+        <!--<div class="section-header ui-space-tb-small text-bold">-->
+          <!--<label>-->
+            <!--ערבויות פעילות-->
+          <!--</label>-->
+        <!--</div>-->
+        <!--<div class="active-guarantees" *ngFor="let req of allGuaranties | filterByKeyValue:'guaranteeState':0">-->
+          <!--<request-item [request]="req" (emitRequest)="openModal($event)">-->
+            <!--<request-details [request]="req"></request-details>-->
+          <!--</request-item>-->
+        <!--</div>-->
+      <!--</div>-->
 
-      <div class="inactive ui-space-tb-large">
-        <div class="section-header ui-space-tb-small text-bold">
-          <label>
-            ערבויות לא פעילות
-          </label>
-        </div>
-        <div class="inactive-guarantees" *ngFor="let req of allGuarantees | filterByKeyValue:'status':1">
-          <request-item [request]="req" (emitRequest)="openModal($event)">
-            <request-details [request]="req"></request-details>
-          </request-item>
-        </div>
-      </div>
-    </div>
+      <!--<div class="inactive ui-space-tb-large">-->
+        <!--<div class="section-header ui-space-tb-small text-bold">-->
+          <!--<label>-->
+            <!--ערבויות לא פעילות-->
+          <!--</label>-->
+        <!--</div>-->
+        <!--<div class="inactive-guarantees" *ngFor="let req of allGuaranties | filterByKeyValue:'guaranteeState':1">-->
+          <!--<request-item [request]="req" (emitRequest)="openModal($event)">-->
+            <!--<request-details [request]="req"></request-details>-->
+          <!--</request-item>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
 
 
   </main>

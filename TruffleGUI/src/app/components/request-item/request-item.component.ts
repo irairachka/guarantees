@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {GRequest} from "../../interfaces/request";
 
 @Component({
   selector: 'request-item',
@@ -10,6 +11,7 @@ export class RequestItemComponent {
   @Output() emitRequest: EventEmitter<any> = new EventEmitter();
 
   openRequest() {
+    console.log('this.request', this.request);
     this.emitRequest.emit(this.request);
   }
 }
