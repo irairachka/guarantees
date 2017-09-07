@@ -19,6 +19,7 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
+    beneficiaryName:this.beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 10000,
@@ -31,6 +32,7 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
+    beneficiaryName:this.beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 10000,
@@ -43,6 +45,7 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
+    beneficiaryName:this.beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 10000,
@@ -68,6 +71,7 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
+    beneficiaryName:this.beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 10000,
@@ -85,6 +89,7 @@ export const mockCustomerGuaranties: Guarantee[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
+    customerName:this.userData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 10000,
@@ -95,145 +100,145 @@ export const mockCustomerGuaranties: Guarantee[] = [
   }
 ];
 
-// export const beneficiaries:Beneficiary[] =[
-//   {
-//     beneficiaryID: this.beneficiaryData.beneficiaryID,
-//     Name: this.beneficiaryData.Name,
-//     Address: this.beneficiaryData.Address
-//   }
-// ];
+export const mockbeneficiaries:Beneficiary[] =[
+  {
+    beneficiaryID: this.beneficiaryData.beneficiaryID,
+    Name: this.beneficiaryData.Name,
+    Address: this.beneficiaryData.Address
+  }
+];
 export const mockBankRequests: GRequest[] = mockCustomerRequests;
 
 export const mockBankGuaranties: Guarantee[] = mockCustomerGuaranties;
-// export const beneficiaryGuaranties: Guarantee[] = this.customerGuaranties;
-//
-//
-//
-// export const userData: Customer = {
-//   customerID: this.addressOnChain,
-//   Name: 'ישראל ישראלי',
-//   Address: 'יצחק קצנסלון 5, תל אביב'
-// };
-//
-// export const bankData: Bank = {
-//   bankID: this.addressOnChain,
-//   Name: "בנק הפועלים",
-//   Address: "הנגב 11 תל אביב"
-// };
-//
-// export const beneficiaryData: Beneficiary = {
-//   beneficiaryID: this.addressOnChain,
-//   Name: "עיריית תל אביב-יפו" ,
-//   Address: "אבן גבירול 69 תל אביב-יפו"
-// };
+export const mockbeneficiaryGuaranties: Guarantee[] = mockCustomerGuaranties;
+
+
+
+export const userData: Customer = {
+  customerID: this.addressOnChain,
+  Name: 'ישראל ישראלי',
+  Address: 'יצחק קצנסלון 5, תל אביב'
+};
+
+export const bankData: Bank = {
+  bankID: this.addressOnChain,
+  Name: "בנק הפועלים",
+  Address: "הנגב 11 תל אביב"
+};
+
+export const beneficiaryData: Beneficiary = {
+  beneficiaryID: addressOnChain,
+  Name: "עיריית תל אביב-יפו" ,
+  Address: "אבן גבירול 69 תל אביב-יפו"
+};
 
 
 
 
-// export const expandedRequest: ExpandedRequest[] =[
-//   {
-//   shortrequest: customerRequests[0],
-//   log: [
-//     {
-//       date: this.customerRequests[0].StartDate-100000,
-//       state: RequestState.created,
-//       comment: null
-//     },
-//     {
-//       date: this.customerRequests[0].StartDate-90000,
-//       state: RequestState.waitingtobank,
-//       comment: null
-//     },
-//     {
-//       date: this.customerRequests[0].StartDate-80000,
-//       state: this.customerRequests[0].requestState,
-//       comment: "הכל מאושר על ידי משפטיט"
-//     }
-//   ]
-//
-// },
-//   {
-//     shortrequest: this.customerRequests[1],
-//     log: [
-//       {
-//         date: this.customerRequests[1].StartDate-10000,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//
-//       {
-//         date: this.customerRequests[1].StartDate-10000,
-//         state: this.customerRequests[1].requestState,
-//         comment: null
-//       }
-//     ]
-//
-//   },
-//   {
-//     shortrequest: this.customerRequests[2],
-//     log: [
-//       {
-//         date: this.customerRequests[2].StartDate-10000,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[2].StartDate-90000,
-//         state: RequestState.waitingtobank,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[2].StartDate-100,
-//         state: this.customerRequests[2].requestState,
-//         comment: "לא מאושר על ידי משפטיט"
-//       }
-//     ]
-//
-//   },
-//   {
-//     shortrequest: this.customerRequests[3],
-//     log: [
-//       {
-//         date: this.customerRequests[3].StartDate-10000,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[3].StartDate-90000,
-//         state: RequestState.waitingtobank,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[3].StartDate-100,
-//         state: this.customerRequests[3].requestState,
-//         comment: "ממתין למשפטית לאישור"
-//       }
-//     ]
-//
-//   },
-//   {
-//     shortrequest: this.customerRequests[4],
-//     log: [
-//       {
-//         date: this.customerRequests[4].StartDate-10000,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//
-//       {
-//         date: this.customerRequests[4].StartDate-10000,
-//         state: RequestState.waitingtobank,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[4].StartDate-100,
-//         state: this.customerRequests[4].requestState,
-//         comment: null
-//       }
-//     ]
-//
-//   }
-// ];
+export const mockexpandedRequest: ExpandedRequest[] =[
+  {
+  shortrequest: customerRequests[0],
+  log: [
+    {
+      date: this.customerRequests[0].StartDate,
+      state: RequestState.created,
+      comment: null
+    },
+    {
+      date: this.customerRequests[0].StartDate,
+      state: RequestState.waitingtobank,
+      comment: null
+    },
+    {
+      date: this.customerRequests[0].StartDate,
+      state: this.customerRequests[0].requestState,
+      comment: "הכל מאושר על ידי משפטיט"
+    }
+  ]
+
+},
+  {
+    shortrequest: this.customerRequests[1],
+    log: [
+      {
+        date: this.customerRequests[1].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+
+      {
+        date: this.customerRequests[1].StartDate,
+        state: this.customerRequests[1].requestState,
+        comment: null
+      }
+    ]
+
+  },
+  {
+    shortrequest: this.customerRequests[2],
+    log: [
+      {
+        date: this.customerRequests[2].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+      {
+        date: this.customerRequests[2].StartDate,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: this.customerRequests[2].StartDate,
+        state: this.customerRequests[2].requestState,
+        comment: "לא מאושר על ידי משפטיט"
+      }
+    ]
+
+  },
+  {
+    shortrequest: this.customerRequests[3],
+    log: [
+      {
+        date: this.customerRequests[3].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+      {
+        date: this.customerRequests[3].StartDate,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: this.customerRequests[3].StartDate,
+        state: this.customerRequests[3].requestState,
+        comment: "ממתין למשפטית לאישור"
+      }
+    ]
+
+  },
+  {
+    shortrequest: this.customerRequests[4],
+    log: [
+      {
+        date: this.customerRequests[4].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+
+      {
+        date: this.customerRequests[4].StartDate,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: this.customerRequests[4].StartDate,
+        state: this.customerRequests[4].requestState,
+        comment: null
+      }
+    ]
+
+  }
+];
 
 
 

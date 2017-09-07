@@ -51,8 +51,9 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
 
 //        ( , _customer, _bank,  _beneficiary,  _purpose, _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
-        ( _guaranteeRequest, , ,  _beneficiary,  , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
+        ( , , ,  _beneficiary,  , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
 
+        _guaranteeRequest=guaranteeRequestExtender;
         _contract_id=getId();
         _customer=gr.getCustomer();
         _bank=gr.getBank();
