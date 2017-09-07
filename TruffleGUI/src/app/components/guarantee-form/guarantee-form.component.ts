@@ -9,6 +9,7 @@ import {isNullOrUndefined} from "util";
 })
 export class GuaranteeFormComponent implements OnChanges {
   @Input() data: any;
+  @Input() modalType: string;
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
   state: any[] = [

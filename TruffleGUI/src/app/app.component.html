@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<p-dialog appendTo="body" [(visible)]="openFormDialog" dir="rtl"  [styleClass]="modalType"
+<p-dialog appendTo="body" [(visible)]="openFormDialog" dir="rtl" [styleClass]="modalType"
           positionTop="10" draggable="false" modal="true" dismissableMask="true" (onHide)="clearData()">
-  <guarantee-form [data]="dialogData" (postNewRequest)="handleCreateRequest($event)"></guarantee-form>
+  <guarantee-form [data]="dialogData" [modalType]="modalType" (postNewRequest)="handleCreateRequest($event)"></guarantee-form>
 </p-dialog>

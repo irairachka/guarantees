@@ -10,7 +10,9 @@
 
   .form-label {
     position: absolute;
-    transform: rotate(90deg);
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%) rotate(90deg);
     font-weight: bold;
   }
 
@@ -43,28 +45,26 @@
 
   .user-details,
   .guarantee-details,
-  .status-wizard {
+  .status-wizard,
+  .actions {
     position: relative;
     border-bottom: 1px solid #fff;
   }
 
   .status-wizard {
     .form-label {
-      top: 46px;
       right: 0;
     }
   }
 
   .user-details {
     .form-label {
-      top: 60px;
       right: -14px;
     }
   }
 
   .guarantee-details {
     .form-label {
-      top: 100px;
       right: -24px;
     }
   }
