@@ -93,6 +93,7 @@ export class GuaranteeFormComponent implements OnChanges {
   }
 
   changeRequest(type) {
+    console.log('this.data', this.data);
     let eventData = {
       type: type,
       requestId: this.data.GRequestID,
@@ -114,8 +115,10 @@ export class GuaranteeFormComponent implements OnChanges {
         break;
       case 'terminate':
         eventData.details = this.terminateReason;
+        eventData.guaranteeId = this.data.GuaranteeID;
         break;
       case 'guaranteeUpdate':
+        eventData.guaranteeId = this.data.GuaranteeID;
         eventData.update = {
           date: this.newDate,
           amount: this.newValue

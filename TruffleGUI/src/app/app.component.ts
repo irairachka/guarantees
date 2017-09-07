@@ -605,14 +605,17 @@ export class AppComponent {
         // this.rejectRequest(e.requestId, e.details);
         break;
       case 'terminate':
-        this.terminateGuatanty(e.requestId);
+        console.log(`terminate success! id: ${e.guaranteeId}`);
+        // this.terminateGuatanty(e.guaranteeId);
         break;
       case 'guaranteeUpdate':
-        this.guaranteeUpdate(e.requestId, '', e.update.amount, e.update.date);
+        console.log(`update success! id: ${e.guaranteeId} amount: ${e.update.amount} date: ${e.update.date}`);
+        // this.guaranteeUpdate(e.guaranteeId, '', e.update.amount, e.update.date);
         break;
       default:
         return;
     }
+    this.openFormDialog = false;
   };
 
 
