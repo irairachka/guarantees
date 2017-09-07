@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
-import {DialogModule, FileUploadModule, SelectButtonModule} from "primeng/primeng";
+import {DialogModule, DropdownModule, FileUploadModule, SelectButtonModule} from "primeng/primeng";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GuaranteeViewComponent} from "./components/guarantee-view/guarantee-view.component";
 import {RequestItemComponent} from "./components/request-item/request-item.component";
@@ -22,7 +22,8 @@ import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
     ReactiveFormsModule,
     DialogModule,
     FileUploadModule,
-    SelectButtonModule
+    SelectButtonModule,
+    DropdownModule
   ],
   declarations: [
     AppComponent,

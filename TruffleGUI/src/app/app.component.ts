@@ -426,6 +426,7 @@ export class AppComponent {
 
 
   guaranteeUpdate = (guatantyId,comment,ammount,date) => {
+    // עדכון של מוטב
     this.customerGuaranties.forEach((Guaranty) => {
       if (Guaranty.GuaranteeID==guatantyId)
       {
@@ -438,8 +439,7 @@ export class AppComponent {
   };
 
   updateRequest = (requestId,state,comment) => {
-    // ביטול של בנק
-
+    // עדכון של בנק
     this.bankRequests.forEach((Request) => {
       if (Request.GRequestID==requestId)
       {
@@ -538,7 +538,34 @@ console.log('this.openFormDialog', this.openFormDialog);
       e.purpose, e.amount, (Date.now()/1000), (Date.now()/1000)+100000, 0, 0);
   };
 
-
+  handleRequestUpdate = (e) => {
+    switch (e.type) {
+      case 'withdrawal':
+        console.log('withdraw success', e.requestId);
+        // this.withdrawalRequest(e.requestId);
+        break;
+      case 'updateBank':
+        console.log(`update success! id: ${e.requestId} comment: ${e.details}`);
+        // this.updateRequest(e.requestId, e.details, '');
+        break;
+      case 'accept':
+        console.log(`accept success! id: ${e.requestId}`);
+        // this.acceptRequest(e.requestId, '', '');
+        break;
+      case 'reject':
+        console.log(`reject success! id: ${e.requestId} comment: ${e.details}`);
+        // this.rejectRequest(e.requestId, e.details);
+        break;
+      case 'terminate':
+        this.terminateGuatanty(e.requestId);
+        break;
+      case 'guaranteeUpdate':
+        this.guaranteeUpdate(e.requestId, '', e.update.amount, e.update.date);
+        break;
+      default:
+        return;
+    }
+  };
 
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);

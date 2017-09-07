@@ -69,18 +69,34 @@
     <div class="actions ui-space-medium">
       <label class="form-label">פעולות</label>
       <div [ngSwitch]="modalType" class="ui-layout-column ui-space-r-large">
-        <button *ngSwitchCase="'user'">ביטול</button>
+        <button *ngSwitchCase="'user'" (click)="changeRequest('withdrawal')">ביטול</button>
 
         <ng-container *ngSwitchCase="'bank'">
-          <button>אישור</button>
-          <button>דחיה</button>
+          <div class="update ui-layout">
+            <button (click)="changeRequest('updateBank')">עדכון</button>
+            <p-dropdown [options]="requestsStates" [(ngModel)]="selectedRequestsStates"></p-dropdown>
+          </div>
+          <button (click)="changeRequest('accept')">אישור</button>
+          <div class="ui-layout">
+            <button (click)="changeRequest('reject')">דחיה</button>
+            <input placeholder="סיבת הדחיה" [(ngModel)]="cancelReason">
+          </div>
         </ng-container>
         <ng-container *ngSwitchCase="'beneficiary'">
-          <button>ביטול</button>
-          <div>
-
+          <div class="ui-layout">
+            <button (click)="changeRequest('terminate')">ביטול</button>
+            <input placeholder="סיבת הדחיה" [(ngModel)]="terminateReason">
           </div>
-          <button>דחיה</button>
+          <label class="text-bold">בקשה לדחיה</label>
+          <div class="ui-layout">
+            <label>שינוי סכום</label>
+            <input type="number" placeholder="סכום מוקטן" [(ngModel)]="newValue">
+          </div>
+          <div class="ui-layout">
+            <label>הארכת תוקף</label>
+            <input placeholder="תוקף חדש" [(ngModel)]="newDate">
+          </div>
+          <button (click)="changeRequest('guaranteeUpdate')">דחיה</button>
         </ng-container>
       </div>
     </div>
