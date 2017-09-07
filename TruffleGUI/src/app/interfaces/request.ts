@@ -5,22 +5,32 @@ export interface GRequest {
   customer: string;
   bank: string;
   beneficiary: string;
-
   StartDate: string;
   EndDate: string;
-
   amount: number;
   purpose: string;
-
   indexType: IndexType;
   indexDate: number;
+  requestState: RequestState;
+}
 
-  RequestState: RequestState;
+export interface ExpandedRequest {
+  shortrequest: GRequest;
+  log: RequestFlowLog[] ;
+  
+}
+
+
+export interface RequestFlowLog{
+  date: string;
+  state: RequestState;
+  comment: string;
 }
 
 
 export interface Guarantee {
   GuaranteeID: string;
+  GRequestID: string;
   customer: string;
   bank: string;
   beneficiary: string;
@@ -30,7 +40,7 @@ export interface Guarantee {
   purpose: string;
   indexType: IndexType;
   indexDate: number;
-  GuaranteeState: GuaranteeState;
+  guaranteeState: GuaranteeState;
 }
 
 

@@ -7,13 +7,13 @@
   <div class="bank-container wrapper ui-space-lr-large"
        (click)="selected = 1" [class.selected]="selected === 1">
     <label class="title">הבנק</label>
-    <app-guarantee-view class="content" user="bank" [allRequests]="myRequests"
+    <app-guarantee-view class="content" user="bank" [allRequests]="bankRequests"
                         (triggerModal)="openModal($event)"></app-guarantee-view>
   </div>
   <div class="user-container wrapper ui-space-lr-large"
        (click)="selected = 0" [class.selected]="selected === 0">
     <label class="title">המבקש</label>
-    <app-guarantee-view class="content" user="user" [allRequests]="myRequests"
+    <app-guarantee-view class="content" user="user" [allRequests]="customerRequests"
                         (triggerModal)="openModal($event)"></app-guarantee-view>
   </div>
 </div>

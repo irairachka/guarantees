@@ -1,7 +1,7 @@
-import {GRequest, Bank, Customer} from "../src/app/interfaces/request";
+import {GRequest, Bank, Customer, Guarantee, Beneficiary} from "../src/app/interfaces/request";
 import {IndexType, RequestState} from "../src/app/interfaces/enum";
 
-export const allRequests = [
+export const customerRequests: GRequest[] = [
   {
     customer: 'XXXX',
     beneficiary: 'YYYY',
@@ -63,14 +63,23 @@ export const allRequests = [
   }
 ];
 
+export const customerGuaranties: Guarantee[] = [];
+export const beneficiaries:Beneficiary[] =[];
+export const bankRequests: GRequest[] = [];
+export const bankGuaranties: Guarantee[] = [];
+export const beneficiaryGuaranties: Guarantee[] = [];
+
+
 export const userData: Customer = {
   customerID: '0xd532D3531958448e9E179729421B92962fb81Ddc',
   Name: 'ישראל ישראלי',
   Address: 'יצחק קצנסלון 5, תל אביב'
 };
 
-export const bankData = {
+export const bankData: Bank = {
   bankID: '0xd532D3531958448e9E179729421B92962fb81Ddc',
   Name: 'הפועלים',
   Address: 'אבן גבירול 156'
 };
+
+export const beneficiaryData: Beneficiary = {};

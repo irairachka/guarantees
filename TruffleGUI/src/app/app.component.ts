@@ -1,34 +1,18 @@
+// Dependancies for Truffle
 import { Component, HostListener, NgZone } from '@angular/core';
 const Web3 = require('web3');
 const contract = require('truffle-contract');
-
 
 // Import our contract artifacts and turn them into usable abstractions.
 const GuaranteeRequest_artifact = require('../../../build/contracts/GuaranteeRequest.json');
 const Regulator_artifact = require('../../../build/contracts/Regulator.json');
 const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
-// MetaCoin is our usable abstraction, which we'll use through the code below.
 
-
-
-// const metaincoinArtifacts = require('../../build/contracts/MetaCoin.json');
-
-// Import libraries we need.
-// import { default as Web3} from 'web3';
-// import { default as contract } from 'truffle-contract';
-
-
-
-const http=require('http');
-// const web3providera=new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-
-
-
-import { canBeNumber } from '../util/validation';
-
-import {allRequests, allRequests as Requests} from '../../tempData/data';
+// Interfaces, mock data and utils
+import { userData, bankData, } from '../../tempData/data';
 import {GRequest, Guarantee, Beneficiary} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
+import {GuaranteeState, RequestState} from "./interfaces/enum";
 
 declare let window: any;
 
@@ -38,29 +22,24 @@ declare let window: any;
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  // MetaCoin: any;
   Regulator = contract(Regulator_artifact);
   GuaranteeRequest = contract(GuaranteeRequest_artifact);
   DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
-
-  // TODO add proper types these variables
+  
   account: any;
   accounts: any;
   web3: any;
 
-  temp: boolean = false;
-
-  balance: number;
-  myRequests: GRequest[] = [];
-  myGuaranties: Guarantee[] = [];
-  myBeneficiaries:Beneficiary[] =[];
+  customerRequests: GRequest[] = [];
+  customerGuaranties: Guarantee[] = [];
+  beneficiaries:Beneficiary[] =[];
+  bankRequests: GRequest[] = [];
+  bankGuaranties: Guarantee[] = [];
+  beneficiaryGuaranties: Guarantee[] = [];
+  
   data: any; // Dialog data
   openFormDialog: boolean = false; // show dialog
   modalType: string = 'user'; // dialog types
-  sendingAmount: number;
-  recipientAddress: string;
-  status: string;
-  canBeNumber = canBeNumber;
 
   constructor(private _ngZone: NgZone) {
 
@@ -115,38 +94,17 @@ export class AppComponent {
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       this._ngZone.run(() => {
-        this.getAllGRequests();
-        this.getAllGuarantees();
+        // this.getAllGRequests();
+        // this.getAllGuarantees();
         console.log('get user data');
-        this.getBankData(this.account);
-        this.getCustomerData(this.account);
-        this.getAllBeneficiaries();
+        // this.getBankData(this.account);
+        // this.getCustomerData(this.account);
+        // this.getAllBeneficiaries();
       });
     });
   };
 
-  getAllGuarantees = () => {
-    console.log('getting guarantees');
-    this.Regulator
-      .deployed()
-      .then((instance) => {
-        return instance.getGuarantieAddressForBeneficiary.call({from: this.account});
-      }).then((guaranteeAddresses) => {
-        console.log('guaranteeAddresses', guaranteeAddresses);
-        if(guaranteeAddresses.length > 0) {
-          guaranteeAddresses.forEach((guaranteeAddress) => {
-            this.getOneGuaranty(guaranteeAddress);
-          });
-        }
-      }).catch((e) => {
-        console.log(e);
-      });
-  };
-
-
-
-
-  getAllGRequests = () => {
+  getAllUserRequests = () => {
     /** Gets all guarantee requests for customer */
     /** parses the data and sends to UI */
 
@@ -155,25 +113,117 @@ export class AppComponent {
       .then((instance) => {
         return instance.getRequestsAddressForCustomer.call({from: this.account});
       }).then((guaranteeRequestAddresses) => {
-        console.log(guaranteeRequestAddresses);
-        guaranteeRequestAddresses.forEach((requestAddress) => {
-          this.getOneGRequests(requestAddress);
-          });
-        }).catch((e) => {
-          console.log(e);
+      console.log(guaranteeRequestAddresses);
+      guaranteeRequestAddresses.forEach((requestAddress) => {
+        this.customerRequests = [...this.customerRequests, this.getOneGRequests(requestAddress)];
+
       });
+    }).catch((e) => {
+      console.log(e);
+    });
   };
 
+
   getOneGRequests = (requestAddress) => {
-  /** Gets one guarantee requests by id */
-  /** parses the data and sends to UI */
-  console.log('requestAddress', requestAddress)
-  this.GuaranteeRequest.at(requestAddress)
-    .then((guaranteeRequestinstance) => {
-      return guaranteeRequestinstance.getGuaranteeRequestData();
-    }).then((result) => {
-    let parsedResult = this.populateRequestData(result);
-    this.myRequests = [...this.myRequests, parsedResult];
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    console.log('requestAddress', requestAddress)
+    this.GuaranteeRequest.at(requestAddress)
+      .then((guaranteeRequestinstance) => {
+        return guaranteeRequestinstance.getGuaranteeRequestData();
+      }).then((result) => {
+      return this.populateRequestData(result);
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+
+
+  getAllBankRequests = () => {
+    /** Gets all guarantee requests for customer */
+    /** parses the data and sends to UI */
+
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getRequestsAddressForIssuer.call({from: this.account});
+      }).then((guaranteeRequestAddresses) => {
+      console.log(guaranteeRequestAddresses);
+      guaranteeRequestAddresses.forEach((requestAddress) => {
+        this.bankRequests = [...this.bankRequests, this.getOneGRequests(requestAddress)];
+      });
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+  getAllBeneficiaryGuaranties = () => {
+    console.log('getting guarantees');
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getGuarantieAddressForBeneficiary.call({from: this.account});
+      }).then((guaranteeAddresses) => {
+      console.log('guaranteeAddresses', guaranteeAddresses);
+      if(guaranteeAddresses.length > 0) {
+        guaranteeAddresses.forEach((guaranteeAddress) => {
+          this.beneficiaryGuaranties = [...this.beneficiaryGuaranties, this.getOneGuaranty(guaranteeAddress)];
+        });
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+
+  getAllCustomerGuaranties = () => {
+    console.log('getting guarantees');
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getGuarantieAddressForCustomer.call({from: this.account});
+      }).then((guaranteeAddresses) => {
+      console.log('guaranteeAddresses', guaranteeAddresses);
+      if(guaranteeAddresses.length > 0) {
+        guaranteeAddresses.forEach((guaranteeAddress) => {
+          this.customerGuaranties = [...this.customerGuaranties, this.getOneGuaranty(guaranteeAddress)];
+        });
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+
+  getAllBankGuaranties = () => {
+    console.log('getting guarantees');
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getGuarantieAddressForIssuer.call({from: this.account});
+      }).then((guaranteeAddresses) => {
+      console.log('guaranteeAddresses', guaranteeAddresses);
+      if(guaranteeAddresses.length > 0) {
+        guaranteeAddresses.forEach((guaranteeAddress) => {
+          this.bankGuaranties = [...this.bankGuaranties, this.getOneGuaranty(guaranteeAddress)];
+        });
+      }
+    }).catch((e) => {
+      console.log(e);
+    });
+  };
+
+
+  getOneGuaranty = (guarantyAddress) => {
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    console.log('guarantyAddress', guarantyAddress);
+    this.DigitalGuaranteeBNHP.at(guarantyAddress)
+      .then((guaranteeinstance) => {
+        return guaranteeinstance.getGuaranteeData();
+      }).then((result) => {
+      return this.populateGuarantyData(result);
     }).catch((e) => {
       console.log(e);
     });
@@ -198,7 +248,6 @@ export class AppComponent {
   };
 
   getBankData = (requestAddress) => {
-debugger;
     this.Regulator
       .deployed()
       .then((instance) => {
@@ -222,8 +271,8 @@ debugger;
         return instance.getBeneficiaryAddresses.call({from: this.account});
       }).then((beneficiaryAddress) => {
       beneficiaryAddress.forEach((beneficiaryAddres) => {
-          this.getOneBeneficiary(beneficiaryAddres);
-        });
+        this.beneficiaries = [...this.beneficiaries, this.getOneBeneficiary(beneficiaryAddres)];
+      });
     }).catch((e) => {
       console.log(e);
     });
@@ -239,8 +288,7 @@ debugger;
       .then((instance) => {
         return instance.getBeneficiaries.call({from: this.account});
       }).then((result) => {
-      let parsedResult = this.populateBeneficiaryData(beneficiaryAddress,result);
-      this.myBeneficiaries = [...this.myBeneficiaries, parsedResult];
+      return this.populateBeneficiaryData(beneficiaryAddress,result);
     }).catch((e) => {
       console.log(e);
     });
@@ -248,96 +296,20 @@ debugger;
 
 
 
-
-
-  getOneGuaranty = (guarantyAddress) => {
-    /** Gets one guarantee requests by id */
-    /** parses the data and sends to UI */
-    console.log('guarantyAddress', guarantyAddress);
-    this.DigitalGuaranteeBNHP.at(guarantyAddress)
-      .then((guaranteeinstance) => {
-        return guaranteeinstance.getGuaranteeData();
-      }).then((result) => {
-      let parsedResult = this.populateGuarantyData(result);
-      console.log('parsedResult', parsedResult);
-      this.myGuaranties = [...this.myGuaranties, parsedResult];
-    }).catch((e) => {
-      console.log(e);
-    });
-  };
-
-
-
-  getGRequestData = (GRequestId, type: number) => {
+  getGuaranteesData = (guaranteeID, type: number) => {
     //type = user, bank or beneficiary
-  };
-
-  getGuaranteesData = (GRequestId, type: number) => {
-    //type = user, bank or beneficiary
-  };
-
-  withdrawalRequest = (requestId) => {
-    // ביטול של יוזר
-  };
-
-  rejectRequest = (requestId) => {
-    // ביטול של בנק
-  };
-
-  terminateRequest = (requestId) => {
-    // ביטול של מוטב
-  };
-
-  guaranteeUpdateRequest = () => {
-
-  };
-
-  acceptRequest = (requestId) => {
-    // אישור של בנק
-  };
-
-  setStatus = message => {
-    this.status = message;
-  };
-
-  createRequest = ( userId , bankId, benefId , purpose,
-                    amount, StartDate, EndDate, indexType, indexDate) => {
-    console.log("begin");
-    this.Regulator
-      .deployed()
-      .then((instance) => {
-        return instance.createGuaranteeRequest.call(userId, bankId, benefId, purpose, amount, StartDate, EndDate, indexType, indexDate,
-          { from: this.account, gas: 6000000});
-      }).then((guaranteeRequestAddress) => {
-        console.log(guaranteeRequestAddress);
-        this.onNewRequestSuccess(guaranteeRequestAddress);
-    }).catch((e) => {
-      console.log(e);
-      // this.setRegisterStatus("Unable to refresh balance; see log.", e);
+    this.customerGuaranties.forEach((Guarantee) => {
+      if (Guarantee.GuaranteeID==guaranteeID) return Request;
     });
-  };
 
-  /** Handle form modal */
-  openModal(e) {
-    this.temp = true;
-    console.log('e', e);
-    this.modalType = e.user;
-    if(!isNullOrUndefined(e.request)) {
-      this.data = e.request
-    }
-    this.openFormDialog = true;
-console.log('this.openFormDialog', this.openFormDialog);
-  }
+    this.bankGuaranties.forEach((Guarantee) => {
+      if (Guarantee.GuaranteeID==guaranteeID) return Request;
+    });
 
-  clearData() {
-    this.data = null;
-  }
+    this.beneficiaryGuaranties.forEach((Request) => {
+      if (Request.GRequestID==GRequestId) return Request;
+    });
 
-  handleCreateRequest = (e) => {
-    console.log('e', e);
-    this.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
-      '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
-      e.purpose, e.amount, (Date.now()/1000), (Date.now()/1000)+100000, 0, 0);
   };
 
   populateRequestData = (resultArr) => {
@@ -355,7 +327,7 @@ console.log('this.openFormDialog', this.openFormDialog);
       EndDate: endDate,
       indexType: resultArr[8].valueOf(),
       indexDate: resultArr[9].valueOf(),
-      RequestState: resultArr[10].valueOf()
+      requestState: resultArr[10].valueOf()
     };
   }
 
@@ -387,6 +359,184 @@ console.log('this.openFormDialog', this.openFormDialog);
 
     };
   };
+
+  acceptRequest = (requestId, comment , hashcode) => {
+    // אישור של בנק
+    if  (hashcode)
+        this.bankRequests.forEach((Request) => {
+        if (Request.GRequestID==requestId)
+        {
+          Request.requestState=RequestState.accepted;
+          return Request;
+        }
+      })
+    else
+    {
+        throw new Error('hashcode is empty');
+    }
+
+
+  };
+
+  rejectRequest = (requestId,comment) => {
+    // ביטול של בנק
+
+    this.bankRequests.forEach((Request) => {
+      if (Request.GRequestID==requestId)
+      {
+        Request.requestState=RequestState.rejected;
+        return Request;
+      }
+    });
+  };
+
+
+  withdrawalRequest = (requestId) => {
+    // ביטול של יוזר
+    this.customerRequests.forEach((Request) => {
+      if (Request.GRequestID==requestId)
+      {
+        Request.requestState=RequestState.withdrawed;
+        return Request;
+      }
+    });
+  };
+
+  terminateGuatanty = (guatantyId) => {
+    // ביטול של מוטב
+    let requestid=null;
+    this.customerGuaranties.forEach((Guaranty) => {
+      if (Guaranty.GuaranteeID==guatantyId)
+      {
+        Guaranty.guaranteeState=GuaranteeState.Terminated;
+        requestid=Guaranty.GRequestID;
+      }
+    });
+    this.customerRequests.forEach((Request) => {
+      if (Request.GRequestID==requestid)
+      {
+        Request.requestState=RequestState.terminationRequest;
+      }
+    });
+
+  };
+
+
+  guaranteeUpdate = (guatantyId,comment,ammount,date) => {
+    this.customerGuaranties.forEach((Guaranty) => {
+      if (Guaranty.GuaranteeID==guatantyId)
+      {
+        Guaranty.guaranteeState=GuaranteeState.Terminated;
+        Guaranty.amount=ammount;
+        Guaranty.EndDate=date;
+      }
+    });
+
+  };
+
+  updateRequest = (requestId,state,comment) => {
+    // ביטול של בנק
+
+    this.bankRequests.forEach((Request) => {
+      if (Request.GRequestID==requestId)
+      {
+        Request.requestState=state;
+      }
+    });
+  };
+
+
+  getGRequestData = (requestId, type: number) => {
+
+    this.customerRequests.forEach((Request) => {
+      if (Request.GRequestID==requestId) {
+        return this.fillMockRequest(Request, 0)
+      }
+    });
+
+    this.bankRequests.forEach((Request) => {
+      if (Request.GRequestID==requestId) {
+        return this.fillMockRequest(Request, 1)
+      }
+    });
+
+  };
+
+
+  fillMockRequest = (request,type) => {
+    if (type==0)
+    {
+      return {
+        shortrequest: request,
+        log: [{
+          date: '01/09/17',
+          state: RequestState.created,
+          comment: null },
+          {
+            date: '01/09/17',
+            state: RequestState.accepted,
+            comment: "הכל מאושר על ידי משפטיט"
+          }]
+      }
+    }
+      else
+    {
+        return {
+          shortrequest: request,
+          log: [{
+            date: '01/09/17',
+        state: RequestState.created,
+        comment: null
+      },
+        {
+          date: '01/09/17',
+          state: RequestState.rejected,
+          comment: "אין כיסוי מספיק"
+        }]
+      }
+    }
+  };
+
+  createRequest = ( userId , bankId, benefId , purpose,
+                    amount, StartDate, EndDate, indexType, indexDate) => {
+    console.log("begin");
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.createGuaranteeRequest.call(userId, bankId, benefId, purpose, amount, StartDate, EndDate, indexType, indexDate,
+          { from: this.account, gas: 6000000});
+      }).then((guaranteeRequestAddress) => {
+        console.log(guaranteeRequestAddress);
+        this.onNewRequestSuccess(guaranteeRequestAddress);
+    }).catch((e) => {
+      console.log(e);
+      // this.setRegisterStatus("Unable to refresh balance; see log.", e);
+    });
+  };
+
+  /** Handle form modal */
+  openModal(e) {
+    console.log('e', e);
+    this.modalType = e.user;
+    if(!isNullOrUndefined(e.request)) {
+      this.data = e.request
+    }
+    this.openFormDialog = true;
+console.log('this.openFormDialog', this.openFormDialog);
+  }
+
+  clearData() {
+    this.data = null;
+  }
+
+  handleCreateRequest = (e) => {
+    console.log('e', e);
+    this.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
+      '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
+      e.purpose, e.amount, (Date.now()/1000), (Date.now()/1000)+100000, 0, 0);
+  };
+
+
 
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);

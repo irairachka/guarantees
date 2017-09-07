@@ -8,11 +8,10 @@ import {isNullOrUndefined} from "util";
 export class FilterByKeyValuePipe implements PipeTransform {
 
   transform(arr: any[], key: string, value: number, args?: any): any[] {
+    if(isNullOrUndefined(arr)) {
+      return;
+    }
     return arr.filter(item => {
-      if(isNullOrUndefined(arr)) {
-        return;
-      }
-
       if(key === 'RequestState') {
         let mappedStatus = mapRequestState[item[key]];
         return mappedStatus === value;
