@@ -19,8 +19,8 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
-    StartDate: '10052017',
-    EndDate: '10052019',
+    StartDate: '10/05/2017',
+    EndDate: '10/05/2019',
     amount: 10000,
     purpose: 'שכר דירה',
     indexType: IndexType.CPI,
@@ -31,8 +31,8 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
-    StartDate: '10052017',
-    EndDate: '10052019',
+    StartDate: '10/05/2017',
+    EndDate: '10/05/2019',
     amount: 10000,
     purpose: 'מכרז של העירייה',
     indexType: IndexType.ConstructionMatirials,
@@ -43,8 +43,8 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
-    StartDate: '10052017',
-    EndDate: '10052019',
+    StartDate: '10/05/2017',
+    EndDate: '10/05/2019',
     amount: 10000,
     purpose: 'מכרז לבניית גינה',
     indexType: IndexType.None,
@@ -56,8 +56,8 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
-    StartDate: '10052017',
-    EndDate: '10052019',
+    StartDate: '10/05/2017',
+    EndDate: '10/05/2019',
     amount: 10000,
     purpose: 'מכרז על שיפוץ כבישים',
     indexType: IndexType.CPI,
@@ -68,8 +68,8 @@ export const mockCustomerRequests: GRequest[] = [
     customer: addressOnChain,
     beneficiary: addressOnChain,
     bank: addressOnChain,
-    StartDate: '10052017',
-    EndDate: '10052019',
+    StartDate: '10/05/2017',
+    EndDate: '10/05/2019',
     amount: 10000,
     purpose: 'ספק תחזוקה',
     indexType: IndexType.None,
@@ -78,23 +78,23 @@ export const mockCustomerRequests: GRequest[] = [
   }
 ];
 
-// export const customerGuaranties: Guarantee[] = [
-//   {
-//     GuaranteeID: this.addressOnChainGuaranty1,
-//     GRequestID: this.addressOnChainRequest1,
-//     customer:this. addressOnChain,
-//     beneficiary: this.addressOnChain,
-//     bank: this.addressOnChain,
-//     StartDate: '10052017',
-//     EndDate: '10052019',
-//     amount: 10000,
-//     purpose: 'שכר דירה',
-//     indexType: IndexType.CPI,
-//     indexDate: 1,
-//     guaranteeState: GuaranteeState.Valid
-//   }
-// ];
-//
+export const mockCustomerGuaranties: Guarantee[] = [
+  {
+    GuaranteeID: addressOnChainGuaranty1,
+    GRequestID: addressOnChainRequest1,
+    customer: addressOnChain,
+    beneficiary: addressOnChain,
+    bank: addressOnChain,
+    StartDate: '10/05/2017',
+    EndDate: '10/05/2019',
+    amount: 10000,
+    purpose: 'שכר דירה',
+    indexType: IndexType.CPI,
+    indexDate: 1,
+    guaranteeState: GuaranteeState.Valid
+  }
+];
+
 // export const beneficiaries:Beneficiary[] =[
 //   {
 //     beneficiaryID: this.beneficiaryData.beneficiaryID,
@@ -102,9 +102,9 @@ export const mockCustomerRequests: GRequest[] = [
 //     Address: this.beneficiaryData.Address
 //   }
 // ];
-// export const bankRequests: GRequest[] = this.mockCustomerRequests;
-//
-// export const bankGuaranties: Guarantee[] = this.customerGuaranties;
+export const mockBankRequests: GRequest[] = mockCustomerRequests;
+
+export const mockBankGuaranties: Guarantee[] = mockCustomerGuaranties;
 // export const beneficiaryGuaranties: Guarantee[] = this.customerGuaranties;
 //
 //
