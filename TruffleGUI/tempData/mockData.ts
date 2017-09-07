@@ -98,7 +98,7 @@ export const customerGuaranties: Guarantee[] = [
 export const beneficiaries:Beneficiary[] =[
   {
     beneficiaryID: beneficiaryData.beneficiaryID,
-    Name: beneficiaryData.Name
+    Name: beneficiaryData.Name,
     Address: beneficiaryData.Address
   }
 ];
@@ -132,8 +132,9 @@ export const beneficiaryData: Beneficiary = {
 
 
 
-export const expandedRequest: ExpandedRequest {
-  shortrequest: customerRequests[0];
+export const expandedRequest: ExpandedRequest[] =[
+  {
+  shortrequest: customerRequests[0],
   log: [
     {
       date: customerRequests[0].StartDate-10000,
@@ -145,9 +146,10 @@ export const expandedRequest: ExpandedRequest {
       state: RequestState.accepted,
       comment: "הכל מאושר על ידי משפטיט"
     }
-  ] ;
+  ]
 
 }
+];
 
 
 
