@@ -11,6 +11,7 @@ import {RequestDetailsComponent} from "./components/request-details/request-deta
 import {GuaranteeFormComponent} from "./components/guarantee-form/guarantee-form.component";
 import {FilterByKeyValuePipe} from "./pipes/FilterByKeyValue/filter-by-key-value.pipe";
 import { ParseDatePipe } from './pipes/ParseDate/parse-date.pipe';
+import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { ParseDatePipe } from './pipes/ParseDate/parse-date.pipe';
     RequestDetailsComponent,
     GuaranteeFormComponent,
     FilterByKeyValuePipe,
-    ParseDatePipe
+    ParseDatePipe,
+    FourDigitsPipe
   ],
   providers: [],
   bootstrap: [AppComponent]
