@@ -180,30 +180,29 @@ contract Regulator is owned,GuaranteeConst{
         issuer.localAddress    = _localAddres;
         issuer.addr = _addr;
         issuer.status = issuerStatus.accepted;
-        issuerList.push(_addr);
 
         AddIssuer(msg.sender, _addr ,_name,block.timestamp);
     }
 
-//    event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
-//
-//    function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
-//        for(uint32 i=0; i<issuers.length; i++) {
-//            if(issuers[i].addr == _addr) {
-//                issuers[i].status = _status;
-//                // if(issuers[i].status == issuerStatus)
-//                // {
-//                //     UpdateIssuersStatus(msg.sender,"Approved",block.timestamp);
-//                // }
-//                // else
-//                // {
-//                //     UpdateIssuersStatus(msg.sender,"Rejected",block.timestamp);
-//                // }
-//                break;
-//            }
-//        }
-//
-//    }
+    event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
+
+    function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
+        for(uint32 i=0; i<issuerList.length; i++) {
+            if(issuers[i].addr == _addr) {
+                issuers[i].status = _status;
+                // if(issuers[i].status == issuerStatus)
+                // {
+                //     UpdateIssuersStatus(msg.sender,"Approved",block.timestamp);
+                // }
+                // else
+                // {
+                //     UpdateIssuersStatus(msg.sender,"Rejected",block.timestamp);
+                // }
+                break;
+            }
+        }
+
+    }
 
     function getIssuerCounter() public constant returns (uint ) {
         return issuerList.length;
@@ -217,14 +216,9 @@ contract Regulator is owned,GuaranteeConst{
         Issuer memory ci = issuers[issuerList[_id]];
 
         return (ci.name,ci.localAddress,ci.addr,ci.status);
-//        _name = ci.name;
-//        _localAddress  = ci.localAddress;
-//        _addr = ci.addr;
-//        _status = ci.status;
     }
 
     function getIssuer(address _addr) constant public returns(string , string ,  issuerStatus )  {
-
 
         Issuer memory ci = issuers[_addr];
 

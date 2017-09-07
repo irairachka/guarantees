@@ -27,7 +27,7 @@ const http=require('http');
 import { canBeNumber } from '../util/validation';
 
 import {allRequests, allRequests as Requests} from '../../tempData/data';
-import {GRequest, Guarantee} from "./interfaces/request";
+import {GRequest, Guarantee, Beneficiary} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
 
 declare let window: any;
@@ -117,6 +117,10 @@ export class AppComponent {
       this._ngZone.run(() => {
         this.getAllGRequests();
         this.getAllGuarantees();
+        console.log('get user data');
+        this.getBankData(this.account);
+        this.getCustomerData(this.account);
+        this.getAllBeneficiaries();
       });
     });
   };
@@ -185,8 +189,8 @@ export class AppComponent {
       console.log(customer);
       return {
         customerID: requestAddress,
-        Name: resultArr[0],
-        Address: resultArr[1]
+        Name: customer[0],
+        Address: customer[1]
       };
     }).catch((e) => {
       console.log(e);
@@ -194,17 +198,17 @@ export class AppComponent {
   };
 
   getBankData = (requestAddress) => {
-
+debugger;
     this.Regulator
       .deployed()
       .then((instance) => {
         return instance.getIssuer.call(requestAddress,{from: this.account});
       }).then((issuer) => {
-      console.log(customer);
+      console.log('issuer', issuer);
       return {
         BankID: requestAddress,
-        Name: resultArr[0],
-        Address: resultArr[1]
+        Name: issuer[0],
+        Address: issuer[1]
       };
     }).catch((e) => {
       console.log(e);
@@ -256,7 +260,7 @@ export class AppComponent {
       }).then((result) => {
       let parsedResult = this.populateGuarantyData(result);
       console.log('parsedResult', parsedResult);
-      // this.myGuaranties = [...this.myGuaranties, parsedResult];
+      this.myGuaranties = [...this.myGuaranties, parsedResult];
     }).catch((e) => {
       console.log(e);
     });
@@ -370,7 +374,7 @@ console.log('this.openFormDialog', this.openFormDialog);
       EndDate: endDate,
       indexType: resultArr[8].valueOf(),
       indexDate: resultArr[9].valueOf(),
-      GuarantyState: resultArr[10].valueOf()
+      GuaranteeState: resultArr[10].valueOf()
     };
   };
 
@@ -378,8 +382,8 @@ console.log('this.openFormDialog', this.openFormDialog);
 
     return {
       beneficiaryID: beneAddress,
-      name: resultArr[0],
-      address: resultArr[1],
+      Name: resultArr[0],
+      Address: resultArr[1],
 
     };
   };
