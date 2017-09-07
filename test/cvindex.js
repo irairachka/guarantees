@@ -28,6 +28,7 @@ contract('Regulator', function(accounts) {
         });
     });
 
+
     // it("should create all data at the beginning", function() {
     //     var Registry_instance;
     //     return Regulator.deployed().then(function(instance) {
@@ -51,7 +52,7 @@ contract('Regulator', function(accounts) {
     //         }
     //         assert.fail("can't add issuer");
     //         // console.log(tx_id);
-    //         }).then(function (result) {
+    //     }).then(function (result) {
     //         for (var i = 0; i < result.logs.length; i++) {
     //             var log = result.logs[i];
     //
@@ -64,7 +65,7 @@ contract('Regulator', function(accounts) {
     //             }
     //         }
     //         assert.fail("can't add Beneficiary");
-    //        }).then(function (result) {
+    //     }).then(function (result) {
     //         for (var i = 0; i < result.logs.length; i++) {
     //             var log = result.logs[i];
     //
@@ -89,6 +90,24 @@ contract('Regulator', function(accounts) {
     //             'Error detected')
     //     });
     // });
+
+    it("should test  all data at the beginning", function() {
+        var Registry_instance;
+        return Regulator.deployed().then(function(instance) {
+            Registry_instance = instance;
+            return Registry_instance.getOwner.call();
+        }).then(function (regulatorAddress) {
+            account=regulatorAddress;
+            console.log("regulatorAddress:"+account);
+            return Registry_instance.getIssuer.call(account,{from: account});
+        }).then(function (result) {
+            assert.equal(result.length, 2, "getIssuer shold have 2 parameters");
+        }).catch(function(error) {
+            console.error(error);
+            assert.equal(error.toString(),'',
+                'Error detected')
+        });
+    });
 
 
 
