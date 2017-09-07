@@ -43,6 +43,8 @@ export class AppComponent {
 
   // User type data
   beneficiaries: Beneficiary[] =[];
+  customers: Customer[] =[];
+
 
   // Dialog data
   dialogData: any;
@@ -325,6 +327,7 @@ export class AppComponent {
       customer: resultArr[1],
       beneficiary: resultArr[2],
       bank: resultArr[3],
+      beneficiaryName: this.getBeneficiaryData(resultArr[2]).Name,
       purpose: resultArr[4],
       amount: resultArr[5].valueOf(),
       StartDate: startDate,
@@ -344,6 +347,7 @@ export class AppComponent {
       customer: resultArr[1],
       beneficiary: resultArr[2],
       bank: resultArr[3],
+      customerName: this.getCustomerData(resultArr[2]).name,
       purpose: resultArr[4],
       amount: resultArr[5].valueOf(),
       StartDate: startDate,
@@ -361,6 +365,53 @@ export class AppComponent {
       Name: resultArr[0],
       Address: resultArr[1],
 
+    };
+  };
+
+
+
+  getBeneficiaryData= (beneAddress) => {
+
+    this.beneficiaries.forEach((beneficiary) => {
+      if (beneficiary.beneficiaryID==beneAddress)
+      {
+        return beneficiary;
+      }
+    });
+  };
+
+  getCustomerData= (customerAddress) => {
+
+
+    this.customers.forEach((customer) => {
+      if (customer.customerID==customerAddress)
+      {
+        return customer;
+      }
+    });
+
+    this.Regulator
+      .deployed()
+      .then((instance) => {
+        return instance.getCustomer.call(customerAddress,{from: this.account});
+      }).then((result) => {
+      let customer=this.populateCustomerData(customerAddress,result);
+      this.customers=[...this.customers, customer ];
+      return customer;
+    }).catch((e) => {
+      console.log(e);
+    });
+    return null;
+
+
+  };
+
+  populateCustomerData= (customerAddress,resultArr) => {
+
+    return {
+      customerID: customerAddress,
+      Name: resultArr[0],
+      Address: resultArr[1],
     };
   };
 
@@ -524,7 +575,7 @@ export class AppComponent {
       this.dialogData = e.request
     }
     this.openFormDialog = true;
-console.log('this.openFormDialog', this.openFormDialog);
+    console.log('this.openFormDialog', this.openFormDialog);
   }
 
   clearData() {

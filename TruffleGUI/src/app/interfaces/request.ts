@@ -5,6 +5,7 @@ export interface GRequest {
   customer: string;
   bank: string;
   beneficiary: string;
+  beneficiaryName: string;
   StartDate: string;
   EndDate: string;
   amount: number;
@@ -17,7 +18,7 @@ export interface GRequest {
 export interface ExpandedRequest {
   shortrequest: GRequest;
   log: RequestFlowLog[] ;
-  
+
 }
 
 
@@ -32,6 +33,7 @@ export interface Guarantee {
   GuaranteeID: string;
   GRequestID: string;
   customer: string;
+  customerName: string;
   bank: string;
   beneficiary: string;
   StartDate: string;
