@@ -9,7 +9,7 @@ const Regulator_artifact = require('../../../build/contracts/Regulator.json');
 const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
 
 // Interfaces, mock data and utils
-import { userData, bankData, } from '../../tempData/data';
+import { userData, bankData, } from '../../tempData/mockData';
 import {GRequest, Guarantee, Beneficiary} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
 import {GuaranteeState, RequestState} from "./interfaces/enum";
@@ -25,19 +25,23 @@ export class AppComponent {
   Regulator = contract(Regulator_artifact);
   GuaranteeRequest = contract(GuaranteeRequest_artifact);
   DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
-  
+
   account: any;
   accounts: any;
   web3: any;
 
+  // Requests and Guarantees
   customerRequests: GRequest[] = [];
   customerGuaranties: Guarantee[] = [];
-  beneficiaries:Beneficiary[] =[];
   bankRequests: GRequest[] = [];
   bankGuaranties: Guarantee[] = [];
   beneficiaryGuaranties: Guarantee[] = [];
-  
-  data: any; // Dialog data
+
+  // User type data
+  beneficiaries: Beneficiary[] =[];
+
+  // Dialog data
+  dialogData: any;
   openFormDialog: boolean = false; // show dialog
   modalType: string = 'user'; // dialog types
 
@@ -94,12 +98,7 @@ export class AppComponent {
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       this._ngZone.run(() => {
-        // this.getAllGRequests();
-        // this.getAllGuarantees();
-        console.log('get user data');
-        // this.getBankData(this.account);
-        // this.getCustomerData(this.account);
-        // this.getAllBeneficiaries();
+        // TODO - add get all data functions
       });
     });
   };
@@ -124,10 +123,9 @@ export class AppComponent {
   };
 
 
-  getOneGRequests = (requestAddress) => {
+  getOneGRequests = (requestAddress): GRequest => {
     /** Gets one guarantee requests by id */
     /** parses the data and sends to UI */
-    console.log('requestAddress', requestAddress)
     this.GuaranteeRequest.at(requestAddress)
       .then((guaranteeRequestinstance) => {
         return guaranteeRequestinstance.getGuaranteeRequestData();
@@ -136,6 +134,7 @@ export class AppComponent {
     }).catch((e) => {
       console.log(e);
     });
+    return;
   };
 
 
@@ -215,7 +214,7 @@ export class AppComponent {
   };
 
 
-  getOneGuaranty = (guarantyAddress) => {
+  getOneGuaranty = (guarantyAddress): Guarantee  => {
     /** Gets one guarantee requests by id */
     /** parses the data and sends to UI */
     console.log('guarantyAddress', guarantyAddress);
@@ -227,10 +226,10 @@ export class AppComponent {
     }).catch((e) => {
       console.log(e);
     });
+    return;
   };
 
   getCustomerData = (requestAddress) => {
-
     this.Regulator
       .deployed()
       .then((instance) => {
@@ -279,7 +278,7 @@ export class AppComponent {
   };
 
 
-  getOneBeneficiary = (beneficiaryAddress) => {
+  getOneBeneficiary = (beneficiaryAddress): Beneficiary => {
     /** Gets one guarantee requests by id */
     /** parses the data and sends to UI */
     console.log('beneficiaryAddress', beneficiaryAddress);
@@ -292,6 +291,7 @@ export class AppComponent {
     }).catch((e) => {
       console.log(e);
     });
+    return;
   };
 
 
@@ -307,12 +307,12 @@ export class AppComponent {
     });
 
     this.beneficiaryGuaranties.forEach((Request) => {
-      if (Request.GRequestID==GRequestId) return Request;
+      if (Request.GuaranteeID==guaranteeID) return Request;
     });
 
   };
 
-  populateRequestData = (resultArr) => {
+  populateRequestData = (resultArr): GRequest => {
     const startDate = this.transformDateSolToJS(resultArr[6]);
     const endDate = this.transformDateSolToJS(resultArr[7]);
 
@@ -329,7 +329,7 @@ export class AppComponent {
       indexDate: resultArr[9].valueOf(),
       requestState: resultArr[10].valueOf()
     };
-  }
+  };
 
   populateGuarantyData= (resultArr) => {
     const startDate = this.transformDateSolToJS(resultArr[6]);
@@ -362,20 +362,19 @@ export class AppComponent {
 
   acceptRequest = (requestId, comment , hashcode) => {
     // אישור של בנק
-    if  (hashcode)
-        this.bankRequests.forEach((Request) => {
+    if  (hashcode) {
+      this.bankRequests.forEach((Request) => {
         if (Request.GRequestID==requestId)
         {
           Request.requestState=RequestState.accepted;
           return Request;
         }
-      })
+      });
+    }
     else
     {
         throw new Error('hashcode is empty');
     }
-
-
   };
 
   rejectRequest = (requestId,comment) => {
@@ -510,7 +509,6 @@ export class AppComponent {
         this.onNewRequestSuccess(guaranteeRequestAddress);
     }).catch((e) => {
       console.log(e);
-      // this.setRegisterStatus("Unable to refresh balance; see log.", e);
     });
   };
 
@@ -519,14 +517,14 @@ export class AppComponent {
     console.log('e', e);
     this.modalType = e.user;
     if(!isNullOrUndefined(e.request)) {
-      this.data = e.request
+      this.dialogData = e.request
     }
     this.openFormDialog = true;
 console.log('this.openFormDialog', this.openFormDialog);
   }
 
   clearData() {
-    this.data = null;
+    this.dialogData = null;
   }
 
   handleCreateRequest = (e) => {
