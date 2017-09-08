@@ -20,13 +20,13 @@ export const beneficiaryData: Beneficiary = {
 };
 
 export const userData: Customer = {
-  customerID: this.addressOnChain,
+  customerID: addressOnChain,
   Name: 'ישראל ישראלי',
   Address: 'יצחק קצנסלון 5, תל אביב'
 };
 
 export const bankData: Bank = {
-  bankID: this.addressOnChain,
+  bankID: addressOnChain,
   Name: "בנק הפועלים",
   Address: "הנגב 11 תל אביב"
 };

@@ -53,6 +53,8 @@ export class AppComponent {
   openFormDialog: boolean = false; // show dialog
   modalType: string = 'user'; // dialog types
 
+  idmoc=10000000000000000000;
+
   constructor(private _ngZone: NgZone) {
 
   }
@@ -374,26 +376,26 @@ export class AppComponent {
 
 
   getBeneficiaryData= (beneAddress): Beneficiary => {
-    this.beneficiaries.forEach((beneficiary) => {
-      if (beneficiary.beneficiaryID==beneAddress)
-      {
-        return beneficiary;
+    for (var i in this.beneficiaries) {
+      if (this.beneficiaries[i].beneficiaryID==beneAddress) {
+        return this.beneficiaries[i];
       }
-    });
-    return;
+    }
+
+    return this.beneficiaries[0];
+
   };
 
   getOneCustomerData = (customerAddress): Customer => {
-    // debugger;
+
+    for (var i in this.customers) {
+      if (this.customers[i].customerID==customerAddress) {
+        return this.customers[i];
+      }
+    }
+
     return this.customers[0];
-    // this.customers.forEach((customer) => {
-    //   if (customer.customerID==customerAddress)
-    //   {
-    //     return customer;
-    //   }
-    // });
-    //
-    // return this.getCustomerData(customerAddress);
+
   };
 
   populateCustomerData= (customerAddress,resultArr) => {
@@ -419,12 +421,12 @@ export class AppComponent {
           beneficiary: this.bankRequests[i].GRequestID,
           bank: this.bankRequests[i].GRequestID,
           customerName: this.getOneCustomerData(this.bankRequests[i].customer).Name,
-          StartDate: '10/05/2017',
-          EndDate: '10/05/2019',
-          amount: 10000,
-          purpose: 'שכר דירה',
-          indexType: IndexType.CPI,
-          indexDate: 1,
+          StartDate: this.bankRequests[i].StartDate,
+          EndDate: this.bankRequests[i].EndDate,
+          amount: this.bankRequests[i].amount,
+          purpose: this.bankRequests[i].purpose,
+          indexType: this.bankRequests[i].indexType,
+          indexDate: this.bankRequests[i].indexDate,
           guaranteeState: GuaranteeState.Valid
         }];
 
@@ -607,6 +609,27 @@ export class AppComponent {
 
   createRequest = ( userId , bankId, benefId , purpose,
                     amount, StartDate, EndDate, indexType, indexDate) => {
+    // this.transformDateSolToJS(resultArr[6]);
+  // debugger;
+    this.idmoc=this.idmoc+1;
+    this.customerRequests = [...this.customerRequests, this.populateRequestData(
+      [''+this.idmoc,
+        this.customers[0].customerID,
+        this.customers[0].customerID,
+        this.customers[0].customerID,
+        purpose,
+        amount,
+        StartDate,
+        EndDate,
+        indexType,
+        indexDate,
+        RequestState.waitingtobank
+      ]
+    )];
+
+    this.bankRequests=this.customerRequests;
+    if(1==1) return ;
+    else
     console.log("begin");
     this.Regulator
       .deployed()
@@ -615,7 +638,7 @@ export class AppComponent {
           { from: this.account, gas: 6000000});
       }).then((guaranteeRequestAddress) => {
         console.log(guaranteeRequestAddress);
-        // this.onNewRequestSuccess(guaranteeRequestAddress);
+         this.onNewRequestSuccess(guaranteeRequestAddress);
     }).catch((e) => {
       console.log(e);
     });
@@ -683,9 +706,9 @@ export class AppComponent {
     return date.toLocaleDateString('en-GB');
   }
 
-  // onNewRequestSuccess = (requestAddress) => {
-  //   // toaster = success;
-  //   // close modal
-  //   this.getOneGRequests(requestAddress);
-  // }
+  onNewRequestSuccess = (requestAddress) => {
+    // toaster = success;
+    // close modal
+    this.getOneGRequests(requestAddress);
+  }
 }

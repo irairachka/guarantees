@@ -190,17 +190,8 @@ window.App = {
       console.log("instance");
 
 
-     // var timestamp = 1301090400,
-        // date = new Date(timestamp * 1000),
-        // datevalues = [
-        //     date.getFullYear(),
-        //     date.getMonth()+1,
-        //     date.getDate(),
-        //     date.getHours(),
-        //     date.getMinutes(),
-        //     date.getSeconds(),
-        // ];
-         var dt=(Date.now()/1000);
+     
+      var dt=(Date.now()/1000);
 
         return instance.createGuaranteeRequest(account1 ,account2,account3,purpose, amount,beginDate,endDate,indexType,indexDate,{from: account ,gas: 6000000});
     }).then(function (guaranteeRequestAddresses) {
