@@ -16,6 +16,7 @@ import { ParseDatePipe } from './pipes/ParseDate/parse-date.pipe';
 import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
 import { WizardComponent } from './components/wizard/wizard.component';
 import {MessageService} from "primeng/components/common/messageservice";
+import { HistoryComponent } from './components/history/history.component';
 
 @NgModule({
   imports: [
@@ -38,7 +39,8 @@ import {MessageService} from "primeng/components/common/messageservice";
     FilterByKeyValuePipe,
     ParseDatePipe,
     FourDigitsPipe,
-    WizardComponent
+    WizardComponent,
+    HistoryComponent
   ],
   providers: [
     MessageService

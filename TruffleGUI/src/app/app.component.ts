@@ -655,7 +655,12 @@ export class AppComponent {
     this.modalType = e.user;
     if(!isNullOrUndefined(e.request)) {
       this.dialogData = e.request
+      if(this.modalType !== 'beneficiary') {
+        // TODO - get real history
+        this.dialogData = Object.assign({}, this.dialogData, {history: this.fillMockRequest(1)})
+      }
     }
+    console.log('this.dialogData', this.dialogData);
     this.openFormDialog = true;
     console.log('this.openFormDialog', this.openFormDialog);
   }

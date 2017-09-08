@@ -1,0 +1,5 @@
+<div class="ui-layou-column">
+  <div *ngFor="let item of history" class="ui-layout">
+    <label>{{item.state}}</label><label *ngIf="item.comment">: {{item.comment}}</label><label> -- {{item.date}}</label>
+  </div>
+</div>

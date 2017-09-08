@@ -101,5 +101,11 @@
         </ng-container>
       </div>
     </div>
+    <div class="history ui-space-medium" *ngIf="data.history">
+      <label class="form-label">היסטוריה</label>
+      <div class="ui-layout-column ui-space-r-large">
+        <app-history [history]="data.history.log"></app-history>
+      </div>
+    </div>
   </div>
 </div>

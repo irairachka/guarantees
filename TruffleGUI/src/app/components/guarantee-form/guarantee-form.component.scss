@@ -46,7 +46,8 @@
   .user-details,
   .guarantee-details,
   .status-wizard,
-  .actions {
+  .actions,
+  .history {
     position: relative;
     border-bottom: 1px solid #fff;
   }
@@ -66,6 +67,11 @@
   .guarantee-details {
     .form-label {
       right: -24px;
+    }
+  }
+  .history {
+    .form-label {
+      right: -8px;
     }
   }
 }
