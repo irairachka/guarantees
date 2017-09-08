@@ -1,0 +1,16 @@
+.wiz-item {
+  width: 75px;
+  height: 25px;
+  background: #eee;
+  color: #444;
+  border: 1px solid #888888;
+  text-align: center;
+  border-radius: 3px;
+  line-height: 1.4em;
+
+  &.selected {
+    background: #888;
+    color: #fff;
+    border-color: #eeeeee;
+  }
+}
