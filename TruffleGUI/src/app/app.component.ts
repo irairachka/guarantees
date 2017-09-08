@@ -18,6 +18,8 @@ import {
 import {GRequest, Guarantee, Beneficiary, Customer, ExpandedRequest} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
 import {GuaranteeState, RequestState, IndexType} from "./interfaces/enum";
+import {Message} from "primeng/primeng";
+import {MessageService} from "primeng/components/common/messageservice";
 
 
 declare let window: any;
@@ -53,9 +55,12 @@ export class AppComponent {
   openFormDialog: boolean = false; // show dialog
   modalType: string = 'user'; // dialog types
 
+  // Toaster data
+  toaster: Message[] = [];
+
   idmoc=10000000000000000000;
 
-  constructor(private _ngZone: NgZone) {
+  constructor(private _ngZone: NgZone, private msgService: MessageService) {
 
   }
 
@@ -92,7 +97,7 @@ export class AppComponent {
     // Get the initial account balance so it can be displayed.
     this.web3.eth.getAccounts((err, accs) => {
       if (err != null) {
-        alert('There was an error fetching your accounts.');
+        this.msgService.add({severity: 'warn', summary:'תקלת תקשורת', detail:'הייתה בעיה גישה לשרת'});
         return;
       }
 

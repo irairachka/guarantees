@@ -26,3 +26,5 @@
   <guarantee-form [data]="dialogData" [modalType]="modalType"
                   (updateRequest)="handleRequestUpdate($event)" (postNewRequest)="handleCreateRequest($event)"></guarantee-form>
 </p-dialog>
+
+<p-growl [(value)]="msgs"></p-growl>
