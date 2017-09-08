@@ -709,8 +709,6 @@ export class AppComponent {
     this.openFormDialog = false;
   };
 
-
-
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);
     return date.toLocaleDateString('en-GB');

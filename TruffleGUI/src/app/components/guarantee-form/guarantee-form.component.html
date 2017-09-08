@@ -47,16 +47,16 @@
     <div class="user-details ui-space-medium">
       <label class="form-label">פרטי לקוח</label>
       <div class="ui-layout-column ui-space-r-large">
-        <label placeholder="שם הלקוח">שם לקוח: {{data.id}}</label>
-        <label placeholder="חפ / תז">חפ . תז: {{data.id}}</label>
-        <label placeholder="כתובת">כתובת: {{data.id}}</label>
+        <label placeholder="שם הלקוח">שם לקוח: {{userDetails.Name}}</label>
+        <label placeholder="חפ / תז">חפ . תז: {{userDetails.customerID | fourDigits}}</label>
+        <label placeholder="כתובת">כתובת: {{userDetails.Address}}</label>
       </div>
     </div>
     <div class="guarantee-details ui-space-medium">
       <label class="form-label">פרטי הערבות</label>
       <div class="ui-layout-column ui-space-r-large">
         <div class="ui-layout double-input ui-space-b-small">
-          <label placeholder="המוטב">המוטב: {{data.beneficiary}}</label>
+          <label placeholder="המוטב">המוטב: {{data.beneficiaryName }}</label>
           <label placeholder="כתובת">כתובת: {{data.beneficiaryAddress}}</label>
         </div>
         <label placeholder="מטרת הערבות">מטרת הערבות: {{data.purpose}}</label>

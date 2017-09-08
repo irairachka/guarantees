@@ -1,6 +1,7 @@
 import {Component, Input, OnChanges, Output, OnDestroy, OnInit, EventEmitter} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {isNullOrUndefined} from "util";
+import {Customer} from "../../interfaces/request";
 
 @Component({
   selector: 'guarantee-form',
@@ -10,6 +11,7 @@ import {isNullOrUndefined} from "util";
 export class GuaranteeFormComponent implements OnChanges {
   @Input() data: any;
   @Input() modalType: string;
+  @Input() userDetails: Customer;
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
