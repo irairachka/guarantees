@@ -9,6 +9,7 @@ const  addressOnChainRequest2='0xd532D3531958448e9E179729421B92962fb81Dd2';
 const  addressOnChainRequest3='0xd532D3531958448e9E179729421B92962fb81Dd3';
 const  addressOnChainRequest4='0xd532D3531958448e9E179729421B92962fb81Dd4';
 const  addressOnChainRequest5='0xd532D3531958448e9E179729421B92962fb81Dd5';
+const  addressOnChainRequest6='0xd532D3531958448e9E179729421B92962fb81Dd6';
 
 const  addressOnChainGuaranty1='0xd532D3531958448e9E179729421B92962fb81Dc1';
 
@@ -97,6 +98,19 @@ export const mockCustomerRequests: GRequest[] = [
     indexType: IndexType.None,
     indexDate: 1,
     requestState: RequestState.withdrawed
+  },{
+    GRequestID: addressOnChainRequest6,
+    customer: addressOnChain,
+    beneficiary: addressOnChain,
+    bank: addressOnChain,
+    beneficiaryName: beneficiaryData.Name,
+    StartDate: '10/05/2017',
+    EndDate: '10/05/2019',
+    amount: 10000,
+    purpose: 'נסייון',
+    indexType: IndexType.None,
+    indexDate: 1,
+    requestState: RequestState.waitingtocustomer
   }
 ];
 
@@ -119,11 +133,11 @@ export const mockCustomerGuaranties: Guarantee[] = [
 ];
 
 export const mockbeneficiaries:Beneficiary[] =[
-  {
-    beneficiaryID: beneficiaryData.beneficiaryID,
-    Name: beneficiaryData.Name,
-    Address: beneficiaryData.Address
-  }
+  beneficiaryData
+];
+
+export const mockcustomers:Customer[] =[
+  userData
 ];
 export const mockBankRequests: GRequest[] = mockCustomerRequests;
 
@@ -131,110 +145,131 @@ export const mockBankGuaranties: Guarantee[] = mockCustomerGuaranties;
 
 export const mockBeneficiaryGuaranties: Guarantee[] = mockCustomerGuaranties;
 
-// export const mockexpandedRequest: ExpandedRequest[] =[
-//   {
-//   shortrequest: customerRequests[0],
-//   log: [
-//     {
-//       date: this.customerRequests[0].StartDate,
-//       state: RequestState.created,
-//       comment: null
-//     },
-//     {
-//       date: this.customerRequests[0].StartDate,
-//       state: RequestState.waitingtobank,
-//       comment: null
-//     },
-//     {
-//       date: this.customerRequests[0].StartDate,
-//       state: this.customerRequests[0].requestState,
-//       comment: "הכל מאושר על ידי משפטיט"
-//     }
-//   ]
-//
-// },
-//   {
-//     shortrequest: this.customerRequests[1],
-//     log: [
-//       {
-//         date: this.customerRequests[1].StartDate,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//
-//       {
-//         date: this.customerRequests[1].StartDate,
-//         state: this.customerRequests[1].requestState,
-//         comment: null
-//       }
-//     ]
-//
-//   },
-//   {
-//     shortrequest: this.customerRequests[2],
-//     log: [
-//       {
-//         date: this.customerRequests[2].StartDate,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[2].StartDate,
-//         state: RequestState.waitingtobank,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[2].StartDate,
-//         state: this.customerRequests[2].requestState,
-//         comment: "לא מאושר על ידי משפטיט"
-//       }
-//     ]
-//
-//   },
-//   {
-//     shortrequest: this.customerRequests[3],
-//     log: [
-//       {
-//         date: this.customerRequests[3].StartDate,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[3].StartDate,
-//         state: RequestState.waitingtobank,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[3].StartDate,
-//         state: this.customerRequests[3].requestState,
-//         comment: "ממתין למשפטית לאישור"
-//       }
-//     ]
-//
-//   },
-//   {
-//     shortrequest: this.customerRequests[4],
-//     log: [
-//       {
-//         date: this.customerRequests[4].StartDate,
-//         state: RequestState.created,
-//         comment: null
-//       },
-//
-//       {
-//         date: this.customerRequests[4].StartDate,
-//         state: RequestState.waitingtobank,
-//         comment: null
-//       },
-//       {
-//         date: this.customerRequests[4].StartDate,
-//         state: this.customerRequests[4].requestState,
-//         comment: null
-//       }
-//     ]
-//
-//   }
-// ];
+export const mockexpandedRequest: ExpandedRequest[] =[
+  {
+  shortrequest: mockCustomerRequests[0],
+  log: [
+    {
+      date: mockCustomerRequests[0].StartDate,
+      state: RequestState.created,
+      comment: null
+    },
+    {
+      date: mockCustomerRequests[0].StartDate,
+      state: RequestState.waitingtobank,
+      comment: null
+    },
+    {
+      date: mockCustomerRequests[0].StartDate,
+      state: mockCustomerRequests[0].requestState,
+      comment: "הכל מאושר על ידי משפטיט"
+    }
+  ]
+
+},
+  {
+    shortrequest: mockCustomerRequests[1],
+    log: [
+      {
+        date: mockCustomerRequests[1].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+
+      {
+        date: mockCustomerRequests[1].StartDate,
+        state: mockCustomerRequests[1].requestState,
+        comment: null
+      }
+    ]
+
+  },
+  {
+    shortrequest: mockCustomerRequests[2],
+    log: [
+      {
+        date: mockCustomerRequests[2].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+      {
+        date: mockCustomerRequests[2].StartDate,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: mockCustomerRequests[2].StartDate,
+        state: mockCustomerRequests[2].requestState,
+        comment: "לא מאושר על ידי משפטיט"
+      }
+    ]
+
+  },
+  {
+    shortrequest: mockCustomerRequests[3],
+    log: [
+      {
+        date: mockCustomerRequests[3].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+      {
+        date: mockCustomerRequests[3].StartDate,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: mockCustomerRequests[3].StartDate,
+        state: mockCustomerRequests[3].requestState,
+        comment: "ממתין למשפטית לאישור"
+      }
+    ]
+
+  },
+  {
+    shortrequest: mockCustomerRequests[4],
+    log: [
+      {
+        date: mockCustomerRequests[4].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+
+      {
+        date: mockCustomerRequests[4].StartDate,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: mockCustomerRequests[4].StartDate,
+        state: mockCustomerRequests[4].requestState,
+        comment: null
+      }
+    ]
+  },
+  {
+    shortrequest: mockCustomerRequests[5],
+    log: [
+      {
+        date: mockCustomerRequests[5].StartDate,
+        state: RequestState.created,
+        comment: null
+      },
+
+      {
+        date: mockCustomerRequests[5].StartDate,
+        state: RequestState.waitingtobank,
+        comment: null
+      },
+      {
+        date: mockCustomerRequests[5].StartDate,
+        state: mockCustomerRequests[5].requestState,
+        comment: "לא ברור למה ביקשו!!!"
+      }
+    ]
+
+  }
+];
 
 
 
