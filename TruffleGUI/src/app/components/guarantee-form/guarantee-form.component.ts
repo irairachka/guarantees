@@ -16,15 +16,15 @@ export class GuaranteeFormComponent implements OnChanges {
   state: any[] = [
     {
       label: "המבקש",
-      value: "המבקש",
+      selected: false,
     },
     {
       label: "הבנק",
-      value: "הבנק",
+      selected: true,
     },
     {
       label: "המוטב",
-      value: "המוטב",
+      selected: false,
     },
   ];
 

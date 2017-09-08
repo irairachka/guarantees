@@ -6,8 +6,9 @@
     <label class="form-label">סטטוס</label>
     <div class="ui-layout-column ui-space-r-large">
       <label class="ui-space-b-small">ברגע זה הטיפול נמצא אצל:</label>
-      <p-selectButton [options]="state" value="selectedState"
-                      multiple="false"></p-selectButton>
+      <app-wizard [options]="state"></app-wizard>
+      <!--<p-selectButton [options]="state" [(ngModel)]="selectedState"-->
+                      <!--multiple="false"></p-selectButton>-->
     </div>
   </div>
 

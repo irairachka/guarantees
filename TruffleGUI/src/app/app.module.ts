@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
-import {DialogModule, DropdownModule, FileUploadModule, SelectButtonModule} from "primeng/primeng";
+import {DialogModule, DropdownModule, FileUploadModule, SelectButtonModule, ToggleButtonModule} from "primeng/primeng";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GuaranteeViewComponent} from "./components/guarantee-view/guarantee-view.component";
 import {RequestItemComponent} from "./components/request-item/request-item.component";
@@ -12,6 +12,7 @@ import {GuaranteeFormComponent} from "./components/guarantee-form/guarantee-form
 import {FilterByKeyValuePipe} from "./pipes/FilterByKeyValue/filter-by-key-value.pipe";
 import { ParseDatePipe } from './pipes/ParseDate/parse-date.pipe';
 import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
+import { WizardComponent } from './components/wizard/wizard.component';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
     DialogModule,
     FileUploadModule,
     SelectButtonModule,
-    DropdownModule
+    DropdownModule,
+    ToggleButtonModule
   ],
   declarations: [
     AppComponent,
@@ -33,7 +35,8 @@ import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
     GuaranteeFormComponent,
     FilterByKeyValuePipe,
     ParseDatePipe,
-    FourDigitsPipe
+    FourDigitsPipe,
+    WizardComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

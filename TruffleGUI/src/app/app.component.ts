@@ -109,6 +109,7 @@ export class AppComponent {
       // need to use _ngZone.run() so that the UI updates on promise resolution
       this._ngZone.run(() => {
         // TODO - add get all data functions
+        this.getAllUserRequests();
       });
     });
   };
@@ -122,7 +123,7 @@ export class AppComponent {
       .then((instance) => {
         return instance.getRequestsAddressForCustomer.call({from: this.account});
       }).then((guaranteeRequestAddresses) => {
-      console.log(guaranteeRequestAddresses);
+      console.log('guaranteeRequestAddresses', guaranteeRequestAddresses);
       guaranteeRequestAddresses.forEach((requestAddress) => {
         this.customerRequests = [...this.customerRequests, this.getOneGRequests(requestAddress)];
 
@@ -473,10 +474,9 @@ export class AppComponent {
         break; //Stop this loop, we found it!
       }
     }
-
-    this.customerRequests=this.bankRequests;
+    this.customerRequests = this.bankRequests;
     console.log("withdrawalRequest");
-    console.log(this.bankRequests);
+    console.log('this.bankRequests', this.bankRequests);
   };
 
   terminateGuatanty = (guatantyId) => {
@@ -704,7 +704,7 @@ export class AppComponent {
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);
     return date.toLocaleDateString('en-GB');
-  }
+  };
 
   onNewRequestSuccess = (requestAddress) => {
     // toaster = success;
