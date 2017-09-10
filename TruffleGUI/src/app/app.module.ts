@@ -4,7 +4,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {
-  DialogModule, DropdownModule, FileUploadModule, GrowlModule,
+  AccordionModule,
+  DialogModule, DropdownModule, FileUploadModule, GrowlModule, SharedModule,
 } from "primeng/primeng";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GuaranteeViewComponent} from "./components/guarantee-view/guarantee-view.component";
@@ -28,7 +29,9 @@ import { HistoryComponent } from './components/history/history.component';
     DialogModule,
     FileUploadModule,
     DropdownModule,
-    GrowlModule
+    GrowlModule,
+    AccordionModule,
+    SharedModule
   ],
   declarations: [
     AppComponent,

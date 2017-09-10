@@ -1,11 +1,15 @@
 <div class="ui-layout-column" [ngClass]="user !== undefined ? user : ''">
   <header class="view-header text-center ui-space-tb-large">
     <label>
-      ----------- {{user}} -----------
+      ----------- {{userName[user]}} -----------
     </label>
-    <div class="header-text ui-layout ui-space-t-medium" ui-layout-align="space-around center">
-      <label>דשבורד ערבויות</label>
-      <button *ngIf="user==='user'"  (click)="openModal()">בקשה חדשה</button>
+    <div class="header-text ui-layout-column ui-space-t-medium" ui-layout-align="space-around center">
+      <label>ניהול ערבויות</label>
+      <p-accordion *ngIf="user==='user'" styleClass="green bgGrey">
+        <p-accordionTab header="יצירת ערבות חדשה">
+          <guarantee-form></guarantee-form>
+        </p-accordionTab>
+      </p-accordion>
       <div *ngIf="user==='beneficiary'">
         <button>מיון לפי תאריך</button>
         <button>מיון לפי משהו אחר</button>
@@ -17,44 +21,65 @@
       <div *ngIf="allRequests"  class="for-treatment ui-space-tb-large">
         <div class="section-header ui-space-tb-small text-bold">
           <label>
-            לטיפול כרגע (שלי) - {{(allRequests | filterByKeyValue:'requestState':user)?.length}} ערבויות
+            דרושה פעולה
           </label>
         </div>
-        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'requestState':user">
-          <request-item [request]="req" (emitRequest)="openModal($event)">
-            <request-details [request]="req"></request-details>
-          </request-item>
+        <div class="req-for-treatment">
+          <p-accordion styleClass="red">
+            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':user">
+              <p-header>
+              <request-item [request]="req" (emitRequest)="openModal($event)">
+                <!--<request-details [request]="req"></request-details>-->
+              </request-item>
+              </p-header>
+              <app-history [request]="req"></app-history>
+            </p-accordionTab>
+          </p-accordion>
         </div>
       </div>
 
       <div class="pending">
         <div *ngIf="allRequests"  class="section-header ui-space-tb-small text-bold">
           <label>
-            בהמתנה - (לטיפול הבנק)
+            בהמתנה
           </label>
         </div>
-        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'requestState':user:true">
-          <request-item [request]="req" (emitRequest)="openModal($event)">
-            <label>מתאריך {{req.StartDate   }}</label>
-          </request-item>
+        <div class="req-pending" >
+          <p-accordion  styleClass="green">
+            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':user:true">
+              <p-header>
+                <request-item [request]="req" (emitRequest)="openModal($event)">
+                  <!--<request-details [request]="req"></request-details>-->
+                </request-item>
+              </p-header>
+              <app-history [request]="req"></app-history>
+            </p-accordionTab>
+          </p-accordion>
         </div>
       </div>
 
       <div class="guarantees">
         <div class="section-header ui-space-tb-small text-bold">
           <label>
-            היסטורית ערבויות
+            היסטורית
           </label>
         </div>
-        <div class="curr-guarantees" *ngFor="let req of allGuaranties">
-          <request-item [request]="req" (emitRequest)="openModal($event)">
-          </request-item>
+        <div class="curr-guarantees">
+          <p-accordion  styleClass="grey">
+            <p-accordionTab *ngFor="let req of allGuaranties">
+              <p-header>
+                <request-item [request]="req" (emitRequest)="openModal($event)">
+                </request-item>
+              </p-header>
+              <app-history [request]="req"></app-history>
+            </p-accordionTab>
+          </p-accordion>
         </div>
       </div>
     </div>
 
     <div class="guarantees-section" *ngIf="user === 'beneficiary'">
-      <div class="active ui-space-tb-large">
+      <div class="active ui-space-b-large">
         <div class="section-header ui-space-tb-small text-bold">
           <label>
             ערבויות פעילות
@@ -67,7 +92,5 @@
         </div>
       </div>
     </div>
-
-
   </main>
 </div>

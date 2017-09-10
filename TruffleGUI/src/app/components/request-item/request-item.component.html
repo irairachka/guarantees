@@ -1,5 +1,9 @@
-<div class="ui-layout ui-space-medium request-item"
-     ui-layout-align="start center" (click)="openRequest()">
-  <label class="text-bold">ערבות - {{request.GRequestID | fourDigits}}</label>
-  <ng-content></ng-content>
+<div class="ui-layout request-item"
+     ui-layout-align="space-between center">
+  <label class="title text-bold">{{request.GRequestID | fourDigits}}</label>
+  <label>{{request.beneficiaryName}}</label>
+  <label>{{request.purpose}}</label>
+  <label>{{request.amount}} ש"ח</label>
+  <label>{{request.StartDate}}</label>
+  <label>{{request.EndDate}}</label>
 </div>
