@@ -8,7 +8,7 @@ import {Customer} from "../../interfaces/request";
   templateUrl: './guarantee-form.component.html',
   styleUrls: ['./guarantee-form.component.scss']
 })
-export class GuaranteeFormComponent implements OnChanges {
+export class GuaranteeFormComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() modalType: string;
   @Input() userDetails: Customer;
@@ -29,6 +29,7 @@ export class GuaranteeFormComponent implements OnChanges {
       selected: false,
     },
   ];
+  displayActions: boolean = false;
 
   // bank dropdown options
   requestsStates: any[];
@@ -57,7 +58,24 @@ export class GuaranteeFormComponent implements OnChanges {
         label: 'מנהל קשרי לרקוחות',
         value: 'מנהל קשרי לרקוחות'
       }
-    ]
+    ];
+  }
+
+  ngOnInit() {
+
+  }
+
+  testDisplayAction() {
+    if(isNullOrUndefined(this.data)) {
+      return false;
+    }
+    if(this.modalType === 'beneficiary') {
+      return true;
+    } else if (this.data.hasOwnProperty('GuaranteeID')) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   createForm() {
@@ -92,6 +110,7 @@ export class GuaranteeFormComponent implements OnChanges {
     this.selectedRequestsStates = '';
     this.cancelReason = '';
     this.terminateReason = '';
+    this.displayActions = this.testDisplayAction();
   }
 
   changeRequest(type) {

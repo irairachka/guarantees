@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <div class="actions ui-space-medium">
+    <div class="actions ui-space-medium" *ngIf="displayActions">
       <label class="form-label">פעולות</label>
       <div [ngSwitch]="modalType" class="ui-layout-column ui-space-r-large">
         <button *ngSwitchCase="'user'" (click)="changeRequest('withdrawal')">ביטול</button>

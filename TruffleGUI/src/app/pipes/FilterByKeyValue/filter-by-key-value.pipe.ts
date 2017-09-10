@@ -11,7 +11,6 @@ export class FilterByKeyValuePipe implements PipeTransform {
     if(isNullOrUndefined(arr)) {
       return;
     }
-    debugger;
     if(inverse) {
       return arr.filter(item => {
         if(value === 'user') {
