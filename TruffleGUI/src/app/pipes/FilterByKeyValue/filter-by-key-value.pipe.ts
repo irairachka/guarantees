@@ -7,17 +7,27 @@ import {isNullOrUndefined} from "util";
 })
 export class FilterByKeyValuePipe implements PipeTransform {
 
-  transform(arr: any[], key: string, value: number, args?: any): any[] {
+  transform(arr: any[], key: string, value: any, inverse?: boolean, args?: any): any[] {
     if(isNullOrUndefined(arr)) {
       return;
     }
+    debugger;
+    if(inverse) {
+      return arr.filter(item => {
+        if(value === 'user') {
+          return item[key] !== 3;
+        } else if(value === 'bank') {
+          return item[key] !== 1;
+        } else {
+          return item[key] !== value;
+        }
+      });
+    }
     return arr.filter(item => {
-      if(key === 'requestState') {
-        let mappedStatus = mapRequestState[item[key]];
-        return mappedStatus === value;
-      } else if(key === 'guaranteeState') {
-        let mappedStatus = mapRequestState[item[key]];
-        return mappedStatus === value;
+      if(value === 'user') {
+        return item[key] === 3;
+      } else if(value === 'bank') {
+        return item[key] === 1;
       } else {
         return item[key] === value;
       }

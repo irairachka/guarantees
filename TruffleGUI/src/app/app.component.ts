@@ -436,11 +436,13 @@ export class AppComponent {
           guaranteeState: GuaranteeState.Valid
         }];
 
-        this.bankGuaranties=this.customerGuaranties;
-        this.beneficiaryGuaranties=this.customerGuaranties;
-        this.customerRequests=this.bankRequests;
-
-        this.customerRequests=this.bankRequests;
+        this.bankGuaranties=[...this.customerGuaranties];
+        this.beneficiaryGuaranties=[...this.customerGuaranties];
+        // TODO - ask dimi if I should remove from list
+        this.bankRequests = this.bankRequests.filter(item=> {
+          return item.GRequestID !== requestId;
+        });
+        this.customerRequests=[...this.bankRequests];
 
         break; //Stop this loop, we found it!
       }
@@ -457,7 +459,7 @@ export class AppComponent {
 
   rejectRequest = (requestId,comment) => {
     // ביטול של בנק
-
+    debugger;
     for (var i in this.bankRequests) {
       if (this.bankRequests[i].GRequestID==requestId) {
         this.bankRequests[i].requestState=RequestState.rejected;
@@ -465,7 +467,8 @@ export class AppComponent {
       }
     }
 
-    this.customerRequests=this.bankRequests;
+    this.customerRequests=[...this.bankRequests];
+    this.bankRequests=[...this.bankRequests];
 
 
   };
@@ -479,7 +482,8 @@ export class AppComponent {
         break; //Stop this loop, we found it!
       }
     }
-    this.customerRequests = this.bankRequests;
+    this.customerRequests = [...this.bankRequests];
+    this.bankRequests = [...this.bankRequests];
     console.log("withdrawalRequest");
     console.log('this.bankRequests', this.bankRequests);
   };
@@ -497,15 +501,15 @@ export class AppComponent {
           }
         }
 
-        this.customerRequests=this.bankRequests;
+        this.customerRequests=[...this.bankRequests];
 
         break; //Stop this loop, we found it!
       }
     }
 
-    this.customerRequests=this.bankRequests;
-    this.bankGuaranties=this.customerGuaranties;
-    this.beneficiaryGuaranties=this.customerGuaranties;
+    this.customerRequests=[...this.bankRequests];
+    this.bankGuaranties=[...this.customerGuaranties];
+    this.beneficiaryGuaranties=[...this.customerGuaranties];
 
     console.log("terminateGuatanty");
     console.log(this.bankRequests);
@@ -535,9 +539,9 @@ export class AppComponent {
 
     }
 
-    this.customerRequests=this.bankRequests;
-    this.bankGuaranties=this.customerGuaranties;
-    this.beneficiaryGuaranties=this.customerGuaranties;
+    this.customerRequests=[...this.bankRequests];
+    this.bankGuaranties=[...this.customerGuaranties];
+    this.beneficiaryGuaranties=[...this.customerGuaranties];
 
     console.log("guaranteeUpdate");
     console.log(this.bankRequests);
@@ -554,7 +558,8 @@ export class AppComponent {
       }
     }
 
-    this.customerRequests=this.bankRequests;
+    this.customerRequests=[...this.bankRequests];
+    this.bankRequests=[...this.bankRequests];
 
     console.log("updateRequest");
     console.log(this.customerRequests);
@@ -704,7 +709,7 @@ export class AppComponent {
         this.guaranteeUpdate(e.guaranteeId, '', e.update.amount, e.update.date);
         break;
       default:
-        return;
+        break;
     }
     this.openFormDialog = false;
   };

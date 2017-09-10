@@ -17,10 +17,10 @@
       <div *ngIf="allRequests"  class="for-treatment ui-space-tb-large">
         <div class="section-header ui-space-tb-small text-bold">
           <label>
-            לטיפול כרגע (שלי) - {{(allRequests | filterByKeyValue:'requestState':0)?.length}} ערבויות
+            לטיפול כרגע (שלי) - {{(allRequests | filterByKeyValue:'requestState':user)?.length}} ערבויות
           </label>
         </div>
-        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'requestState':0">
+        <div class="req-for-treatment" *ngFor="let req of allRequests | filterByKeyValue:'requestState':user">
           <request-item [request]="req" (emitRequest)="openModal($event)">
             <request-details [request]="req"></request-details>
           </request-item>
@@ -33,7 +33,7 @@
             בהמתנה - (לטיפול הבנק)
           </label>
         </div>
-        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'requestState':1">
+        <div class="req-pending" *ngFor="let req of allRequests | filterByKeyValue:'requestState':user:true">
           <request-item [request]="req" (emitRequest)="openModal($event)">
             <label>מתאריך {{req.StartDate   }}</label>
           </request-item>
