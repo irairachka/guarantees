@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, Output, OnDestroy, OnInit, EventEmitter} fr
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {isNullOrUndefined} from "util";
 import {Customer} from "../../interfaces/request";
+import {userData} from "../../../../tempData/mockData";
 
 @Component({
   selector: 'guarantee-form',
@@ -11,7 +12,7 @@ import {Customer} from "../../interfaces/request";
 export class GuaranteeFormComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() modalType: string;
-  @Input() userDetails: Customer;
+  // @Input() userDetails: Customer;
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
@@ -30,7 +31,7 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
     },
   ];
   displayActions: boolean = false;
-
+  userDetails: any = userData;
   // bank dropdown options
   requestsStates: any[];
   selectedRequestsStates: string;

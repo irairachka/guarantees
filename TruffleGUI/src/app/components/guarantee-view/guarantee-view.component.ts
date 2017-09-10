@@ -12,6 +12,11 @@ export class GuaranteeViewComponent implements OnInit{
   @Input() allRequests: GRequest[];
   @Input() allGuaranties: Guarantee[];
   @Output() triggerModal: EventEmitter<any> = new EventEmitter();
+  userName: any = {
+    user: 'המבקש',
+    bank: 'הבנק',
+    beneficiary: 'המוטב'
+  };
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);
