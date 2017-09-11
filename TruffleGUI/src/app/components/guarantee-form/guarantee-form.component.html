@@ -38,8 +38,8 @@
         </div>
           <p-fileUpload class="guarantee-details-button" #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
           <button class="guarantee-details-button" type="button" pButton icon="" label="אישור העמלות והתנאים"></button>
-          <button class="guarantee-details-button" type="button" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
-          <button class="guarantee-details-button" type="button" pButton icon="" label="ביטול" ></button>
+          <button class="guarantee-details-button ui-button-success" type="button" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
+          <button class="guarantee-details-button ui-button-danger" type="button" pButton icon="" label="ביטול" ></button>
 
 
         </div>
