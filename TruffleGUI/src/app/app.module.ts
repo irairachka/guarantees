@@ -18,6 +18,8 @@ import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
 import { WizardComponent } from './components/wizard/wizard.component';
 import {MessageService} from "primeng/components/common/messageservice";
 import { HistoryComponent } from './components/history/history.component';
+import {ActionsComponent} from "./components/actions/actions.component";
+import {AccordionContentComponent} from "./components/accordion-content/accordion-content.component";
 
 @NgModule({
   imports: [
@@ -43,7 +45,9 @@ import { HistoryComponent } from './components/history/history.component';
     ParseDatePipe,
     FourDigitsPipe,
     WizardComponent,
-    HistoryComponent
+    HistoryComponent,
+    ActionsComponent,
+    AccordionContentComponent
   ],
   providers: [
     MessageService

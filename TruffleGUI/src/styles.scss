@@ -65,7 +65,8 @@ body {
       padding: .5em 2em .5em .5em;
     }
     span.fa {
-      left: 96%;
+      left: auto;
+      right: 10px;
       transform: rotate(180deg);
     }
     &.ui-state-active {
