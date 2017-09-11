@@ -56,6 +56,7 @@ body {
 
 /** accordion style override */
 .ui-accordion {
+  width: 100%;
   .ui-accordion-header {
     border: none;
     background: #fff;
@@ -80,7 +81,7 @@ body {
   }
   &.green {
     span.fa {
-      color: green;
+      color: #80D81F;
     }
   }
   &.grey {
@@ -89,12 +90,32 @@ body {
     }
   }
   &.bgGrey {
+    position: relative;
     .ui-accordion-header {
       background: #eee;
-      color: green;
+      color: #80D81F;
+      a{
+        color: #80D81F;
+        text-align: right;
+        font-size: 24px;
+      }
     }
     .ui-accordion-content {
       background: #eee;
     }
+    .accordion-tab-close{
+
+      display: block;
+      margin-right: auto;
+
+    }
+  }
+}
+
+
+.guarantee-details-container{
+
+  .ui-fileupload-choose{
+    width: 100%;
   }
 }
