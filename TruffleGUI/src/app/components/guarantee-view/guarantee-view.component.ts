@@ -12,6 +12,8 @@ export class GuaranteeViewComponent implements OnInit{
   @Input() allRequests: GRequest[];
   @Input() allGuaranties: Guarantee[];
   @Output() triggerModal: EventEmitter<any> = new EventEmitter();
+  @Output() updateRequest: EventEmitter<any> = new EventEmitter();
+  @Output() newRequest: EventEmitter<any> = new EventEmitter();
   userName: any = {
     user: 'המבקש',
     bank: 'הבנק',
@@ -20,6 +22,7 @@ export class GuaranteeViewComponent implements OnInit{
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);
+    console.log('this.allGuaranties', this.allGuaranties);
   }
 
   openModal(e) {
@@ -28,5 +31,12 @@ export class GuaranteeViewComponent implements OnInit{
       request: e
     };
     this.triggerModal.emit(modalData);
+  }
+  updateRequestsender(data){
+    this.updateRequest.emit(data);
+  }
+  newRequestEmitter(e) {
+    this.newRequest.emit(e);
+
   }
 }

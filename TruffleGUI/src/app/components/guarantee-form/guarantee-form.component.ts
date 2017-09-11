@@ -104,6 +104,7 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
     console.log('this.newGuarantee', this.newGuarantee);
     let formValues = Object.assign({}, this.newGuarantee.value);
     this.postNewRequest.emit(formValues);
+    this.ngOnChanges();
   }
 
   ngOnChanges() {

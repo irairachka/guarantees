@@ -1,0 +1,43 @@
+.transform-buttons-container{
+  display: flex;
+  justify-content: space-between;
+  .transform-buttons{
+    flex-basis: 48%;
+    background-color: red;
+    margin-bottom: 20px;
+  }
+}
+
+.accept-button{
+  margin-bottom: 20px;
+  background-color: green;
+}
+
+.reject-container{
+  display: flex;
+
+  input{
+    flex-grow: 1;
+  }
+  .cancelReason-send-button{
+    flex-basis: 30%;
+    margin-right: 20px;
+    background-color: red;
+  }
+}
+.guarantee-container{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  .input-button-container{
+    display: flex;
+    input{
+      flex-grow: 1;
+    }
+    button{
+      flex-basis: 30%;
+      margin-right:20px;
+      background-color: green;
+    }
+  }
+}

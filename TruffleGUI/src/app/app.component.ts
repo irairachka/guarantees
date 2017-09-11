@@ -459,7 +459,6 @@ export class AppComponent {
 
   rejectRequest = (requestId,comment) => {
     // ביטול של בנק
-    debugger;
     for (var i in this.bankRequests) {
       if (this.bankRequests[i].GRequestID==requestId) {
         this.bankRequests[i].requestState=RequestState.rejected;
@@ -683,6 +682,7 @@ export class AppComponent {
   };
 
   handleRequestUpdate = (e) => {
+    console.log('e',e);
     switch (e.type) {
       case 'withdrawal':
         console.log('withdraw success', e.requestId);
