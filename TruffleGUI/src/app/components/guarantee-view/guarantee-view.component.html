@@ -5,8 +5,10 @@
     </label>
     <div class="header-text ui-layout-column ui-space-t-medium" ui-layout-align="space-around center">
       <label>ניהול ערבויות</label>
-      <p-accordion *ngIf="user==='user'" styleClass="green bgGrey">
-        <p-accordionTab header="יצירת ערבות חדשה">
+      <p-accordion *ngIf="user==='user'" styleClass="green bgGrey" [style.width]="'100%'">
+
+        <p-accordionTab header="בקשה לערבות חדשה">
+          <!--<button class="accordion-tab-close">X</button>-->
           <guarantee-form></guarantee-form>
         </p-accordionTab>
       </p-accordion>

@@ -13,34 +13,54 @@
   <!--</div>-->
 
   <form [formGroup]="newGuarantee" novalidate *ngIf="!data">
-    <div class="user-details ui-space-medium">
-      <label class="form-label">פרטי לקוח</label>
-      <div class="ui-layout-column ui-space-r-large">
-        <label placeholder="שם הלקוח">שם לקוח: {{userDetails.Name}}</label>
-        <label placeholder="חפ / תז">חפ . תז: {{userDetails.customerID | fourDigits}}</label>
-        <label placeholder="כתובת">כתובת: {{userDetails.Address}}</label>
+    <div class="user-details">
+      <label class="user-details-placeholder">מבקש הערבות:</label>
+      <div class="ui-layout-column user-details-container">
+        <div class="user-id-name-container" >
+          <label class="user-id-name user-name" placeholder="שם הלקוח">{{userDetails.Name}},</label>
+          <label  class="user-id-name user-id" placeholder="חפ / תז">חפ / תז: {{userDetails.customerID | fourDigits}}</label>
+        </div>
+        <label placeholder="כתובת">{{userDetails.Address}}</label>
       </div>
     </div>
     <div class="guarantee-details ui-space-medium">
-      <label class="form-label">פרטי הערבות</label>
-      <div class="ui-layout-column ui-space-r-large">
-        <div class="ui-layout double-input ui-space-b-small">
-          <input placeholder="המוטב" formControlName="beneficiary">
-          <input placeholder="כתובת" formControlName="beneficiaryAddress">
+      <!--<label class="form-label">פרטי הערבות</label>-->
+      <div class="guarantee-details-container">
+        <div class="guarantee-details-right">
+        <!--<div class="ui-layout double-input ui-space-b-small">-->
+          <div class="input-container">
+            <label for="beneficiary">המוטב</label>
+            <input placeholder="המוטב" formControlName="beneficiary" id="beneficiary">
+          </div>
+          <div class="input-container">
+          <label for="purpose">מטרות הערבות</label>
+          <input id="purpose" placeholder="מטרות הערבות" formControlName="purpose">
         </div>
-        <input placeholder="מטרת הערבות" formControlName="purpose">
-        <input placeholder="סכום" formControlName="amount">
-        <div class="ui-layout double-input ui-space-t-small">
-          <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
-          <input placeholder="תאריך סיום" formControlName="endDate">
+          <p-fileUpload class="guarantee-details-button" #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
+          <button class="guarantee-details-button" type="button" pButton icon="" label="אישור העמלות והתנאים"></button>
+          <button class="guarantee-details-button" type="button" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
+          <button class="guarantee-details-button" type="button" pButton icon="" label="ביטול" ></button>
+
+
         </div>
-        <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
+        <div class="guarantee-details-left">
+          <div class="input-container">
+            <label for="beneficiaryAmount">סכום<span>(בש״ח)</span></label>
+            <input formControlName="amount" formControlName="beneficiaryAddress" id="beneficiaryAmount">
+          </div>
+          <div class="ui-layout double-input ui-space-t-small">
+            <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
+            <input placeholder="תאריך סיום" formControlName="endDate">
+          </div>
+        </div>
+
+        <!--</div>-->
+
       </div>
     </div>
-    <div class="actions ui-layout-column ui-space-medium">
-      <button (click)="submitGuarantee()">שליחה - הגשת הבקשה</button>
-      <button>ביטול</button>
-    </div>
+    <!--<div class="actions ui-layout-column ui-space-medium">-->
+      <!--<button>ביטול</button>-->
+    <!--</div>-->
   </form>
   <!-- Read Only Display -->
   <div class="read-only" *ngIf="data">
