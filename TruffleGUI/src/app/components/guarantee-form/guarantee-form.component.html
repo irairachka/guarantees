@@ -17,10 +17,13 @@
       <label class="user-details-placeholder">מבקש הערבות:</label>
       <div class="ui-layout-column user-details-container">
         <div class="user-id-name-container" >
-          <label class="user-id-name user-name" placeholder="שם הלקוח">{{userDetails.Name}},</label>
-          <label  class="user-id-name user-id" placeholder="חפ / תז">חפ / תז: {{userDetails.customerID | fourDigits}}</label>
+          <input type="text" formControlName="userName">
+          <input type="text" formControlName="userId">
+          <!--<label class="user-id-name user-name" placeholder="שם הלקוח">{{userDetails.Name}},</label>-->
+          <!--<label  class="user-id-name user-id" placeholder="חפ / תז">חפ / תז: {{userDetails.customerID | fourDigits}}</label>-->
         </div>
-        <label placeholder="כתובת">{{userDetails.Address}}</label>
+        <input type="text"  formControlName="userAddress" >
+        <!--<label placeholder="כתובת">{{userDetails.Address}}</label>-->
       </div>
     </div>
     <div class="guarantee-details ui-space-medium">
@@ -36,10 +39,10 @@
           <label for="purpose">מטרות הערבות</label>
           <input id="purpose" placeholder="מטרות הערבות" formControlName="purpose">
         </div>
-          <p-fileUpload class="guarantee-details-button" #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
-          <button class="guarantee-details-button" type="button" pButton icon="" label="אישור העמלות והתנאים"></button>
-          <button class="guarantee-details-button ui-button-success" type="button" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
-          <button class="guarantee-details-button ui-button-danger" type="button" pButton icon="" label="ביטול" ></button>
+          <p-fileUpload class="guarantee-details-button tertiary-button" #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="צרוף נוסח ערבות"></p-fileUpload>
+          <button class="guarantee-details-button tertiary-button" type="button" pButton icon="" label="אישור העמלות והתנאים"></button>
+          <button class="guarantee-details-button ui-button-success prime-button" type="button" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
+          <button class="guarantee-details-button ui-button-danger secondary-button" type="button" pButton icon="" label="ביטול" ></button>
 
 
         </div>
@@ -48,9 +51,15 @@
             <label for="beneficiaryAmount">סכום<span>(בש״ח)</span></label>
             <input formControlName="amount" id="beneficiaryAmount">
           </div>
-          <div class="ui-layout double-input ui-space-t-small">
-            <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
+          <div class="ui-layout double-input">
+            <div class="input-container">
+              <label for="">ת.התחלה</label>
+              <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
+            </div>
+            <div class="input-container">
+              <label for="">ת.סיום</label>
             <input placeholder="תאריך סיום" formControlName="endDate">
+              </div>
           </div>
         </div>
 

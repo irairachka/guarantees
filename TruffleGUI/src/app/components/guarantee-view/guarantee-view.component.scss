@@ -12,9 +12,10 @@
   .for-treatment,
   .pending, .guarantees {
     border-bottom: 3px solid #fff;
-
+    padding:20px;
     .section-header {
-      border-bottom: 1px solid #fff;
+      //border-bottom: 1px solid #fff;
+      font-size: 23px;
     }
 
     .req-for-treatment + .req-for-treatment,
@@ -24,6 +25,8 @@
     }
   }
 }
+
+
 
 .guarantees-section {
   .active, .inactive {

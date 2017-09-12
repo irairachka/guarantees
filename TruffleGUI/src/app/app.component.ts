@@ -636,6 +636,7 @@ export class AppComponent {
     )];
 
     this.bankRequests=this.customerRequests;
+    this.msgService.add({severity: 'success', summary:'ערבות חדשה', detail:'בקשה לערבות חדשה נשלחה בהצלחה'});
     if(1==1) return ;
     else
     console.log("begin");
