@@ -14,4 +14,5 @@ export class RequestItemComponent {
     console.log('this.request', this.request);
     this.emitRequest.emit(this.request);
   }
+
 }
