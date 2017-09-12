@@ -6,16 +6,15 @@
     <div class="header-text ui-layout-column ui-space-t-medium" ui-layout-align="space-around center">
       <label>ניהול ערבויות</label>
       <p-accordion *ngIf="user==='user'" styleClass="green bgGrey" [style.width]="'100%'">
-
         <p-accordionTab header="בקשה לערבות חדשה">
           <!--<button class="accordion-tab-close">X</button>-->
           <guarantee-form (postNewRequest)="newRequestEmitter($event)"></guarantee-form>
         </p-accordionTab>
       </p-accordion>
-      <div *ngIf="user==='beneficiary'">
-        <button>מיון לפי תאריך</button>
-        <button>מיון לפי משהו אחר</button>
-      </div>
+      <!--<div *ngIf="user==='beneficiary'">-->
+        <!--<button>מיון לפי תאריך</button>-->
+        <!--<button>מיון לפי משהו אחר</button>-->
+      <!--</div>-->
     </div>
   </header>
   <main>
@@ -68,8 +67,7 @@
           <p-accordion  styleClass="grey">
             <p-accordionTab *ngFor="let req of allGuaranties">
               <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)">
-                </request-item>
+                <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
               </p-header>
               <accordion-content [userType]="user" [data]="req"></accordion-content>
             </p-accordionTab>

@@ -58,7 +58,7 @@ export class AppComponent {
   // Toaster data
   toaster: Message[] = [];
 
-  idmoc=10000000000000000000;
+  idmoc: number = 1000  ;
 
   constructor(private _ngZone: NgZone, private msgService: MessageService) {
 
@@ -616,11 +616,10 @@ export class AppComponent {
     // }
   };
 
-  createRequest = ( userId , bankId, benefId , purpose,
-                    amount, StartDate, EndDate, indexType, indexDate) => {
+  createRequest( userId , bankId, benefId , purpose,
+                    amount, StartDate, EndDate, indexType, indexDate) {
     // this.transformDateSolToJS(resultArr[6]);
-  // debugger;
-    this.idmoc=this.idmoc+1;
+    this.idmoc = this.idmoc +1;
     this.customerRequests = [...this.customerRequests, this.populateRequestData(
       [''+this.idmoc,
         this.customers[0].customerID,
