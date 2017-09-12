@@ -19,7 +19,7 @@ export class GuaranteeViewComponent implements OnInit{
     bank: 'הבנק',
     beneficiary: 'המוטב'
   };
-  index: number = 0; // accordion open index
+  index: number = 1; // accordion open index
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);
@@ -42,7 +42,6 @@ export class GuaranteeViewComponent implements OnInit{
   }
 
   closeAccordion() {
-    console.log('index', this.index)
-    this.index = 1;
+    this.index = -1;
   }
 }

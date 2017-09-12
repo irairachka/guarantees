@@ -20,6 +20,7 @@ import {MessageService} from "primeng/components/common/messageservice";
 import { HistoryComponent } from './components/history/history.component';
 import {ActionsComponent} from "./components/actions/actions.component";
 import {AccordionContentComponent} from "./components/accordion-content/accordion-content.component";
+import {StatusIconComponent} from "./components/status-icon/status-icon.component";
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import {AccordionContentComponent} from "./components/accordion-content/accordio
     WizardComponent,
     HistoryComponent,
     ActionsComponent,
-    AccordionContentComponent
+    AccordionContentComponent,
+    StatusIconComponent
   ],
   providers: [
     MessageService

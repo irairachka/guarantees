@@ -18,9 +18,7 @@ export class FilterByKeyValuePipe implements PipeTransform {
           return item[key] !== RequestState.waitingtocustomer &&
             item[key] !== RequestState.accepted;
         } else if(value === 'bank') {
-          return item[key] !== RequestState.waitingtobank &&
-            item[key] !== RequestState.rejected &&
-            item[key] !== RequestState.accepted;
+          return item[key] === RequestState.handling;
         } else {
           return item[key] !== value;
         }
@@ -28,9 +26,9 @@ export class FilterByKeyValuePipe implements PipeTransform {
     }
     return arr.filter(item => {
       if(value === 'user') {
-        return item[key] === 3;
+        return item[key] === RequestState.waitingtocustomer;
       } else if(value === 'bank') {
-        return item[key] === 1;
+        return item[key] === RequestState.waitingtobank;
       } else {
         return item[key] === value;
       }
