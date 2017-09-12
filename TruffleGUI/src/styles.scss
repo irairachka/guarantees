@@ -4,8 +4,9 @@
 
 body {
   margin: 0;
-  color: #fff;
+  color: #000;
   font-family: 'Open Sans Hebrew';
+  font-size: 19px;
 }
 
 /* Dialog css overrides */
@@ -24,32 +25,209 @@ body {
   }
 }
 
-.user.ui-dialog.ui-widget-content.ui-widget {
-  border-color: #309a83;
-  .ui-dialog-titlebar {
-    background: #309a83;
+//.user.ui-dialog.ui-widget-content.ui-widget {
+//  border-color: #309a83;
+//  .ui-dialog-titlebar {
+//    background: #309a83;
+//  }
+//  .ui-dialog-content {
+//    background: #309a83;
+//  }
+//}
+//
+//.bank.ui-dialog.ui-widget-content.ui-widget {
+//  border-color: #cc6600;
+//  .ui-dialog-titlebar {
+//    background: #cc6600;
+//  }
+//  .ui-dialog-content {
+//    background: #cc6600;
+//  }
+//}
+//
+//.beneficiary.ui-dialog.ui-widget-content.ui-widget {
+//  border-color: #cc9900;
+//  .ui-dialog-titlebar {
+//    background: #cc9900;
+//  }
+//  .ui-dialog-content {
+//    background: #cc9900;
+//  }
+//}
+
+/** accordion style override */
+.ui-accordion {
+  width: 100%;
+  .ui-accordion-header {
+    border: none;
+
+
+    a {
+      text-decoration: none;
+      padding: .5em 2em .5em .5em;
+    }
+    span.fa {
+      left: auto;
+      right: 10px;
+      transform: rotate(180deg);
+    }
+    &.ui-state-active {
+
+      span {
+        transform: rotate(0);
+      }
+    }
   }
-  .ui-dialog-content {
-    background: #309a83;
+  .ui-accordion-content-wrapper-overflown{
+    .accordion-tab-close{
+     display: none;
+
+
+    }
+  }
+
+
+  &.red {
+    span.fa {
+      color: red;
+    }
+  }
+  &.green {
+    span.fa {
+      color: #80D81F;
+    }
+  }
+  &.grey {
+    span.fa {
+      color: grey;
+    }
+  }
+  &.bgGrey {
+    position: relative;
+    .ui-accordion-header {
+      background: #eee;
+      color: #80D81F;
+      a{
+        color: #80D81F;
+        text-align: right;
+        font-size: 24px;
+      }
+    }
+    .ui-accordion-content {
+      background: #eee;
+    }
+    .accordion-tab-close{
+
+      color: red !important;
+      background: transparent;
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      font-size: 35px;
+      //margin-right: auto;
+
+    }
   }
 }
 
-.bank.ui-dialog.ui-widget-content.ui-widget {
-  border-color: #cc6600;
-  .ui-dialog-titlebar {
-    background: #cc6600;
+
+.guarantee-details-container{
+
+
+  .guarantee-details-button{
+    height: 50px;
+    border-radius: 7px;
+    font-size: 20px;
   }
-  .ui-dialog-content {
-    background: #cc6600;
+  .ui-fileupload-choose{
+    width: 100%;
+    @extend .guarantee-details-button;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ui-button-success{
+    background-color: #9ae232 !important;
+  }
+
+}
+// white color for all the buttons!
+button,
+p-fileupload{
+  color: white !important;
+  border: none !important;
+  height:40px;
+  border-radius: 7px;
+  cursor: pointer;
+  &:hover{
+    opacity: 0.8;
+  }
+}
+//#cccccc grey button
+//#9ae232 lightgreen button
+
+.prime-button{
+  background-color: #9ae232 !important;
+}
+.secondary-button{
+  background-color: #f50e00 !important;
+}
+.tertiary-button{
+  background-color: #cccccc !important;
+  .ui-button{
+    background-color: inherit;
+    border: none !important;
+
+    &:hover{
+      background-color: #cccccc !important;
+    }
+  }
+  &:hover{
+    background-color: #cccccc !important;
+  }
+
+}
+.user {
+  .requests-section{
+    background-color: #e4e4e4;
+    * {
+      background-color: #e4e4e4;
+    }
+  }
+.for-treatment{
+  background-color: #f2f2f2;
+  border: 1px dashed red !important;
+  padding: 20px !important;
+
+  *{
+    background-color: #f2f2f2;
+
+  }
+  .section-header{
+    color: red;
+  }
+  .ui-accordion-content{
   }
 }
 
-.beneficiary.ui-dialog.ui-widget-content.ui-widget {
-  border-color: #cc9900;
-  .ui-dialog-titlebar {
-    background: #cc9900;
+}
+
+
+.container {
+  .content {
+    .user {
+      .view-header {
+        position: absolute;
+      }
+    }
   }
-  .ui-dialog-content {
-    background: #cc9900;
+  &.selected {
+    .content {
+      .user {
+        .view-header {
+          position: static;
+        }
+      }
+    }
   }
 }

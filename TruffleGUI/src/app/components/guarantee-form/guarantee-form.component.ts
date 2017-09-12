@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, Output, OnDestroy, OnInit, EventEmitter} fr
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {isNullOrUndefined} from "util";
 import {Customer} from "../../interfaces/request";
+import {userData} from "../../../../tempData/mockData";
 
 @Component({
   selector: 'guarantee-form',
@@ -11,7 +12,7 @@ import {Customer} from "../../interfaces/request";
 export class GuaranteeFormComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() modalType: string;
-  @Input() userDetails: Customer;
+  // @Input() userDetails: Customer;
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
@@ -30,7 +31,7 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
     },
   ];
   displayActions: boolean = false;
-
+  userDetails: any = userData;
   // bank dropdown options
   requestsStates: any[];
   selectedRequestsStates: string;
@@ -79,19 +80,17 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   createForm() {
-    if(isNullOrUndefined(this.data)){
-      this.newGuarantee = this.fb.group({
-        userName: '',
-        userId: '',
-        userAddress: '',
-        beneficiary: '',
-        beneficiaryAddress: '',
-        purpose: '',
-        amount: '',
-        startDate: '',
-        endDate: ''
-      })
-    }
+    this.newGuarantee = this.fb.group({
+      userName: this.userDetails.Name,
+      userId: this.userDetails.customerID,
+      userAddress: this.userDetails.Address,
+      beneficiary: '',
+      beneficiaryAddress: '',
+      purpose: '',
+      amount: '',
+      startDate: '',
+      endDate: ''
+    })
   }
 
   onBasicUploadAuto(e) {
@@ -103,6 +102,7 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
     console.log('this.newGuarantee', this.newGuarantee);
     let formValues = Object.assign({}, this.newGuarantee.value);
     this.postNewRequest.emit(formValues);
+    this.ngOnChanges();
   }
 
   ngOnChanges() {
@@ -112,41 +112,4 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
     this.terminateReason = '';
     this.displayActions = this.testDisplayAction();
   }
-
-  changeRequest(type) {
-    console.log('this.data', this.data);
-    let eventData = {
-      type: type,
-      requestId: this.data.GRequestID,
-      guaranteeId: '',
-      details: '',
-      update: {}
-    };
-
-    switch (type) {
-      case 'withdrawal':
-        break;
-      case 'updateBank':
-        eventData.details = this.selectedRequestsStates;
-        break;
-      case 'accept':
-        break;
-      case 'reject':
-        eventData.details = this.cancelReason;
-        break;
-      case 'terminate':
-        eventData.details = this.terminateReason;
-        eventData.guaranteeId = this.data.GuaranteeID;
-        break;
-      case 'guaranteeUpdate':
-        eventData.guaranteeId = this.data.GuaranteeID;
-        eventData.update = {
-          date: this.newDate,
-          amount: this.newValue
-        };
-        break;
-    }
-
-    this.updateRequest.emit(eventData);
-}
 }

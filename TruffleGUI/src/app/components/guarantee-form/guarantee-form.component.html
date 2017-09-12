@@ -1,111 +1,74 @@
 <div class="form">
-  <header class="ui-space-medium">
-    <label><strong>בקשת ערבות</strong> למילוי ע"י מבקש הערבות</label>
-  </header>
-  <div class="status-wizard ui-space-medium">
-    <label class="form-label">סטטוס</label>
-    <div class="ui-layout-column ui-space-r-large">
-      <label class="ui-space-b-small">ברגע זה הטיפול נמצא אצל:</label>
-      <app-wizard [options]="state"></app-wizard>
-      <!--<p-selectButton [options]="state" [(ngModel)]="selectedState"-->
-                      <!--multiple="false"></p-selectButton>-->
-    </div>
-  </div>
+  <!--<header class="ui-space-medium">-->
+    <!--<label><strong>בקשת ערבות</strong> למילוי ע"י מבקש הערבות</label>-->
+  <!--</header>-->
+  <!--<div class="status-wizard ui-space-medium">-->
+    <!--<label class="form-label">סטטוס</label>-->
+    <!--<div class="ui-layout-column ui-space-r-large">-->
+      <!--<label class="ui-space-b-small">ברגע זה הטיפול נמצא אצל:</label>-->
+      <!--<app-wizard [options]="state"></app-wizard>-->
+      <!--&lt;!&ndash;<p-selectButton [options]="state" [(ngModel)]="selectedState"&ndash;&gt;-->
+                      <!--&lt;!&ndash;multiple="false"></p-selectButton>&ndash;&gt;-->
+    <!--</div>-->
+  <!--</div>-->
 
   <form [formGroup]="newGuarantee" novalidate *ngIf="!data">
-    <div class="user-details ui-space-medium">
-      <label class="form-label">פרטי לקוח</label>
-      <div class="ui-layout-column ui-space-r-large">
-        <input placeholder="שם הלקוח" formControlName="userName">
-        <input placeholder="חפ / תז" formControlName="userId">
-        <input placeholder="כתובת" formControlName="userAddress">
+    <div class="user-details">
+      <label class="user-details-placeholder">מבקש הערבות:</label>
+      <div class="ui-layout-column user-details-container">
+        <div class="user-id-name-container" >
+          <input type="text" formControlName="userName">
+          <input type="text" formControlName="userId">
+          <!--<label class="user-id-name user-name" placeholder="שם הלקוח">{{userDetails.Name}},</label>-->
+          <!--<label  class="user-id-name user-id" placeholder="חפ / תז">חפ / תז: {{userDetails.customerID | fourDigits}}</label>-->
+        </div>
+        <input type="text"  formControlName="userAddress" >
+        <!--<label placeholder="כתובת">{{userDetails.Address}}</label>-->
       </div>
     </div>
     <div class="guarantee-details ui-space-medium">
-      <label class="form-label">פרטי הערבות</label>
-      <div class="ui-layout-column ui-space-r-large">
-        <div class="ui-layout double-input ui-space-b-small">
-          <input placeholder="המוטב" formControlName="beneficiary">
-          <input placeholder="כתובת" formControlName="beneficiaryAddress">
+      <!--<label class="form-label">פרטי הערבות</label>-->
+      <div class="guarantee-details-container">
+        <div class="guarantee-details-right">
+        <!--<div class="ui-layout double-input ui-space-b-small">-->
+          <div class="input-container">
+            <label for="beneficiary">המוטב</label>
+            <input placeholder="המוטב" formControlName="beneficiary" id="beneficiary">
+          </div>
+          <div class="input-container">
+          <label for="purpose">מטרות הערבות</label>
+          <input id="purpose" placeholder="מטרות הערבות" formControlName="purpose">
         </div>
-        <input placeholder="מטרת הערבות" formControlName="purpose">
-        <input placeholder="סכום" formControlName="amount">
-        <div class="ui-layout double-input ui-space-t-small">
-          <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
-          <input placeholder="תאריך סיום" formControlName="endDate">
-        </div>
-        <p-fileUpload #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="נוסח ערבות"></p-fileUpload>
-      </div>
-    </div>
-    <div class="actions ui-layout-column ui-space-medium">
-      <button (click)="submitGuarantee()">שליחה - הגשת הבקשה</button>
-      <button>ביטול</button>
-    </div>
-  </form>
-  <!-- Read Only Display -->
-  <div class="read-only" *ngIf="data">
-    <div class="user-details ui-space-medium">
-      <label class="form-label">פרטי לקוח</label>
-      <div class="ui-layout-column ui-space-r-large">
-        <label placeholder="שם הלקוח">שם לקוח: {{userDetails.Name}}</label>
-        <label placeholder="חפ / תז">חפ . תז: {{userDetails.customerID | fourDigits}}</label>
-        <label placeholder="כתובת">כתובת: {{userDetails.Address}}</label>
-      </div>
-    </div>
-    <div class="guarantee-details ui-space-medium">
-      <label class="form-label">פרטי הערבות</label>
-      <div class="ui-layout-column ui-space-r-large">
-        <div class="ui-layout double-input ui-space-b-small">
-          <label placeholder="המוטב">המוטב: {{data.beneficiaryName }}</label>
-          <label placeholder="כתובת">כתובת: {{data.beneficiaryAddress}}</label>
-        </div>
-        <label placeholder="מטרת הערבות">מטרת הערבות: {{data.purpose}}</label>
-        <label placeholder="סכום">סכום: {{data.amount}}</label>
-        <div class="ui-layout double-input ui-space-t-small">
-          <label placeholder="תאריך התחלת ערבות">תאריך התחלת ערבות: {{data.amount}}</label>
-          <label placeholder="תאריך סיום">תאריך סיום: {{data.amount}}</label>
-        </div>
-      </div>
-    </div>
-    <div class="actions ui-space-medium" *ngIf="displayActions">
-      <label class="form-label">פעולות</label>
-      <div [ngSwitch]="modalType" class="ui-layout-column ui-space-r-large">
-        <button *ngSwitchCase="'user'" (click)="changeRequest('withdrawal')">ביטול</button>
+          <p-fileUpload class="guarantee-details-button tertiary-button" #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="צרוף נוסח ערבות"></p-fileUpload>
+          <button class="guarantee-details-button tertiary-button" type="button" pButton icon="" label="אישור העמלות והתנאים"></button>
+          <button class="guarantee-details-button ui-button-success prime-button" type="button" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
+          <button class="guarantee-details-button ui-button-danger secondary-button" type="button" pButton icon="" label="ביטול" ></button>
 
-        <ng-container *ngSwitchCase="'bank'">
-          <div class="update ui-layout">
-            <button (click)="changeRequest('updateBank')">עדכון</button>
-            <p-dropdown [options]="requestsStates" [(ngModel)]="selectedRequestsStates"></p-dropdown>
+
+        </div>
+        <div class="guarantee-details-left">
+          <div class="input-container">
+            <label for="beneficiaryAmount">סכום<span>(בש״ח)</span></label>
+            <input formControlName="amount" id="beneficiaryAmount">
           </div>
-          <button (click)="changeRequest('accept')">אישור</button>
-          <div class="ui-layout">
-            <button (click)="changeRequest('reject')">דחיה</button>
-            <input placeholder="סיבת הדחיה" [(ngModel)]="cancelReason">
+          <div class="ui-layout double-input">
+            <div class="input-container">
+              <label for="">ת.התחלה</label>
+              <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
+            </div>
+            <div class="input-container">
+              <label for="">ת.סיום</label>
+            <input placeholder="תאריך סיום" formControlName="endDate">
+              </div>
           </div>
-        </ng-container>
-        <ng-container *ngSwitchCase="'beneficiary'">
-          <div class="ui-layout">
-            <button (click)="changeRequest('terminate')">ביטול</button>
-            <input placeholder="סיבת הדחיה" [(ngModel)]="terminateReason">
-          </div>
-          <label class="text-bold">בקשה לדחיה</label>
-          <div class="ui-layout">
-            <label>שינוי סכום</label>
-            <input type="number" placeholder="סכום מוקטן" [(ngModel)]="newValue">
-          </div>
-          <div class="ui-layout">
-            <label>הארכת תוקף</label>
-            <input placeholder="תוקף חדש" [(ngModel)]="newDate">
-          </div>
-          <button (click)="changeRequest('guaranteeUpdate')">דחיה</button>
-        </ng-container>
+        </div>
+
+        <!--</div>-->
+
       </div>
     </div>
-    <div class="history ui-space-medium" *ngIf="data.history">
-      <label class="form-label">היסטוריה</label>
-      <div class="ui-layout-column ui-space-r-large">
-        <app-history [history]="data.history.log"></app-history>
-      </div>
-    </div>
-  </div>
+    <!--<div class="actions ui-layout-column ui-space-medium">-->
+      <!--<button>ביטול</button>-->
+    <!--</div>-->
+  </form>
 </div>

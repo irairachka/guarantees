@@ -1,5 +1,5 @@
 .form {
-  color: #fff;
+  //color: #fff;
   header {
     strong {
       font-size: 2em;
@@ -17,20 +17,23 @@
   }
 
   input {
-    max-width: 150px;
+    //max-width: 150px;
     &+input {
-      margin-top: 10px;
+      //margin-top: 10px;
     }
   }
-  label {
-    &+label {
-      margin-top: 10px;
-    }
-  }
+  //label {
+  //  &+label {
+  //    margin-top: 10px;
+  //  }
+  // }
 
   .double-input {
+    justify-content: space-between;
     input {
-      &+input {
+      height:40px;
+      flex-grow: 1;
+      & + input {
         margin-top: 0;
         margin-right: 10px;
       }
@@ -39,6 +42,15 @@
       &+label {
         margin-top: 0;
         margin-right: 10px;
+      }
+    }
+    .input-container{
+      flex-grow:1;
+      & + .input-container{
+        margin-right: 10px;
+      }
+      label{
+        font-size: 23px;
       }
     }
   }
@@ -73,5 +85,53 @@
     .form-label {
       right: -8px;
     }
+  }
+
+
+  .user-details {
+    text-align: right;
+    padding: 0 25px 25px 25px;
+    .user-id-name-container{
+      display: flex;
+      align-items: center;
+    }
+    .user-details-container{
+      font-size: 24px;
+    }
+    .user-details-placeholder {
+      position: static;
+
+    }
+    .user-id-name + .user-id-name{
+      margin-right: 5px;
+    }
+  }
+  .input-container{
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    input{
+      height: 40px;
+    }
+    label{
+      font-size: 23px;
+    }
+  }
+  .guarantee-details-container{
+    display: flex;
+    justify-content: space-between;
+    .guarantee-details-left,
+    .guarantee-details-right{
+      flex-basis: 47%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  .guarantee-details-button{
+    margin-top: 10px;
+
+
+
   }
 }

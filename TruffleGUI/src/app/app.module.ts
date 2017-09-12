@@ -4,7 +4,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {
-  DialogModule, DropdownModule, FileUploadModule, GrowlModule,
+  AccordionModule,
+  DialogModule, DropdownModule, FileUploadModule, GrowlModule, SharedModule,
 } from "primeng/primeng";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GuaranteeViewComponent} from "./components/guarantee-view/guarantee-view.component";
@@ -17,6 +18,9 @@ import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
 import { WizardComponent } from './components/wizard/wizard.component';
 import {MessageService} from "primeng/components/common/messageservice";
 import { HistoryComponent } from './components/history/history.component';
+import {ActionsComponent} from "./components/actions/actions.component";
+import {AccordionContentComponent} from "./components/accordion-content/accordion-content.component";
+import {StatusIconComponent} from "./components/status-icon/status-icon.component";
 
 @NgModule({
   imports: [
@@ -28,7 +32,9 @@ import { HistoryComponent } from './components/history/history.component';
     DialogModule,
     FileUploadModule,
     DropdownModule,
-    GrowlModule
+    GrowlModule,
+    AccordionModule,
+    SharedModule
   ],
   declarations: [
     AppComponent,
@@ -40,7 +46,10 @@ import { HistoryComponent } from './components/history/history.component';
     ParseDatePipe,
     FourDigitsPipe,
     WizardComponent,
-    HistoryComponent
+    HistoryComponent,
+    ActionsComponent,
+    AccordionContentComponent,
+    StatusIconComponent
   ],
   providers: [
     MessageService

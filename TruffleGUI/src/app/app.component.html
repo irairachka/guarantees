@@ -1,30 +1,35 @@
 <div class="acc-container">
-  <div class="benef-container wrapper ui-space-lr-large"
+  <div class="container wrapper ui-space-lr-large"
        (click)="selected = 2" [class.selected]="selected === 2">
     <label class="title">המוטב</label>
     <app-guarantee-view class="content" user="beneficiary"
-                        [allGuaranties]="beneficiaryGuaranties" (triggerModal)="openModal($event)"></app-guarantee-view>
+                        [allGuaranties]="beneficiaryGuaranties"
+                        (triggerModal)="openModal($event)"
+                        (updateRequest)="handleRequestUpdate($event)"></app-guarantee-view>
   </div>
-  <div class="bank-container wrapper ui-space-lr-large"
+  <div class="container wrapper ui-space-lr-large"
        (click)="selected = 1" [class.selected]="selected === 1">
     <label class="title">הבנק</label>
     <app-guarantee-view class="content" user="bank"
                         [allRequests]="bankRequests" [allGuaranties]="bankGuaranties"
-                        (triggerModal)="openModal($event)"></app-guarantee-view>
+                        (triggerModal)="openModal($event)"
+                        (updateRequest)="handleRequestUpdate($event)"></app-guarantee-view>
   </div>
-  <div class="user-container wrapper ui-space-lr-large"
+  <div class="container wrapper ui-space-lr-large"
        (click)="selected = 0" [class.selected]="selected === 0">
     <label class="title">המבקש</label>
     <app-guarantee-view class="content" user="user"
                         [allRequests]="customerRequests" [allGuaranties]="customerGuaranties"
-                        (triggerModal)="openModal($event)"></app-guarantee-view>
+                        (triggerModal)="openModal($event)"
+                        (updateRequest)="handleRequestUpdate($event)"
+                        (newRequest)="handleCreateRequest($event)"></app-guarantee-view>
   </div>
 </div>
 
-<p-dialog appendTo="body" [(visible)]="openFormDialog" dir="rtl" [styleClass]="modalType"
-          positionTop="10" draggable="false" modal="true" dismissableMask="true" (onHide)="clearData()">
-  <guarantee-form [data]="dialogData" [modalType]="modalType" [userDetails]="customers[0]"
-                  (updateRequest)="handleRequestUpdate($event)" (postNewRequest)="handleCreateRequest($event)"></guarantee-form>
-</p-dialog>
+<!--<p-dialog appendTo="body" [(visible)]="openFormDialog" dir="rtl" [styleClass]="modalType"-->
+          <!--positionTop="10" draggable="false" modal="true" dismissableMask="true" (onHide)="clearData()">-->
+  <!--<guarantee-form [data]="dialogData" [modalType]="modalType"-->
+                  <!--(updateRequest)="handleRequestUpdate($event)" (postNewRequest)="handleCreateRequest($event)"></guarantee-form>-->
+<!--</p-dialog>-->
 
 <p-growl [(value)]="msgs"></p-growl>

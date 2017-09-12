@@ -58,7 +58,7 @@ export class AppComponent {
   // Toaster data
   toaster: Message[] = [];
 
-  idmoc=10000000000000000000;
+  idmoc: number = 1000  ;
 
   constructor(private _ngZone: NgZone, private msgService: MessageService) {
 
@@ -459,7 +459,6 @@ export class AppComponent {
 
   rejectRequest = (requestId,comment) => {
     // ביטול של בנק
-    debugger;
     for (var i in this.bankRequests) {
       if (this.bankRequests[i].GRequestID==requestId) {
         this.bankRequests[i].requestState=RequestState.rejected;
@@ -617,11 +616,10 @@ export class AppComponent {
     // }
   };
 
-  createRequest = ( userId , bankId, benefId , purpose,
-                    amount, StartDate, EndDate, indexType, indexDate) => {
+  createRequest( userId , bankId, benefId , purpose,
+                    amount, StartDate, EndDate, indexType, indexDate) {
     // this.transformDateSolToJS(resultArr[6]);
-  // debugger;
-    this.idmoc=this.idmoc+1;
+    this.idmoc = this.idmoc +1;
     this.customerRequests = [...this.customerRequests, this.populateRequestData(
       [''+this.idmoc,
         this.customers[0].customerID,
@@ -638,6 +636,7 @@ export class AppComponent {
     )];
 
     this.bankRequests=this.customerRequests;
+    this.msgService.add({severity: 'success', summary:'ערבות חדשה', detail:'בקשה לערבות חדשה נשלחה בהצלחה'});
     if(1==1) return ;
     else
     console.log("begin");
@@ -683,6 +682,7 @@ export class AppComponent {
   };
 
   handleRequestUpdate = (e) => {
+    console.log('e',e);
     switch (e.type) {
       case 'withdrawal':
         console.log('withdraw success', e.requestId);
