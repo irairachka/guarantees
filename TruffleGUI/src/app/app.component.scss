@@ -3,17 +3,17 @@
   //max-width: 70%;
   //margin: 0 auto;
 
-  &.user-container {
-    background: #309a83;
-  }
-
-  &.bank-container {
-    background: #cc6600;
-  }
-
-  &.benef-container {
-    background: #cc9900;
-  }
+  //&.user-container {
+  //  background: #309a83;
+  //}
+  //
+  //&.bank-container {
+  //  background: #cc6600;
+  //}
+  //
+  //&.benef-container {
+  //  background: #cc9900;
+  //}
 }
 
 .acc-container {
@@ -51,17 +51,18 @@
 
     &.selected {
       width: 100%;
-      &.user-container {
-        background: #309a83;
+      &.container {
+        background: #fff;
+        min-width: 650px;
       }
-
-      &.bank-container {
-        background: #cc6600;
-      }
-
-      &.benef-container {
-        background: #cc9900;
-      }
+      //
+      //&.bank-container {
+      //  background: #cc6600;
+      //}
+      //
+      //&.benef-container {
+      //  background: #cc9900;
+      //}
       .title {
         visibility: hidden;
       }

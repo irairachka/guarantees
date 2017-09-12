@@ -1,0 +1,61 @@
+<div [ngSwitch]="userType" class="ui-layout-column ui-space-r-large">
+  <!--<button *ngSwitchCase="'user'" (click)="changeRequest('withdrawal')">ביטול</button>-->
+
+  <ng-container *ngSwitchCase="'bank'">
+    <div class="update ui-layout transform-buttons-container">
+      <button class="transform-buttons secondary-button" (click)="changeRequest('updateBank')">העברה למנהל קשרי לקוחותן</button>
+      <button class="transform-buttons secondary-button">העברה למח׳ המשפטית</button>
+    </div>
+    <button class="accept-button prime-button" (click)="changeRequest('accept')">אישור והפקת כתב ערבות דיגיטלי</button>
+    <div class="">
+      <label for="cancelReason" class="cancelReason-label">דחיית הבקשה - מסיבה:</label>
+      <div class="reject-container">
+      <input placeholder="סיבת הדחיה" [(ngModel)]="cancelReason" id="cancelReason">
+      <button class="cancelReason-send-button secondary-button" (click)="changeRequest('reject')">שלח</button>
+      <!--<button (click)="changeRequest('reject')">דחיה</button>-->
+      </div>
+    </div>
+  </ng-container>
+
+
+  <ng-container *ngSwitchCase="'beneficiary'">
+    <div class="guarantee-container">
+      <label for="cancelGuarantee">ביטול הערבות</label>
+      <div class="input-button-container">
+        <input placeholder="" [(ngModel)]="terminateReason" id="cancelGuarantee">
+        <button class="prime-button" (click)="changeRequest('terminate')">שלח</button>
+      </div>
+    </div>
+    <div class="guarantee-container">
+      <label for="reduceGuarantee">הקטנת סכום</label>
+      <div class="input-button-container">
+        <input placeholder="" [(ngModel)]="newValue" id="reduceGuarantee">
+        <button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח</button>
+      </div>
+    </div>
+    <div class="guarantee-container">
+      <label for="extendGuarantee">הארכת תוקף</label>
+      <div class="input-button-container">
+        <input placeholder="" [(ngModel)]="newDate" id="extendGuarantee">
+        <button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח</button>
+      </div>
+    </div>
+
+
+
+    <!--<div class="ui-layout">-->
+      <!--<button (click)="changeRequest('terminate')">ביטול</button>-->
+      <!--<input placeholder="סיבת הדחיה" [(ngModel)]="terminateReason">-->
+    <!--</div>-->
+    <!--<label class="text-bold">בקשה לדחיה</label>-->
+    <!--<div class="ui-layout">-->
+      <!--<label>שינוי סכום</label>-->
+      <!--<input type="number" placeholder="סכום מוקטן" [(ngModel)]="newValue">-->
+    <!--</div>-->
+    <!--<div class="ui-layout">-->
+      <!--<label>הארכת תוקף</label>-->
+      <!--<input placeholder="תוקף חדש" [(ngModel)]="newDate">-->
+    <!--</div>-->
+    <!--<button (click)="changeRequest('guaranteeUpdate')">דחיה</button>-->
+  </ng-container>
+</div>

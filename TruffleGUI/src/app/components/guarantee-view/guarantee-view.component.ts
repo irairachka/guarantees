@@ -12,9 +12,18 @@ export class GuaranteeViewComponent implements OnInit{
   @Input() allRequests: GRequest[];
   @Input() allGuaranties: Guarantee[];
   @Output() triggerModal: EventEmitter<any> = new EventEmitter();
+  @Output() updateRequest: EventEmitter<any> = new EventEmitter();
+  @Output() newRequest: EventEmitter<any> = new EventEmitter();
+  userName: any = {
+    user: 'המבקש',
+    bank: 'הבנק',
+    beneficiary: 'המוטב'
+  };
+  index: number = 1; // accordion open index
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);
+    console.log('this.allGuaranties', this.allGuaranties);
   }
 
   openModal(e) {
@@ -23,5 +32,16 @@ export class GuaranteeViewComponent implements OnInit{
       request: e
     };
     this.triggerModal.emit(modalData);
+  }
+  updateRequestsender(data){
+    this.updateRequest.emit(data);
+  }
+  newRequestEmitter(e) {
+    this.closeAccordion();
+    this.newRequest.emit(e);
+  }
+
+  closeAccordion() {
+    this.index = -1;
   }
 }

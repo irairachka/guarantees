@@ -1,9 +1,25 @@
 .request-item {
-  label {
-    min-width: 200px;
-  }
-  &:hover {
-    box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.1);
-    cursor: pointer;
+  //label {
+  //  //min-width: 200px;
+  //  text-decoration: none;
+  //
+  //  &.title {
+  //    margin-right: 10px;
+  //  }
+  //}
+  //&:hover {
+  //  box-shadow: inset 0 0 0 200px rgba(255, 255, 255, 0.1);
+  //  cursor: pointer;
+  //}
+
+  td{
+    width: 25%;
+    &:first-child{
+      width:5%;
+    }
+    &:nth-child(2){
+      width: 10%;
+    }
+
   }
 }
