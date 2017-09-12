@@ -3,3 +3,7 @@
     <label>{{item.state}}</label><label *ngIf="item.comment">: {{item.comment}}</label><label> -- {{item.date}}</label>
   </div>
 </div>
+
+<ol class="history-list">
+  <li class="history-item" *ngFor="let item of myMockHistory[userType]">{{item.text}}   {{item.date}}</li>
+</ol>

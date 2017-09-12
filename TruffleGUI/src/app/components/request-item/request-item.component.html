@@ -1,9 +1,22 @@
-<div class="ui-layout request-item" *ngIf="request"
-     ui-layout-align="space-between center">
-  <label class="title text-bold">{{request.GRequestID | fourDigits}}</label>
-  <label>{{request.beneficiaryName}}</label>
-  <label>{{request.purpose}}</label>
-  <label>{{request.amount}} ש"ח</label>
-  <label>{{request.StartDate}}</label>
-  <label>{{request.EndDate}}</label>
-</div>
+<!--<div class="ui-layout request-item" *ngIf="request"-->
+     <!--ui-layout-align="space-between center">-->
+  <!--<label class="title text-bold">{{request.GRequestID | fourDigits}}</label>-->
+  <!--<label>{{request.beneficiaryName}}</label>-->
+  <!--<label>{{request.purpose}}</label>-->
+  <!--<label>{{request.amount}} ש"ח</label>-->
+  <!--<label>{{request.StartDate}}</label>-->
+  <!--<label>{{request.EndDate}}</label>-->
+<!--</div>-->
+
+<table class="request-item" style="width:100%" *ngIf="request">
+  <tr>
+    <td>X</td>
+    <td class="text-bold">{{request.GRequestID | fourDigits}}</td>
+    <td>{{request.beneficiaryName}}</td>
+    <td>{{request.purpose}}</td>
+    <td>{{request.amount}} ש״ח</td>
+    <td>{{request.StartDate}}</td>
+    <td>{{request.EndDate}}</td>
+  </tr>
+
+</table>

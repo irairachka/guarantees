@@ -3,14 +3,18 @@
   justify-content: space-between;
   .transform-buttons{
     flex-basis: 48%;
-    background-color: red;
+    background-color: #f50e00;
     margin-bottom: 20px;
+    height: 40px;
+    border-radius: 7px;
   }
 }
 
 .accept-button{
   margin-bottom: 20px;
   background-color: green;
+  height: 50px;
+  border-radius: 7px;
 }
 
 .reject-container{
@@ -40,4 +44,10 @@
       background-color: green;
     }
   }
+  label{
+    font-size: 23px;
+  }
+}
+.cancelReason-label{
+  font-size: 23px;
 }

@@ -1,0 +1,11 @@
+.history-list{
+  margin: 30px 0;
+  .history-item{
+    color: #00CC00;
+    margin: 10px 0;
+    font-size: 20px;
+  }
+  .history-item:last-child{
+    color: #FF0000;
+  }
+}

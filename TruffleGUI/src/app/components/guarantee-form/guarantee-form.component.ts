@@ -80,19 +80,17 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   createForm() {
-    if(isNullOrUndefined(this.data)){
-      this.newGuarantee = this.fb.group({
-        userName: '',
-        userId: '',
-        userAddress: '',
-        beneficiary: '',
-        beneficiaryAddress: '',
-        purpose: '',
-        amount: '',
-        startDate: '',
-        endDate: ''
-      })
-    }
+    this.newGuarantee = this.fb.group({
+      userName: this.userDetails.Name,
+      userId: this.userDetails.customerID,
+      userAddress: this.userDetails.Address,
+      beneficiary: '',
+      beneficiaryAddress: '',
+      purpose: '',
+      amount: '',
+      startDate: '',
+      endDate: ''
+    })
   }
 
   onBasicUploadAuto(e) {
