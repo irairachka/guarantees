@@ -41,37 +41,11 @@ contract Regulator is owned,GuaranteeConst{
     //guarantee request states
     enum issuerStatus { submited,  accepted, rejected }
 
-//    modifier issuersOnly {
-//        bool found = false;
-//        for(uint32 i=0; i<issuers.length; i++) {
-//            if(issuers[i].addr == msg.sender && issuers[i].status == issuerStatus.accepted) {
-//                found = true;
-//                break;
-//            }
-//        }
-//        if(!found) throw;
-//        _;
-//    }
-
-//    //premissions modifier for customer functions
-//    modifier onlyCustomer() {
-//        if (!_checkString(customers[msg.sender].name))
-//        {
-//            loga("###ERROR-not performd by CUSTOMER address",msg.sender);
-//            throw;
-//        }
-//        loga("#pass CUSTOMER action check",msg.sender);
-//        _;
-//    }
-
-
-
     //describes the customer object
     struct Customer {
         string name;
         string localAddress;
-        address []   guaranteeRequests;
-//    string id;
+ //      localAddress uint []   guaranteeRequests;
     }
     //holds all customers by their address
     mapping (address=>Customer) public customers;
@@ -80,7 +54,7 @@ contract Regulator is owned,GuaranteeConst{
     struct Beneficiary {
         string name;
         string localAddress;
-        address []   guarantees;
+ //       uint []   guarantees;
 //    string id;
     }
     //holds all the benefiieries by their address
@@ -92,14 +66,18 @@ contract Regulator is owned,GuaranteeConst{
         string name;
         string localAddress;
         address addr;
-        issuerStatus status;
-        address []   guaranteeRequests;
+//        issuerStatus status;
+//        address []   guaranteeRequests;
     }
     //holds all customers by their address
   mapping (address=>Issuer) public issuers;
   address   [] issuerList;
 
-    event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
+  address []   guaranteeRequest;
+
+
+
+ //   event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
         owner = msg.sender;
 
@@ -108,12 +86,11 @@ contract Regulator is owned,GuaranteeConst{
         submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
         submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
 
-        RegulatoryContractDeployed(msg.sender,"Mined",now);
+ //       RegulatoryContractDeployed(msg.sender,"Mined",now);
     }
 
 
     event AddBeneficiary (address msgSender,string _name,uint timestamp);
-
     function submitBeneficiary(address _addr , string _name, string _localAddres ) public  onlyOwner {
         Beneficiary beneficiary=beneficiaries[_addr];
         beneficiary.name   = _name;
@@ -130,7 +107,6 @@ contract Regulator is owned,GuaranteeConst{
         Beneficiary memory beneficiary=beneficiaries[_addr];
         _name = beneficiary.name;
         _localAddress  = beneficiary.localAddress;
-//        _id = beneficiary.id;
     }
 
     function getBeneficiaryById(uint _id) public constant returns(string _name, string _localAddress)
@@ -139,17 +115,12 @@ contract Regulator is owned,GuaranteeConst{
         if(_id >= beneficiaryList.length) {
             throw;
         }
-        Beneficiary memory ci = beneficiaries[beneficiaryList[_id]];
-
-        return (ci.name,ci.localAddress);
-
+        return getBeneficiary([beneficiaryList[_id]]);
     }
 
     function getBeneficiaryAddresses() public constant returns(address[] )
     {
-
         return beneficiaryList;
-
     }
 
     event AddCustomer (address msgSender,string msgstr,uint timestamp);
@@ -164,58 +135,43 @@ contract Regulator is owned,GuaranteeConst{
 
     function getCustomer(address _addr) constant public returns(string _name, string _localAddress) //, string  _id)
     {
-
-        Customer memory ci = customers[_addr];
-        _name = ci.name;
-        _localAddress  = ci.localAddress;
-//        _id = ci.id;
+        return  (customers[_addr].name,customers[_addr].localAddress);
     }
 
     event AddIssuer (address msgSender,address issuerAdr,string msgstr,uint timestamp);
-
     function submitIssuer(address _addr , string _name, string _localAddres) onlyOwner public {
 
         Issuer  issuer = issuers[_addr];
         issuer.name   = _name;
         issuer.localAddress    = _localAddres;
         issuer.addr = _addr;
-        issuer.status = issuerStatus.accepted;
+ //       issuer.status = issuerStatus.accepted;
 
         AddIssuer(msg.sender, _addr ,_name,block.timestamp);
     }
 
-    event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
-
-    function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
-        for(uint32 i=0; i<issuerList.length; i++) {
-            if(issuers[i].addr == _addr) {
-                issuers[i].status = _status;
-                // if(issuers[i].status == issuerStatus)
-                // {
-                //     UpdateIssuersStatus(msg.sender,"Approved",block.timestamp);
-                // }
-                // else
-                // {
-                //     UpdateIssuersStatus(msg.sender,"Rejected",block.timestamp);
-                // }
-                break;
-            }
-        }
-
-    }
+ //   event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
+//
+ //   function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
+ //       for(uint32 i=0; i<issuerList.length; i++) {
+ //           if(issuers[i].addr == _addr) {
+ //               issuers[i].status = _status;
+ //               // if(issuers[i].status == issuerStatus)
+ //               // {
+ //               //     UpdateIssuersStatus(msg.sender,"Approved",block.timestamp);
+ //               // }
+ //               // else
+ //               // {
+ //               //     UpdateIssuersStatus(msg.sender,"Rejected",block.timestamp);
+ //               // }
+ //               break;
+ //           }
+ //       }
+ //
+ //   }
 
     function getIssuerCounter() public constant returns (uint ) {
         return issuerList.length;
-    }
-
-    function getIssuerById(uint _id) constant public returns(string , string , address , issuerStatus )  {
-
-        if(_id >= issuerList.length) {
-            throw;
-        }
-        Issuer memory ci = issuers[issuerList[_id]];
-
-        return (ci.name,ci.localAddress,ci.addr,ci.status);
     }
 
     function getIssuer(address _addr) constant public returns(string , string ,  issuerStatus )  {
@@ -226,25 +182,31 @@ contract Regulator is owned,GuaranteeConst{
 
     }
 
+    function getIssuerById(uint _id) constant public returns(string , string , address , issuerStatus )  {
 
-    //describes the customer object
-//    address [] public  guaranteeRequests;
+        if(_id >= issuerList.length) {
+            throw;
+        }
+        return  getIssuer([issuerList[_id]]);
+    }
 
-    function getRequestsAddressForCustomer() public constant returns (address[])
+
+
+    function getRequestsIdsForCustomer(address _addr) public constant returns (uint[])
     {
-        return customers[msg.sender].guaranteeRequests;
+        return customers[_customeraddr].guaranteeRequests;
 
     }
 
-    function getRequestsAddressForIssuer() public constant returns (address[])
+    function getRequestsIdsForIssuer(address _addr) public constant returns (uint[])
     {
-        return issuers[msg.sender].guaranteeRequests;
+        return issuers[_addr].guaranteeRequests;
 
     }
 
-  function getGuarantieAddressForBeneficiary() public constant returns (address[])
+  function getGuarantieAddressForBeneficiary(address _addr) public constant returns (address[])
   {
-    return issuers[msg.sender].guaranteeRequests;
+    return issuers[_addr].guaranteeRequests;
 
   }
 

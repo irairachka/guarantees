@@ -14,9 +14,9 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
 
     //holds the addresses of the participating parties for demo reasons
     struct Addresses {
-    address bank;
-    address customer;
-    address beneficiary;
+        address bank;
+        address customer;
+        address beneficiary;
     }
 
     Addresses public addresses;
@@ -34,14 +34,14 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
 
     RequestState   status;
 
-    int  stepNumber;
+//    int  stepNumber;
 
-    //describes the customer object
-    struct Comment {
-        int step;
-        string commentline;
-    }
-    Comment [] comments;
+//    //describes the customer object
+//    struct Comment {
+//        int step;
+//        string commentline;
+//    }
+//    Comment [] comments;
 
 
     function GuaranteeRequest(address  _regulator,address _customer ,address _bank ,address _beneficiary ,string _purpose,
@@ -59,7 +59,7 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         indexType= _indexType;
         indexDate= _indexDate;
         status=RequestState.created;
-        stepNumber=0;
+//        stepNumber=0;
 //        GuaranteeRequestCreated(this,msg.sender,_customer , _bank , _beneficiary , _purpose, _amount,  _startDate, _endDate, _indexType, _indexDate,now);
         // log("create request","customer"+_customer+"bank"+_bank+"beneficiary"+_beneficiary+"amount"+amount + "startDate"+startDate+"endDate"+endDate +"...");
 
@@ -124,67 +124,31 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         return status;
     }
 
-//    event State(RequestState state);
-//    function getRequestStateTranslated() public constant returns (uint _thestate)
-//    {
-//        State(status);
-//        _thestate= uint(status);
-//        if (_thestate==0 && status!=RequestState.created)
-//        {
-//            if  (status==RequestState.waitingtobank) {
-//                return 1;
-//            }
-//            if  (status==RequestState.handling) {
-//                return 2;
-//            }
-//            if  (status==RequestState.waitingtocustomer)
-//            {
-//                return 3;
-//            }
-//            if  (status==RequestState.withdrawed)
-//            {
-//                return 5;
-//            }
+
+
+
+
+//function getCommentsForStep(int step) constant returns (string)
+//   {
+//        for(uint256 i=0; i<comments.length; i++) {
+//            if(comments[i].step == step) {
+//                return comments[i].commentline;
 //
-//            if  (status==RequestState.accepted)
-//            {
-//                return 6;
 //            }
-//            if  (status==RequestState.rejected)
-//            {
-//                return 8;
-//            }
-//
-//        //waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest }
-//
 //        }
 //
+//        return "";
 //    }
 
-
-
-
-function getCommentsForStep(int step) constant returns (string)
-    {
-        for(uint256 i=0; i<comments.length; i++) {
-            if(comments[i].step == step) {
-                return comments[i].commentline;
-
-            }
-        }
-
-        return "";
-    }
-
-    function addCommentsForStep(int _step,string _commentline) public
-    {
-        Comment memory comment ;
-        comment.step   = _step;
-        comment.commentline    = _commentline;
-
-        comments.push(comment);
-
-    }
+//    function addCommentsForStep(int _step,string _commentline) public
+//    {
+//        Comment memory comment ;
+//        comment.step   = _step;
+//        comment.commentline    = _commentline;
+//
+//       comments.push(comment);
+//
+//    }
 
 
 
@@ -196,8 +160,8 @@ function getCommentsForStep(int step) constant returns (string)
 
     {
         require(status==RequestState.created);
-        stepNumber++;
-        addCommentsForStep(stepNumber,comment);
+//        stepNumber++;
+//        addCommentsForStep(stepNumber,comment);
         status=RequestState.waitingtobank;
 
         Submitted(getId(),msg.sender,comment,status);
@@ -211,8 +175,8 @@ function getCommentsForStep(int step) constant returns (string)
     function withdrawal(string comment) onlyCustomer public returns (bool result)
     {
         require(status!=RequestState.accepted);
-        stepNumber++;
-        addCommentsForStep(stepNumber,comment);
+//        stepNumber++;
+//        addCommentsForStep(stepNumber,comment);
         status=RequestState.withdrawed;
         Withdrawal(getId(),msg.sender,comment);
         //        log("withdrawed",getId()+"->"+comment);
@@ -224,12 +188,12 @@ function getCommentsForStep(int step) constant returns (string)
     function termination(string _comment) onlyBeneficiary public returns (bool result)
     {
         require(status==RequestState.accepted );
-        stepNumber++;
+//        stepNumber++;
         if (guarantee!= address(0))
         {
             GuaranteeExtender(guarantee).terminate(_comment);
         }
-        addCommentsForStep(stepNumber,_comment);
+//        addCommentsForStep(stepNumber,_comment);
         status=RequestState.terminationRequest;
         Termination(getId(),msg.sender,_comment);
         //         log("rejected",getId()+"->"+comment);
@@ -242,8 +206,8 @@ function getCommentsForStep(int step) constant returns (string)
     function reject(string comment) onlyBank public returns (bool result)
     {
         require(status!=RequestState.accepted);
-        stepNumber++;
-        addCommentsForStep(stepNumber,comment);
+  //      stepNumber++;
+  //      addCommentsForStep(stepNumber,comment);
         status=RequestState.rejected;
         Rejected(getId(),msg.sender,comment);
         //         log("rejected",getId()+"->"+comment);
@@ -261,8 +225,8 @@ function getCommentsForStep(int step) constant returns (string)
                (_newState==RequestState.handling           ||
                  _newState==RequestState.waitingtocustomer  ||
                  _newState==RequestState.waitingtobeneficiery ));
-        stepNumber++;
-        addCommentsForStep(stepNumber,comment);
+  //      stepNumber++;
+  //      addCommentsForStep(stepNumber,comment);
         status=_newState;
         BankStateChange(getId(),msg.sender,comment,_newState);
         //         log("rejected",getId()+"->"+comment);
@@ -276,9 +240,9 @@ function getCommentsForStep(int step) constant returns (string)
     function accept(string comment,bytes _guaranteeIPFSHash) onlyBank public returns (bool result)
     {
         require((status==RequestState.waitingtobank || status==RequestState.handling || status==RequestState.changeRequested) && _checkArray(_guaranteeIPFSHash) && guarantee==address(0));
-        stepNumber++;
+  //      stepNumber++;
         guaranteeIPFSHash=_guaranteeIPFSHash;
-        addCommentsForStep(stepNumber,comment);
+  //      addCommentsForStep(stepNumber,comment);
         status=RequestState.accepted;
         Accepted(getId(),msg.sender,comment,guaranteeIPFSHash);
         guarantee= new DigitalGuaranteeBNHP(this,regulator,guaranteeIPFSHash);
@@ -298,16 +262,16 @@ function getCommentsForStep(int step) constant returns (string)
         return true;
     }
 
-    //    event ChangeRequested(address  requestId,address  oldrequestId,address msgSender);
-    //    function changeRequested(address _old_request) onlyBank returns (bool result)
-    //    {
-    //        require((status==RequestState.created ) );
-    //        stepNumber++;
-    //        status=RequestState.changeRequested;
-    //        changeRequest=_old_request;
-    //        ChangeRequested(getId(),oldrequestId,msg.sender);
-    //        return true;
-    //    }
+        event ChangeRequested(address  requestId,address  oldrequestId,address msgSender);
+        function changeRequested(address _old_request) onlyBank returns (bool result)
+        {
+            require((status==RequestState.created ) );
+//            stepNumber++;
+            status=RequestState.changeRequested;
+            changeRequest=_old_request;
+            ChangeRequested(getId(),oldrequestId,msg.sender);
+            return true;
+        }
 
 
 }
