@@ -1,6 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {isNullOrUndefined} from "util";
 import {GRequest, Guarantee} from "../../interfaces/request";
+import {RequestState, GuaranteeState} from "../../interfaces/enum";
+
 
 @Component({
   selector: 'app-guarantee-view',
@@ -20,6 +22,8 @@ export class GuaranteeViewComponent implements OnInit{
     beneficiary: 'המוטב'
   };
   index: number = 1; // accordion open index
+  // therequestState: RequestState ;
+  // treguaranteeState:GuaranteeState;
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);

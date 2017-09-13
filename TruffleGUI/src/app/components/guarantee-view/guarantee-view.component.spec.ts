@@ -2,6 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GuaranteeViewComponent } from './guarantee-view.component';
 
+import {RequestState, GuaranteeState} from "../../interfaces/enum";
+
+
+
 describe('GuaranteeViewComponent', () => {
   let component: GuaranteeViewComponent;
   let fixture: ComponentFixture<GuaranteeViewComponent>;
