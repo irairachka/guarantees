@@ -500,7 +500,7 @@ export class AppComponent {
           }
         }
 
-        this.customerRequests=[...this.bankRequests];
+        // this.customerRequests=[...this.bankRequests];
 
         break; //Stop this loop, we found it!
       }
