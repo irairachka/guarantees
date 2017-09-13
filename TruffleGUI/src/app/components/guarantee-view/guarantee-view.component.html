@@ -78,11 +78,11 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="grey">
-            <p-accordionTab *ngFor="let req of allGuaranties">
+            <p-accordionTab *ngFor="let guar of allGuaranties">
               <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
+                <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)"></guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req"></accordion-content>
+              <accordion-content [userType]="user" [data]="guar"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -146,11 +146,11 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="grey">
-            <p-accordionTab *ngFor="let req of allGuaranties">
+            <p-accordionTab *ngFor="let guar of allGuaranties">
               <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
+                <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)"></guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req"></accordion-content>
+              <accordion-content [userType]="user" [data]="guar"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -193,12 +193,12 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let req of allGuaranties | filterByKeyValue:'guaranteeState':2">//theguaranteeState.Valid">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true">//theguaranteeState.Valid">
               <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)">
-                </request-item>
+                <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
+                </guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -212,16 +212,19 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let req of allGuaranties | filterByKeyValue:'guaranteeState':[3,4]">//theguaranteeState.Valid">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[3,4]">//theguaranteeState.Valid">
               <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)">
-                </request-item>
+                <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
+                </guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
-            </p-accordionTab>
+              <!--<accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>-->
+              </p-accordionTab>
           </p-accordion>
         </div>
       </div>
     </div>
+
+
+
   </main>
 </div>

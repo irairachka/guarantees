@@ -310,8 +310,7 @@ export class AppComponent {
     });
     return;
   };
-
-
+  
 
   // getGuaranteesData = (guaranteeID, type: number) => {
   //   //type = user, bank or beneficiary

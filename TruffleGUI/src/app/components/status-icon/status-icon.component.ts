@@ -10,6 +10,7 @@ import {RequestState, GuaranteeState} from "../../interfaces/enum";
 export class StatusIconComponent {
   @Input() state: any;
   @Input() isRequest: boolean;
+  // @Input() isOtherState: boolean=false;
   statusIcon: string;
 
   ngOnInit(){
@@ -29,6 +30,9 @@ export class StatusIconComponent {
       case RequestState.waitingtobank:
       case RequestState.waitingtocustomer:
       case RequestState.waitingtobeneficiery:
+        // if (isOtherState)
+        //   this.statusIcon ='fa-info-circle';
+        // else
         this.statusIcon ='fa-info-circle';
         break;
       case RequestState.withdrawed:
@@ -36,7 +40,10 @@ export class StatusIconComponent {
       case RequestState.terminationRequest:
         this.statusIcon ='fa-times-circle';
         break;
-      case RequestState.changeRequested:
+      case RequestState.handling:
+        this.statusIcon ='fa-id-card-o';
+        break;
+      default:
         this.statusIcon ='';
         break;
     }
@@ -46,6 +53,9 @@ export class StatusIconComponent {
     switch (state) {
       case GuaranteeState.Valid:
         this.statusIcon ='fa-check-circle';
+        break;
+      case GuaranteeState.Terminated:
+        this.statusIcon ='fa-times-circle';
         break;
       default:
         break;

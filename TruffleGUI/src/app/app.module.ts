@@ -10,6 +10,7 @@ import {
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GuaranteeViewComponent} from "./components/guarantee-view/guarantee-view.component";
 import {RequestItemComponent} from "./components/request-item/request-item.component";
+import {GuaranteeItemComponent} from "./components/guarantee-item/guarantee-item.component";
 import {RequestDetailsComponent} from "./components/request-details/request-details.component";
 import {GuaranteeFormComponent} from "./components/guarantee-form/guarantee-form.component";
 import {FilterByKeyValuePipe} from "./pipes/FilterByKeyValue/filter-by-key-value.pipe";
@@ -40,6 +41,7 @@ import {StatusIconComponent} from "./components/status-icon/status-icon.componen
     AppComponent,
     GuaranteeViewComponent,
     RequestItemComponent,
+    GuaranteeItemComponent ,
     RequestDetailsComponent,
     GuaranteeFormComponent,
     FilterByKeyValuePipe,
