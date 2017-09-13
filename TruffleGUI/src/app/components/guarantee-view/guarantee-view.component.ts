@@ -31,6 +31,7 @@ export class GuaranteeViewComponent implements OnInit{
   }
 
   openModal(e) {
+    console.log('openModal', e);
     let modalData = {
       user: this.user,
       request: e
@@ -40,6 +41,12 @@ export class GuaranteeViewComponent implements OnInit{
   updateRequestsender(data){
     this.updateRequest.emit(data);
   }
+
+  updateGuaranteesender(data){
+    console.log('updateGuaranteesender', data);
+    this.updateRequest.emit(data);
+  }
+
   newRequestEmitter(e) {
     this.closeAccordion();
     this.newRequest.emit(e);

@@ -9,44 +9,22 @@ import {RequestState,GuaranteeState} from "../../interfaces/enum";
 export class FilterByKeyValuePipe implements PipeTransform {
   // transform(arr: any[], key: string, values: any, inverse?: boolean, args?: any): any[] {
 
-  transform(arr: any[], key: string, values: any): any[] {
+  transform(arr: any[], key: string, values: any ,print:boolean): any[] {
     if (isNullOrUndefined(arr)) {
       return;
     }
+    // debugger;
     return arr.filter(item => {
       if (Array.isArray(values))
-        return (values.indexOf(item[key]) >= 0);
+      {
+        // if (print )
+        //   console.log(values,item[key],(values.indexOf(item[key]) >= 0));
+      return (values.indexOf(item[key]) >= 0);
+      }
       else
         return item[key] === values;
     });
   }
 
-
-  // transform(arr: any[], key: string, value: any, inverse?: boolean, args?: any): any[] {
-  //   if(isNullOrUndefined(arr)) {
-  //     return;
-  //   }
-  //   if(inverse) {
-  //     return arr.filter(item => {
-  //       if(value === 'user') {
-  //         return item[key] !== RequestState.waitingtocustomer &&
-  //           item[key] !== RequestState.accepted;
-  //       } else if(value === 'bank') {
-  //         return item[key] === RequestState.handling;
-  //       } else {
-  //         return item[key] !== value;
-  //       }
-  //     });
-  //   }
-  //   return arr.filter(item => {
-  //     if(value === 'user') {
-  //       return item[key] === RequestState.waitingtocustomer;
-  //     } else if(value === 'bank') {
-  //       return item[key] === RequestState.waitingtobank;
-  //     } else {
-  //       return item[key] === value;
-  //     }
-  //   });
-  // }
 
 }
