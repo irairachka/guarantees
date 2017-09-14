@@ -49,7 +49,7 @@
                 <request-item [request]="req" (emitRequest)="openModal($event)">
                 </request-item>
               </p-header>
-              <accordion-content [userType]="bank" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <accordion-content [userType]="user" [todel_state]=2 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>

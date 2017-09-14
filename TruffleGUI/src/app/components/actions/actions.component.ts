@@ -28,6 +28,14 @@ export class ActionsComponent {
     };
 
     switch (type) {
+      case 'updateBank1':
+        eventData.type='updateBank';
+        eventData.details ='העברה למנהל קשרי לקוחותן';
+        break;
+      case 'updateBank2':
+        eventData.type='updateBank';
+        eventData.details ='העברה למח׳ המשפטית';
+        break;
       case 'withdrawal':
         break;
       // case 'updateBank':
