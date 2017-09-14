@@ -40,7 +40,8 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true">//theguaranteeState.Valid">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true">
+              <!--//theguaranteeState.Valid">-->
               <p-header>
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
@@ -59,7 +60,8 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[3,4]">//theguaranteeState.Valid">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[3,4]">
+              <!--//theguaranteeState.Valid">-->
               <p-header>
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
