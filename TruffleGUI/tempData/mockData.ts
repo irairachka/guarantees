@@ -15,14 +15,14 @@ const  addressOnChainGuaranty1='0xd532D3531958448e9E179729421B92962fb81Dc1';
 
 export const beneficiaryData: Beneficiary = {
   beneficiaryID: addressOnChain,
-  Name: "עיריית תל אביב-יפו" ,
+  Name: "עיריית ת׳׳א" ,
   Address: "אבן גבירול 69 תל אביב-יפו"
 };
 
 export const userData: Customer = {
   customerID: addressOnChain,
   Name: 'ישראל ישראלי',
-  Address: 'יצחק קצנסלון 5, תל אביב'
+  Address: 'יצחק כצנסלון 5, תל אביב'
 };
 
 export const bankData: Bank = {
@@ -38,10 +38,10 @@ export const mockCustomerRequests: GRequest[] = [
     beneficiary: addressOnChain,
     bank: addressOnChain,
     beneficiaryName: beneficiaryData.Name,
-    StartDate: '10/05/2017',
-    EndDate: '10/05/2019',
+    StartDate: '10/05/17',
+    EndDate: '10/05/19',
     amount: 10000,
-    purpose: 'שכר דירה',
+    purpose: 'מכרז נקיון',
     indexType: IndexType.CPI,
     indexDate: 1,
     requestState: RequestState.accepted
@@ -53,8 +53,8 @@ export const mockCustomerRequests: GRequest[] = [
     beneficiaryName: beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
-    amount: 10000,
-    purpose: 'מכרז של העירייה',
+    amount: 250000,
+    purpose: 'מכרז בניה',
     indexType: IndexType.ConstructionMatirials,
     indexDate: 1,
     requestState: RequestState.waitingtobank
@@ -66,8 +66,8 @@ export const mockCustomerRequests: GRequest[] = [
     beneficiaryName: beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
-    amount: 10000,
-    purpose: 'מכרז לבניית גינה',
+    amount: 9500,
+    purpose: 'מכרז גינון',
     indexType: IndexType.None,
     indexDate: 1,
     requestState: RequestState.rejected
@@ -80,8 +80,8 @@ export const mockCustomerRequests: GRequest[] = [
     bank: addressOnChain,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
-    amount: 10000,
-    purpose: 'מכרז על שיפוץ כבישים',
+    amount: 775000,
+    purpose: 'מכרז תחבורה',
     indexType: IndexType.CPI,
     indexDate: 1,
     requestState: RequestState.handling
@@ -93,7 +93,7 @@ export const mockCustomerRequests: GRequest[] = [
     beneficiaryName: beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
-    amount: 10000,
+    amount: 16000,
     purpose: 'ספק תחזוקה',
     indexType: IndexType.None,
     indexDate: 1,
@@ -106,8 +106,8 @@ export const mockCustomerRequests: GRequest[] = [
     beneficiaryName: beneficiaryData.Name,
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
-    amount: 10000,
-    purpose: 'נסייון',
+    amount: 500,
+    purpose: 'נסיון',
     indexType: IndexType.None,
     indexDate: 1,
     requestState: RequestState.waitingtocustomer
@@ -125,7 +125,7 @@ export const mockCustomerGuaranties: Guarantee[] = [
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 10000,
-    purpose: 'שכר דירה',
+    purpose: 'מכרז נקיון' ,
     indexType: IndexType.CPI,
     indexDate: 1,
     guaranteeState: GuaranteeState.Valid
@@ -162,7 +162,7 @@ export const mockexpandedRequest: ExpandedRequest[] =[
     {
       date: mockCustomerRequests[0].StartDate,
       state: mockCustomerRequests[0].requestState,
-      comment: "הכל מאושר על ידי משפטיט"
+      comment: "אושר על ידי משפטית"
     }
   ]
 
@@ -200,7 +200,7 @@ export const mockexpandedRequest: ExpandedRequest[] =[
       {
         date: mockCustomerRequests[2].StartDate,
         state: mockCustomerRequests[2].requestState,
-        comment: "לא מאושר על ידי משפטיט"
+        comment: " לא אושר על ידי משפטית"
       }
     ]
 
@@ -221,7 +221,7 @@ export const mockexpandedRequest: ExpandedRequest[] =[
       {
         date: mockCustomerRequests[3].StartDate,
         state: mockCustomerRequests[3].requestState,
-        comment: "ממתין למשפטית לאישור"
+        comment: "ממתין למשפטית"
       }
     ]
 
