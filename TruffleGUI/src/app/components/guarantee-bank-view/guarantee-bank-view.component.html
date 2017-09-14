@@ -17,7 +17,7 @@
         </div>
         <div class="req-for-treatment">
           <p-accordion styleClass="red">
-            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[1] ">"//[therequestState.waitingtocustomer,therequestState.accepted]">
+            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[1] "><!--"//[therequestState.waitingtocustomer,therequestState.accepted]"> -->
               <p-header>
                 <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
               </p-header>

@@ -22,9 +22,9 @@ export class AccordionContentComponent {
   ngOnInit(){
      console.log('-----' , this.todel_state ,this.userType);
     if(this.todel_state=1)
-      this.statusGraph="../../../assets/images/progress1.jpeg";
+      this.statusGraph="../../../assets/images/progress1.png";
       else
-      this.statusGraph="../../../assets/images/progress2.jpeg";
+      this.statusGraph="../../../assets/images/progress2.png";
 
   }
 
