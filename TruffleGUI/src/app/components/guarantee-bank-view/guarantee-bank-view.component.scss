@@ -1,0 +1,44 @@
+.view-header {
+  border-bottom: 1px double #fff;
+  .header-text {
+    label {
+      font-weight: bold;
+      font-size: 1.4em;
+    }
+  }
+}
+
+.requests-section {
+  .for-treatment,
+  .pending, .guarantees {
+    //border-bottom: 3px solid #fff;
+    padding:20px;
+    .section-header {
+      //border-bottom: 1px solid #fff;
+      font-size: 23px;
+    }
+
+    .req-for-treatment + .req-for-treatment,
+    .req-pending + .req-pending,
+    .curr-guarantees + .curr-guarantees {
+      border-top: 1px solid #fff;
+    }
+  }
+}
+
+
+
+.guarantees-section {
+  .active, .inactive {
+    border-bottom: 3px solid #fff;
+
+    .section-header {
+      border-bottom: 1px solid #fff;
+    }
+
+    .active-guarantees + .active-guarantees,
+    .inactive-guarantees + .inactive-guarantees {
+      border-top: 1px solid #fff;
+    }
+  }
+}

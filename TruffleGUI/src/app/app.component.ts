@@ -310,7 +310,7 @@ export class AppComponent {
     });
     return;
   };
-  
+
 
   // getGuaranteesData = (guaranteeID, type: number) => {
   //   //type = user, bank or beneficiary
@@ -677,7 +677,7 @@ export class AppComponent {
     //todo  open ids
       this.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
       '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
-      e.purpose, e.amount, (Date.now()/1000), (Date.now()/1000)+100000, 0, 0);
+      e.purpose, e.amount, new Date(e.startDate).getTime()/1000, new Date(e.endDate).getTime()/1000, 0, 0);
   };
 
   handleRequestUpdate = (e) => {
@@ -716,6 +716,11 @@ export class AppComponent {
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);
     return date.toLocaleDateString('en-GB');
+  };
+
+  transformDateJSToSol = (longDate) => {
+    const date = new Date(longDate / 1000);
+    // return date.toLocaleDateString('en-GB');
   };
 
   onNewRequestSuccess = (requestAddress) => {

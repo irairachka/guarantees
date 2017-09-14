@@ -10,7 +10,7 @@
 
 <table class="request-item" style="width:100%" *ngIf="request">
   <tr>
-    <td><status-icon [state]="request.requestState || request.guaranteeState" [isRequest]=true ></status-icon></td>
+    <td><status-icon [state]="request.requestState || request.guaranteeState" [isRequest]=true  [useState]=usestate ></status-icon></td>
     <td class="text-bold">{{request.GRequestID | fourDigits}}</td>
     <td>{{request.beneficiaryName}}</td>
     <td>{{request.purpose}}</td>
