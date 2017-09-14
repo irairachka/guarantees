@@ -14,7 +14,6 @@ export class HistoryComponent implements OnInit {
   myHistory: any[];
 
   myMockHistory: any = {
-
     user: [
       {
       text: 'הוגשה בקשה ע״י רונן ביזמן, נשלחה בהצלחה',
