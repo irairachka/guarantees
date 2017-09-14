@@ -17,12 +17,12 @@
       <label class="user-details-placeholder">מבקש הערבות:</label>
       <div class="ui-layout-column user-details-container">
         <div class="user-id-name-container" >
-          <input type="text" formControlName="userName">
-          <input type="text" formControlName="userId">
+          <input type="text" formControlName="userName" value="{{userDetails.Name}}">
+          <!--<input type="text" formControlName="userId" value="{{userDetails.customerID}}">-->
           <!--<label class="user-id-name user-name" placeholder="שם הלקוח">{{userDetails.Name}},</label>-->
-          <!--<label  class="user-id-name user-id" placeholder="חפ / תז">חפ / תז: {{userDetails.customerID | fourDigits}}</label>-->
+          <label  class="user-id-name user-id" placeholder="חפ / תז">חפ / תז: ...{{userDetails.customerID | fourDigits}}</label>
         </div>
-        <input type="text"  formControlName="userAddress" >
+        <input type="text"  formControlName="userAddress" value="{{userDetails.Address}}" >
         <!--<label placeholder="כתובת">{{userDetails.Address}}</label>-->
       </div>
     </div>
@@ -54,11 +54,12 @@
           <div class="ui-layout double-input">
             <div class="input-container">
               <label for="">ת.התחלה</label>
-              <input placeholder="תאריך התחלת ערבות" formControlName="startDate">
+
+              <input placeholder="תאריך התחלת ערבות" formControlName="startDate" type="date">
             </div>
             <div class="input-container">
               <label for="">ת.סיום</label>
-            <input placeholder="תאריך סיום" formControlName="endDate">
+            <input placeholder="תאריך סיום" formControlName="endDate" type="date">
               </div>
           </div>
         </div>

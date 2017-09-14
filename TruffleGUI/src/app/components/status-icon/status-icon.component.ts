@@ -10,11 +10,11 @@ import {RequestState, GuaranteeState} from "../../interfaces/enum";
 export class StatusIconComponent {
   @Input() state: any;
   @Input() isRequest: boolean;
-  // @Input() isOtherState: boolean=false;
+  @Input() useState: boolean;
   statusIcon: string;
 
   ngOnInit(){
-    console.log('-----' , this.state);
+    // console.log('-----' , this.state);
     if(this.isRequest) {
       this.getRequestIcon(this.state);
     } else {
@@ -30,10 +30,10 @@ export class StatusIconComponent {
       case RequestState.waitingtobank:
       case RequestState.waitingtocustomer:
       case RequestState.waitingtobeneficiery:
-        // if (isOtherState)
-        //   this.statusIcon ='fa-info-circle';
-        // else
-        this.statusIcon ='fa-info-circle';
+         if (!this.useState)
+           this.statusIcon ='fa-id-card-o';
+         else
+            this.statusIcon ='fa-info-circle';
         break;
       case RequestState.withdrawed:
       case RequestState.rejected:

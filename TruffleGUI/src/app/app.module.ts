@@ -9,11 +9,14 @@ import {
 } from "primeng/primeng";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {GuaranteeViewComponent} from "./components/guarantee-view/guarantee-view.component";
+import {GuaranteeUserViewComponent} from "./components/guarantee-user-view/guarantee-user-view.component";
+import {GuaranteeBankViewComponent} from "./components/guarantee-bank-view/guarantee-bank-view.component";
 import {RequestItemComponent} from "./components/request-item/request-item.component";
 import {GuaranteeItemComponent} from "./components/guarantee-item/guarantee-item.component";
 import {RequestDetailsComponent} from "./components/request-details/request-details.component";
 import {GuaranteeFormComponent} from "./components/guarantee-form/guarantee-form.component";
 import {FilterByKeyValuePipe} from "./pipes/FilterByKeyValue/filter-by-key-value.pipe";
+import {OrderByKeyPipe} from "./pipes/FilterByKeyValue/order-by-key.pipe";
 import { ParseDatePipe } from './pipes/ParseDate/parse-date.pipe';
 import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
 import { WizardComponent } from './components/wizard/wizard.component';
@@ -40,11 +43,14 @@ import {StatusIconComponent} from "./components/status-icon/status-icon.componen
   declarations: [
     AppComponent,
     GuaranteeViewComponent,
+    GuaranteeUserViewComponent,
+    GuaranteeBankViewComponent,
     RequestItemComponent,
     GuaranteeItemComponent ,
     RequestDetailsComponent,
     GuaranteeFormComponent,
     FilterByKeyValuePipe,
+    OrderByKeyPipe,
     ParseDatePipe,
     FourDigitsPipe,
     WizardComponent,

@@ -10,7 +10,7 @@
 
 <table class="guarantee-item" style="width:100%" *ngIf="guarantee">
   <tr>
-    <td><status-icon [state]="guarantee.guaranteeState || guarantee.guaranteeState" [isRequest]=false ></status-icon></td>
+    <td><status-icon [state]="guarantee.guaranteeState || guarantee.guaranteeState" [isRequest]=false [useState]=false ></status-icon></td>
     <td class="text-bold">{{guarantee.GuaranteeID | fourDigits}}</td>
     <td>{{guarantee.purpose}}</td>
     <td>{{guarantee.amount}}ש״ח</td>
