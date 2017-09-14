@@ -1,11 +1,11 @@
-import {Component , Input, Output, EventEmitter} from '@angular/core';
+import {Component, Input, Output, EventEmitter, OnInit, OnChanges} from '@angular/core';
 
 @Component({
   selector: 'accordion-content',
   templateUrl: './accordion-content.component.html',
   styleUrls: ['./accordion-content.component.scss']
 })
-export class AccordionContentComponent {
+export class AccordionContentComponent implements OnChanges{
   @Input() userType: any[];
   @Input() todel_state: any;
   @Input() data: any;
@@ -19,9 +19,9 @@ export class AccordionContentComponent {
 
 
 
-  ngOnInit(){
+  ngOnChanges(){
      console.log('-----' , this.todel_state ,this.userType);
-    if(this.todel_state=1)
+    if(this.todel_state==1)
       this.statusGraph="../../../assets/images/progress1.png";
       else
       this.statusGraph="../../../assets/images/progress2.png";
