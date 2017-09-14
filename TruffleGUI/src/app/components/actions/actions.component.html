@@ -1,5 +1,5 @@
 <div [ngSwitch]="userType" class="ui-layout-column ui-space-r-large">
-  <!--<button *ngSwitchCase="'user'" (click)="changeRequest('withdrawal')">ביטול</button>-->
+  <button *ngSwitchCase="'user'" class="cancelReason-send-button secondary-button" (click)="changeRequest('withdrawal')">ביטול</button>
 
   <ng-container *ngSwitchCase="'bank'">
     <div class="update ui-layout transform-buttons-container">
