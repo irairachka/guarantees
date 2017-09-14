@@ -1,0 +1,43 @@
+{
+  "contract_name": "GuaranteeConst",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "message",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "logb",
+          "type": "address"
+        }
+      ],
+      "name": "loga",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "message",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "logb",
+          "type": "string"
+        }
+      ],
+      "name": "log",
+      "type": "event"
+    }
+  ],
+  "unlinked_binary": "0x60606040523415600e57600080fd5b5b603680601c6000396000f30060606040525b600080fd00a165627a7a72305820b088a3b93701d10617a3c1f8b0da7965ed8a9b0bbbd425c625f5e9d1c96927dc0029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1504773643241
+}
