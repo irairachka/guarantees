@@ -31,9 +31,10 @@ export class StatusIconComponent {
       case RequestState.waitingtocustomer:
       case RequestState.waitingtobeneficiery:
          if (!this.useState)
-           this.statusIcon ='fa-id-card-o';
+           this.statusIcon ='fa-hourglass-half';
          else
-            this.statusIcon ='fa-info-circle';
+           this.statusIcon ='fa-exclamation-triangle';
+            // this.statusIcon ='fa-info-circle';
         break;
       case RequestState.withdrawed:
       case RequestState.rejected:
@@ -41,7 +42,7 @@ export class StatusIconComponent {
         this.statusIcon ='fa-times-circle';
         break;
       case RequestState.handling:
-        this.statusIcon ='fa-id-card-o';
+        this.statusIcon ='fa-hourglass-half';
         break;
       default:
         this.statusIcon ='';

@@ -45,7 +45,7 @@
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>
+              <accordion-content [userType]="bank" [todel_state]=2 [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -64,7 +64,6 @@
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
               </p-header>
-              <!--<accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>-->
               </p-accordionTab>
           </p-accordion>
         </div>
