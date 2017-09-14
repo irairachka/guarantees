@@ -31,7 +31,7 @@
               <p-header>
                 <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <accordion-content [userType]="user" [todel_state]=2 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
               <!--<app-actions [userType]="user" [data]="req"></app-actions>-->
             </p-accordionTab>
           </p-accordion>
@@ -55,7 +55,7 @@
                 <request-item [request]="req" [usestate]=false (emitRequest)="openModal($event)">
                 </request-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <accordion-content [userType]="user" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="req-pending" >
           <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[5,7,8,9]">
+            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[5,7,8,9] | orderByKey:'EndDate'">
              <!--therequestState.withdrawed,-->
               <!--therequestState.changeRequested,-->
               <!--therequestState.rejected,-->
@@ -80,7 +80,7 @@
                 <request-item [request]="req" (emitRequest)="openModal($event)">
                 </request-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <accordion-content [userType]="user" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -89,17 +89,16 @@
       <div class="guarantees">
         <div class="section-header ui-space-tb-small text-bold">
           <label>
-            היסטורית
+            ערבויות פעילות
           </label>
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="grey">
-            <p-accordionTab *ngFor="let guar of allGuaranties">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true | orderByKey:'EndDate'">
               <p-header>
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)"></guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="guar"></accordion-content>
-            </p-accordionTab>
+              </p-accordionTab>
           </p-accordion>
         </div>
       </div>
