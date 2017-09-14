@@ -1,24 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { GuaranteeViewComponent } from './guarantee-view.component';
+import { GuaranteeBankViewComponent } from './guarantee-bank-view.component';
 
 // import {RequestState, GuaranteeState} from "../../interfaces/enum";
 
 
 
-describe('GuaranteeViewComponent', () => {
-  let component: GuaranteeViewComponent;
-  let fixture: ComponentFixture<GuaranteeViewComponent>;
+describe('GuaranteeBankViewComponent', () => {
+  let component: GuaranteeBankViewComponent;
+  let fixture: ComponentFixture<GuaranteeBankViewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ GuaranteeViewComponent ]
+      declarations: [ GuaranteeBankViewComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(GuaranteeViewComponent);
+    fixture = TestBed.createComponent(GuaranteeBankViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

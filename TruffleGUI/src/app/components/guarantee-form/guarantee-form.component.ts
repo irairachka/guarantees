@@ -16,20 +16,20 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
-  state: any[] = [
-    {
-      label: "המבקש",
-      selected: false,
-    },
-    {
-      label: "הבנק",
-      selected: true,
-    },
-    {
-      label: "המוטב",
-      selected: false,
-    },
-  ];
+  // state: any[] = [
+  //   {
+  //     label: "המבקש",
+  //     selected: false,
+  //   },
+  //   {
+  //     label: "הבנק",
+  //     selected: true,
+  //   },
+  //   {
+  //     label: "המוטב",
+  //     selected: false,
+  //   },
+  // ];
   displayActions: boolean = false;
   userDetails: any = userData;
   // bank dropdown options

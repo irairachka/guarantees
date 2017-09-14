@@ -5,11 +5,11 @@ import {RequestState, GuaranteeState} from "../../interfaces/enum";
 
 
 @Component({
-  selector: 'app-guarantee-view',
-  templateUrl: './guarantee-view.component.html',
-  styleUrls: ['./guarantee-view.component.scss']
+  selector: 'guarantee-bank-view',
+  templateUrl: './guarantee-bank-view.component.html',
+  styleUrls: ['./guarantee-bank-view.component.scss']
 })
-export class GuaranteeViewComponent implements OnInit{
+export class GuaranteeBankViewComponent implements OnInit{
   @Input() user: string; // TODO - handle enum and convert to string
   @Input() allRequests: GRequest[];
   @Input() allGuaranties: Guarantee[];

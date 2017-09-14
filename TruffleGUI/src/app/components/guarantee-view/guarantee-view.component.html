@@ -1,17 +1,8 @@
 <div class="ui-layout-column" [ngClass]="user !== undefined ? user : ''">
   <header class="view-header text-center ui-space-tb-large">
-    <label>
-      ----------- {{userName[user]}} -----------
-    </label>
+    <label>מיטב</label>
     <div class="header-text ui-layout-column ui-space-t-medium" ui-layout-align="space-around center">
       <label>ניהול ערבויות</label>
-      <p-accordion *ngIf="user==='user'" [activeIndex]="index"
-                   styleClass="green bgGrey" [style.width]="'100%'">
-        <p-accordionTab header="בקשה לערבות חדשה">
-          <button class="accordion-tab-close"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
-          <guarantee-form (postNewRequest)="newRequestEmitter($event)"></guarantee-form>
-        </p-accordionTab>
-      </p-accordion>
       <!--<div *ngIf="user==='beneficiary'">-->
         <!--<button>מיון לפי תאריך</button>-->
         <!--<button>מיון לפי משהו אחר</button>-->
@@ -19,63 +10,7 @@
     </div>
   </header>
   <main>
-    <div class="requests-section" *ngIf="user !== 'beneficiary'">
-      <div *ngIf="allRequests"  class="for-treatment ui-space-tb-large">
-        <div class="section-header ui-space-tb-small text-bold">
-          <label>
-            דרושה פעולה
-          </label>
-        </div>
-        <div class="req-for-treatment">
-          <p-accordion styleClass="red">
-            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':user">
-              <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
-              </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
-              <!--<app-actions [userType]="user" [data]="req"></app-actions>-->
-            </p-accordionTab>
-          </p-accordion>
-        </div>
-      </div>
 
-      <div class="pending">
-        <div *ngIf="allRequests"  class="section-header ui-space-tb-small text-bold">
-          <label>
-            בהמתנה
-          </label>
-        </div>
-        <div class="req-pending" >
-          <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':user:true">
-              <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)">
-                </request-item>
-              </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
-            </p-accordionTab>
-          </p-accordion>
-        </div>
-      </div>
-
-      <div class="guarantees">
-        <div class="section-header ui-space-tb-small text-bold">
-          <label>
-            היסטורית
-          </label>
-        </div>
-        <div *ngIf="allGuaranties" class="curr-guarantees">
-          <p-accordion  styleClass="grey">
-            <p-accordionTab *ngFor="let req of allGuaranties">
-              <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
-              </p-header>
-              <accordion-content [userType]="user" [data]="req"></accordion-content>
-            </p-accordionTab>
-          </p-accordion>
-        </div>
-      </div>
-    </div>
 
     <div class="guarantees-section" *ngIf="user === 'beneficiary'">
       <div *ngIf="allGuaranties" class="action-required ui-space-b-large">
@@ -105,12 +40,12 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let req of allGuaranties">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true">//theguaranteeState.Valid">
               <p-header>
-                <request-item [request]="req" (emitRequest)="openModal($event)">
-                </request-item>
+                <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
+                </guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -122,18 +57,21 @@
             היסטוריה
           </label>
         </div>
-        <!--<div *ngIf="allGuaranties" class="curr-guarantees">-->
-          <!--<p-accordion  styleClass="grey">-->
-            <!--<p-accordionTab *ngFor="let req of allGuaranties">-->
-              <!--<p-header>-->
-                <!--<request-item [request]="req" (emitRequest)="openModal($event)">-->
-                <!--</request-item>-->
-              <!--</p-header>-->
-              <!--<accordion-content [userType]="user" [data]="req"></accordion-content>-->
-            <!--</p-accordionTab>-->
-          <!--</p-accordion>-->
-        <!--</div>-->
+        <div *ngIf="allGuaranties" class="curr-guarantees">
+          <p-accordion  styleClass="green">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[3,4]">//theguaranteeState.Valid">
+              <p-header>
+                <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
+                </guarantee-item>
+              </p-header>
+              <!--<accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>-->
+              </p-accordionTab>
+          </p-accordion>
+        </div>
       </div>
     </div>
+
+
+
   </main>
 </div>

@@ -9,6 +9,8 @@ export class ActionsComponent {
   @Input() userType: any[];
   @Input() data: any;
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
+  // @Output() updateGuarantee: EventEmitter<any> = new EventEmitter();
+
   private cancelReason: string;
   private terminateReason: string;
   private newDate: string;
@@ -16,7 +18,7 @@ export class ActionsComponent {
 
 
   changeRequest(type) {
-    console.log('this.data', this.data);
+    console.log('this.data', this.data ,'type',type);
     let eventData = {
       type,
       requestId: this.data.GRequestID,

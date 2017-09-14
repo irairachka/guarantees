@@ -8,6 +8,7 @@ import {GRequest} from "../../interfaces/request";
 })
 export class RequestItemComponent {
   @Input() request: any;
+  @Input() usestate: boolean=true;
   @Output() emitRequest: EventEmitter<any> = new EventEmitter();
 
   openRequest() {

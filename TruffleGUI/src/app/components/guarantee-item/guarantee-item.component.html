@@ -8,15 +8,13 @@
   <!--<label>{{request.EndDate}}</label>-->
 <!--</div>-->
 
-<table class="request-item" style="width:100%" *ngIf="request">
+<table class="guarantee-item" style="width:100%" *ngIf="guarantee">
   <tr>
-    <td><status-icon [state]="request.requestState || request.guaranteeState" [isRequest]=true  [useState]=usestate ></status-icon></td>
-    <td class="text-bold">{{request.GRequestID | fourDigits}}</td>
-    <td>{{request.beneficiaryName}}</td>
-    <td>{{request.purpose}}</td>
-    <td>{{request.amount}} ש״ח</td>
-    <td>{{request.StartDate}}</td>
-    <td>{{request.EndDate}}</td>
+    <td><status-icon [state]="guarantee.guaranteeState || guarantee.guaranteeState" [isRequest]=false [useState]=false ></status-icon></td>
+    <td class="text-bold">{{guarantee.GuaranteeID | fourDigits}}</td>
+    <td>{{guarantee.purpose}}</td>
+    <td>{{guarantee.amount}}ש״ח</td>
+    <td>{{guarantee.EndDate}}</td>
   </tr>
 
 </table>
