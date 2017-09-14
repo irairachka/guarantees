@@ -61,7 +61,7 @@
   .actions,
   .history {
     position: relative;
-    border-bottom: 1px solid #fff;
+    //border-bottom: 1px solid #fff;
   }
 
   .status-wizard {
@@ -94,6 +94,10 @@
     .user-id-name-container{
       display: flex;
       align-items: center;
+      margin-bottom: 14px;
+      input{
+        margin-left: 10px
+      }
     }
     .user-details-container{
       font-size: 24px;
@@ -126,12 +130,17 @@
       display: flex;
       flex-direction: column;
     }
+    .guarantee-details-right{
+      margin-left: 10px;
+    }
   }
 
   .guarantee-details-button{
     margin-top: 10px;
-
-
-
+  }
+  input{
+    background: white;
+    border-radius: 7px;
+    border:1px solid #cccccc;
   }
 }

@@ -5,8 +5,8 @@
 body {
   margin: 0;
   color: #000;
-  font-family: 'Open Sans Hebrew';
-  font-size: 19px;
+  font-family: Arial ,'Open Sans Hebrew';
+  font-size: 18px;
 }
 
 /* Dialog css overrides */
@@ -163,8 +163,13 @@ p-fileupload{
     opacity: 0.8;
   }
 }
-//#cccccc grey button
-//#9ae232 lightgreen button
+
+input{
+  background: white;
+  border-radius: 7px;
+  border:1px solid #cccccc;
+}
+
 
 .prime-button{
   background-color: #9ae232 !important;
@@ -187,7 +192,31 @@ p-fileupload{
   }
 
 }
+
+.beneficiary{
+  max-width: 800px;
+.guarantees-section{
+  background-color: #e4e4e4;
+  .action-required{
+    background-color: #f2f2f2;
+    border: 1px dashed red !important;
+    *{
+      background-color: #f2f2f2;
+    }
+  }
+  > * {
+    padding: 20px !important;
+  }
+  *{
+    background-color: #e4e4e4;
+  }
+  }
+}
+
+
+
 .user {
+  max-width: 800px;
   .requests-section{
     background-color: #e4e4e4;
     * {
@@ -230,4 +259,46 @@ p-fileupload{
       }
     }
   }
+}
+.bank{
+  max-width: 800px;
+  .curr-guarantees {
+    a{
+      background-color: #e4e4e4;
+    }
+    .ui-accordion-content{
+      background-color: #e4e4e4;
+    }
+  }
+  .req-pending{
+    background-color: #e4e4e4;
+  .ui-accordion-content{
+    background-color: #e4e4e4;
+  }
+    .ui-accordion-header{
+      a{
+        background-color: #e4e4e4;
+      }
+    }
+  }
+  .requests-section{
+    background-color: #e4e4e4;
+  }
+
+
+  .for-treatment{
+
+  .ui-accordion-content{
+    background-color: #f2f2f2;
+  }
+  .ui-accordion-header{
+    a{
+      background-color: #f2f2f2;
+    }
+  }
+  }
+
+}
+input{
+  padding: 0 5px;
 }
