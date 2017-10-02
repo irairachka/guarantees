@@ -1,11 +1,11 @@
 pragma solidity ^0.4.13;
 
-import "./GuaranteeRequest.sol";
+import "./Ownable.sol";
 import "./GuaranteeConst.sol";
 import "./IssuerManager.sol";
 import "./BeneficiaryManager.sol";
 import "./CustomerManager.sol";
-import "./Ownable.sol";
+import "./GuaranteeRequest.sol";
 //
 ////###
 //// general contract for better operations of the system
@@ -41,7 +41,7 @@ import "./Ownable.sol";
 //}
 
 
-contract Regulator is Ownable,GuaranteeConst,IssuerManager,BeneficiaryManager,CustomerManager{
+contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst{
 
     //guarantee request states
     address [] public  guaranteeRequests;
@@ -119,36 +119,34 @@ contract Regulator is Ownable,GuaranteeConst,IssuerManager,BeneficiaryManager,Cu
 
     function terminateGuarantee(address  _guaranteeRequest,string comment)  returns (bool)
     {
+        require(msg.sender == ge.getBeneficiary());
+
         GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-        if ( msg.sender == ge.getBeneficiary() )
-        {
-            ge.termination(comment) ;
-            return true;
-        }
 
-
-        throw;
+        ge.termination(comment) ;
+        return true;
 
 
     }
 
-    function accept(address  _guaranteeRequest,string comment,bytes _guaranteeIPFSHash)  public returns (bool result) //onlyBank
-    {
-        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-        if ( msg.sender == ge.getBank() )
-        {
-            ge.accept(comment,_guaranteeIPFSHash) ;
-            return true;
-        }
+//    function accept(address  _guaranteeRequest,string comment,bytes _guaranteeIPFSHash)  returns (bool)
+//    {
+//        require(msg.sender == ge.getBank());
+//
+//        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
+//        ge.accept(comment,_guaranteeIPFSHash) ;
+//
+//        return true;
+//
+//    }
 
 
-        throw;
-    }
 
-    function changeGuarantee(address  _guaranteeRequest ,uint _newamount, uint _newendDate, string _comment)  returns (bool)  //onlyBeneficiary
-    {
-//        GuaranteeExtender ge=GuaranteeExtender(_guaranteeRequest);
-//        if (ge.getBeneficiary()==msg.sender)
+//    function changeGuarantee(address  _guaranteeRequest ,uint _newamount, uint _newendDate, string _comment)  returns (bool)  //onlyBeneficiary
+//    {
+//        if (ge.getBeneficiary()!=msg.sender) throw;
+//            GuaranteeExtender ge=GuaranteeExtender(_guaranteeRequest);
+//
 //        {
 //            ( address _contract_id,address _customer,address _bank, address _beneficiary,
 //            string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,
@@ -168,11 +166,10 @@ contract Regulator is Ownable,GuaranteeConst,IssuerManager,BeneficiaryManager,Cu
 //    .endRequest(_comment)
 //        guaranteeRequests.push(addr);
 //        return addr;
+//
+//        return true;
+//    }
 
-        return true;
-    }
-
-    //
 //    function submit(string comment) onlyCustomer public returns (bool result) ;
 //    function termination(string comment) onlyBeneficiary public returns (bool result);
 //    function reject(string comment) onlyBank public returns (bool result);
