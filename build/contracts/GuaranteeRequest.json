@@ -2948,7 +2948,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2020,
+                              "referencedDeclaration": 2025,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -3189,7 +3189,7 @@
                           "overloadedDeclarations": [
                             null
                           ],
-                          "referencedDeclaration": 2052,
+                          "referencedDeclaration": 2057,
                           "type": "contract GuaranteeRequest",
                           "value": "this"
                         },
@@ -4861,7 +4861,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2036,
+                              "referencedDeclaration": 2041,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -5389,7 +5389,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2036,
+                              "referencedDeclaration": 2041,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -5683,7 +5683,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -6142,7 +6142,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2036,
+                              "referencedDeclaration": 2041,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -6432,7 +6432,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -6877,7 +6877,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2036,
+                              "referencedDeclaration": 2041,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -7390,7 +7390,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -7835,7 +7835,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2036,
+                              "referencedDeclaration": 2041,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -8125,7 +8125,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -8627,7 +8627,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2036,
+                              "referencedDeclaration": 2041,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -9276,7 +9276,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -9788,7 +9788,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2036,
+                              "referencedDeclaration": 2041,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -10502,7 +10502,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -10779,7 +10779,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2052,
+                                  "referencedDeclaration": 2057,
                                   "type": "contract GuaranteeRequest",
                                   "value": "this"
                                 },
@@ -10879,5 +10879,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-02T06:00:50.788Z"
+  "updatedAt": "2017-10-02T06:58:27.453Z"
 }

@@ -483,7 +483,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1191,7 +1191,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2020,
+                                  "referencedDeclaration": 2025,
                                   "type": "uint256",
                                   "value": "now"
                                 },
@@ -1572,5 +1572,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-02T06:00:50.769Z"
+  "updatedAt": "2017-10-02T06:58:27.101Z"
 }

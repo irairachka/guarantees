@@ -41,25 +41,13 @@ export class AppComponent implements OnInit {
   constructor(private truffleSRV: TruffleService) {}
 
   ngOnInit() {
-    console.log('this.truffleSRV.getAllUserRequests()', this.truffleSRV.getAllUserRequests());
+    // console.log('this.truffleSRV.getAllUserRequests()', this.truffleSRV.getAllUserRequests());
+    this.truffleSRV.getAllUserRequests().subscribe((res) => {
+      console.log('res',res);
+    });
   }
 
-  // getOneGRequests = (requestAddress): GRequest => {
-  //   /** Gets one guarantee requests by id */
-  //   /** parses the data and sends to UI */
-  //   this.GuaranteeRequest.at(requestAddress)
-  //     .then((guaranteeRequestinstance) => {
-  //       return guaranteeRequestinstance.getGuaranteeRequestData();
-  //     }).then((result) => {
-  //     return this.populateRequestData(result);
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   return;
-  // };
-  //
-  //
-  //
+
   // getAllBankRequests = () => {
   //   /** Gets all guarantee requests for customer */
   //   /** parses the data and sends to UI */
@@ -89,25 +77,6 @@ export class AppComponent implements OnInit {
   //     if(guaranteeAddresses.length > 0) {
   //       guaranteeAddresses.forEach((guaranteeAddress) => {
   //         this.beneficiaryGuaranties = [...this.beneficiaryGuaranties, this.getOneGuaranty(guaranteeAddress)];
-  //       });
-  //     }
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  // };
-  //
-  //
-  // getAllCustomerGuaranties = () => {
-  //   console.log('getting guarantees');
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getGuarantieAddressForCustomer.call({from: this.account});
-  //     }).then((guaranteeAddresses) => {
-  //     console.log('guaranteeAddresses', guaranteeAddresses);
-  //     if(guaranteeAddresses.length > 0) {
-  //       guaranteeAddresses.forEach((guaranteeAddress) => {
-  //         this.customerGuaranties = [...this.customerGuaranties, this.getOneGuaranty(guaranteeAddress)];
   //       });
   //     }
   //   }).catch((e) => {
@@ -150,23 +119,6 @@ export class AppComponent implements OnInit {
   //   return;
   // };
   //
-  // getCustomerData = (customerAddress): Customer => {
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getCustomer.call(customerAddress,{from: this.account});
-  //     }).then((customer) => {
-  //     console.log(customer);
-  //     return {
-  //       customerID: customerAddress,
-  //       Name: customer[0],
-  //       Address: customer[1]
-  //     };
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   return;
-  // };
   //
   // getBankData = (requestAddress) => {
   //   this.Regulator
