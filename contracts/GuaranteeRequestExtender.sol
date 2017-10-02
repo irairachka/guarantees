@@ -57,12 +57,12 @@ contract GuaranteeRequestExtender is GuaranteeConst {
     //    function getAddresses() constant returns (Addresses);
 
     function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
-    string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status);
+    bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status);
     function getProposalIPFSHash() constant public returns (bytes _proposalIPFSHash);
 
     function getRequestState() public constant returns (RequestState);
-    function getCommentsForStep(int step) constant public returns (string);
-    function addCommentsForStep(int _step,string _commentline) public ;
+//    function getCommentsForStep(int step) constant public returns (string);
+//    function addCommentsForStep(int _step,string _commentline) public ;
     //    function setRequestState(RequestState)  returns (RequestState);
 
     function isExpired() constant public returns (bool) {

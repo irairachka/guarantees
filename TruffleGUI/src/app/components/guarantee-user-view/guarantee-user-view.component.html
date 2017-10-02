@@ -31,7 +31,10 @@
               <p-header>
                 <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
               </p-header>
-              <accordion-content [userType]="user" [todel_state]=2 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <app-history [userType]="user" [todel_state]=1 ></app-history>
+              <app-actions [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></app-actions>
+
+              <!--<accordion-content [userType]="user" [todel_state]=2 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>-->
               <!--<app-actions [userType]="user" [data]="req"></app-actions>-->
             </p-accordionTab>
           </p-accordion>
@@ -55,7 +58,10 @@
                 <request-item [request]="req" [usestate]=false (emitRequest)="openModal($event)">
                 </request-item>
               </p-header>
-              <accordion-content [userType]="user" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <app-history [userType]="user" [todel_state]=2 ></app-history>
+              <app-actions [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></app-actions>
+
+              <!--<accordion-content [userType]="user" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>-->
             </p-accordionTab>
           </p-accordion>
         </div>
@@ -80,7 +86,10 @@
                 <request-item [request]="req" (emitRequest)="openModal($event)">
                 </request-item>
               </p-header>
-              <accordion-content [userType]="user" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>
+              <!--<app-history [userType]="user" [todel_state]=2 ></app-history>-->
+              <!--<app-actions [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></app-actions>-->
+
+              <!--<accordion-content [userType]="user" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>-->
             </p-accordionTab>
           </p-accordion>
         </div>

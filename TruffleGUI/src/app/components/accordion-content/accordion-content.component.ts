@@ -20,7 +20,7 @@ export class AccordionContentComponent implements OnChanges{
 
 
   ngOnChanges(){
-     console.log('-----' , this.todel_state ,this.userType);
+     // console.log('-----' , this.todel_state ,this.userType);
     if(this.todel_state==1)
       this.statusGraph="../../../assets/images/progress1.png";
       else

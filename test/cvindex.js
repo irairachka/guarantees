@@ -16,6 +16,8 @@ var account;
 
 contract('Regulator', function(accounts) {
 
+    account=accounts[0];
+
     it("should be empty at the beginning", function() {
         return Regulator.deployed().then(function(instance) {
             return instance.getIssuerCounter.call();
@@ -29,67 +31,67 @@ contract('Regulator', function(accounts) {
     });
 
 
-    // it("should create all data at the beginning", function() {
-    //     var Registry_instance;
-    //     return Regulator.deployed().then(function(instance) {
-    //         Registry_instance = instance;
-    //         return Registry_instance.getOwner.call();
-    //     }).then(function (regulatorAddress) {
-    //         account=regulatorAddress;
-    //         console.log("regulatorAddress:"+account);
-    //         return Registry_instance.submitIssuer(account ,"בנק הפועלים","הנגב 11 תל-אביב",{from: account});
-    //     }).then(function (result) {
-    //         for (var i = 0; i < result.logs.length; i++) {
-    //             var log = result.logs[i];
-    //
-    //             if (log.event == "AddIssuer") {
-    //                 // We found the event!
-    //                 console.log("submitIssuer:");
-    //                 console.log(log.args);
-    //                 // break;
-    //                 return Registry_instance.submitBeneficiary(account ,"Beneficiary 1","herzel 2 tel-aviv",{from: account});
-    //             }
-    //         }
-    //         assert.fail("can't add issuer");
-    //         // console.log(tx_id);
-    //     }).then(function (result) {
-    //         for (var i = 0; i < result.logs.length; i++) {
-    //             var log = result.logs[i];
-    //
-    //             if (log.event == "AddBeneficiary") {
-    //                 // We found the event!
-    //                 console.log("AddBeneficiary:");
-    //                 console.log(log.args);
-    //                 // break;
-    //                 return Registry_instance.submitCustomer(account ,"customer 1","herzel 1 rishon-le-zion",{from: account});
-    //             }
-    //         }
-    //         assert.fail("can't add Beneficiary");
-    //     }).then(function (result) {
-    //         for (var i = 0; i < result.logs.length; i++) {
-    //             var log = result.logs[i];
-    //
-    //             if (log.event == "AddCustomer") {
-    //                 // We found the event!
-    //                 console.log("AddCustomer:");
-    //                 console.log(log.args);
-    //                 // break;
-    //                 return Registry_instance.getCustomer(account);
-    //             }
-    //         }
-    //         // console.log("submitBeneficiary:");
-    //         assert.fail("can't add customer");
-    //         // return Registry_instance.getCustomer(account);
-    //     }).then(function (customer) {
-    //         console.log("customer");
-    //         console.log(customer);
-    //
-    //     }).catch(function(error) {
-    //         console.error(error);
-    //         assert.equal(error.toString(),'',
-    //             'Error detected')
-    //     });
-    // });
+    it("should create all data at the beginning", function() {
+        var Registry_instance;
+        return Regulator.deployed().then(function(instance) {
+            Registry_instance = instance;
+            return Registry_instance.getOwner.call();
+        }).then(function (regulatorAddress) {
+        //     account=regulatorAddress;
+        //     console.log("regulatorAddress:"+account);
+        //     return Registry_instance.submitIssuer(account ,"בנק הפועלים","הנגב 11 תל-אביב",{from: account});
+        // }).then(function (result) {
+        //     for (var i = 0; i < result.logs.length; i++) {
+        //         var log = result.logs[i];
+        //
+        //         if (log.event == "AddIssuer") {
+        //             // We found the event!
+        //             console.log("submitIssuer:");
+        //             console.log(log.args);
+        //             // break;
+                    return Registry_instance.submitBeneficiary(account ,"Beneficiary 1","herzel 2 tel-aviv",{from: account});
+        //     }
+        // }
+        // assert.fail("can't add issuer");
+        // // console.log(tx_id);
+        }).then(function (result) {
+            for (var i = 0; i < result.logs.length; i++) {
+                var log = result.logs[i];
+
+                if (log.event == "AddBeneficiary") {
+                    // We found the event!
+                    console.log("AddBeneficiary:");
+                    console.log(log.args);
+                    // break;
+                    return Registry_instance.submitCustomer(account ,"customer 1","herzel 1 rishon-le-zion",{from: account});
+                }
+            }
+            assert.fail("can't add Beneficiary");
+        }).then(function (result) {
+            for (var i = 0; i < result.logs.length; i++) {
+                var log = result.logs[i];
+
+                if (log.event == "AddCustomer") {
+                    // We found the event!
+                    console.log("AddCustomer:");
+                    console.log(log.args);
+                    // break;
+                    return Registry_instance.getCustomer(account);
+                }
+            }
+            // console.log("submitBeneficiary:");
+            assert.fail("can't add customer");
+            // return Registry_instance.getCustomer(account);
+        }).then(function (customer) {
+            console.log("customer");
+            console.log(customer);
+
+        }).catch(function(error) {
+            console.error(error);
+            assert.equal(error.toString(),'',
+                'Error detected')
+        });
+    });
 
     it("should test  all data at the beginning", function() {
         var Registry_instance;
@@ -100,8 +102,10 @@ contract('Regulator', function(accounts) {
             account=regulatorAddress;
             console.log("regulatorAddress:"+account);
             return Registry_instance.getIssuer.call(account,{from: account});
+
         }).then(function (result) {
-            assert.equal(result.length, 2, "getIssuer shold have 2 parameters");
+            console.log("getIssuer:"+result);
+            assert.equal(result.length, 2, "getIssuer should have 2 parameters");
         }).catch(function(error) {
             console.error(error);
             assert.equal(error.toString(),'',
@@ -131,22 +135,23 @@ contract('Regulator', function(accounts) {
         // ];
         var dt=(Date.now()/1000);
 
-        return Regulator_instance.createGuaranteeRequest(account ,account,account,"_purpose 1", 1000, dt,dt+1000000,1,0,{from: account});
-    }).then(function (result) {
-        for (var i = 0; i < result.logs.length; i++) {
-            var log = result.logs[i];
-
-            if (log.event == "GuaranteeRequestCreated") {
-                // We found the event!
-                console.log("createGuaranteeRequest:");
-                console.log(log.args);
-                // break;
-                return Regulator_instance.getRequestsAddressForCustomer.call();
-            }
-        }
-        console.log("AddCustomer error:");
-        console.log(result);
-        assert.fail("can't create request customer");
+        return Regulator_instance.createGuaranteeRequest.call(account ,account,account,"_purpose 1", 1000, dt,dt+1000000,1,0,{from: account});
+    // }).then(function (result) {
+    //     console.log("createGuaranteeRequest:",result);
+        // for (var i = 0; i < result.logs.length; i++) {
+        //     var log = result.logs[i];
+        //
+        //     if (log.event == "GuaranteeRequestCreated") {
+        //         // We found the event!
+        //         console.log("createGuaranteeRequest:");
+        //         console.log(log.args);
+        //         // break;
+        //         return Regulator_instance.getRequestsAddressForCustomer.call();
+        //     }
+        // }
+        // console.log("AddCustomer error:");
+        // console.log(result);
+        // assert.fail("can't create request customer");
 
         // console.log("create GuaranteeRequest Address:");
         // console.log(guaranteeRequestAddress);
@@ -170,10 +175,11 @@ contract('Regulator', function(accounts) {
             return Regulator_instance.getOwner.call();
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
-            return Regulator_instance.getRequestsAddressForCustomer.call();
+            return Regulator_instance.getRequestAddresses.call();
         }).then(function (guaranteeRequestAddresses) {
+            console.log("guaranteeRequestAddresses[]:"+guaranteeRequestAddresses);
             requestAddress=guaranteeRequestAddresses[0];
-            console.log("guaranteeRequestAddresses:"+requestAddress);
+            console.log("guaranteeRequestAddress:"+requestAddress);
             // console.log(typeof(guaranteeRequestAddresses[0]));
             var guaranteeRequest= GuaranteeRequest.at(requestAddress);
             guaranteeRequest.then(function(guaranteeRequestinstance) {
