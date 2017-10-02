@@ -22,7 +22,7 @@ contract('Regulator', function(accounts) {
         return Regulator.deployed().then(function(instance) {
             return instance.getIssuerCounter.call();
         }).then(function(amount_issuer_counter) {
-            assert.equal(amount_issuer_counter, 1, "Registry wasn't empty!");
+            assert.equal(amount_issuer_counter, 0, "Registry wasn't empty!");
         }).catch(function(error) {
             console.error(error);
             assert.equal(error.toString(),'',
@@ -37,23 +37,23 @@ contract('Regulator', function(accounts) {
             Registry_instance = instance;
             return Registry_instance.getOwner.call();
         }).then(function (regulatorAddress) {
-        //     account=regulatorAddress;
-        //     console.log("regulatorAddress:"+account);
-        //     return Registry_instance.submitIssuer(account ,"בנק הפועלים","הנגב 11 תל-אביב",{from: account});
-        // }).then(function (result) {
-        //     for (var i = 0; i < result.logs.length; i++) {
-        //         var log = result.logs[i];
-        //
-        //         if (log.event == "AddIssuer") {
-        //             // We found the event!
-        //             console.log("submitIssuer:");
-        //             console.log(log.args);
-        //             // break;
+            account=regulatorAddress;
+            console.log("regulatorAddress:"+account);
+            return Registry_instance.submitIssuer(account ,"בנק הפועלים","הנגב 11 תל-אביב",{from: account});
+        }).then(function (result) {
+            for (var i = 0; i < result.logs.length; i++) {
+                var log = result.logs[i];
+
+                if (log.event == "AddIssuer") {
+                    // We found the event!
+                    console.log("submitIssuer:");
+                    console.log(log.args);
+                    // break;
                     return Registry_instance.submitBeneficiary(account ,"Beneficiary 1","herzel 2 tel-aviv",{from: account});
-        //     }
-        // }
-        // assert.fail("can't add issuer");
-        // // console.log(tx_id);
+            }
+        }
+        assert.fail("can't add issuer");
+        // console.log(tx_id);
         }).then(function (result) {
             for (var i = 0; i < result.logs.length; i++) {
                 var log = result.logs[i];
@@ -156,8 +156,8 @@ contract('Regulator', function(accounts) {
         // console.log("create GuaranteeRequest Address:");
         // console.log(guaranteeRequestAddress);
 
-    }).then(function (guaranteeRequestAddresses) {
-        console.log("guaranteeRequestAddresses:"+guaranteeRequestAddresses);
+    }).then(function (guaranteeRequestAddress) {
+        console.log("guaranteeRequestAddress:"+guaranteeRequestAddress);
     }).catch(function(error) {
       console.error(error);
         assert.equal(error.toString(),'',
@@ -175,9 +175,10 @@ contract('Regulator', function(accounts) {
             return Regulator_instance.getOwner.call();
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
-            return Regulator_instance.getRequestAddresses.call();
+            return Regulator_instance.getRequestAddresses.call({from: account});
         }).then(function (guaranteeRequestAddresses) {
             console.log("guaranteeRequestAddresses[]:"+guaranteeRequestAddresses);
+            assert.equal(guaranteeRequestAddresses.length, 1, "getIssuer should have 1 parameters");
             requestAddress=guaranteeRequestAddresses[0];
             console.log("guaranteeRequestAddress:"+requestAddress);
             // console.log(typeof(guaranteeRequestAddresses[0]));
@@ -272,7 +273,7 @@ contract('Regulator', function(accounts) {
             return Regulator_instance.getOwner.call();
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
-            return Regulator_instance.getRequestsAddressForCustomer.call();
+            return Regulator_instance.getRequestAddresses.call();
         }).then(function (guaranteeRequestAddresses) {
             console.log(guaranteeRequestAddresses);
             requestAddress=guaranteeRequestAddresses[0];

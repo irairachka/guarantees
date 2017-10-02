@@ -1198,7 +1198,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2050,
+                              "referencedDeclaration": 2055,
                               "type": "contract DigitalGuaranteeBNHP",
                               "value": "this"
                             },
@@ -1224,7 +1224,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1342,7 +1342,7 @@
                           "overloadedDeclarations": [
                             null
                           ],
-                          "referencedDeclaration": 2050,
+                          "referencedDeclaration": 2055,
                           "type": "contract DigitalGuaranteeBNHP",
                           "value": "this"
                         },
@@ -3326,7 +3326,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2050,
+                              "referencedDeclaration": 2055,
                               "type": "contract DigitalGuaranteeBNHP",
                               "value": "this"
                             },
@@ -3352,7 +3352,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -3907,7 +3907,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2050,
+                              "referencedDeclaration": 2055,
                               "type": "contract DigitalGuaranteeBNHP",
                               "value": "this"
                             },
@@ -3933,7 +3933,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2018,
+                                  "referencedDeclaration": 2023,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -4026,5 +4026,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-02T06:00:50.771Z"
+  "updatedAt": "2017-10-02T06:58:27.435Z"
 }
