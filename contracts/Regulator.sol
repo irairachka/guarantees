@@ -45,6 +45,7 @@ contract Regulator is Ownable,GuaranteeConst,IssuerManager,BeneficiaryManager,Cu
 
     //guarantee request states
     address [] public  guaranteeRequests;
+    address [] public  guarantees;
 
 
     event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
@@ -54,7 +55,7 @@ contract Regulator is Ownable,GuaranteeConst,IssuerManager,BeneficiaryManager,Cu
 
 //        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
 //        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
-        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
+//        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
         RegulatoryContractDeployed(msg.sender,"Mined",now);
     }
 
@@ -64,6 +65,13 @@ contract Regulator is Ownable,GuaranteeConst,IssuerManager,BeneficiaryManager,Cu
         return guaranteeRequests;
 
     }
+
+    function getGuaranteeAddresses() public constant returns (address[])
+    {
+        return guarantees;
+
+    }
+
 
 
 
@@ -123,40 +131,55 @@ contract Regulator is Ownable,GuaranteeConst,IssuerManager,BeneficiaryManager,Cu
 
 
     }
+
+    function accept(address  _guaranteeRequest,string comment,bytes _guaranteeIPFSHash)  public returns (bool result) //onlyBank
+    {
+        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
+        if ( msg.sender == ge.getBank() )
+        {
+            ge.accept(comment,_guaranteeIPFSHash) ;
+            return true;
+        }
+
+
+        throw;
+    }
+
+    function changeGuarantee(address  _guaranteeRequest ,uint _newamount, uint _newendDate, string _comment)  returns (bool)  //onlyBeneficiary
+    {
+//        GuaranteeExtender ge=GuaranteeExtender(_guaranteeRequest);
+//        if (ge.getBeneficiary()==msg.sender)
+//        {
+//            ( address _contract_id,address _customer,address _bank, address _beneficiary,
+//            string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,
+//            uint _indexDate,RequestState _status) = ge.getGuaranteeRequestData();
+//            if (_status==RequestState.accepted && _amount>=_newamount && _newendDate<=_endDate)
+//            {
+//                address addr=new GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
+//                ge.
+//                guaranteeRequests.push(addr);
+//                return addr;
+//            }
+//
+//        }
+//
+//
+//
+//    .endRequest(_comment)
+//        guaranteeRequests.push(addr);
+//        return addr;
+
+        return true;
+    }
+
     //
 //    function submit(string comment) onlyCustomer public returns (bool result) ;
 //    function termination(string comment) onlyBeneficiary public returns (bool result);
 //    function reject(string comment) onlyBank public returns (bool result);
-//    function accept(string comment,bytes _guaranteeIPFSHash) onlyBank public returns (bool result);
 //    function withdrawal(string comment) onlyCustomer public returns (bool result);
 //    function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);
 
 
-    //    function changeGuarantee(address  _guaranteeRequest ,uint _newamount, uint _newendDate, string _comment) onlyBeneficiary returns (bool)
-    //    {
-    //        GuaranteeExtender ge=GuaranteeExtender(_guaranteeRequest);
-    //        if (ge.getBeneficiary()==msg.sender)
-    //        {
-    //            ( address _contract_id,address _customer,address _bank, address _beneficiary,
-    //            string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,
-    //            uint _indexDate,RequestState _status) = ge.getGuaranteeRequestData();
-    //            if (_status==RequestState.accepted && _amount>=_newamount && _newendDate<=_endDate)
-    //            {
-    //                address addr=new GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
-    //                ge.
-    //                guaranteeRequests.push(addr);
-    //                return addr;
-    //            }
-    //
-    //        }
-    //
-    //
-    //
-    //    .endRequest(_comment)
-    //        guaranteeRequests.push(addr);
-    //        return addr;
-    //
-    //        return true;
-    //    }
+
 
 }
