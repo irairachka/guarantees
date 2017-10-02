@@ -1,5 +1,5 @@
 <div [ngSwitch]="userType" class="ui-layout-column ui-space-r-large">
-  <button *ngSwitchCase="'user'" class="cancelReason-send-button secondary-button" (click)="changeRequest('withdrawal')">ביטול</button>
+  <!--<button *ngSwitchCase="'user'" class="cancelReason-send-button secondary-button" (click)="changeRequest('withdrawal')">ביטול</button>-->
 
   <ng-container *ngSwitchCase="'bank'">
     <div class="update ui-layout transform-buttons-container">
@@ -36,7 +36,7 @@
     <div class="guarantee-container">
       <label for="extendGuarantee">הארכת תוקף</label>
       <div class="input-button-container">
-        <input placeholder="" [(ngModel)]="newDate" id="extendGuarantee">
+        <input placeholder="" [(ngModel)]="newDate" id="extendGuarantee" type="date">
         <button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח</button>
       </div>
     </div>

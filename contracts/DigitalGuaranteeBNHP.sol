@@ -45,19 +45,17 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
     }
 
 
-    function getGuaranteeData() constant public returns
-    (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary, string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState)
+    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState)
     {
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
 
 //        ( , _customer, _bank,  _beneficiary,  _purpose, _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
-        ( , , ,  _beneficiary,  , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
+        ( , , ,  _beneficiary, _purpose , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
 
         _guaranteeRequest=guaranteeRequestExtender;
         _contract_id=getId();
         _customer=gr.getCustomer();
         _bank=gr.getBank();
-        _purpose="Test";
         _guaranteeState=getGuaranteeState();
 
     }
@@ -94,12 +92,14 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
     }
 
 
-    //
-    //
-    //    function changeRequest(uint amount, string endDate, string comment) onlyBeneficiary returns (bool)
-    //    {
-    //
-    //    }
+
+    event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string comment);
+
+    function changeRequest(uint _amount, string _endDate, string _comment) onlyBeneficiary returns (bool)
+    {
+        ChangeRequested(guaranteeRequestExtender,this,msg.sender,_amount,  _endDate, _comment);
+        throw;
+    }
 
 
 }

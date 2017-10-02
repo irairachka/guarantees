@@ -46,7 +46,10 @@
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
               </p-header>
-              <accordion-content [userType]="'beneficiary'" [todel_state]=2 [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>
+              <app-history [userType]="'beneficiary'" [todel_state]=2 ></app-history>
+              <app-actions [userType]="user" [data]="guar" (updateRequest)="updateRequestsender($event)"></app-actions>
+
+              <!--<accordion-content [userType]="'beneficiary'" [todel_state]=2 [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>-->
             </p-accordionTab>
 
           </p-accordion>
