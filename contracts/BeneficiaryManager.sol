@@ -41,9 +41,8 @@ contract BeneficiaryManager is Ownable{
     function getBeneficiaryById(uint _id) public constant returns(string _name, string _localAddress)
     {
 
-        if(_id >= beneficiaryList.length) {
-            throw;
-        }
+        require(_id <= beneficiaryList.length);
+
         Beneficiary memory ci = beneficiaries[beneficiaryList[_id]];
 
         return (ci.name,ci.localAddress);
