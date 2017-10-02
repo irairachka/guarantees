@@ -26,6 +26,7 @@ import { HistoryComponent } from './components/history/history.component';
 import {ActionsComponent} from "./components/actions/actions.component";
 import {AccordionContentComponent} from "./components/accordion-content/accordion-content.component";
 import {StatusIconComponent} from "./components/status-icon/status-icon.component";
+import {TruffleService} from "./services/truffle.service";
 
 @NgModule({
   imports: [
@@ -62,7 +63,8 @@ import {StatusIconComponent} from "./components/status-icon/status-icon.componen
     StatusIconComponent
   ],
   providers: [
-    MessageService
+    MessageService,
+    TruffleService
   ],
   bootstrap: [AppComponent]
 })
