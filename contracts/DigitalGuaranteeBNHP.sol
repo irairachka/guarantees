@@ -13,7 +13,7 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
     bytes guaranteeIPFSHash;
 
     event Issued(address  _requestId,address  _guaranteeId,address _msgSender,bytes _guaranteeIPFSHash);
-    event Terminated(address  _requestId,address  _guaranteeId,address _msgSender , string _comment);
+    event Terminated(address  _requestId,address  _guaranteeId,address _msgSender );
 
 
 
@@ -83,23 +83,23 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
 
 
 
-    function terminate(string _comment) onlyBeneficiary public returns (bool)
+    function terminate() onlyBeneficiary public returns (bool)
     {
-        Terminated(guaranteeRequestExtender,this,msg.sender, _comment);
+        Terminated(guaranteeRequestExtender,this,msg.sender);
         state=GuaranteeState.Terminated;
-        //        GuaranteeRequestExtender(guaranteeRequestExtender).
+
         return true;
     }
 
 
 
-    event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string comment);
-
-    function changeRequest(uint _amount, string _endDate, string _comment) onlyBeneficiary returns (bool)
-    {
-        ChangeRequested(guaranteeRequestExtender,this,msg.sender,_amount,  _endDate, _comment);
-        throw;
-    }
+//    event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string comment);
+//
+//    function changeRequest(uint _amount, string _endDate, string _comment) onlyBeneficiary returns (bool)
+//    {
+//        ChangeRequested(guaranteeRequestExtender,this,msg.sender,_amount,  _endDate, _comment);
+//        throw;
+//    }
 
 
 }

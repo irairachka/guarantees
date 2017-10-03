@@ -39,9 +39,9 @@ contract GuaranteeExtender is GuaranteeConst {
 
     function getGuaranteeState() constant public returns (GuaranteeState _guaranteeState);
 
-    function terminate(string _comment) onlyBeneficiary public returns (bool);
+    function terminate() onlyBeneficiary public returns (bool);
 
-    function changeRequest(uint amount, string endDate, string comment) onlyBeneficiary returns (bool);
+//    function changeRequest(uint amount, string endDate, string comment) onlyBeneficiary returns (bool);
 
 
 }

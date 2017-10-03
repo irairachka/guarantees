@@ -8,14 +8,10 @@ import "./DigitalGuaranteeBNHP.sol";
 contract GuaranteeRequest is GuaranteeRequestExtender{
     string public version = "1.00";
 
-    address  regulator;
-    address  guarantee;
-    address  changeRequest;
-
     //holds the addresses of the participating parties for demo reasons
     struct Addresses {
     address bank;
-    address customer;
+//    address customer;
     address beneficiary;
     }
 
@@ -30,7 +26,7 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
     uint  indexDate;
 
     bytes  proposalIPFSHash;
-    bytes  guaranteeIPFSHash;
+//    bytes  guaranteeIPFSHash;
 
     RequestState   status;
 
@@ -49,13 +45,34 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
     event GuaranteeRequestCreated (address indexed requestId,address indexed customer ,address indexed bank ,address  beneficiary ,bytes32 guarantyPurpose,
     uint requestAmount, uint requestStartDate,uint requestEndDate,IndexType requestIndexType,uint requestIndexDate,uint timestamp);
 
-    function GuaranteeRequest(address  _regulator,address _customer ,address _bank ,address _beneficiary ,bytes32 _purpose,
+//    function GuaranteeRequest(address  _regulator,address _customer ,address _bank ,address _beneficiary ,bytes32 _purpose,
+//    uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate)
+//    {
+//        regulator=_regulator;
+//        //        Addresses memory addresses;
+//        addresses.bank=_bank;
+//        addresses.customer=_customer;
+//        addresses.beneficiary=_beneficiary;
+//        purpose=_purpose;
+//        amount=_amount;
+//        startDate=_startDate;
+//        endDate=_endDate;
+//        indexType= _indexType;
+//        indexDate= _indexDate;
+//        status=RequestState.created;
+//        stepNumber=0;
+//        GuaranteeRequestCreated(getId(),_customer , _bank,_beneficiary , _purpose,  _amount,  _startDate, _endDate, _indexType, _indexDate , now);
+//        Comment( getId(), stepNumber, status,"");
+//        // log("create request","customer"+_customer+"bank"+_bank+"beneficiary"+_beneficiary+"amount"+amount + "startDate"+startDate+"endDate"+endDate +"...");
+//
+//
+//    }
+
+    function GuaranteeRequest(address _bank ,address _beneficiary ,bytes32 _purpose,
     uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate)
     {
-        regulator=_regulator;
-        //        Addresses memory addresses;
+
         addresses.bank=_bank;
-        addresses.customer=_customer;
         addresses.beneficiary=_beneficiary;
         purpose=_purpose;
         amount=_amount;
@@ -65,10 +82,9 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         indexDate= _indexDate;
         status=RequestState.created;
         stepNumber=0;
-        GuaranteeRequestCreated(getId(),_customer , _bank,_beneficiary , _purpose,  _amount,  _startDate, _endDate, _indexType, _indexDate , now);
+        GuaranteeRequestCreated(getId(),getCustomer() , _bank,_beneficiary , _purpose,  _amount,  _startDate, _endDate, _indexType, _indexDate , now);
         Comment( getId(), stepNumber, status,"");
         // log("create request","customer"+_customer+"bank"+_bank+"beneficiary"+_beneficiary+"amount"+amount + "startDate"+startDate+"endDate"+endDate +"...");
-
 
     }
 
@@ -77,10 +93,10 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         return this;
     }
 
-    function getCustomer() constant public returns (address _customer)
-    {
-        return addresses.customer;
-    }
+//    function getCustomer() constant public returns (address _customer)
+//    {
+//        return addresses.customer;
+//    }
 
     function getBank() constant public returns (address _bank)
     {
@@ -229,20 +245,17 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         return true;
     }
 
-    event Termination(address indexed  requestId,address indexed msgSender,string comment);
+    event Termination(address indexed  requestId,address indexed msgSender);
     //bank reject request
-    function termination(string _comment) onlyBeneficiary public returns (bool result)
+    function terminate() onlyRegulator public returns (bool result)
     {
         require(status==RequestState.accepted );
         stepNumber++;
-        if (guarantee!= address(0))
-        {
-            GuaranteeExtender(guarantee).terminate(_comment);
-        }
+
         //        addCommentsForStep(stepNumber,_comment);
         status=RequestState.terminationRequest;
-        Termination(getId(),msg.sender,_comment);
-        Comment( getId(),stepNumber, status,_comment);
+        Termination(getId(),msg.sender);
+//        Comment( getId(),stepNumber, status,_comment);
         //         log("rejected",getId()+"->"+comment);
         return true;
 
@@ -286,18 +299,17 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
     }
 
 
-    event Accepted(address indexed requestId,address indexed msgSender,string comment,bytes _guaranteeIPFSHash);
+    event Accepted(address indexed requestId,address indexed msgSender,string comment);
     //bank accept request
-    function accept(string comment,bytes _guaranteeIPFSHash) onlyBank public returns (bool result)
+    function accept(string comment) onlyBank public returns (bool result)
     {
-        require((status==RequestState.waitingtobank || status==RequestState.handling || status==RequestState.changeRequested) && _checkArray(_guaranteeIPFSHash) && guarantee==address(0));
+        require((status==RequestState.waitingtobank || status==RequestState.handling || status==RequestState.changeRequested)  && guarantee==address(0));
         stepNumber++;
-        guaranteeIPFSHash=_guaranteeIPFSHash;
+//        guaranteeIPFSHash=_guaranteeIPFSHash;
         //        addCommentsForStep(stepNumber,comment);
         status=RequestState.accepted;
-        Accepted(getId(),msg.sender,comment,guaranteeIPFSHash);
+        Accepted(getId(),msg.sender,comment);
         Comment( getId(),stepNumber, status,comment);
-        guarantee= new DigitalGuaranteeBNHP(this,regulator,guaranteeIPFSHash);
         //        if (status!=RequestState.changeRequested)
         //        {
         //            GuaranteeRequest(changeRequest).
@@ -314,16 +326,6 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         return true;
     }
 
-    //    event ChangeRequested(address  requestId,address  oldrequestId,address msgSender);
-    //    function changeRequested(address _old_request) onlyBank returns (bool result)
-    //    {
-    //        require((status==RequestState.created ) );
-    //        stepNumber++;
-    //        status=RequestState.changeRequested;
-    //        changeRequest=_old_request;
-    //        ChangeRequested(getId(),oldrequestId,msg.sender);
-    //        return true;
-    //    }
 
 
 }
