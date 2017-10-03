@@ -94,7 +94,9 @@ export class TruffleService {
   getAllUserRequests() {
     /** Gets all guarantee requests for customer */
     if(this.devMode) {
-      return Observable.of(mockCustomerRequests);
+      return new Promise((resolve)=> {
+        resolve(mockCustomerRequests);
+      });
     } else {
       return this.Regulator.deployed()
         .then((instance) => {
