@@ -20,7 +20,7 @@ import {TruffleService} from "./services/truffle.service";
 export class AppComponent implements OnInit {
 
   // Requests and Guarantees
-  customerRequests: GRequest[] = mockCustomerRequests || [];
+  customerRequests: GRequest[] = [];
   customerGuaranties: Guarantee[] = mockCustomerGuaranties || [];
   bankRequests: GRequest[] = mockBankRequests || [];
   bankGuaranties: Guarantee[] = mockBankGuaranties || [];
@@ -41,9 +41,8 @@ export class AppComponent implements OnInit {
   constructor(private truffleSRV: TruffleService) {}
 
   ngOnInit() {
-    // console.log('this.truffleSRV.getAllUserRequests()', this.truffleSRV.getAllUserRequests());
-    this.truffleSRV.getAllUserRequests().subscribe((res) => {
-      console.log('res',res);
+    this.truffleSRV.getAllUserRequests().then((res) => {
+      this.customerRequests = res;
     });
   }
 
