@@ -47,128 +47,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-
-  // getAllBankRequests = () => {
-  //   /** Gets all guarantee requests for customer */
-  //   /** parses the data and sends to UI */
-  //
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getRequestsAddressForIssuer.call({from: this.account});
-  //     }).then((guaranteeRequestAddresses) => {
-  //     console.log(guaranteeRequestAddresses);
-  //     guaranteeRequestAddresses.forEach((requestAddress) => {
-  //       this.bankRequests = [...this.bankRequests, this.getOneGRequests(requestAddress)];
-  //     });
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  // };
-  //
-  // getAllBeneficiaryGuaranties = () => {
-  //   console.log('getting guarantees');
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getGuarantieAddressForBeneficiary.call({from: this.account});
-  //     }).then((guaranteeAddresses) => {
-  //     console.log('guaranteeAddresses', guaranteeAddresses);
-  //     if(guaranteeAddresses.length > 0) {
-  //       guaranteeAddresses.forEach((guaranteeAddress) => {
-  //         this.beneficiaryGuaranties = [...this.beneficiaryGuaranties, this.getOneGuaranty(guaranteeAddress)];
-  //       });
-  //     }
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  // };
-  //
-  //
-  // getAllBankGuaranties = () => {
-  //   console.log('getting guarantees');
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getGuarantieAddressForIssuer.call({from: this.account});
-  //     }).then((guaranteeAddresses) => {
-  //     console.log('guaranteeAddresses', guaranteeAddresses);
-  //     if(guaranteeAddresses.length > 0) {
-  //       guaranteeAddresses.forEach((guaranteeAddress) => {
-  //         this.bankGuaranties = [...this.bankGuaranties, this.getOneGuaranty(guaranteeAddress)];
-  //       });
-  //     }
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  // };
-  //
-  //
-  // getOneGuaranty = (guarantyAddress): Guarantee  => {
-  //   /** Gets one guarantee requests by id */
-  //   /** parses the data and sends to UI */
-  //   console.log('guarantyAddress', guarantyAddress);
-  //   this.DigitalGuaranteeBNHP.at(guarantyAddress)
-  //     .then((guaranteeinstance) => {
-  //       return guaranteeinstance.getGuaranteeData();
-  //     }).then((result) => {
-  //     return this.populateGuarantyData(result);
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   return;
-  // };
-  //
-  //
-  // getBankData = (requestAddress) => {
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getIssuer.call(requestAddress,{from: this.account});
-  //     }).then((issuer) => {
-  //     console.log('issuer', issuer);
-  //     return {
-  //       BankID: requestAddress,
-  //       Name: issuer[0],
-  //       Address: issuer[1]
-  //     };
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  // };
-  //
-  // getAllBeneficiaries = () => {
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getBeneficiaryAddresses.call({from: this.account});
-  //     }).then((beneficiaryAddress) => {
-  //     beneficiaryAddress.forEach((beneficiaryAddres) => {
-  //       this.beneficiaries = [...this.beneficiaries, this.getOneBeneficiary(beneficiaryAddres)];
-  //     });
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  // };
-  //
-  //
-  // getOneBeneficiary = (beneficiaryAddress): Beneficiary => {
-  //   /** Gets one guarantee requests by id */
-  //   /** parses the data and sends to UI */
-  //   console.log('beneficiaryAddress', beneficiaryAddress);
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.getBeneficiaries.call({from: this.account});
-  //     }).then((result) => {
-  //     return this.populateBeneficiaryData(beneficiaryAddress,result);
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  //   return;
-  // };
-
-
   // getGuaranteesData = (guaranteeID, type: number) => {
   //   //type = user, bank or beneficiary
   //   this.customerGuaranties.forEach((Guarantee) => {
@@ -185,83 +63,16 @@ export class AppComponent implements OnInit {
   //
   // };
 
-  populateRequestData = (resultArr): GRequest => {
-    const startDate = this.transformDateSolToJS(resultArr[6]);
-    const endDate = this.transformDateSolToJS(resultArr[7]);
-
-    return {
-      GRequestID: resultArr[0],
-      customer: resultArr[1],
-      beneficiary: resultArr[2],
-      bank: resultArr[3],
-      beneficiaryName: this.getBeneficiaryData(resultArr[2]).Name,
-      purpose: resultArr[4],
-      amount: resultArr[5].valueOf(),
-      StartDate: startDate,
-      EndDate: endDate,
-      indexType: resultArr[8].valueOf(),
-      indexDate: resultArr[9].valueOf(),
-      requestState: resultArr[10].valueOf()
-    };
-  };
-
-  populateGuarantyData= (resultArr) => {
-    const startDate = this.transformDateSolToJS(resultArr[6]);
-    const endDate = this.transformDateSolToJS(resultArr[7]);
-
-    return {
-      GuaranteeID: resultArr[0],
-      customer: resultArr[1],
-      beneficiary: resultArr[2],
-      bank: resultArr[3],
-      customerName: this.getOneCustomerData(resultArr[2]).Name,
-      purpose: resultArr[4],
-      amount: resultArr[5].valueOf(),
-      StartDate: startDate,
-      EndDate: endDate,
-      indexType: resultArr[8].valueOf(),
-      indexDate: resultArr[9].valueOf(),
-      GuaranteeState: resultArr[10].valueOf()
-    };
-  };
-
-  populateBeneficiaryData= (beneAddress,resultArr) => {
-
-    return {
-      beneficiaryID: beneAddress,
-      Name: resultArr[0],
-      Address: resultArr[1],
-
-    };
-  };
-
-
-
-  getBeneficiaryData= (beneAddress): Beneficiary => {
-    for (var i in this.beneficiaries) {
-      if (this.beneficiaries[i].beneficiaryID==beneAddress) {
-        return this.beneficiaries[i];
-      }
-    }
-
-    return this.beneficiaries[0];
-
-  };
-
   getOneCustomerData = (customerAddress): Customer => {
-
-    for (var i in this.customers) {
-      if (this.customers[i].customerID==customerAddress) {
-        return this.customers[i];
+      for (var i in this.customers) {
+        if (this.customers[i].customerID==customerAddress) {
+          return this.customers[i];
+        }
       }
-    }
-
-    return this.customers[0];
-
-  };
+      return this.customers[0];
+    };
 
   populateCustomerData= (customerAddress,resultArr) => {
-
     return {
       customerID: customerAddress,
       Name: resultArr[0],
