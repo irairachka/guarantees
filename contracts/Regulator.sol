@@ -41,8 +41,7 @@ import "./GuaranteeRequest.sol";
 //}
 
 
-contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst {
-//is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst{
+contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst{
 
     //guarantee request states
     address [] public  guaranteeRequests;
@@ -61,13 +60,14 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
     }
 
 
-    function getRequestAddresses() public constant returns (address[])
+    function getRequestAddressList() public constant returns (address[] )
     {
+//         AAA(guaranteeRequests.length);
         return guaranteeRequests;
 
     }
 
-    function getGuaranteeAddresses() public constant returns (address[])
+    function getGuaranteeAddressesList() public constant returns (address[] )
     {
         return guarantees;
 
@@ -76,75 +76,58 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-//    function getRequestsAddressForCustomer() public constant returns (address[])
-//    {
-//        return customers[msg.sender].guaranteeRequests;
-//
-//    }
-//
-//    function getRequestsAddressForIssuer() public constant returns (address[])
-//    {
-//        return issuers[msg.sender].guaranteeRequests;
-//
-//    }
-//
-//  function getGuarantieAddressForBeneficiary() public constant returns (address[])
-//  {
-//    return issuers[msg.sender].guaranteeRequests;
-//
-//  }
+//    event AAA(uint length);
 
-
-//    function getActiveGuaranteesAddress() constant returns (string[])
-//    {
-//        string[] memory _guarantees = new string();
-//
-//                for(uint32 i=0; i<guaranteeRequests.length; i++) {
-//                    if(GuaranteeRequestExtender(guaranteeRequests[i]).getRequestState()==RequestState.accepted)
-//                    _guarantees.push(guaranteeRequests[i]);
-//                }
-//                return _guarantees;
-//
-//    }
-
-
-//    function createGuaranteeRequest(address _customer ,address _bank ,address _beneficiary ,bytes32 _purpose,
-//    uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate)  public returns (address)
-//    {
-//        GuaranteeRequest greq=new  GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
-//        guaranteeRequests.push(address(greq));
-//
-//        return address(greq);
-//    }
-
-
-    function terminateGuarantee(address  _guaranteeRequest,string comment)  returns (bool)
+    function addGuaranteeRequest(address  _guaranteeRequest)  public
     {
-        require(msg.sender == ge.getBeneficiary());
-
         GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-
-        ge.termination(comment) ;
-        return true;
-
+        require(msg.sender == ge.getCustomer() && ge.isValid());
+        ge.setRegulator();
+        guaranteeRequests.push(_guaranteeRequest);
 
     }
 
-    function accept(address  _guaranteeRequest,string comment,bytes _guaranteeIPFSHash)  returns (bool)
+    event RequestGuaranteeSign(address  _guaranteeRequest,string path);
+    function requestGuaranteeSign(address  _guaranteeRequest)  public
     {
-        require(msg.sender == ge.getBank());
-
         GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-        ge.accept(comment,_guaranteeIPFSHash) ;
+        require(ge.getRequestState()==RequestState.accepted);
+        RequestGuaranteeSign(_guaranteeRequest,"");
+    }
 
-        return true;
+    function GuaranteeSignComplite(address  _guaranteeRequest,bytes _guaranteeIPFSHash)  public  returns (address)
+    {
+        GuaranteeRequestExtender ger=GuaranteeRequestExtender(_guaranteeRequest);
+        require( ger.getRequestState()==RequestState.accepted && _checkArray(_guaranteeIPFSHash));
+
+        GuaranteeExtender gr= new DigitalGuaranteeBNHP(_guaranteeRequest,this,_guaranteeIPFSHash);
+        guarantees.push(address(gr));
+        return address(gr);
+    }
+
+
+    function terminateGuarantee(address  _guaranteeRequest,address  _guarantee)  public
+    {
+
+        GuaranteeRequestExtender ger=GuaranteeRequestExtender(_guaranteeRequest);
+        require( ger.getRequestState()==RequestState.accepted && msg.sender == ger.getBeneficiary() && _guarantee!= address(0));
+
+        ger.terminate() ;
+
+        GuaranteeExtender(_guarantee).terminate();
+
+
 
     }
 
 
 
-//    function changeGuarantee(address  _guaranteeRequest ,uint _newamount, uint _newendDate, string _comment)  returns (bool)  //onlyBeneficiary
-//    {
+
+
+
+
+    function changeGuarantee(address  _guaranteeRequest,address  _guarantee ,uint _newamount, uint _newendDate, string _comment)  returns (bool)  //onlyBeneficiary
+    {
 //        if (ge.getBeneficiary()!=msg.sender) throw;
 //            GuaranteeExtender ge=GuaranteeExtender(_guaranteeRequest);
 //
@@ -168,8 +151,8 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 //        guaranteeRequests.push(addr);
 //        return addr;
 //
-//        return true;
-//    }
+        return true;
+    }
 
 //    function submit(string comment) onlyCustomer public returns (bool result) ;
 //    function termination(string comment) onlyBeneficiary public returns (bool result);

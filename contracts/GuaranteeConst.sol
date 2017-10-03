@@ -10,10 +10,10 @@ contract GuaranteeConst {
     //guarantee request states
     enum IndexType { None, CPI, ConstructionMatirials }
 
-    //    //log event for debug purwaitingtobankposes
-    event loga(string message, address logb);
-    //    //log event for debug purposes
-    event log(string message, string logb);
+//    //    //log event for debug purwaitingtobankposes
+//    event loga(string message, address logb);
+//    //    //log event for debug purposes
+//    event log(string message, string logb);
 
 //    function getBeneficiary() constant returns (address);
 
