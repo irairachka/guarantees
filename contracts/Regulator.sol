@@ -41,7 +41,8 @@ import "./GuaranteeRequest.sol";
 //}
 
 
-contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst{
+contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst {
+//is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst{
 
     //guarantee request states
     address [] public  guaranteeRequests;
@@ -107,14 +108,14 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 //    }
 
 
-    function createGuaranteeRequest(address _customer ,address _bank ,address _beneficiary ,bytes32 _purpose,
-    uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate)  public returns (address)
-    {
-        GuaranteeRequest greq=new  GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
-        guaranteeRequests.push(address(greq));
-
-        return address(greq);
-    }
+//    function createGuaranteeRequest(address _customer ,address _bank ,address _beneficiary ,bytes32 _purpose,
+//    uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate)  public returns (address)
+//    {
+//        GuaranteeRequest greq=new  GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
+//        guaranteeRequests.push(address(greq));
+//
+//        return address(greq);
+//    }
 
 
     function terminateGuarantee(address  _guaranteeRequest,string comment)  returns (bool)
@@ -129,16 +130,16 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
     }
 
-//    function accept(address  _guaranteeRequest,string comment,bytes _guaranteeIPFSHash)  returns (bool)
-//    {
-//        require(msg.sender == ge.getBank());
-//
-//        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-//        ge.accept(comment,_guaranteeIPFSHash) ;
-//
-//        return true;
-//
-//    }
+    function accept(address  _guaranteeRequest,string comment,bytes _guaranteeIPFSHash)  returns (bool)
+    {
+        require(msg.sender == ge.getBank());
+
+        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
+        ge.accept(comment,_guaranteeIPFSHash) ;
+
+        return true;
+
+    }
 
 
 
