@@ -2,7 +2,10 @@ import { Injectable, isDevMode } from '@angular/core';
 const Web3 = require('web3');
 const contract = require('truffle-contract');
 import {MessageService} from "primeng/components/common/messageservice";
-import {mockCustomerRequests, mockcustomers, mockCustomerGuaranties} from "../../../tempData/mockData";
+import {
+  mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData,
+  mockBankRequests, mockBankGuaranties, mockbeneficiaries
+} from "../../../tempData/mockData";
 import {Customer} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
 
@@ -77,7 +80,7 @@ export class TruffleService {
 
   getCustomerData = (customerAddress) => {
     if(this.devMode) {
-      return new Promise((resolve, reject)=> {
+      return new Promise((resolve)=> {
         resolve(mockcustomers);
       });
     } else {
@@ -102,7 +105,7 @@ export class TruffleService {
 
   getAllCustomerGuaranties = () => {
     if(this.devMode) {
-      return new Promise((resolve, reject)=> {
+      return new Promise((resolve)=> {
         resolve(mockCustomerGuaranties);
       });
     } else {
@@ -123,6 +126,133 @@ export class TruffleService {
   };
 
 
+  /** ****************** **/
+  /**  Get Bank Data     **/
+  /** ****************** **/
+
+  getBankData = (requestAddress) => {
+    if(this.devMode) {
+      return new Promise((resolve) => {
+        resolve(bankData);
+      });
+    } else {
+      this.Regulator.deployed()
+        .then((instance) => {
+          return instance.getIssuer.call(requestAddress,{from: this.account});});
+    }
+  };
+
+  getAllBankRequests = () => {
+      /** Gets all guarantee requests for customer */
+      /** parses the data and sends to UI */
+    if(this.devMode) {
+      return new Promise((resolve) => {
+        resolve(mockBankRequests);
+      });
+    } else {
+      this.Regulator.deployed().then((instance) => {
+        return instance.getRequestsAddressForIssuer.call({from: this.account});
+      }).then((guaranteeRequestAddresses) => {
+        console.log(guaranteeRequestAddresses);
+        guaranteeRequestAddresses.forEach((requestAddress) => {
+          // this.bankRequests = [...this.bankRequests, this.getOneGRequests(requestAddress)];
+        });
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
+  };
+
+  getAllBankGuaranties = () => {
+    if(this.devMode) {
+      return new Promise((resolve) => {
+        resolve(mockBankGuaranties);
+      });
+    } else {
+      this.Regulator
+        .deployed()
+        .then((instance) => {
+          return instance.getGuarantieAddressForIssuer.call({from: this.account});
+        }).then((guaranteeAddresses) => {
+        console.log('guaranteeAddresses', guaranteeAddresses);
+        if (guaranteeAddresses.length > 0) {
+          guaranteeAddresses.forEach((guaranteeAddress) => {
+            // this.bankGuaranties = [...this.bankGuaranties, this.getOneGuaranty(guaranteeAddress)];
+          });
+        }
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
+  };
+
+  /** ************************* **/
+  /**  Get Beneficiary Data     **/
+  /** ************************* **/
+
+  getAllBeneficiaries = () => {
+    if(this.devMode) {
+      return new Promise((resolve) => {
+        resolve(mockbeneficiaries);
+      });
+    } else {
+      this.Regulator.deployed().then((instance) => {
+          return instance.getBeneficiaryAddresses.call({from: this.account});
+        }).then((beneficiaryAddress) => {
+        beneficiaryAddress.forEach((beneficiaryAddres) => {
+          // this.beneficiaries = [...this.beneficiaries, this.getOneBeneficiary(beneficiaryAddres)];
+        });
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
+  };
+
+  getAllBeneficiaryGuaranties = () => {
+    if(this.devMode) {
+      return new Promise((resolve) => {
+        resolve(mockbeneficiaries);
+      });
+    } else {
+      this.Regulator.deployed().then((instance) => {
+        return instance.getGuarantieAddressForBeneficiary.call({from: this.account});
+      }).then((guaranteeAddresses) => {
+        console.log('guaranteeAddresses', guaranteeAddresses);
+        if (guaranteeAddresses.length > 0) {
+          guaranteeAddresses.forEach((guaranteeAddress) => {
+            // this.beneficiaryGuaranties = [...this.beneficiaryGuaranties, this.getOneGuaranty(guaranteeAddress)];
+          });
+        }
+      }).catch((e) => {
+        console.log(e);
+      });
+    }
+  };
+
+  // getOneBeneficiary = (beneficiaryAddress): Beneficiary => {
+  //   /** Gets one guarantee requests by id */
+  //   /** parses the data and sends to UI */
+  //   console.log('beneficiaryAddress', beneficiaryAddress);
+  //   this.Regulator
+  //     .deployed()
+  //     .then((instance) => {
+  //       return instance.getBeneficiaries.call({from: this.account});
+  //     }).then((result) => {
+  //     return this.populateBeneficiaryData(beneficiaryAddress,result);
+  //   }).catch((e) => {
+  //     console.log(e);
+  //   });
+  //   return;
+  // };
+
+  // populateBeneficiaryData= (beneAddress,resultArr) => {
+  //   return {
+  //     beneficiaryID: beneAddress,
+  //     Name: resultArr[0],
+  //     Address: resultArr[1],
+  //   };
+  // };
+
   /** ***********************/
   /**  Helper Function   ****/
   /** ***********************/
@@ -139,5 +269,78 @@ export class TruffleService {
   //     console.log(e);
   //   });
   //   return;
+  // };
+
+  // populateRequestData = (resultArr): GRequest => {
+  //   const startDate = this.transformDateSolToJS(resultArr[6]);
+  //   const endDate = this.transformDateSolToJS(resultArr[7]);
+  //
+  //   return {
+  //     GRequestID: resultArr[0],
+  //     customer: resultArr[1],
+  //     beneficiary: resultArr[2],
+  //     bank: resultArr[3],
+  //     beneficiaryName: this.getBeneficiaryData(resultArr[2]).Name,
+  //     purpose: resultArr[4],
+  //     amount: resultArr[5].valueOf(),
+  //     StartDate: startDate,
+  //     EndDate: endDate,
+  //     indexType: resultArr[8].valueOf(),
+  //     indexDate: resultArr[9].valueOf(),
+  //     requestState: resultArr[10].valueOf()
+  //   };
+  // };
+
+  // getBeneficiaryData= (beneAddress): Beneficiary => {
+  //   for (var i in this.beneficiaries) {
+  //     if (this.beneficiaries[i].beneficiaryID==beneAddress) {
+  //       return this.beneficiaries[i];
+  //     }
+  //   }
+  //   return this.beneficiaries[0];
+  // };
+
+  // getOneGuaranty = (guarantyAddress): Guarantee  => {
+  //   /** Gets one guarantee requests by id */
+  //   /** parses the data and sends to UI */
+  //   console.log('guarantyAddress', guarantyAddress);
+  //   this.DigitalGuaranteeBNHP.at(guarantyAddress)
+  //     .then((guaranteeinstance) => {
+  //       return guaranteeinstance.getGuaranteeData();
+  //     }).then((result) => {
+  //     return this.populateGuarantyData(result);
+  //   }).catch((e) => {
+  //     console.log(e);
+  //   });
+  //   return;
+  // };
+
+  // populateGuarantyData= (resultArr) => {
+  //   const startDate = this.transformDateSolToJS(resultArr[6]);
+  //   const endDate = this.transformDateSolToJS(resultArr[7]);
+  //
+  //   return {
+  //     GuaranteeID: resultArr[0],
+  //     customer: resultArr[1],
+  //     beneficiary: resultArr[2],
+  //     bank: resultArr[3],
+  //     customerName: this.getOneCustomerData(resultArr[2]).Name,
+  //     purpose: resultArr[4],
+  //     amount: resultArr[5].valueOf(),
+  //     StartDate: startDate,
+  //     EndDate: endDate,
+  //     indexType: resultArr[8].valueOf(),
+  //     indexDate: resultArr[9].valueOf(),
+  //     GuaranteeState: resultArr[10].valueOf()
+  //   };
+  // };
+
+  // getOneCustomerData = (customerAddress): Customer => {
+  //   for (var i in this.customers) {
+  //     if (this.customers[i].customerID==customerAddress) {
+  //       return this.customers[i];
+  //     }
+  //   }
+  //   return this.customers[0];
   // };
 }
