@@ -21,10 +21,10 @@ export class AppComponent implements OnInit {
 
   // Requests and Guarantees
   customerRequests: GRequest[] = [];
-  customerGuaranties: Guarantee[] = mockCustomerGuaranties || [];
-  bankRequests: GRequest[] = mockBankRequests || [];
-  bankGuaranties: Guarantee[] = mockBankGuaranties || [];
-  beneficiaryGuaranties: Guarantee[] = mockBeneficiaryGuaranties || [];
+  customerGuaranties: Guarantee[] = [];
+  bankRequests: GRequest[] = [];
+  bankGuaranties: Guarantee[] = [];
+  beneficiaryGuaranties: Guarantee[] = [];
 
   // User type data
   beneficiaries: Beneficiary[] =mockbeneficiaries || [];
@@ -44,6 +44,22 @@ export class AppComponent implements OnInit {
     this.truffleSRV.getAllUserRequests().then((res) => {
       this.customerRequests = res;
     });
+    this.truffleSRV.getAllCustomerGuaranties().then((res: Guarantee[]) => {
+      this.customerGuaranties = res;
+
+    });
+    this.truffleSRV.getAllBankRequests().then((res: GRequest[]) => {
+      this.bankRequests = res;
+    });
+    this.truffleSRV.getAllBankGuaranties().then((res: Guarantee[]) => {
+      this.bankGuaranties = res;
+    });
+
+    this.truffleSRV.getAllBeneficiaries().then((res: Guarantee[]) => {
+      this.beneficiaryGuaranties = res;
+    });
+
+
   }
 
   // getGuaranteesData = (guaranteeID, type: number) => {

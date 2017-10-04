@@ -12,7 +12,7 @@ export class HistoryComponent implements OnInit {
   @Input() request: GRequest;
   @Input() todel_state: any;
   @Input() userType: any;
-  myHistory: any[];
+  // myHistory: any[];
   statusGraph: string="../../../assets/images/progress2.png";
 
   myMockHistory: any = {
