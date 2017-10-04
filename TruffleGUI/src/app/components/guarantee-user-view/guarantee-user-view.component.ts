@@ -26,8 +26,8 @@ export class GuaranteeUserViewComponent implements OnInit{
   // treguaranteeState:GuaranteeState;
 
   ngOnInit() {
-    console.log('this.allRequests', this.allRequests);
-    console.log('this.allGuaranties', this.allGuaranties);
+    // console.log('this.allRequests', this.allRequests);
+    // console.log('this.allGuaranties', this.allGuaranties);
   }
 
   openModal(e) {

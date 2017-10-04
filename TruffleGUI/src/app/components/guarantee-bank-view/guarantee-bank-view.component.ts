@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {isNullOrUndefined} from "util";
 import {GRequest, Guarantee} from "../../interfaces/request";
 import {RequestState, GuaranteeState} from "../../interfaces/enum";
+import {TruffleService} from "../../services/truffle.service";
 
 
 @Component({
@@ -22,12 +23,14 @@ export class GuaranteeBankViewComponent implements OnInit{
   //   beneficiary: 'המוטב'
   // };
   index: number = 1; // accordion open index
+  requestHistory: any[];
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
+  constructor(private truffleSRV: TruffleService) {}
   ngOnInit() {
-    console.log('this.allRequests', this.allRequests);
-    console.log('this.allGuaranties', this.allGuaranties);
+    // console.log('this.allRequests', this.allRequests);
+    // console.log('this.allGuaranties', this.allGuaranties);
   }
 
   openModal(e) {
@@ -54,5 +57,12 @@ export class GuaranteeBankViewComponent implements OnInit{
 
   closeAccordion() {
     this.index = -1;
+  }
+  getRequestHistory(e) {
+    console.log('e', e);
+    console.log('this.allRequests', this.allRequests);
+    this.truffleSRV.getRequestHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
+     this.requestHistory = res;
+    });
   }
 }

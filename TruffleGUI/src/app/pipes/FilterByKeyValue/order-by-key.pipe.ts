@@ -17,7 +17,6 @@ export class OrderByKeyPipe implements PipeTransform {
 
       let date1 = new Date(a[key]).getTime();
       let date2 = new Date(b[key]).getTime();
-      console.log(a,b,a[key],b[key] ,date1,date2);
 
       if (date1 > date2) {
         return 1;

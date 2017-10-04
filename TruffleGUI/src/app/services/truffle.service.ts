@@ -4,9 +4,9 @@ const contract = require('truffle-contract');
 import {MessageService} from "primeng/components/common/messageservice";
 import {
   mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData,
-  mockBankRequests, mockBankGuaranties, mockbeneficiaries
+  mockBankRequests, mockBankGuaranties, mockbeneficiaries, mockexpandedRequest
 } from "../../../tempData/mockData";
-import {Customer} from "../interfaces/request";
+import {Customer, Guarantee} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
 
 // Import our contract artifacts and turn them into usable abstractions.
@@ -107,24 +107,25 @@ export class TruffleService {
 
   getAllCustomerGuaranties = () => {
     if(this.devMode) {
-      return new Promise((resolve)=> {
+      return new Promise((resolve) => {
         resolve(mockCustomerGuaranties);
       });
-    } else {
-      this.Regulator
-        .deployed().then((instance) => {
-          return instance.getGuarantieAddressForCustomer.call({from: this.account});
-        }).then((guaranteeAddresses) => {
-        console.log('guaranteeAddresses', guaranteeAddresses);
-        if (guaranteeAddresses.length > 0) {
-          guaranteeAddresses.forEach((guaranteeAddress) => {
-            // this.customerGuaranties = [...this.customerGuaranties, this.getOneGuaranty(guaranteeAddress)];
-          });
-        }
-      }).catch((e) => {
-        console.log(e);
-      });
     }
+    // else {
+    //   this.Regulator.deployed().then((instance) => {
+    //       return instance.getGuarantieAddressForCustomer.call({from: this.account});
+    //     })
+        // .then((guaranteeAddresses) => {
+        // console.log('guaranteeAddresses', guaranteeAddresses);
+        // if (guaranteeAddresses.length > 0) {
+        //   guaranteeAddresses.forEach((guaranteeAddress) => {
+        //     // this.customerGuaranties = [...this.customerGuaranties, this.getOneGuaranty(guaranteeAddress)];
+        //   });
+        // }
+      // }).catch((e) => {
+      //   console.log(e);
+      // });
+    // }
   };
 
 
@@ -345,4 +346,14 @@ export class TruffleService {
   //   }
   //   return this.customers[0];
   // };
+
+  getRequestHistory(requestId) {
+    if(this.devMode) {
+      return new Promise((resolve) => {
+        resolve(mockexpandedRequest[0].log);
+      });
+    } else {
+      // go to blockchain and get real data
+    }
+  }
 }
