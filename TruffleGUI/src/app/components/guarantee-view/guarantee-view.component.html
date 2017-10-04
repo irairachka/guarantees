@@ -39,14 +39,14 @@
           </label>
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
-          <p-accordion  styleClass="green">
+          <p-accordion  styleClass="green" (onOpen)="getGuaranteeHistory($event)">
             <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true">
               <!--//theguaranteeState.Valid">-->
               <p-header>
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
               </p-header>
-              <app-history [userType]="'beneficiary'" [todel_state]=2 ></app-history>
+              <app-history [userType]="'beneficiary'" [todel_state]="2" [history]="guaranteeHistory"></app-history>
               <app-actions [userType]="user" [data]="guar" (updateRequest)="updateRequestsender($event)"></app-actions>
 
               <!--<accordion-content [userType]="'beneficiary'" [todel_state]=2 [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>-->

@@ -59,8 +59,6 @@ export class GuaranteeBankViewComponent implements OnInit{
     this.index = -1;
   }
   getRequestHistory(e) {
-    console.log('e', e);
-    console.log('this.allRequests', this.allRequests);
     this.truffleSRV.getRequestHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
      this.requestHistory = res;
     });

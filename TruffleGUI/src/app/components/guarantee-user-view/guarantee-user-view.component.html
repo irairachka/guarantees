@@ -26,12 +26,12 @@
           </label>
         </div>
         <div class="req-for-treatment">
-          <p-accordion styleClass="red">
+          <p-accordion styleClass="red" (onOpen)="getRequestHistory($event)">
             <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[3] "><!-- "//[therequestState.waitingtocustomer,therequestState.accepted]"> -->
               <p-header>
                 <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
               </p-header>
-              <app-history [userType]="user" [todel_state]=1 ></app-history>
+              <app-history [userType]="user" [todel_state]="1" [history]="requestHistory"></app-history>
               <app-actions [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></app-actions>
 
               <!--<accordion-content [userType]="user" [todel_state]=2 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>-->
@@ -48,7 +48,7 @@
           </label>
         </div>
         <div class="req-pending" >
-          <p-accordion  styleClass="green">
+          <p-accordion  styleClass="green" (onOpen)="getRequestHistory($event)">
             <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[1,2,4]  | orderByKey:'EndDate'">
   <!--therequestState.created,therequestState.waitingtobank,-->
   <!--therequestState.handling,-->
@@ -58,7 +58,7 @@
                 <request-item [request]="req" [usestate]=false (emitRequest)="openModal($event)">
                 </request-item>
               </p-header>
-              <app-history [userType]="user" [todel_state]=2 ></app-history>
+              <app-history [userType]="user" [todel_state]="2" [history]="requestHistory"></app-history>
               <app-actions [userType]="user" [data]="req" (updateRequest)="updateRequestsender($event)"></app-actions>
 
               <!--<accordion-content [userType]="user" [todel_state]=1 [data]="req" (updateRequest)="updateRequestsender($event)"></accordion-content>-->

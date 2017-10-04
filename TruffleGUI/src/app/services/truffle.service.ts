@@ -356,4 +356,14 @@ export class TruffleService {
       // go to blockchain and get real data
     }
   }
+
+  getGuarantyHistory(requestId) {
+    if(this.devMode) {
+      return new Promise((resolve) => {
+        resolve(mockexpandedRequest[0].log);
+      });
+    } else {
+      // go to blockchain and get real data
+    }
+  }
 }

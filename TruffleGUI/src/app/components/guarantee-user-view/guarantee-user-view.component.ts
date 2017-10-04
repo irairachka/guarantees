@@ -2,6 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {isNullOrUndefined} from "util";
 import {GRequest, Guarantee} from "../../interfaces/request";
 import {RequestState, GuaranteeState} from "../../interfaces/enum";
+import {TruffleService} from "../../services/truffle.service";
 
 
 @Component({
@@ -16,14 +17,12 @@ export class GuaranteeUserViewComponent implements OnInit{
   @Output() triggerModal: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   @Output() newRequest: EventEmitter<any> = new EventEmitter();
-  // userName: any = {
-  //   user: 'המבקש',
-  //   bank: 'הבנק',
-  //   beneficiary: 'המוטב'
-  // };
+  requestHistory: any[];
   index: number = 1; // accordion open index
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
+
+  constructor(private truffleSRV: TruffleService){ }
 
   ngOnInit() {
     // console.log('this.allRequests', this.allRequests);
@@ -31,7 +30,6 @@ export class GuaranteeUserViewComponent implements OnInit{
   }
 
   openModal(e) {
-    console.log('openModal', e);
     let modalData = {
       user: this.user,
       request: e
@@ -43,7 +41,6 @@ export class GuaranteeUserViewComponent implements OnInit{
   }
 
   updateGuaranteesender(data){
-    console.log('updateGuaranteesender', data);
     this.updateRequest.emit(data);
   }
 
@@ -54,5 +51,11 @@ export class GuaranteeUserViewComponent implements OnInit{
 
   closeAccordion() {
     this.index = -1;
+  }
+
+  getRequestHistory(e) {
+    this.truffleSRV.getRequestHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
+      this.requestHistory = res;
+    });
   }
 }
