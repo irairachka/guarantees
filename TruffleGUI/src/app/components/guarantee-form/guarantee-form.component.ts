@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges, Output, OnDestroy, OnInit, EventEmitter} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {isNullOrUndefined} from "util";
-import {Customer} from "../../interfaces/request";
 import {userData} from "../../../../tempData/mockData";
+import {Http} from "@angular/http";
 
 @Component({
   selector: 'guarantee-form',
@@ -40,7 +40,8 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   newValue: number;
   newDate: string;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private http: Http) {
     this.createForm();
     this.requestsStates = [
       {
@@ -89,13 +90,17 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
       purpose: '',
       amount: '',
       startDate: '',
-      endDate: ''
+      endDate: '',
+      hash: ['', Validators.required]
     })
   }
 
   onBasicUploadAuto(e) {
     console.log('e', e);
     console.log('File Uploaded');
+    console.log('e.xhr.response', e.xhr.response);
+    this.newGuarantee.controls.hash.setValue(e.xhr.response);
+    console.log('this.newGuarantee', this.newGuarantee);
   }
 
   submitGuarantee() {
