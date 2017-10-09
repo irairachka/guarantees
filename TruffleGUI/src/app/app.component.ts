@@ -5,9 +5,7 @@ import {
   mockexpandedRequest, mockbeneficiaries, mockcustomers
 } from '../../tempData/mockData';
 
-import {GRequest, Guarantee, Beneficiary, Customer, ExpandedRequest} from "./interfaces/request";
-import {isNullOrUndefined} from "util";
-import {GuaranteeState, RequestState} from "./interfaces/enum";
+import {GRequest, Guarantee, Beneficiary, Customer, ExpandedRequest, Bank} from "./interfaces/request";
 import {EtheriumService} from "./services/mock-etherium.service";
 
 @Component({
@@ -25,18 +23,25 @@ export class AppComponent implements OnInit {
   beneficiaryGuaranties: Guarantee[] = [];
 
   // User type data
-  beneficiaries: Beneficiary[] =mockbeneficiaries || [];
-  customers: Customer[] = mockcustomers || [];
-
-
-  // Dialog data
-  dialogData: any;
-  openFormDialog: boolean = false; // show dialog
-  modalType: string = 'user'; // dialog types
+  beneficiaries: Beneficiary[] = [];
+  customer: Customer;
+  bank: Bank;
 
   constructor(private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
+    // Get user, bank and beneficiary data
+    this.truffleSRV.getCustomerData().then((res: Customer) => {
+      this.customer = res;
+    });
+    this.truffleSRV.getBankData().then((res: Bank) => {
+      this.bank = res;
+    });
+    this.truffleSRV.getAllBeneficiaries().then((res: Beneficiary[]) => {
+      this.beneficiaries = res;
+    });
+
+    // get requests and guarantee data
     this.truffleSRV.getAllUserRequests().then((res: GRequest[]) => {
       this.customerRequests = res;
     });
@@ -70,14 +75,14 @@ export class AppComponent implements OnInit {
   //
   // };
 
-  getOneCustomerData = (customerAddress): Customer => {
-      for (var i in this.customers) {
-        if (this.customers[i].customerID==customerAddress) {
-          return this.customers[i];
-        }
-      }
-      return this.customers[0];
-    };
+  // getOneCustomerData = (customerAddress): Customer => {
+  //     for (var i in this.customers) {
+  //       if (this.customers[i].customerID==customerAddress) {
+  //         return this.customers[i];
+  //       }
+  //     }
+  //     return this.customers[0];
+  //   };
 
   populateCustomerData= (customerAddress,resultArr) => {
     return {
@@ -86,32 +91,6 @@ export class AppComponent implements OnInit {
       Address: resultArr[1],
     };
   };
-
-
-
-
-    // }
-    // else
-    // {
-    //     throw new Error('hashcode is empty');
-    // }
-  // };
-
-
-  // rejectRequest = (requestId,comment) => {
-  //   // ביטול של בנק
-  //   for (var i in this.bankRequests) {
-  //     if (this.bankRequests[i].GRequestID==requestId) {
-  //       this.bankRequests[i].requestState=RequestState.rejected;
-  //       break; //Stop this loop, we found it!
-  //     }
-  //   }
-  //
-  //   this.customerRequests=[...this.bankRequests];
-  //   this.bankRequests=[...this.bankRequests];
-  //
-  //
-  // };
 
   getGRequestData = (requestId, type: number) => {
     for (let i in this.bankRequests) {
@@ -123,8 +102,6 @@ export class AppComponent implements OnInit {
 
 
   fillMockRequest = (index) :ExpandedRequest => {
-
-
     return mockexpandedRequest[index];
     // if (type==0)
     // {
@@ -160,10 +137,8 @@ export class AppComponent implements OnInit {
   };
 
   handleCreateRequest = (e) => {
-    console.log('e', e);
-    //todo  open ids
-    let newRequest = this.truffleSRV.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
-    '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
+    let newRequest = this.truffleSRV.createRequest(this.customer.customerID,
+    this.bank.bankID, this.beneficiaries[0].beneficiaryID,
     e.purpose, e.amount, new Date(e.startDate).getTime()/1000, new Date(e.endDate).getTime()/1000, 0, 0);
     this.addNewUserRequests(newRequest);
     this.addNewBankRequests(newRequest);
