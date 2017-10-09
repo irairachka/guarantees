@@ -20,6 +20,8 @@ const Regulator_artifact = require('../../../../build/contracts/Regulator.json')
 export class EtheriumService {
   idmoc: number = 1000;
   web3:any;
+  mockRequests = mockCustomerRequests;
+  mockGuarantees = mockCustomerGuaranties;
   Regulator = contract(Regulator_artifact);
   GuaranteeRequest = contract(GuaranteeRequest_artifact);
   // DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
@@ -119,7 +121,7 @@ export class EtheriumService {
                  amount, StartDate, EndDate, indexType, indexDate) {
     this.idmoc = this.idmoc +1;
     this.msgService.add({severity: 'success', summary:'ערבות חדשה', detail:'בקשה לערבות חדשה נשלחה בהצלחה'});
-    return this.populateRequestData(
+    let newItem = this.populateRequestData(
       [''+this.idmoc,
         '0xd532D3531958448e9E179729421B92962fb81Ddc',
         '0xd532D3531958448e9E179729421B92962fb81Ddc',
@@ -133,10 +135,12 @@ export class EtheriumService {
         RequestState.waitingtobank
       ]
     );
+    this.mockRequests = [...mockCustomerRequests, newItem];
+    return newItem
   };
 
   withdrawalRequest = (requestId, comment) => {
-    let updatedItem = mockCustomerRequests.find((item) => {
+    let updatedItem = this.mockRequests.find((item) => {
       return item.GRequestID === requestId;
     });
     updatedItem.requestState = RequestState.withdrawed;
@@ -145,7 +149,7 @@ export class EtheriumService {
 
   updateRequest = (requestId, comment) => {
     // עדכון של בנק
-    let updatedItem = mockCustomerRequests.find((item) => {
+    let updatedItem = this.mockRequests.find((item) => {
       return item.GRequestID === requestId;
     });
     updatedItem.requestState = RequestState.handling;
@@ -153,7 +157,7 @@ export class EtheriumService {
   };
 
   rejectRequest = (requestId, comment) => {
-    let rejectedItem = mockCustomerRequests.find((item) => {
+    let rejectedItem = this.mockRequests.find((item) => {
       return item.GRequestID === requestId;
     });
     rejectedItem.requestState = RequestState.rejected;
@@ -165,7 +169,7 @@ export class EtheriumService {
     // if  (hashcode) {
 
     // find and change state of selected request
-    let acceptedItem = mockCustomerRequests.find((item) => {
+    let acceptedItem = this.mockRequests.find((item) => {
       return item.GRequestID === requestId;
     });
     acceptedItem.requestState = RequestState.accepted;
@@ -186,6 +190,7 @@ export class EtheriumService {
           indexDate: acceptedItem.indexDate,
           guaranteeState: GuaranteeState.Valid };
 
+    this.mockGuarantees = [...this.mockGuarantees, guarantee];
     return {
       request: acceptedItem,
       guarantee
@@ -195,12 +200,12 @@ export class EtheriumService {
   terminateGuatanty = (guaranteeId, requestId, comment , hashcode) => {
     // if  (hashcode) {
     // find and change state of selected request
-    let terminatedRequest = mockCustomerRequests.find((item) => {
+    let terminatedRequest = this.mockRequests.find((item) => {
       return item.GRequestID === requestId;
     });
     terminatedRequest.requestState = RequestState.terminationRequest;
 
-    let terminatedGuarantee = mockCustomerGuaranties.find((item) => {
+    let terminatedGuarantee = this.mockGuarantees.find((item) => {
       return item.GuaranteeID === guaranteeId;
     });
     terminatedGuarantee.guaranteeState = GuaranteeState.Terminated;
@@ -214,13 +219,13 @@ export class EtheriumService {
   guaranteeUpdate = (guatantyId, requestId, comment, amount, date) => {
     // if  (hashcode) {
     // find and change state of selected request
-    let unpdatedRequest = mockCustomerRequests.find((item) => {
+    let unpdatedRequest = this.mockRequests.find((item) => {
       return item.GRequestID === requestId;
     });
     unpdatedRequest.amount = amount;
     unpdatedRequest.EndDate = date;
 
-    let updatedGuarantee = mockCustomerGuaranties.find((item) => {
+    let updatedGuarantee = this.mockGuarantees.find((item) => {
       return item.GuaranteeID === guatantyId;
     });
     updatedGuarantee.amount = amount;
