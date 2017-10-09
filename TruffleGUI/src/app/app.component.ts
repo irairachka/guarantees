@@ -34,8 +34,6 @@ export class AppComponent implements OnInit {
   openFormDialog: boolean = false; // show dialog
   modalType: string = 'user'; // dialog types
 
-  idmoc: number = 1000  ;
-
   constructor(private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
@@ -51,12 +49,9 @@ export class AppComponent implements OnInit {
     this.truffleSRV.getAllBankGuaranties().then((res: Guarantee[]) => {
       this.bankGuaranties = res;
     });
-
     this.truffleSRV.getAllBeneficiaryGuaranties().then((res: Guarantee[]) => {
       this.beneficiaryGuaranties = res;
     });
-
-
   }
 
   // getGuaranteesData = (guaranteeID, type: number) => {
@@ -92,40 +87,7 @@ export class AppComponent implements OnInit {
     };
   };
 
-  acceptRequest = (requestId, comment , hashcode) => {
-    // אישור של בנק
-    // if  (hashcode) {
-    for (var i in this.bankRequests) {
-      if (this.bankRequests[i].GRequestID==requestId) {
-        this.bankRequests[i].requestState=RequestState.accepted;
 
-        this.customerGuaranties=[...this.customerGuaranties,{
-          GuaranteeID: this.bankRequests[i].GRequestID,
-          GRequestID: this.bankRequests[i].GRequestID,
-          customer: this.bankRequests[i].customer,
-          beneficiary: this.bankRequests[i].GRequestID,
-          bank: this.bankRequests[i].GRequestID,
-          customerName: this.getOneCustomerData(this.bankRequests[i].customer).Name,
-          StartDate: this.bankRequests[i].StartDate,
-          EndDate: this.bankRequests[i].EndDate,
-          amount: this.bankRequests[i].amount,
-          purpose: this.bankRequests[i].purpose,
-          indexType: this.bankRequests[i].indexType,
-          indexDate: this.bankRequests[i].indexDate,
-          guaranteeState: GuaranteeState.Valid
-        }];
-
-        this.bankGuaranties=[...this.customerGuaranties];
-        this.beneficiaryGuaranties=[...this.customerGuaranties];
-        // TODO - ask dimi if I should remove from list
-        this.bankRequests = this.bankRequests.filter(item=> {
-          return item.GRequestID !== requestId;
-        });
-        this.customerRequests=[...this.bankRequests];
-
-        break; //Stop this loop, we found it!
-      }
-    }
 
 
     // }
@@ -133,128 +95,30 @@ export class AppComponent implements OnInit {
     // {
     //     throw new Error('hashcode is empty');
     // }
-  };
+  // };
 
 
-  rejectRequest = (requestId,comment) => {
-    // ביטול של בנק
-    for (var i in this.bankRequests) {
-      if (this.bankRequests[i].GRequestID==requestId) {
-        this.bankRequests[i].requestState=RequestState.rejected;
-        break; //Stop this loop, we found it!
-      }
-    }
-
-    this.customerRequests=[...this.bankRequests];
-    this.bankRequests=[...this.bankRequests];
-
-
-  };
-
-
-  withdrawalRequest = (requestId) => {
-    // ביטול של יוזר
-    for (var i in this.bankRequests) {
-      if (this.bankRequests[i].GRequestID==requestId) {
-        this.bankRequests[i].requestState=RequestState.withdrawed;
-        break; //Stop this loop, we found it!
-      }
-    }
-    this.customerRequests = [...this.bankRequests];
-    this.bankRequests = [...this.bankRequests];
-    console.log("withdrawalRequest");
-    console.log('this.bankRequests', this.bankRequests);
-  };
-
-  terminateGuatanty = (guatantyId) => {
-    // ביטול של מוטב
-    for (var i in this.customerGuaranties) {
-      if (this.customerGuaranties[i].GuaranteeID==guatantyId) {
-        this.customerGuaranties[i].guaranteeState=GuaranteeState.Terminated;
-
-        for (var j in this.bankRequests) {
-          if (this.bankRequests[j].GRequestID==this.customerGuaranties[i].GRequestID) {
-            this.bankRequests[j].requestState=RequestState.terminationRequest;
-            break; //Stop this loop, we found it!
-          }
-        }
-
-        // this.customerRequests=[...this.bankRequests];
-
-        break; //Stop this loop, we found it!
-      }
-    }
-
-    this.customerRequests=[...this.bankRequests];
-    this.bankGuaranties=[...this.customerGuaranties];
-    this.beneficiaryGuaranties=[...this.customerGuaranties];
-
-    console.log("terminateGuatanty");
-    console.log(this.bankRequests);
-    console.log(this.beneficiaryGuaranties);
-
-
-  };
-
-
-  guaranteeUpdate = (guatantyId,comment,ammount,date) => {
-    // עדכון של מוטב
-    for (var i in this.customerGuaranties) {
-      if (this.customerGuaranties[i].GuaranteeID==guatantyId) {
-        this.customerGuaranties[i].amount=ammount;
-        this.customerGuaranties[i].EndDate=date;
-
-        for (var j in this.bankRequests) {
-          if (this.bankRequests[j].GRequestID==this.customerGuaranties[i].GRequestID) {
-            this.bankRequests[j].amount=ammount;
-            this.bankRequests[j].EndDate=date;
-            break; //Stop this loop, we found it!
-          }
-        }
-
-        break; //Stop this loop, we found it!
-      }
-
-    }
-
-    this.customerRequests=[...this.bankRequests];
-    this.bankGuaranties=[...this.customerGuaranties];
-    this.beneficiaryGuaranties=[...this.customerGuaranties];
-
-    console.log("guaranteeUpdate");
-    console.log(this.bankRequests);
-    console.log(this.beneficiaryGuaranties);
-
-  };
-
-  updateRequest = (requestId,state,comment) => {
-    // עדכון של בנק
-    for (var i in this.bankRequests) {
-      if (this.bankRequests[i].GRequestID==requestId) {
-        this.bankRequests[i].requestState=state;
-        break; //Stop this loop, we found it!
-      }
-    }
-
-    this.customerRequests=[...this.bankRequests];
-    this.bankRequests=[...this.bankRequests];
-
-    console.log("updateRequest");
-    console.log(this.customerRequests);
-
-
-  };
-
+  // rejectRequest = (requestId,comment) => {
+  //   // ביטול של בנק
+  //   for (var i in this.bankRequests) {
+  //     if (this.bankRequests[i].GRequestID==requestId) {
+  //       this.bankRequests[i].requestState=RequestState.rejected;
+  //       break; //Stop this loop, we found it!
+  //     }
+  //   }
+  //
+  //   this.customerRequests=[...this.bankRequests];
+  //   this.bankRequests=[...this.bankRequests];
+  //
+  //
+  // };
 
   getGRequestData = (requestId, type: number) => {
-
-    for (var i in this.bankRequests) {
+    for (let i in this.bankRequests) {
       if (this.bankRequests[i].GRequestID==requestId) {
         return this.fillMockRequest(i)
       }
     }
-
-
   };
 
 
@@ -295,117 +159,117 @@ export class AppComponent implements OnInit {
     // }
   };
 
-  // createRequest( userId , bankId, benefId , purpose,
-  //                   amount, StartDate, EndDate, indexType, indexDate) {
-  //   // this.transformDateSolToJS(resultArr[6]);
-  //   this.idmoc = this.idmoc +1;
-  //   this.customerRequests = [...this.customerRequests, this.populateRequestData(
-  //     [''+this.idmoc,
-  //       this.customers[0].customerID,
-  //       this.customers[0].customerID,
-  //       this.customers[0].customerID,
-  //       purpose,
-  //       amount,
-  //       StartDate,
-  //       EndDate,
-  //       indexType,
-  //       indexDate,
-  //       RequestState.waitingtobank
-  //     ]
-  //   )];
-  //
-  //   this.bankRequests=this.customerRequests;
-  //   this.msgService.add({severity: 'success', summary:'ערבות חדשה', detail:'בקשה לערבות חדשה נשלחה בהצלחה'});
-  //   if(1==1) return ;
-  //   else
-  //   console.log("begin");
-  //   this.Regulator
-  //     .deployed()
-  //     .then((instance) => {
-  //       return instance.createGuaranteeRequest.call(userId, bankId, benefId, purpose, amount, StartDate, EndDate, indexType, indexDate,
-  //         { from: this.account, gas: 6000000});
-  //     }).then((guaranteeRequestAddress) => {
-  //       console.log(guaranteeRequestAddress);
-  //        this.onNewRequestSuccess(guaranteeRequestAddress);
-  //   }).catch((e) => {
-  //     console.log(e);
-  //   });
-  // };
-
-  /** Handle form modal */
-  openModal(e) {
+  handleCreateRequest = (e) => {
     console.log('e', e);
-    this.modalType = e.user;
-    if(!isNullOrUndefined(e.request)) {
-      this.dialogData = e.request;
-      if(this.modalType !== 'beneficiary') {
-        // TODO - get real history
-        this.dialogData = Object.assign({}, this.dialogData, {history: this.fillMockRequest(1)})
-      }
-    }
-    console.log('this.dialogData', this.dialogData);
-    this.openFormDialog = true;
-    console.log('this.openFormDialog', this.openFormDialog);
-  }
-
-  clearData() {
-    this.dialogData = null;
-  }
-
-  // handleCreateRequest = (e) => {
-  //   console.log('e', e);
-  //   //todo  open ids
-  //     this.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
-  //     '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
-  //     e.purpose, e.amount, new Date(e.startDate).getTime()/1000, new Date(e.endDate).getTime()/1000, 0, 0);
-  // };
+    //todo  open ids
+    let newRequest = this.truffleSRV.createRequest('0xd532D3531958448e9E179729421B92962fb81Ddc',
+    '0xd532D3531958448e9E179729421B92962fb81Ddc', '0xd532D3531958448e9E179729421B92962fb81Ddc',
+    e.purpose, e.amount, new Date(e.startDate).getTime()/1000, new Date(e.endDate).getTime()/1000, 0, 0);
+    this.addNewUserRequests(newRequest);
+    this.addNewBankRequests(newRequest);
+  };
 
   handleRequestUpdate = (e) => {
     console.log('e',e);
+    let updatedRequest;
     switch (e.type) {
       case 'withdrawal':
-        console.log('withdraw success', e.requestId);
-        this.withdrawalRequest(e.requestId);
+        updatedRequest = this.truffleSRV.withdrawalRequest(e.requestId, '');
+        this.updateUserRequests(updatedRequest);
+        this.updateBankRequests(updatedRequest);
         break;
       case 'updateBank':
         console.log(`update success! id: ${e.requestId} comment: ${e.details}`);
-        this.updateRequest(e.requestId, RequestState.handling,e.details);
+        updatedRequest = this.truffleSRV.updateRequest(e.requestId, e.details);
+        this.updateUserRequests(updatedRequest);
+        this.updateBankRequests(updatedRequest);
         break;
       case 'accept':
         console.log(`accept success! id: ${e.requestId}`);
-        this.acceptRequest(e.requestId, '', '');
+        updatedRequest = this.truffleSRV.acceptRequest(e.requestId, '', '');
+        this.updateUserRequests(updatedRequest.request);
+        this.updateBankRequests(updatedRequest.request);
+        this.addNewUserGuarantee(updatedRequest.guarantee);
+        this.addNewBankGuarantee(updatedRequest.guarantee);
+        this.addNewBenefGuarantee(updatedRequest.guarantee);
         break;
       case 'reject':
         console.log(`reject success! id: ${e.requestId} comment: ${e.details}`);
-        this.rejectRequest(e.requestId, e.details);
+        updatedRequest = this.truffleSRV.rejectRequest(e.requestId, e.details);
+        this.updateUserRequests(updatedRequest);
+        this.updateBankRequests(updatedRequest);
         break;
       case 'terminate':
         console.log(`terminate success! id: ${e.guaranteeId}`);
-        this.terminateGuatanty(e.guaranteeId);
+        updatedRequest = this.truffleSRV.terminateGuatanty(e.guaranteeId, e.requestId, '', '');
+        this.updateUserRequests(updatedRequest.request);
+        this.updateBankRequests(updatedRequest.request);
+        this.updateUserGuarantees(updatedRequest.guarantee);
+        this.updateBankGuarantees(updatedRequest.guarantee);
+        this.updateBenefGuarantees(updatedRequest.guarantee);
         break;
       case 'guaranteeUpdate':
         console.log(`update success! id: ${e.guaranteeId} amount: ${e.update.amount} date: ${e.update.date}`);
-        this.guaranteeUpdate(e.guaranteeId, '', e.update.amount, e.update.date);
+        updatedRequest = this.truffleSRV.guaranteeUpdate(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date);
+        this.updateUserRequests(updatedRequest.request);
+        this.updateBankRequests(updatedRequest.request);
+        this.updateUserGuarantees(updatedRequest.guarantee);
+        this.updateBankGuarantees(updatedRequest.guarantee);
+        this.updateBenefGuarantees(updatedRequest.guarantee);
         break;
       default:
         break;
     }
-    this.openFormDialog = false;
   };
 
-  transformDateSolToJS = (longDate) => {
-    const date = new Date(longDate * 1000);
-    return date.toLocaleDateString('en-GB');
+  addNewUserRequests = (newRequest) => {
+    this.customerRequests = [...this.customerRequests, newRequest];
   };
 
-  transformDateJSToSol = (longDate) => {
-    const date = new Date(longDate / 1000);
-    // return date.toLocaleDateString('en-GB');
+  addNewBankRequests = (newRequest) => {
+    this.bankRequests = [...this.bankRequests, newRequest];
   };
 
-  // onNewRequestSuccess = (requestAddress) => {
-  //   // toaster = success;
-  //   // close modal
-  //   this.getOneGRequests(requestAddress);
-  // }
+  updateUserRequests = (updatedRequest) => {
+    this.customerRequests = this.customerRequests.map((el) => {
+      return el.GRequestID === updatedRequest.GRequestID ? updatedRequest : el;
+    });
+  };
+
+  updateBankRequests = (updatedRequest) => {
+    this.bankRequests = this.bankRequests.map((el) => {
+      return el.GRequestID === updatedRequest.GRequestID ? updatedRequest : el;
+    });
+  };
+
+  addNewUserGuarantee = (newGuarantee) => {
+    console.log('newGuarantee', newGuarantee);
+    this.customerGuaranties = [...this.customerGuaranties, newGuarantee];
+  };
+
+  addNewBankGuarantee = (newGuarantee) => {
+    this.bankGuaranties = [...this.bankGuaranties, newGuarantee];
+  };
+
+  addNewBenefGuarantee = (newGuarantee) => {
+    this.beneficiaryGuaranties = [...this.beneficiaryGuaranties, newGuarantee];
+  };
+
+  updateUserGuarantees = (updatedGuarantee) => {
+    this.customerGuaranties = this.customerGuaranties.map((el) => {
+      return el.GRequestID === updatedGuarantee.GRequestID ? updatedGuarantee : el;
+    });
+  };
+
+  updateBankGuarantees = (updatedGuarantee) => {
+    this.bankGuaranties = this.bankGuaranties.map((el) => {
+      return el.GRequestID === updatedGuarantee.GRequestID ? updatedGuarantee : el;
+    });
+  };
+
+  updateBenefGuarantees = (updatedGuarantee) => {
+    this.beneficiaryGuaranties = this.beneficiaryGuaranties.map((el) => {
+      return el.GRequestID === updatedGuarantee.GRequestID ? updatedGuarantee : el;
+    });
+  };
 }

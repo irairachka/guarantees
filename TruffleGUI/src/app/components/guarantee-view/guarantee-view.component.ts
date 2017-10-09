@@ -59,7 +59,7 @@ export class GuaranteeViewComponent implements OnInit{
   }
 
   getGuaranteeHistory(e) {
-    this.truffleSRV.getGuarantyHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
+    this.truffleSRV.getGuarantyHistory(this.allGuaranties[e.index].GRequestID).then((res: any[]) => {
       this.guaranteeHistory = res;
     });
   }
