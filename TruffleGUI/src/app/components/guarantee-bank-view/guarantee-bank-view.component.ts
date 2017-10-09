@@ -8,7 +8,7 @@ import {EtheriumService} from "../../services/mock-etherium.service";
   templateUrl: './guarantee-bank-view.component.html',
   styleUrls: ['./guarantee-bank-view.component.scss']
 })
-export class GuaranteeBankViewComponent implements OnInit{
+export class GuaranteeBankViewComponent {
   @Input() user: string; // TODO - handle enum and convert to string
   @Input() allRequests: GRequest[];
   @Input() allGuaranties: Guarantee[];
@@ -20,16 +20,12 @@ export class GuaranteeBankViewComponent implements OnInit{
   //   bank: 'הבנק',
   //   beneficiary: 'המוטב'
   // };
-  index: number = 1; // accordion open index
+  index: number = 0;
   requestHistory: any[];
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
   constructor(private truffleSRV: EtheriumService) {}
-  ngOnInit() {
-    // console.log('this.allRequests', this.allRequests);
-    // console.log('this.allGuaranties', this.allGuaranties);
-  }
 
   openModal(e) {
     console.log('openModal', e);
@@ -40,6 +36,7 @@ export class GuaranteeBankViewComponent implements OnInit{
     this.triggerModal.emit(modalData);
   }
   updateRequestsender(data){
+    this.closeAccordion();
     this.updateRequest.emit(data);
   }
 
@@ -48,15 +45,16 @@ export class GuaranteeBankViewComponent implements OnInit{
     this.updateRequest.emit(data);
   }
 
-  newRequestEmitter(e) {
-    this.closeAccordion();
-    this.newRequest.emit(e);
+  setIndex(index) {
+    this.index = index;
   }
 
   closeAccordion() {
     this.index = -1;
   }
+
   getRequestHistory(e) {
+    this.setIndex(e.index);
     this.truffleSRV.getRequestHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
      this.requestHistory = res;
     });

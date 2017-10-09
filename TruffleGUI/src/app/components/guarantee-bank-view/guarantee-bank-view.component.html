@@ -38,7 +38,7 @@
           </label>
         </div>
         <div class="req-pending" >
-          <p-accordion  styleClass="green" (onOpen)="getRequestHistory($event)">
+          <p-accordion  styleClass="green" (onOpen)="getRequestHistory($event)" [activeIndex]="index">
             <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[2]">
               <!--therequestState.created,therequestState.waitingtobank,-->
               <!--therequestState.handling,-->
