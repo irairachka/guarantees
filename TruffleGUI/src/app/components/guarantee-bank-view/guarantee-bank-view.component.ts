@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {isNullOrUndefined} from "util";
 import {GRequest, Guarantee} from "../../interfaces/request";
-import {RequestState, GuaranteeState} from "../../interfaces/enum";
-import {TruffleService} from "../../services/truffle.service";
+import {EtheriumService} from "../../services/mock-etherium.service";
 
 
 @Component({
@@ -27,7 +25,7 @@ export class GuaranteeBankViewComponent implements OnInit{
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
-  constructor(private truffleSRV: TruffleService) {}
+  constructor(private truffleSRV: EtheriumService) {}
   ngOnInit() {
     // console.log('this.allRequests', this.allRequests);
     // console.log('this.allGuaranties', this.allGuaranties);

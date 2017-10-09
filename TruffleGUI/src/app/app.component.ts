@@ -2,15 +2,13 @@ import {Component, OnInit} from '@angular/core';
 
 // Interfaces, mock data and utils
 import {
-  mockBankGuaranties, mockBankRequests,
-  mockBeneficiaryGuaranties, mockCustomerGuaranties,
-  mockCustomerRequests, mockexpandedRequest, mockbeneficiaries, mockcustomers
+  mockexpandedRequest, mockbeneficiaries, mockcustomers
 } from '../../tempData/mockData';
 
 import {GRequest, Guarantee, Beneficiary, Customer, ExpandedRequest} from "./interfaces/request";
 import {isNullOrUndefined} from "util";
 import {GuaranteeState, RequestState} from "./interfaces/enum";
-import {TruffleService} from "./services/truffle.service";
+import {EtheriumService} from "./services/mock-etherium.service";
 
 @Component({
   selector: 'app-root',
@@ -38,15 +36,14 @@ export class AppComponent implements OnInit {
 
   idmoc: number = 1000  ;
 
-  constructor(private truffleSRV: TruffleService) {}
+  constructor(private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
-    this.truffleSRV.getAllUserRequests().then((res) => {
+    this.truffleSRV.getAllUserRequests().then((res: GRequest[]) => {
       this.customerRequests = res;
     });
     this.truffleSRV.getAllCustomerGuaranties().then((res: Guarantee[]) => {
       this.customerGuaranties = res;
-
     });
     this.truffleSRV.getAllBankRequests().then((res: GRequest[]) => {
       this.bankRequests = res;
@@ -55,7 +52,7 @@ export class AppComponent implements OnInit {
       this.bankGuaranties = res;
     });
 
-    this.truffleSRV.getAllBeneficiaries().then((res: Guarantee[]) => {
+    this.truffleSRV.getAllBeneficiaryGuaranties().then((res: Guarantee[]) => {
       this.beneficiaryGuaranties = res;
     });
 
