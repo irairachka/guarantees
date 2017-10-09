@@ -6,8 +6,9 @@ import {
   mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData,
   mockBankRequests, mockBankGuaranties, mockbeneficiaries, mockexpandedRequest
 } from "../../../tempData/mockData";
-import {Customer, Guarantee} from "../interfaces/request";
+import {Beneficiary, Customer, Guarantee} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
+import {RequestState} from "../interfaces/enum";
 
 // Import our contract artifacts and turn them into usable abstractions.
 const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
@@ -92,54 +93,54 @@ export class TruffleService {
   };
 
 
-  getOneRequest = (requestAddress) => {
-    /** Gets one guarantee requests by id */
-    /** parses the data and sends to UI */
-    GuaranteeRequest.at(requestAddress)
-      .then((guaranteeRequestinstance) => {
-        return guaranteeRequestinstance.getGuaranteeRequestData();
-      }).then((result) => {
-      return this.populateRequestData(result);
-    }).catch((e) => {
-      console.log(e);
-    });
-  };
+  // getOneRequest = (requestAddress) => {
+  //   /** Gets one guarantee requests by id */
+  //   /** parses the data and sends to UI */
+  //   GuaranteeRequest.at(requestAddress)
+  //     .then((guaranteeRequestinstance) => {
+  //       return guaranteeRequestinstance.getGuaranteeRequestData();
+  //     }).then((result) => {
+  //     return this.populateRequestData(result);
+  //   }).catch((e) => {
+  //     console.log(e);
+  //   });
+  // };
 
 
-  getRequestHistory = (requestAddress) => {
-    if (this.devMode) {
-      return new Promise((resolve) => {
-        resolve(mockexpandedRequest[0].log);
-      });
-    } else {
-      // go to blockchain and get real data of events
-      return GuaranteeRequest.deployed()
-        .then((instance) => {
-          return instance.allEvents([{requestId: requestAddress}], {
-            fromBlock: 0,
-            toBlock: 'latest'
-          }).get(function (error, result) {
-            var requestevents;
-            for (var i = result.length - 1; i >= 0; i--) {
-              var cur_result = result[i];
-              requestevents = [...requestevents, this.listEventsInner(cur_result)];
-            }
-
-            return {
-              shortrequest: requestAddress,
-              log: requestevents
-            };
-          });
-        })
-        .catch(function (error) {
-          return {
-            shortrequest: requestAddress,
-            log: error
-          };
-        });
-    }
-    ;
-  };
+  // getRequestHistory = (requestAddress) => {
+  //   if (this.devMode) {
+  //     return new Promise((resolve) => {
+  //       resolve(mockexpandedRequest[0].log);
+  //     });
+  //   } else {
+  //     // go to blockchain and get real data of events
+  //     return GuaranteeRequest.deployed()
+  //       .then((instance) => {
+  //         return instance.allEvents([{requestId: requestAddress}], {
+  //           fromBlock: 0,
+  //           toBlock: 'latest'
+  //         }).get(function (error, result) {
+  //           var requestevents;
+  //           for (var i = result.length - 1; i >= 0; i--) {
+  //             var cur_result = result[i];
+  //             requestevents = [...requestevents, this.listEventsInner(cur_result)];
+  //           }
+  //
+  //           return {
+  //             shortrequest: requestAddress,
+  //             log: requestevents
+  //           };
+  //         });
+  //       })
+  //       .catch(function (error) {
+  //         return {
+  //           shortrequest: requestAddress,
+  //           log: error
+  //         };
+  //       });
+  //   }
+  //   ;
+  // };
 
 
   // function getAllUserRequests() {
@@ -161,20 +162,20 @@ export class TruffleService {
       });
     } else {
       var customerGuarantyRequests;
-      return Regulator.deployed()
-        .then((instance) => {
-          return instance.getRequestAddressList.call({from: this.account});
-        }).then(function (guaranteeRequestAddresses) {
-          console.log("guaranteeRequestAddresses[]:", guaranteeRequestAddresses);
-          guaranteeRequestAddresses.forEach((guaranteeRequestAddress) => {
-            // console.log("guaranteeAddress",guaranteeRequestAddress);
-            customerGuarantyRequests = [...customerGuarantyRequests, this.getOneRequest(guaranteeRequestAddress)];
-          });
-          return customerGuarantyRequests;
-        }).catch(function (error) {
-          console.error(error);
-          return error;
-        });
+    //   return Regulator.deployed()
+    //     .then((instance) => {
+    //       return instance.getRequestAddressList.call({from: this.account});
+    //     }).then(function (guaranteeRequestAddresses) {
+    //       console.log("guaranteeRequestAddresses[]:", guaranteeRequestAddresses);
+    //       guaranteeRequestAddresses.forEach((guaranteeRequestAddress) => {
+    //         // console.log("guaranteeAddress",guaranteeRequestAddress);
+    //         customerGuarantyRequests = [...customerGuarantyRequests, this.getOneRequest(guaranteeRequestAddress)];
+    //       });
+    //       return customerGuarantyRequests;
+    //     }).catch(function (error) {
+    //       console.error(error);
+    //       return error;
+    //     });
     }
   };
 
@@ -335,14 +336,14 @@ export class TruffleService {
     /** Gets one guarantee requests by id */
     /** parses the data and sends to UI */
     console.log('guarantyAddress', guarantyAddress);
-    this.DigitalGuaranteeBNHP.at(guarantyAddress)
-      .then((guaranteeinstance) => {
-        return guaranteeinstance.getGuaranteeData();
-      }).then((result) => {
-      return this.populateGuarantyData(result);
-    }).catch((e) => {
-      console.log(e);
-    });
+    // this.DigitalGuaranteeBNHP.at(guarantyAddress)
+    //   .then((guaranteeinstance) => {
+    //     return guaranteeinstance.getGuaranteeData();
+    //   }).then((result) => {
+    //   return this.populateGuarantyData(result);
+    // }).catch((e) => {
+    //   console.log(e);
+    // });
     return;
   };
 
@@ -360,67 +361,67 @@ export class TruffleService {
   /**  Helper Function   ****/
   /** ***********************/
 
-  populateGuarantyData = (resultArr) => {
-    const startDate = this.transformDateSolToJS(resultArr[7]);
-    const endDate = this.transformDateSolToJS(resultArr[8]);
-    {
-      return {
-        GuaranteeID: resultArr[0],
-        customer: resultArr[2],
-        beneficiary: resultArr[4],
-        bank: resultArr[3],
-        customerName: this.getOneCustomerData(resultArr[2]).Name,
-        purpose: resultArr[5],
-        amount: resultArr[6].valueOf(),
-        StartDate: startDate,
-        EndDate: endDate,
-        indexType: resultArr[9].valueOf(),
-        indexDate: resultArr[10].valueOf(),
-        GuaranteeState: resultArr[11].valueOf()
-      };
-    }
-
-  };
-
-
-    populateRequestData = (resultArr) => {
-
-      const startDate = this.transformDateSolToJS(resultArr[6]);
-      const endDate = this.transformDateSolToJS(resultArr[7]);
+  // populateGuarantyData = (resultArr) => {
+  //   const startDate = this.transformDateSolToJS(resultArr[7]);
+  //   const endDate = this.transformDateSolToJS(resultArr[8]);
+  //   {
+  //     return {
+  //       GuaranteeID: resultArr[0],
+  //       customer: resultArr[2],
+  //       beneficiary: resultArr[4],
+  //       bank: resultArr[3],
+  //       customerName: this.getOneCustomerData(resultArr[2]).Name,
+  //       purpose: resultArr[5],
+  //       amount: resultArr[6].valueOf(),
+  //       StartDate: startDate,
+  //       EndDate: endDate,
+  //       indexType: resultArr[9].valueOf(),
+  //       indexDate: resultArr[10].valueOf(),
+  //       GuaranteeState: resultArr[11].valueOf()
+  //     };
+  //   }
+  //
+  // };
 
 
-      return {
-        GRequestID: resultArr[0],
-        customer: resultArr[1],
-        beneficiary: resultArr[3],
-        bank: resultArr[2],
-        beneficiaryName: this.getBeneficiaryData(resultArr[3]).Name,
-        purpose: resultArr[4],
-        amount: resultArr[5].valueOf(),
-        StartDate: startDate,
-        EndDate: endDate,
-        indexType: resultArr[8].valueOf(),
-        indexDate: resultArr[9].valueOf(),
-        requestState: resultArr[10].valueOf()
-      };
-    };
+    // populateRequestData = (resultArr) => {
+    //
+    //   const startDate = this.transformDateSolToJS(resultArr[6]);
+    //   const endDate = this.transformDateSolToJS(resultArr[7]);
+    //
+    //
+    //   return {
+    //     GRequestID: resultArr[0],
+    //     customer: resultArr[1],
+    //     beneficiary: resultArr[3],
+    //     bank: resultArr[2],
+    //     beneficiaryName: this.getBeneficiaryData(resultArr[3]).Name,
+    //     purpose: resultArr[4],
+    //     amount: resultArr[5].valueOf(),
+    //     StartDate: startDate,
+    //     EndDate: endDate,
+    //     indexType: resultArr[8].valueOf(),
+    //     indexDate: resultArr[9].valueOf(),
+    //     requestState: resultArr[10].valueOf()
+    //   };
+    // };
 
-    listEventsInner = (result) => {
-
-      const theDate = this.transformDateSolToJS(result.args.timestamp);
-      var theState = RequestState.waitingtobank;
-      var comments = null;
-
-      if (result.event == "Accepted") theState = RequestState.accepted;
-      if (result.args.commentline != null) comments = result.args.commentline;
-
-
-      return {
-        date: theDate,
-        state: theState,
-        comment: comments
-      }
-    };
+    // listEventsInner = (result) => {
+    //
+    //   const theDate = this.transformDateSolToJS(result.args.timestamp);
+    //   var theState = RequestState.waitingtobank;
+    //   var comments = null;
+    //
+    //   if (result.event == "Accepted") theState = RequestState.accepted;
+    //   if (result.args.commentline != null) comments = result.args.commentline;
+    //
+    //
+    //   return {
+    //     date: theDate,
+    //     state: theState,
+    //     comment: comments
+    //   }
+    // };
 
     populateBeneficiaryData = (beneAddress, resultArr) => {
       return {
@@ -450,5 +451,5 @@ export class TruffleService {
         // go to blockchain and get real data
       }
     };
-  
+
 }
