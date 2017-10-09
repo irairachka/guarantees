@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 
 // Interfaces, mock data and utils
 import {
@@ -13,7 +13,7 @@ import {EtheriumService} from "./services/mock-etherium.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   // Requests and Guarantees
   customerRequests: GRequest[] = [];
@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   constructor(private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
+    this.watcher();
     // Get user, bank and beneficiary data
     this.truffleSRV.getCustomerData().then((res: Customer) => {
       this.customer = res;
@@ -247,4 +248,16 @@ export class AppComponent implements OnInit {
       return el.GRequestID === updatedGuarantee.GRequestID ? updatedGuarantee : el;
     });
   };
+
+  watcher(){
+    this.truffleSRV.startCreateListener(this.listenerCallback);
+  }
+
+  listenerCallback(e) {
+    console.log('e', e);
+  }
+
+  ngOnDestroy() {
+    this.truffleSRV.stopCreateListener();
+  }
 }
