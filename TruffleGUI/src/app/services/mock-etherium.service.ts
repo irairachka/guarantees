@@ -281,4 +281,45 @@ export class EtheriumService {
     }
     return mockcustomers[0];
   };
+
+  /** ***********************/
+  /**  Watcher Functions ****/
+  /** ***********************/
+
+  startCreateListener = (callback) => {
+    callback('success!!!!');
+    // return GuaranteeRequest.deployed()
+    //   .then((instance) => {
+    //     watcherSign = instance.GuaranteeRequestCreated({}, {
+    //       fromBlock: 0,
+    //       toBlock: 'latest'
+    //     });
+    //
+    //
+    //     watcherSign.watch(function (error, event) {
+    //
+    //       if (!error) {
+    //         console.log("in watcher sig",event.args);
+    //
+    //       } else {
+    //         console.log("Unable to watch events; see log.",error);
+    //
+    //       }
+    //       //once the event has been detected, take actions as desired
+    //       //   var data = 'from: ' + response.args._from+"<br>candidateName: "+web3.toUtf8(response.args._candidateName) +"<br>";
+    //       //  assert.equal(response, 1 , "Event number should be 1");
+    //
+    //     })
+    //
+    //   }).catch(function (error) {
+    //     self.setRegisterStatus("Unable to watch events; see log.",error);
+    //
+    //   });
+  };
+
+  stopCreateListener = () => {
+  //   if (watcherSign != null)
+  //     watcherSign.stopWatching();
+  };
+
 }
