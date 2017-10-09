@@ -4,7 +4,7 @@ const contract = require('truffle-contract');
 import {MessageService} from "primeng/components/common/messageservice";
 import {
   mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData,
-  mockBankRequests, mockBankGuaranties, mockbeneficiaries, mockexpandedRequest, mockBeneficiaryGuaranties
+  mockBankRequests, mockBankGuaranties, mockbeneficiaries, mockexpandedRequest, mockBeneficiaryGuaranties, userData
 } from "../../../tempData/mockData";
 import {Beneficiary, Customer, Guarantee} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
@@ -33,9 +33,9 @@ export class EtheriumService {
   /**  Get User Data   ****/
   /************************/
 
-  getCustomerData = (customerAddress) => {
+  getCustomerData = (customerAddress?) => {
     return new Promise((resolve)=> {
-      resolve(mockcustomers);
+      resolve(userData);
     });
   };
 
@@ -71,7 +71,7 @@ export class EtheriumService {
   /**  Get Bank Data     **/
   /** ****************** **/
 
-  getBankData = (requestAddress) => {
+  getBankData = (requestAddress?) => {
     return new Promise((resolve) => {
       resolve(bankData);
     });
