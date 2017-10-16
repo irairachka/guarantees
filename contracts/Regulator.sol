@@ -6,6 +6,7 @@ import "./IssuerManager.sol";
 import "./BeneficiaryManager.sol";
 import "./CustomerManager.sol";
 import "./GuaranteeRequest.sol";
+
 //
 ////###
 //// general contract for better operations of the system
@@ -48,10 +49,13 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
     address [] public  guarantees;
 
 
+
+
     event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
 //        owner = msg.sender;
 //
+
 
 //        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
 //        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
@@ -61,17 +65,21 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
     function getRequestAddressList() public constant returns (address[] )
+
     {
 //         AAA(guaranteeRequests.length);
         return guaranteeRequests;
+
 
     }
 
     function getGuaranteeAddressesList() public constant returns (address[] )
     {
+
         return guarantees;
 
     }
+
 
 
 
@@ -80,6 +88,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
     function addGuaranteeRequest(address  _guaranteeRequest)  public
     {
+
         GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
         require(msg.sender == ge.getCustomer() && ge.isValid());
         ge.setRegulator();
@@ -95,6 +104,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         require(msg.sender == ge.getBank() && ge.isValid());
 
 
+
         if (ge.accept()) {
             GuaranteeSign(_guaranteeRequest);
         }
@@ -107,6 +117,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
         require( ge.getRequestState()==RequestState.accepted && _checkArray(_guaranteeIPFSHash) && msg.sender == ge.getBank());
 
+
         address gra=ge.signComplite(_guaranteeIPFSHash);
         guarantees.push(gra);
 
@@ -115,8 +126,12 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
     }
 
 
+
+
+
     function terminateGuarantee(address  _guarantee)  public
     {
+
 
 
         GuaranteeExtender ge= GuaranteeExtender(_guarantee);
@@ -125,6 +140,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
         ge.terminateGuarantee() ;
         ger.terminateGuarantee();
+
 
     }
 
@@ -143,12 +159,6 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         ger.changeRequested( _newamount,  _newendDate);
         return true;
     }
-
-//    function submit(string comment) onlyCustomer public returns (bool result) ;
-//    function termination(string comment) onlyBeneficiary public returns (bool result);
-//    function reject(string comment) onlyBank public returns (bool result);
-//    function withdrawal(string comment) onlyCustomer public returns (bool result);
-//    function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);
 
 
 

@@ -167,7 +167,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 1843,
+          "SourceUnit": 1890,
           "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/Ownable.sol",
           "file": "./Ownable.sol",
           "scope": 222,
@@ -183,14 +183,14 @@
       {
         "attributes": {
           "contractDependencies": [
-            1842
+            1889
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
             221,
-            1842
+            1889
           ],
           "name": "CustomerManager",
           "scope": 222
@@ -207,7 +207,7 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "Ownable",
-                  "referencedDeclaration": 1842,
+                  "referencedDeclaration": 1889,
                   "type": "contract Ownable"
                 },
                 "id": 138,
@@ -550,7 +550,7 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 1806,
+                      "referencedDeclaration": 1853,
                       "type": "modifier ()",
                       "value": "onlyOwner"
                     },
@@ -846,7 +846,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2147,
+                                  "referencedDeclaration": 2194,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -891,7 +891,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2146,
+                                  "referencedDeclaration": 2193,
                                   "type": "block",
                                   "value": "block"
                                 },
@@ -1273,5 +1273,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-16T08:56:16.176Z"
+  "updatedAt": "2017-10-16T20:19:09.319Z"
 }

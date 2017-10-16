@@ -13,16 +13,15 @@ import {RequestState} from "../interfaces/enum";
 // Import our contract artifacts and turn them into usable abstractions.
 const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
 const Regulator_artifact = require('../../../../build/contracts/Regulator.json');
-// const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
+const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
 
 
 @Injectable()
 export class TruffleService {
-  devMode:boolean = isDevMode();
   web3:any;
   Regulator = contract(Regulator_artifact);
   GuaranteeRequest = contract(GuaranteeRequest_artifact);
-  // DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
+  DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
 
   accounts:any;
   account:any;
@@ -79,6 +78,71 @@ export class TruffleService {
   /**  Get User Data   ****/
   /************************/
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   getCustomerData = (customerAddress) => {
     if (this.devMode) {
       return new Promise((resolve)=> {
@@ -442,14 +506,6 @@ export class TruffleService {
     // };
 
 
-    getGuarantyHistory = (requestId) => {
-      if (this.devMode) {
-        return new Promise((resolve) => {
-          resolve(mockexpandedRequest[0].log);
-        });
-      } else {
-        // go to blockchain and get real data
-      }
-    };
+    
 
 }

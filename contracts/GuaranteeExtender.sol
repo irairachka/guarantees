@@ -27,7 +27,7 @@ contract GuaranteeExtender is GuaranteeConst {
     //    function getIndexType() constant returns (IndexType);
     //    function getIndexDate() constant returns (uint);
 
-    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState);
+    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary,bytes32 _full_name, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState);
     function getGuaranteeIPFSHash() constant public returns (bytes);
 
 
