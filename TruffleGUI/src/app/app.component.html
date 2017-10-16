@@ -2,7 +2,8 @@
   <div class="container wrapper ui-space-lr-large"
        (click)="selected = 2" [class.selected]="selected === 2">
     <label class="title">מוטב</label>
-    <app-guarantee-view class="content" user="beneficiary"
+    <app-guarantee-view *ngIf="selected === 2"
+      class="content" user="beneficiary"
                         [allGuaranties]="beneficiaryGuaranties"
                         (triggerModal)="openModal($event)"
                         (updateRequest)="handleRequestUpdate($event)"></app-guarantee-view>
@@ -10,7 +11,8 @@
   <div class="container wrapper ui-space-lr-large"
        (click)="selected = 1" [class.selected]="selected === 1">
     <label class="title">בנק</label>
-    <guarantee-bank-view class="content" user="bank"
+    <guarantee-bank-view *ngIf="selected === 1"
+      class="content" user="bank"
                         [allRequests]="bankRequests" [allGuaranties]="bankGuaranties"
                         (triggerModal)="openModal($event)"
                         (updateRequest)="handleRequestUpdate($event)"></guarantee-bank-view>
@@ -18,18 +20,12 @@
   <div class="container wrapper ui-space-lr-large"
        (click)="selected = 0" [class.selected]="selected === 0">
     <label class="title">לקוח</label>
-    <guarantee-user-view class="content" user="user"
+    <guarantee-user-view class="content" user="user" *ngIf="selected === 0"
                         [allRequests]="customerRequests" [allGuaranties]="customerGuaranties"
                         (triggerModal)="openModal($event)"
                         (updateRequest)="handleRequestUpdate($event)"
                         (newRequest)="handleCreateRequest($event)"></guarantee-user-view>
   </div>
 </div>
-
-<!--<p-dialog appendTo="body" [(visible)]="openFormDialog" dir="rtl" [styleClass]="modalType"-->
-          <!--positionTop="10" draggable="false" modal="true" dismissableMask="true" (onHide)="clearData()">-->
-  <!--<guarantee-form [data]="dialogData" [modalType]="modalType"-->
-                  <!--(updateRequest)="handleRequestUpdate($event)" (postNewRequest)="handleCreateRequest($event)"></guarantee-form>-->
-<!--</p-dialog>-->
 
 <p-growl [(value)]="msgs"></p-growl>

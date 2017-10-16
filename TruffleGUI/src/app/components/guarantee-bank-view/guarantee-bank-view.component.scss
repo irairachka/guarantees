@@ -3,12 +3,21 @@
   .header-text {
     label {
       font-weight: bold;
-      font-size: 1.4em;
+      font-size: 2em;
+      margin-bottom: 10px;
     }
   }
 }
 
 .requests-section {
+  .for-treatment{
+    background-color: #f2f2f2;
+    border: 1px dashed red !important;
+
+  }
+
+
+
   .for-treatment,
   .pending, .guarantees {
     //border-bottom: 3px solid #fff;
@@ -25,7 +34,22 @@
     }
   }
 }
-
+.ui-accordion-header{
+  a{
+    background-color: #f2f2f2;
+  }
+}
+//.ui-accordion-content,
+//.ui-accordion-header,
+//accordion-content{
+//  background-color: #f2f2f2 !important;
+//
+//}
+//
+//
+//.requests-section * {
+//  background-color: #e4e4e4;
+//}
 
 
 .guarantees-section {

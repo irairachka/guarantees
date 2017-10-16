@@ -1,77 +1,54 @@
 pragma solidity ^0.4.13;
 
+import "./Ownable.sol";
+import "./GuaranteeConst.sol";
+import "./IssuerManager.sol";
+import "./BeneficiaryManager.sol";
+import "./CustomerManager.sol";
 import "./GuaranteeRequest.sol";
 
-//###
-// general contract for better operations of the system
-//###
-contract owned {
-    //owner address for ownership validation
-    address owner;
+//
+////###
+//// general contract for better operations of the system
+////###
+//contract owned {
+//    //owner address for ownership validation
+//    address owner;
+//
+//    //constractor to verify real owner assignment
+//    function owned() {
+//        owner = msg.sender;
+//        log("owner=",owner);
+//    }
+//
+//    //owner check modifier
+//    modifier onlyOwner {
+//        require(msg.sender == owner);
+//        _;
+//    }
+//
+//    //contract distruction by owner only
+//    function close() onlyOwner {
+//        log("##contract closed by owner=",owner);
+//        selfdestruct(owner);
+//    }
+//
+//    //constractor to verify real owner assignment
+//    function getOwner() constant returns (address){
+//        return owner ;
+//    }
+//    //log event for debug purposes
+//    event log(string loga, address logb);
+//}
 
-    //constractor to verify real owner assignment
-    function owned() {
-        owner = msg.sender;
-        log("owner=",owner);
-    }
 
-    //owner check modifier
-    modifier onlyOwner {
-        require(msg.sender == owner);
-        _;
-    }
-
-    //contract distruction by owner only
-    function close() onlyOwner {
-        log("##contract closed by owner=",owner);
-        selfdestruct(owner);
-    }
-
-    //constractor to verify real owner assignment
-    function getOwner() constant returns (address){
-        return owner ;
-    }
-    //log event for debug purposes
-    event log(string loga, address logb);
-}
-
-
-contract Regulator is owned,GuaranteeConst{
+contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,GuaranteeConst{
 
     //guarantee request states
-    enum issuerStatus { submited,  accepted, rejected }
+    address [] public  guaranteeRequests;
+    address [] public  guarantees;
 
-    //describes the customer object
-    struct Customer {
-        string name;
-        string localAddress;
- //      localAddress uint []   guaranteeRequests;
-    }
-    //holds all customers by their address
-    mapping (address=>Customer) public customers;
 
-    //describes the beneficiary object
-    struct Beneficiary {
-        string name;
-        string localAddress;
- //       uint []   guarantees;
-//    string id;
-    }
-    //holds all the benefiieries by their address
-    mapping (address=>Beneficiary) public beneficiaries;
-    address   [] beneficiaryList;
-
-    //describes the customer object
-    struct Issuer {
-        string name;
-        string localAddress;
-        address addr;
-//        issuerStatus status;
-//        address []   guaranteeRequests;
-    }
-    //holds all customers by their address
-  mapping (address=>Issuer) public issuers;
-  address   [] issuerList;
 
   address []   guaranteeRequest;
 
@@ -79,106 +56,75 @@ contract Regulator is owned,GuaranteeConst{
 
  //   event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
-        owner = msg.sender;
-
-
-        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
-        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
-        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
-
- //       RegulatoryContractDeployed(msg.sender,"Mined",now);
-    }
-
-
-    event AddBeneficiary (address msgSender,string _name,uint timestamp);
-    function submitBeneficiary(address _addr , string _name, string _localAddres ) public  onlyOwner {
-        Beneficiary beneficiary=beneficiaries[_addr];
-        beneficiary.name   = _name;
-        beneficiary.localAddress    = _localAddres;
-        beneficiaryList.push(_addr);
-//        beneficiary.id = _id;
-
-        AddBeneficiary(_addr,_name,block.timestamp);
-    }
-
-    function getBeneficiary(address _addr) public constant returns(string _name, string _localAddress)
-    {
-
-        Beneficiary memory beneficiary=beneficiaries[_addr];
-        _name = beneficiary.name;
-        _localAddress  = beneficiary.localAddress;
-    }
-
-    function getBeneficiaryById(uint _id) public constant returns(string _name, string _localAddress)
-    {
-
-        if(_id >= beneficiaryList.length) {
-            throw;
-        }
-        return getBeneficiary([beneficiaryList[_id]]);
-    }
-
-    function getBeneficiaryAddresses() public constant returns(address[] )
-    {
-        return beneficiaryList;
-    }
-
-    event AddCustomer (address msgSender,string msgstr,uint timestamp);
-    function submitCustomer(address _addr , string _name, string _localAddres ) onlyOwner public {
-        Customer  customer=customers[_addr];
-        customer.name   = _name;
-        customer.localAddress    = _localAddres;
-//        customer.id = _id;
-
-        AddCustomer(msg.sender,_name,block.timestamp);
-    }
-
-    function getCustomer(address _addr) constant public returns(string _name, string _localAddress) //, string  _id)
-    {
-        return  (customers[_addr].name,customers[_addr].localAddress);
-    }
-
-    event AddIssuer (address msgSender,address issuerAdr,string msgstr,uint timestamp);
-    function submitIssuer(address _addr , string _name, string _localAddres) onlyOwner public {
-
-        Issuer  issuer = issuers[_addr];
-        issuer.name   = _name;
-        issuer.localAddress    = _localAddres;
-        issuer.addr = _addr;
- //       issuer.status = issuerStatus.accepted;
-
-        AddIssuer(msg.sender, _addr ,_name,block.timestamp);
-    }
-
- //   event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);
+//        owner = msg.sender;
 //
- //   function changeIssuerStatus(address _addr, issuerStatus _status) onlyOwner public{
- //       for(uint32 i=0; i<issuerList.length; i++) {
- //           if(issuers[i].addr == _addr) {
- //               issuers[i].status = _status;
- //               // if(issuers[i].status == issuerStatus)
- //               // {
- //               //     UpdateIssuersStatus(msg.sender,"Approved",block.timestamp);
- //               // }
- //               // else
- //               // {
- //               //     UpdateIssuersStatus(msg.sender,"Rejected",block.timestamp);
- //               // }
- //               break;
- //           }
- //       }
- //
- //   }
 
-    function getIssuerCounter() public constant returns (uint ) {
-        return issuerList.length;
+
+//        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
+//        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
+//        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
+        RegulatoryContractDeployed(msg.sender,"Mined",now);
     }
 
-    function getIssuer(address _addr) constant public returns(string , string ,  issuerStatus )  {
 
-        Issuer memory ci = issuers[_addr];
+    function getRequestAddressList() public constant returns (address[] )
 
-        return (ci.name,ci.localAddress,ci.status);
+    {
+//         AAA(guaranteeRequests.length);
+        return guaranteeRequests;
+
+
+    }
+
+    function getGuaranteeAddressesList() public constant returns (address[] )
+    {
+
+        return guarantees;
+
+    }
+
+
+
+
+
+    event AAA(uint length);
+
+    function addGuaranteeRequest(address  _guaranteeRequest)  public
+    {
+
+        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
+        require(msg.sender == ge.getCustomer() && ge.isValid());
+        ge.setRegulator();
+        guaranteeRequests.push(_guaranteeRequest);
+//        AAA(1);
+
+    }
+
+    event GuaranteeSign(address  _guaranteeRequest);
+    function acceptGuaranteeRequest(address  _guaranteeRequest)  public
+    {
+        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
+        require(msg.sender == ge.getBank() && ge.isValid());
+
+
+
+        if (ge.accept()) {
+            GuaranteeSign(_guaranteeRequest);
+        }
+        else
+            throw;
+    }
+
+    function GuaranteeSignComplite(address  _guaranteeRequest,bytes _guaranteeIPFSHash)  public  returns (address)
+    {
+        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
+        require( ge.getRequestState()==RequestState.accepted && _checkArray(_guaranteeIPFSHash) && msg.sender == ge.getBank());
+
+
+        address gra=ge.signComplite(_guaranteeIPFSHash);
+        guarantees.push(gra);
+
+        return gra;
 
     }
 
@@ -192,91 +138,44 @@ contract Regulator is owned,GuaranteeConst{
 
 
 
-    function getRequestsIdsForCustomer(address _addr) public constant returns (uint[])
+    function terminateGuarantee(address  _guarantee)  public
     {
-        return customers[_customeraddr].guaranteeRequests;
-
-    }
-
-    function getRequestsIdsForIssuer(address _addr) public constant returns (uint[])
-    {
-        return issuers[_addr].guaranteeRequests;
-
-    }
-
-  function getGuarantieAddressForBeneficiary(address _addr) public constant returns (address[])
-  {
-    return issuers[_addr].guaranteeRequests;
-
-  }
 
 
-//    function getActiveGuaranteesAddress() constant returns (string[])
-//    {
-//        string[] memory _guarantees = new string();
-//
-//                for(uint32 i=0; i<guaranteeRequests.length; i++) {
-//                    if(GuaranteeRequestExtender(guaranteeRequests[i]).getRequestState()==RequestState.accepted)
-//                    _guarantees.push(guaranteeRequests[i]);
-//                }
-//                return _guarantees;
-//
-//    }
 
-    event GuaranteeRequestCreated (address  requestId,address msgSender,address _customer ,address _bank ,address _beneficiary ,string _purpose,
-        uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,uint timestamp);
+        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
+        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
+        require( _guarantee!= address(0) && ger.getGuaranteeAddress()!= address(0) && msg.sender == ger.getBeneficiary() );
 
-    function createGuaranteeRequest(address _customer ,address _bank ,address _beneficiary ,string _purpose,
-    uint _amount, uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate)  public returns (address)
-    {
-        GuaranteeRequest greq=new  GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
-        customers[msg.sender].guaranteeRequests.push(address(greq));
-        GuaranteeRequestCreated(address(greq),msg.sender,_customer , _bank,_beneficiary , _purpose,  _amount,  _startDate, _endDate, _indexType, _indexDate , now);
-
-        return address(greq);
-    }
-
-
-    function terminateGuarantee(address  _guaranteeRequest,string comment)  returns (bool)
-    {
-        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-        if ( msg.sender == ge.getBeneficiary() )
-        {
-            ge.termination(comment) ;
-            return true;
-        }
-
-
-        throw;
+        ge.terminateGuarantee() ;
+        ger.terminateGuarantee();
 
 
     }
 
-    //    function changeGuarantee(address  _guaranteeRequest ,uint _newamount, uint _newendDate, string _comment) onlyBeneficiary returns (bool)
-    //    {
-    //        GuaranteeExtender ge=GuaranteeExtender(_guaranteeRequest);
-    //        if (ge.getBeneficiary()==msg.sender)
-    //        {
-    //            ( address _contract_id,address _customer,address _bank, address _beneficiary,
-    //            string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,
-    //            uint _indexDate,RequestState _status) = ge.getGuaranteeRequestData();
-    //            if (_status==RequestState.accepted && _amount>=_newamount && _newendDate<=_endDate)
-    //            {
-    //                address addr=new GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
-    //                ge.
-    //                guaranteeRequests.push(addr);
-    //                return addr;
-    //            }
-    //
-    //        }
-    //
-    //
-    //
-    //    .endRequest(_comment)
-    //        guaranteeRequests.push(addr);
-    //        return addr;
-    //
-    //        return true;
-    //    }
+
+
+
+
+
+
+    function changeGuarantee(address  _guarantee ,uint _newamount, uint _newendDate)  returns (bool)  //onlyBeneficiary
+    {
+        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
+        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
+        require( ger.getRequestState()==RequestState.accepted && msg.sender == ger.getBeneficiary() && _guarantee!= address(0));
+
+        ger.changeRequested( _newamount,  _newendDate);
+        return true;
+    }
+
+//    function submit(string comment) onlyCustomer public returns (bool result) ;
+//    function termination(string comment) onlyBeneficiary public returns (bool result);
+//    function reject(string comment) onlyBank public returns (bool result);
+//    function withdrawal(string comment) onlyCustomer public returns (bool result);
+//    function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);
+
+
+
 
 }

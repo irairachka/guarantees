@@ -1,6 +1,5 @@
 pragma solidity ^0.4.13;
 
-
 contract GuaranteeConst {
     //guarantee request states
     enum RequestState { created, waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest }
@@ -11,10 +10,10 @@ contract GuaranteeConst {
     //guarantee request states
     enum IndexType { None, CPI, ConstructionMatirials }
 
-    //    //log event for debug purwaitingtobankposes
-    event loga(string message, address logb);
-    //    //log event for debug purposes
-    event log(string message, string logb);
+//    //    //log event for debug purwaitingtobankposes
+//    event loga(string message, address logb);
+//    //    //log event for debug purposes
+//    event log(string message, string logb);
 
 //    function getBeneficiary() constant returns (address);
 

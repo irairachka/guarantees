@@ -10,8 +10,10 @@ import {mockexpandedRequest} from "../../../../tempData/mockData";
 export class HistoryComponent implements OnInit {
   @Input() history: any[];
   @Input() request: GRequest;
+  @Input() todel_state: any;
   @Input() userType: any;
-  myHistory: any[];
+  // myHistory: any[];
+  statusGraph: string="../../../assets/images/progress2.png";
 
   myMockHistory: any = {
     user: [
@@ -24,13 +26,13 @@ export class HistoryComponent implements OnInit {
         date : '19.12.17'
       },
       {
-        text: 'חתימה על כתב שיפוי',
+        text: 'דרושה חתימה על כתב שיפוי',
         date : '20.12.17'
       }
     ],
     bank: [
       {
-        text: 'נוצרה ע״י החברה, איש קשר רונן ביזמן, נשלחה בהצלחה',
+        text: 'נוצרה ע״י א.ג אחזקות, איש קשר רונן ביזמן, נשלחה בהצלחה',
         date: '12.12.17'
       },
       {
@@ -55,16 +57,22 @@ export class HistoryComponent implements OnInit {
     ]
   };
 
-  ngOnInit() {
-  //   if(this.request){
-  //     this.myHistory = this.getHistory(this.request.GRequestID)
-  //   } else {
-  //     this.myHistory = [...this.history];
-  //   }
+  ngOnChanges(){
+    console.log('-----' , this.todel_state ,this.userType);
+    if(this.todel_state==1)
+      this.statusGraph="../../../assets/images/progress1.png";
+    else
+      this.statusGraph="../../../assets/images/progress2.png";
+
   }
 
   getHistory(id): any[] {
     // TODO - add real function
     return mockexpandedRequest[1].log;
+  }
+
+  ngOnInit() {
+    // console.log('this.allRequests', this.allRequests);
+    // console.log('this.allGuaranties', this.allGuaranties);
   }
 }

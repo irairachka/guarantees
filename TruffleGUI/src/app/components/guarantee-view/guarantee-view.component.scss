@@ -3,7 +3,8 @@
   .header-text {
     label {
       font-weight: bold;
-      font-size: 1.4em;
+      font-size: 2em;
+      margin-bottom: 10px;
     }
   }
 }
@@ -30,10 +31,10 @@
 
 .guarantees-section {
   .active, .inactive {
-    border-bottom: 3px solid #fff;
+    //border-bottom: 3px solid #fff;
 
     .section-header {
-      border-bottom: 1px solid #fff;
+      //border-bottom: 1px solid #fff;
     }
 
     .active-guarantees + .active-guarantees,

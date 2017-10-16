@@ -39,10 +39,9 @@
           <label for="purpose">מטרות הערבות</label>
           <input id="purpose" placeholder="מטרות הערבות" formControlName="purpose">
         </div>
-          <p-fileUpload class="guarantee-details-button tertiary-button" #fubauto mode="basic" name="demo[]" url="./upload.php" accept="image/*" maxFileSize="1000000" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="צרוף נוסח ערבות"></p-fileUpload>
+          <p-fileUpload class="guarantee-details-button tertiary-button" #fubauto mode="basic" name="file" url="http://52.59.219.164:9080/uploadpdfwhash" (onUpload)="onBasicUploadAuto($event)" auto="true" chooseLabel="צרוף נוסח ערבות"></p-fileUpload>
           <button class="guarantee-details-button tertiary-button" type="button" pButton icon="" label="אישור העמלות והתנאים"></button>
-          <button class="guarantee-details-button ui-button-success prime-button" type="button" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
-          <button class="guarantee-details-button ui-button-danger secondary-button" type="button" pButton icon="" label="ביטול" ></button>
+          <button class="guarantee-details-button ui-button-success prime-button" type="button" [disabled]="!newGuarantee.valid" (click)="submitGuarantee()" pButton icon="" label="שליחה" ></button>
 
 
         </div>

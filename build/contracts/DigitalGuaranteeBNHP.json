@@ -1,0 +1,3463 @@
+{
+  "contractName": "DigitalGuaranteeBNHP",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "isExpired",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getGuaranteeData",
+      "outputs": [
+        {
+          "name": "_contract_id",
+          "type": "address"
+        },
+        {
+          "name": "_guaranteeRequest",
+          "type": "address"
+        },
+        {
+          "name": "_customer",
+          "type": "address"
+        },
+        {
+          "name": "_bank",
+          "type": "address"
+        },
+        {
+          "name": "_beneficiary",
+          "type": "address"
+        },
+        {
+          "name": "_purpose",
+          "type": "bytes32"
+        },
+        {
+          "name": "_amount",
+          "type": "uint256"
+        },
+        {
+          "name": "_startDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_endDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_indexType",
+          "type": "uint8"
+        },
+        {
+          "name": "_indexDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_guaranteeState",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getGuaranteeState",
+      "outputs": [
+        {
+          "name": "_guaranteeState",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "close",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getGuaranteeIPFSHash",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getBeneficiary",
+      "outputs": [
+        {
+          "name": "_addr",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getId",
+      "outputs": [
+        {
+          "name": "_contract_id",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getGuaranteeRequest",
+      "outputs": [
+        {
+          "name": "requestExtender",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getOwner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_newOwner",
+          "type": "address"
+        }
+      ],
+      "name": "changeOwner",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getEndDate",
+      "outputs": [
+        {
+          "name": "_enddate",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [],
+      "name": "terminateGuarantee",
+      "outputs": [],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_guaranteeRequestExtender",
+          "type": "address"
+        },
+        {
+          "name": "_regulator",
+          "type": "address"
+        },
+        {
+          "name": "_guaranteeIPFSHash",
+          "type": "bytes"
+        }
+      ],
+      "payable": false,
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_requestId",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_guaranteeId",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_msgSender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_guaranteeIPFSHash",
+          "type": "bytes"
+        }
+      ],
+      "name": "Issued",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_requestId",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_guaranteeId",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_msgSender",
+          "type": "address"
+        }
+      ],
+      "name": "Terminated",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x606060405260008054600160a060020a03191633600160a060020a0316179055341561002a57600080fd5b604051610b53380380610b5383398101604052808051919060200180519190602001805190910190505b60018054600160a060020a03808616600160a060020a0319928316179092556002805492851692909116919091179055600381805161009792916020019061018e565b50600280546001919060a060020a60ff02191674010000000000000000000000000000000000000000835b02179055507f2a114794accc550a527ef87653abf0f6afacf18842782ec64db725729b83aeb883303384604051600160a060020a03808616825284811660208301528316604082015260806060820181815290820183818151815260200191508051906020019080838360005b838110156101485780820151818401525b60200161012f565b50505050905090810190601f1680156101755780820380516001836020036101000a031916815260200191505b509550505050505060405180910390a15b50505061022e565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f106101cf57805160ff19168380011785556101fc565b828001600101855582156101fc579182015b828111156101fc5782518255916020019190600101906101e1565b5b5061020992915061020d565b5090565b61022b91905b808211156102095760008155600101610213565b5090565b90565b6109168061023d6000396000f300606060405236156100a95763ffffffff60e060020a6000350416632f13b60c81146100ae57806338e537b3146100d55780633a6facad1461017e57806343d726d6146101b5578063488523bc146101ca578063565a2e2c146102555780635d1ca6311461028457806388a22f7a146102b3578063893d20e8146102e25780638da5cb5b14610311578063a6f9dae114610340578063b135648814610361578063c700c70d14610386575b600080fd5b34156100b957600080fd5b6100c161039b565b604051901515815260200160405180910390f35b34156100e057600080fd5b6100e86103ad565b604051600160a060020a03808e1682528c811660208301528b811660408301528a811660608301528916608082015260a0810188905260c0810187905260e081018690526101008101859052610120810184600281111561014557fe5b60ff16815260200183815260200182600481111561015f57fe5b60ff1681526020019c5050505050505050505050505060405180910390f35b341561018957600080fd5b6101916105b4565b604051808260048111156101a157fe5b60ff16815260200191505060405180910390f35b34156101c057600080fd5b6101c86105f3565b005b34156101d557600080fd5b6101dd61061f565b60405160208082528190810183818151815260200191508051906020019080838360005b8381101561021a5780820151818401525b602001610201565b50505050905090810190601f1680156102475780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561026057600080fd5b6102686106c8565b604051600160a060020a03909116815260200160405180910390f35b341561028f57600080fd5b610268610734565b604051600160a060020a03909116815260200160405180910390f35b34156102be57600080fd5b610268610739565b604051600160a060020a03909116815260200160405180910390f35b34156102ed57600080fd5b610268610749565b604051600160a060020a03909116815260200160405180910390f35b341561031c57600080fd5b610268610759565b604051600160a060020a03909116815260200160405180910390f35b341561034b57600080fd5b6101c8600160a060020a0360043516610768565b005b341561036c57600080fd5b6103746107c5565b60405190815260200160405180910390f35b341561039157600080fd5b6101c8610831565b005b6000426103a66107c5565b1190505b90565b6000806000806000806000806000806000806000600160009054906101000a9004600160a060020a0316905080600160a060020a0316631c32e7af600060405161016001526040518163ffffffff1660e060020a02815260040161016060405180830381600087803b151561042157600080fd5b6102c65a03f1151561043257600080fd5b5050506040518051906020018051906020018051906020018051906020018051906020018051906020018051906020018051906020018051906020018051906020018051905090919293949596979899509091929394959697985090919293949596975050809950819a50829b50839c50849d50859e50869f5050505050505050600160009054906101000a9004600160a060020a03169b506104d3610734565b9c5080600160a060020a031663650d993b6000604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561051b57600080fd5b6102c65a03f1151561052c57600080fd5b50505060405180519b5050600160a060020a0381166360d704db6000604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561057d57600080fd5b6102c65a03f1151561058e57600080fd5b5050506040518051905099506105a26105b4565b91505b50909192939495969798999a9b565b60006105be61039b565b156105cb575060026103aa565b5060025474010000000000000000000000000000000000000000900460ff166103aa565b5b90565b60005433600160a060020a0390811691161461060e57600080fd5b600054600160a060020a0316ff5b5b565b6106276108d8565b60038054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156106bd5780601f10610692576101008083540402835291602001916106bd565b820191906000526020600020905b8154815290600101906020018083116106a057829003601f168201915b505050505090505b90565b600154600090600160a060020a03168063565a2e2c83604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561071357600080fd5b6102c65a03f1151561072457600080fd5b50505060405180519250505b5090565b305b90565b600154600160a060020a03165b90565b600054600160a060020a03165b90565b600054600160a060020a031681565b60005433600160a060020a0390811691161461078357600080fd5b600160a060020a038116151561079857600080fd5b6000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b50565b600154600090600160a060020a03168063b135648883604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561071357600080fd5b6102c65a03f1151561072457600080fd5b50505060405180519250505b5090565b600280546003919074ff0000000000000000000000000000000000000000191674010000000000000000000000000000000000000000835b02179055506001547fc96023adfc168f8f03b0a5cc6aaa47d9261d083467fb52f61a1854d5725771ca90600160a060020a03166108a4610734565b33604051600160a060020a03938416815291831660208301529091166040808301919091526060909101905180910390a15b565b602060405190810160405260008152905600a165627a7a723058200326c5f01ceae2552778def9b6f563338351466052268622966db7a95a87f8520029",
+  "deployedBytecode": "0x606060405236156100a95763ffffffff60e060020a6000350416632f13b60c81146100ae57806338e537b3146100d55780633a6facad1461017e57806343d726d6146101b5578063488523bc146101ca578063565a2e2c146102555780635d1ca6311461028457806388a22f7a146102b3578063893d20e8146102e25780638da5cb5b14610311578063a6f9dae114610340578063b135648814610361578063c700c70d14610386575b600080fd5b34156100b957600080fd5b6100c161039b565b604051901515815260200160405180910390f35b34156100e057600080fd5b6100e86103ad565b604051600160a060020a03808e1682528c811660208301528b811660408301528a811660608301528916608082015260a0810188905260c0810187905260e081018690526101008101859052610120810184600281111561014557fe5b60ff16815260200183815260200182600481111561015f57fe5b60ff1681526020019c5050505050505050505050505060405180910390f35b341561018957600080fd5b6101916105b4565b604051808260048111156101a157fe5b60ff16815260200191505060405180910390f35b34156101c057600080fd5b6101c86105f3565b005b34156101d557600080fd5b6101dd61061f565b60405160208082528190810183818151815260200191508051906020019080838360005b8381101561021a5780820151818401525b602001610201565b50505050905090810190601f1680156102475780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b341561026057600080fd5b6102686106c8565b604051600160a060020a03909116815260200160405180910390f35b341561028f57600080fd5b610268610734565b604051600160a060020a03909116815260200160405180910390f35b34156102be57600080fd5b610268610739565b604051600160a060020a03909116815260200160405180910390f35b34156102ed57600080fd5b610268610749565b604051600160a060020a03909116815260200160405180910390f35b341561031c57600080fd5b610268610759565b604051600160a060020a03909116815260200160405180910390f35b341561034b57600080fd5b6101c8600160a060020a0360043516610768565b005b341561036c57600080fd5b6103746107c5565b60405190815260200160405180910390f35b341561039157600080fd5b6101c8610831565b005b6000426103a66107c5565b1190505b90565b6000806000806000806000806000806000806000600160009054906101000a9004600160a060020a0316905080600160a060020a0316631c32e7af600060405161016001526040518163ffffffff1660e060020a02815260040161016060405180830381600087803b151561042157600080fd5b6102c65a03f1151561043257600080fd5b5050506040518051906020018051906020018051906020018051906020018051906020018051906020018051906020018051906020018051906020018051906020018051905090919293949596979899509091929394959697985090919293949596975050809950819a50829b50839c50849d50859e50869f5050505050505050600160009054906101000a9004600160a060020a03169b506104d3610734565b9c5080600160a060020a031663650d993b6000604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561051b57600080fd5b6102c65a03f1151561052c57600080fd5b50505060405180519b5050600160a060020a0381166360d704db6000604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561057d57600080fd5b6102c65a03f1151561058e57600080fd5b5050506040518051905099506105a26105b4565b91505b50909192939495969798999a9b565b60006105be61039b565b156105cb575060026103aa565b5060025474010000000000000000000000000000000000000000900460ff166103aa565b5b90565b60005433600160a060020a0390811691161461060e57600080fd5b600054600160a060020a0316ff5b5b565b6106276108d8565b60038054600181600116156101000203166002900480601f0160208091040260200160405190810160405280929190818152602001828054600181600116156101000203166002900480156106bd5780601f10610692576101008083540402835291602001916106bd565b820191906000526020600020905b8154815290600101906020018083116106a057829003601f168201915b505050505090505b90565b600154600090600160a060020a03168063565a2e2c83604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561071357600080fd5b6102c65a03f1151561072457600080fd5b50505060405180519250505b5090565b305b90565b600154600160a060020a03165b90565b600054600160a060020a03165b90565b600054600160a060020a031681565b60005433600160a060020a0390811691161461078357600080fd5b600160a060020a038116151561079857600080fd5b6000805473ffffffffffffffffffffffffffffffffffffffff1916600160a060020a0383161790555b5b50565b600154600090600160a060020a03168063b135648883604051602001526040518163ffffffff1660e060020a028152600401602060405180830381600087803b151561071357600080fd5b6102c65a03f1151561072457600080fd5b50505060405180519250505b5090565b600280546003919074ff0000000000000000000000000000000000000000191674010000000000000000000000000000000000000000835b02179055506001547fc96023adfc168f8f03b0a5cc6aaa47d9261d083467fb52f61a1854d5725771ca90600160a060020a03166108a4610734565b33604051600160a060020a03938416815291831660208301529091166040808301919091526060909101905180910390a15b565b602060405190810160405260008152905600a165627a7a723058200326c5f01ceae2552778def9b6f563338351466052268622966db7a95a87f8520029",
+  "sourceMap": "133:3232:2:-;;;50:33:9;;;-1:-1:-1;;;;;;50:33:9;73:10;-1:-1:-1;;;;;50:33:9;;;;648:368:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;648:368:2;767:24;:50;;-1:-1:-1;;;;;767:50:2;;;-1:-1:-1;;;;;;767:50:2;;;;;;;827:9;:20;;;;;;;;;;;;;;;857:17;875:18;;857:36;;;;;;;;:::i;:::-;-1:-1:-1;903:6:2;:27;;910:20;;903:6;-1:-1:-1;;;;;;903:27:2;;910:20;903:27;;;;;;940:69;947:25;973:4;978:10;990:18;940:69;;-1:-1:-1;;;;;940:69:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:2;8:100;;;99:1;94:3;90;84:5;80:1;75:3;71;64:6;8:100;52:2;45:3;8:100;;;12:14;3:109;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;648:368:2;;;;133:3232;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;133:3232:2;;;-1:-1:-1;133:3232:2;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
+  "deployedSourceMap": "133:3232:2:-;;;;;;;-1:-1:-1;;;133:3232:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1475:94:4;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1535:856:2;;;;;;;;;;;;;;;-1:-1:-1;;;;;1535:856:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;1535:856:2;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;1535:856:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2515:250;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;529:123:9;;;;;;;;;;;;;;2397:109:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:2;8:100;;;99:1;94:3;90;84:5;80:1;75:3;71;64:6;8:100;52:2;45:3;8:100;;;12:14;3:109;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;1126:202:2;;;;;;;;;;;;;;;-1:-1:-1;;;;;1126:202:2;;;;;;;;;;;;;;;1024:96;;;;;;;;;;;;;;;-1:-1:-1;;;;;1024:96:2;;;;;;;;;;;;;;;508:133;;;;;;;;;;;;;;;-1:-1:-1;;;;;508:133:2;;;;;;;;;;;;;;;708:76:9;;;;;;;;;;;;;;;-1:-1:-1;;;;;708:76:9;;;;;;;;;;;;;;;50:33;;;;;;;;;;;;;;;-1:-1:-1;;;;;50:33:9;;;;;;;;;;;;;;;354:128;;;;;;;;;;;;-1:-1:-1;;;;;354:128:9;;;;;1334:194:2;;;;;;;;;;;;;;;;;;;;;;;;;;;2805:177;;;;;;;;;;;;;;1475:94:4;1521:4;1558:3;1545:12;:10;:12::i;:::-;:16;1537:25;;1475:94;;:::o;1535:856:2:-;1889:24;;1588:20;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1889:24:2;;2163:26;1588:20;2163:28;;;;;;;-1:-1:-1;;;2163:28:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2071:120;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2220:24;;;;;;;;;-1:-1:-1;;;;;2220:24:2;2202:42;;2267:7;:5;:7::i;:::-;2254:20;-1:-1:-1;;;;;;2294:14:2;;;:16;;;;;;;;-1:-1:-1;;;2294:16:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;;;2326:10:2;;;:12;;;;;;;;-1:-1:-1;;;2326:12:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2320:18;;2364:19;:17;:19::i;:::-;2348:35;;1535:856;;;;;;;;;;;;;;:::o;2515:250::-;2570:30;2620:11;:9;:11::i;:::-;2616:142;;;-1:-1:-1;2663:23:2;2655:31;;2616:142;-1:-1:-1;2741:6:2;;;;;;;2733:14;;2616:142;2515:250;;:::o;529:123:9:-;202:5;;188:10;-1:-1:-1;;;;;188:19:9;;;202:5;;188:19;184:30;;209:5;;;184:30;639:5;;-1:-1:-1;;;;;639:5:9;626:19;220:1;529:123;:::o;2397:109:2:-;2454:5;;:::i;:::-;2482:17;2475:24;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2397:109;;:::o;1126:202::-;1260:24;;1177:13;;-1:-1:-1;;;;;1260:24:2;;1302:17;1177:13;1302:19;;;;;;;-1:-1:-1;;;1302:19:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;1126:202:2;;;:::o;1024:96::-;1109:4;1024:96;;:::o;508:133::-;610:24;;-1:-1:-1;;;;;610:24:2;508:133;;:::o;708:76:9:-;746:7;771:5;-1:-1:-1;;;;;771:5:9;708:76;;:::o;50:33::-;;;-1:-1:-1;;;;;50:33:9;;:::o;354:128::-;202:5;;188:10;-1:-1:-1;;;;;188:19:9;;;202:5;;188:19;184:30;;209:5;;;184:30;-1:-1:-1;;;;;425:16:9;;;422:26;;;443:5;;;422:26;458:5;:17;;-1:-1:-1;;458:17:9;-1:-1:-1;;;;;458:17:9;;;;;220:1;354:128;;:::o;1334:194:2:-;1464:24;;1381:13;;-1:-1:-1;;;;;1464:24:2;;1506:13;1381;1506:15;;;;;;;-1:-1:-1;;;1506:15:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;1334:194:2;;;:::o;2805:177::-;2857:6;:32;;2864:25;;2857:6;-1:-1:-1;;2857:32:2;;2864:25;2857:32;;;;;-1:-1:-1;2929:24:2;;2918:55;;-1:-1:-1;;;;;2929:24:2;2954:7;:5;:7::i;:::-;2962:10;2918:55;;-1:-1:-1;;;;;2918:55:2;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2805:177;:::o;133:3232::-;;;;;;;;;;;;;:::o",
+  "source": "pragma solidity ^0.4.11;\n\nimport \"./GuaranteeConst.sol\";\nimport \"./GuaranteeExtender.sol\";\nimport \"./GuaranteeRequestExtender.sol\";\n\ncontract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender\n{\n    address guaranteeRequestExtender;\n    address regulator;\n\n    GuaranteeState gstate;\n    bytes guaranteeIPFSHash;\n\n    event Issued(address  _requestId,address  _guaranteeId,address _msgSender,bytes _guaranteeIPFSHash);\n    event Terminated(address  _requestId,address  _guaranteeId,address _msgSender );\n\n    function getGuaranteeRequest() constant public returns (address requestExtender)\n    {\n        return guaranteeRequestExtender;\n    }\n\n\n    function DigitalGuaranteeBNHP(address _guaranteeRequestExtender,address _regulator,bytes _guaranteeIPFSHash) {\n        guaranteeRequestExtender=_guaranteeRequestExtender;\n        regulator=_regulator;\n        guaranteeIPFSHash=_guaranteeIPFSHash;\n        gstate=GuaranteeState.Valid;\n        Issued(_guaranteeRequestExtender,this,msg.sender, _guaranteeIPFSHash);\n    }\n\n\n\n    function getId() constant public returns (address _contract_id)\n    {\n        return this;\n    }\n\n    function getBeneficiary() constant public returns (address _addr)\n    {\n        GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);\n        return gr.getBeneficiary();\n    }\n\n    function getEndDate() constant public returns (uint _enddate)\n    {\n        GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);\n        return gr.getEndDate();\n    }\n\n\n    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState)\n    {\n        GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);\n\n//        ( , _customer, _bank,  _beneficiary,  _purpose, _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();\n        ( , , ,  _beneficiary, _purpose , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();\n\n        _guaranteeRequest=guaranteeRequestExtender;\n        _contract_id=getId();\n        _customer=gr.getCustomer();\n        _bank=gr.getBank();\n        _guaranteeState=getGuaranteeState();\n\n    }\n\n    function getGuaranteeIPFSHash() constant public returns (bytes)\n    {\n        return guaranteeIPFSHash;\n    }\n\n\n\n\n    function getGuaranteeState() constant  public returns (GuaranteeState _guaranteeState)\n    {\n        if (isExpired())\n        {\n            return  GuaranteeState.Expaired;\n        }\n        else\n        {\n            return  gstate;\n        }\n\n    }\n\n//    event AAA(GuaranteeState);\n\n    function terminateGuarantee()  public\n    {\n        gstate=GuaranteeState.Terminated;\n//    AAA(gstate);\n        Terminated(guaranteeRequestExtender,getId(),msg.sender);\n\n\n    }\n\n\n\n//    event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string comment);\n//\n//    function changeRequest(uint _amount, string _endDate, string _comment) onlyBeneficiary returns (bool)\n//    {\n//        ChangeRequested(guaranteeRequestExtender,this,msg.sender,_amount,  _endDate, _comment);\n//        throw;\n//    }\n\n\n}\n",
+  "sourcePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/DigitalGuaranteeBNHP.sol",
+  "ast": {
+    "attributes": {
+      "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/DigitalGuaranteeBNHP.sol",
+      "exportedSymbols": {
+        "DigitalGuaranteeBNHP": [
+          454
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "^",
+            "0.4",
+            ".11"
+          ]
+        },
+        "id": 223,
+        "name": "PragmaDirective",
+        "src": "0:24:2"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 529,
+          "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
+          "file": "./GuaranteeConst.sol",
+          "scope": 455,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 224,
+        "name": "ImportDirective",
+        "src": "26:30:2"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 619,
+          "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeExtender.sol",
+          "file": "./GuaranteeExtender.sol",
+          "scope": 455,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 225,
+        "name": "ImportDirective",
+        "src": "57:33:2"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 1574,
+          "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeRequestExtender.sol",
+          "file": "./GuaranteeRequestExtender.sol",
+          "scope": 455,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 226,
+        "name": "ImportDirective",
+        "src": "91:40:2"
+      },
+      {
+        "attributes": {
+          "contractDependencies": [
+            528,
+            618,
+            1842
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            454,
+            618,
+            528,
+            1842
+          ],
+          "name": "DigitalGuaranteeBNHP",
+          "scope": 455
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "Ownable",
+                  "referencedDeclaration": 1842,
+                  "type": "contract Ownable"
+                },
+                "id": 227,
+                "name": "UserDefinedTypeName",
+                "src": "166:7:2"
+              }
+            ],
+            "id": 228,
+            "name": "InheritanceSpecifier",
+            "src": "166:7:2"
+          },
+          {
+            "attributes": {
+              "arguments": [
+                null
+              ]
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "GuaranteeExtender",
+                  "referencedDeclaration": 618,
+                  "type": "contract GuaranteeExtender"
+                },
+                "id": 229,
+                "name": "UserDefinedTypeName",
+                "src": "174:17:2"
+              }
+            ],
+            "id": 230,
+            "name": "InheritanceSpecifier",
+            "src": "174:17:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "guaranteeRequestExtender",
+              "scope": 454,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "address",
+                  "type": "address"
+                },
+                "id": 231,
+                "name": "ElementaryTypeName",
+                "src": "198:7:2"
+              }
+            ],
+            "id": 232,
+            "name": "VariableDeclaration",
+            "src": "198:32:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "regulator",
+              "scope": 454,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "address",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "address",
+                  "type": "address"
+                },
+                "id": 233,
+                "name": "ElementaryTypeName",
+                "src": "236:7:2"
+              }
+            ],
+            "id": 234,
+            "name": "VariableDeclaration",
+            "src": "236:17:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "gstate",
+              "scope": 454,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "enum GuaranteeConst.GuaranteeState",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "GuaranteeState",
+                  "referencedDeclaration": 473,
+                  "type": "enum GuaranteeConst.GuaranteeState"
+                },
+                "id": 235,
+                "name": "UserDefinedTypeName",
+                "src": "260:14:2"
+              }
+            ],
+            "id": 236,
+            "name": "VariableDeclaration",
+            "src": "260:21:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "name": "guaranteeIPFSHash",
+              "scope": 454,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "bytes storage ref",
+              "value": null,
+              "visibility": "internal"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "bytes",
+                  "type": "bytes storage pointer"
+                },
+                "id": 237,
+                "name": "ElementaryTypeName",
+                "src": "287:5:2"
+              }
+            ],
+            "id": 238,
+            "name": "VariableDeclaration",
+            "src": "287:23:2"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "Issued"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_requestId",
+                      "scope": 248,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 239,
+                        "name": "ElementaryTypeName",
+                        "src": "330:7:2"
+                      }
+                    ],
+                    "id": 240,
+                    "name": "VariableDeclaration",
+                    "src": "330:19:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_guaranteeId",
+                      "scope": 248,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 241,
+                        "name": "ElementaryTypeName",
+                        "src": "350:7:2"
+                      }
+                    ],
+                    "id": 242,
+                    "name": "VariableDeclaration",
+                    "src": "350:21:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_msgSender",
+                      "scope": 248,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 243,
+                        "name": "ElementaryTypeName",
+                        "src": "372:7:2"
+                      }
+                    ],
+                    "id": 244,
+                    "name": "VariableDeclaration",
+                    "src": "372:18:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_guaranteeIPFSHash",
+                      "scope": 248,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes storage pointer"
+                        },
+                        "id": 245,
+                        "name": "ElementaryTypeName",
+                        "src": "391:5:2"
+                      }
+                    ],
+                    "id": 246,
+                    "name": "VariableDeclaration",
+                    "src": "391:24:2"
+                  }
+                ],
+                "id": 247,
+                "name": "ParameterList",
+                "src": "329:87:2"
+              }
+            ],
+            "id": 248,
+            "name": "EventDefinition",
+            "src": "317:100:2"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "name": "Terminated"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_requestId",
+                      "scope": 256,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 249,
+                        "name": "ElementaryTypeName",
+                        "src": "439:7:2"
+                      }
+                    ],
+                    "id": 250,
+                    "name": "VariableDeclaration",
+                    "src": "439:19:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_guaranteeId",
+                      "scope": 256,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 251,
+                        "name": "ElementaryTypeName",
+                        "src": "459:7:2"
+                      }
+                    ],
+                    "id": 252,
+                    "name": "VariableDeclaration",
+                    "src": "459:21:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "_msgSender",
+                      "scope": 256,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 253,
+                        "name": "ElementaryTypeName",
+                        "src": "481:7:2"
+                      }
+                    ],
+                    "id": 254,
+                    "name": "VariableDeclaration",
+                    "src": "481:18:2"
+                  }
+                ],
+                "id": 255,
+                "name": "ParameterList",
+                "src": "438:63:2"
+              }
+            ],
+            "id": 256,
+            "name": "EventDefinition",
+            "src": "422:80:2"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getGuaranteeRequest",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 257,
+                "name": "ParameterList",
+                "src": "536:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "requestExtender",
+                      "scope": 264,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 258,
+                        "name": "ElementaryTypeName",
+                        "src": "564:7:2"
+                      }
+                    ],
+                    "id": 259,
+                    "name": "VariableDeclaration",
+                    "src": "564:23:2"
+                  }
+                ],
+                "id": 260,
+                "name": "ParameterList",
+                "src": "563:25:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 260
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 232,
+                          "type": "address",
+                          "value": "guaranteeRequestExtender"
+                        },
+                        "id": 261,
+                        "name": "Identifier",
+                        "src": "610:24:2"
+                      }
+                    ],
+                    "id": 262,
+                    "name": "Return",
+                    "src": "603:31:2"
+                  }
+                ],
+                "id": 263,
+                "name": "Block",
+                "src": "593:48:2"
+              }
+            ],
+            "id": 264,
+            "name": "FunctionDefinition",
+            "src": "508:133:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": true,
+              "modifiers": [
+                null
+              ],
+              "name": "DigitalGuaranteeBNHP",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_guaranteeRequestExtender",
+                      "scope": 299,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 265,
+                        "name": "ElementaryTypeName",
+                        "src": "678:7:2"
+                      }
+                    ],
+                    "id": 266,
+                    "name": "VariableDeclaration",
+                    "src": "678:33:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_regulator",
+                      "scope": 299,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 267,
+                        "name": "ElementaryTypeName",
+                        "src": "712:7:2"
+                      }
+                    ],
+                    "id": 268,
+                    "name": "VariableDeclaration",
+                    "src": "712:18:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_guaranteeIPFSHash",
+                      "scope": 299,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes storage pointer"
+                        },
+                        "id": 269,
+                        "name": "ElementaryTypeName",
+                        "src": "731:5:2"
+                      }
+                    ],
+                    "id": 270,
+                    "name": "VariableDeclaration",
+                    "src": "731:24:2"
+                  }
+                ],
+                "id": 271,
+                "name": "ParameterList",
+                "src": "677:79:2"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 272,
+                "name": "ParameterList",
+                "src": "757:0:2"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 232,
+                              "type": "address",
+                              "value": "guaranteeRequestExtender"
+                            },
+                            "id": 273,
+                            "name": "Identifier",
+                            "src": "767:24:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 266,
+                              "type": "address",
+                              "value": "_guaranteeRequestExtender"
+                            },
+                            "id": 274,
+                            "name": "Identifier",
+                            "src": "792:25:2"
+                          }
+                        ],
+                        "id": 275,
+                        "name": "Assignment",
+                        "src": "767:50:2"
+                      }
+                    ],
+                    "id": 276,
+                    "name": "ExpressionStatement",
+                    "src": "767:50:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 234,
+                              "type": "address",
+                              "value": "regulator"
+                            },
+                            "id": 277,
+                            "name": "Identifier",
+                            "src": "827:9:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 268,
+                              "type": "address",
+                              "value": "_regulator"
+                            },
+                            "id": 278,
+                            "name": "Identifier",
+                            "src": "837:10:2"
+                          }
+                        ],
+                        "id": 279,
+                        "name": "Assignment",
+                        "src": "827:20:2"
+                      }
+                    ],
+                    "id": 280,
+                    "name": "ExpressionStatement",
+                    "src": "827:20:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "bytes storage ref"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 238,
+                              "type": "bytes storage ref",
+                              "value": "guaranteeIPFSHash"
+                            },
+                            "id": 281,
+                            "name": "Identifier",
+                            "src": "857:17:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 270,
+                              "type": "bytes memory",
+                              "value": "_guaranteeIPFSHash"
+                            },
+                            "id": 282,
+                            "name": "Identifier",
+                            "src": "875:18:2"
+                          }
+                        ],
+                        "id": 283,
+                        "name": "Assignment",
+                        "src": "857:36:2"
+                      }
+                    ],
+                    "id": 284,
+                    "name": "ExpressionStatement",
+                    "src": "857:36:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "enum GuaranteeConst.GuaranteeState"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 236,
+                              "type": "enum GuaranteeConst.GuaranteeState",
+                              "value": "gstate"
+                            },
+                            "id": 285,
+                            "name": "Identifier",
+                            "src": "903:6:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "member_name": "Valid",
+                              "referencedDeclaration": null,
+                              "type": "enum GuaranteeConst.GuaranteeState"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 473,
+                                  "type": "type(enum GuaranteeConst.GuaranteeState)",
+                                  "value": "GuaranteeState"
+                                },
+                                "id": 286,
+                                "name": "Identifier",
+                                "src": "910:14:2"
+                              }
+                            ],
+                            "id": 287,
+                            "name": "MemberAccess",
+                            "src": "910:20:2"
+                          }
+                        ],
+                        "id": 288,
+                        "name": "Assignment",
+                        "src": "903:27:2"
+                      }
+                    ],
+                    "id": 289,
+                    "name": "ExpressionStatement",
+                    "src": "903:27:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_contract$_DigitalGuaranteeBNHP_$454",
+                                  "typeString": "contract DigitalGuaranteeBNHP"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_bytes_memory_ptr",
+                                  "typeString": "bytes memory"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 248,
+                              "type": "function (address,address,address,bytes memory) constant",
+                              "value": "Issued"
+                            },
+                            "id": 290,
+                            "name": "Identifier",
+                            "src": "940:6:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 266,
+                              "type": "address",
+                              "value": "_guaranteeRequestExtender"
+                            },
+                            "id": 291,
+                            "name": "Identifier",
+                            "src": "947:25:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 2179,
+                              "type": "contract DigitalGuaranteeBNHP",
+                              "value": "this"
+                            },
+                            "id": 292,
+                            "name": "Identifier",
+                            "src": "973:4:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "sender",
+                              "referencedDeclaration": null,
+                              "type": "address"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 2147,
+                                  "type": "msg",
+                                  "value": "msg"
+                                },
+                                "id": 293,
+                                "name": "Identifier",
+                                "src": "978:3:2"
+                              }
+                            ],
+                            "id": 294,
+                            "name": "MemberAccess",
+                            "src": "978:10:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 270,
+                              "type": "bytes memory",
+                              "value": "_guaranteeIPFSHash"
+                            },
+                            "id": 295,
+                            "name": "Identifier",
+                            "src": "990:18:2"
+                          }
+                        ],
+                        "id": 296,
+                        "name": "FunctionCall",
+                        "src": "940:69:2"
+                      }
+                    ],
+                    "id": 297,
+                    "name": "ExpressionStatement",
+                    "src": "940:69:2"
+                  }
+                ],
+                "id": 298,
+                "name": "Block",
+                "src": "757:259:2"
+              }
+            ],
+            "id": 299,
+            "name": "FunctionDefinition",
+            "src": "648:368:2"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getId",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 300,
+                "name": "ParameterList",
+                "src": "1038:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_contract_id",
+                      "scope": 307,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 301,
+                        "name": "ElementaryTypeName",
+                        "src": "1066:7:2"
+                      }
+                    ],
+                    "id": 302,
+                    "name": "VariableDeclaration",
+                    "src": "1066:20:2"
+                  }
+                ],
+                "id": 303,
+                "name": "ParameterList",
+                "src": "1065:22:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 303
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 2179,
+                          "type": "contract DigitalGuaranteeBNHP",
+                          "value": "this"
+                        },
+                        "id": 304,
+                        "name": "Identifier",
+                        "src": "1109:4:2"
+                      }
+                    ],
+                    "id": 305,
+                    "name": "Return",
+                    "src": "1102:11:2"
+                  }
+                ],
+                "id": 306,
+                "name": "Block",
+                "src": "1092:28:2"
+              }
+            ],
+            "id": 307,
+            "name": "FunctionDefinition",
+            "src": "1024:96:2"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getBeneficiary",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 308,
+                "name": "ParameterList",
+                "src": "1149:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_addr",
+                      "scope": 323,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 309,
+                        "name": "ElementaryTypeName",
+                        "src": "1177:7:2"
+                      }
+                    ],
+                    "id": 310,
+                    "name": "VariableDeclaration",
+                    "src": "1177:13:2"
+                  }
+                ],
+                "id": 311,
+                "name": "ParameterList",
+                "src": "1176:15:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        313
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "gr",
+                          "scope": 323,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "contract GuaranteeRequestExtender",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "GuaranteeRequestExtender",
+                              "referencedDeclaration": 1573,
+                              "type": "contract GuaranteeRequestExtender"
+                            },
+                            "id": 312,
+                            "name": "UserDefinedTypeName",
+                            "src": "1206:24:2"
+                          }
+                        ],
+                        "id": 313,
+                        "name": "VariableDeclaration",
+                        "src": "1206:27:2"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract GuaranteeRequestExtender",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1573,
+                              "type": "type(contract GuaranteeRequestExtender)",
+                              "value": "GuaranteeRequestExtender"
+                            },
+                            "id": 314,
+                            "name": "Identifier",
+                            "src": "1235:24:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 232,
+                              "type": "address",
+                              "value": "guaranteeRequestExtender"
+                            },
+                            "id": 315,
+                            "name": "Identifier",
+                            "src": "1260:24:2"
+                          }
+                        ],
+                        "id": 316,
+                        "name": "FunctionCall",
+                        "src": "1235:50:2"
+                      }
+                    ],
+                    "id": 317,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1206:79:2"
+                  },
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 311
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            null
+                          ],
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "address",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "getBeneficiary",
+                              "referencedDeclaration": 1431,
+                              "type": "function () constant external returns (address)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 313,
+                                  "type": "contract GuaranteeRequestExtender",
+                                  "value": "gr"
+                                },
+                                "id": 318,
+                                "name": "Identifier",
+                                "src": "1302:2:2"
+                              }
+                            ],
+                            "id": 319,
+                            "name": "MemberAccess",
+                            "src": "1302:17:2"
+                          }
+                        ],
+                        "id": 320,
+                        "name": "FunctionCall",
+                        "src": "1302:19:2"
+                      }
+                    ],
+                    "id": 321,
+                    "name": "Return",
+                    "src": "1295:26:2"
+                  }
+                ],
+                "id": 322,
+                "name": "Block",
+                "src": "1196:132:2"
+              }
+            ],
+            "id": 323,
+            "name": "FunctionDefinition",
+            "src": "1126:202:2"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getEndDate",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 324,
+                "name": "ParameterList",
+                "src": "1353:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_enddate",
+                      "scope": 339,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 325,
+                        "name": "ElementaryTypeName",
+                        "src": "1381:4:2"
+                      }
+                    ],
+                    "id": 326,
+                    "name": "VariableDeclaration",
+                    "src": "1381:13:2"
+                  }
+                ],
+                "id": 327,
+                "name": "ParameterList",
+                "src": "1380:15:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        329
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "gr",
+                          "scope": 339,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "contract GuaranteeRequestExtender",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "GuaranteeRequestExtender",
+                              "referencedDeclaration": 1573,
+                              "type": "contract GuaranteeRequestExtender"
+                            },
+                            "id": 328,
+                            "name": "UserDefinedTypeName",
+                            "src": "1410:24:2"
+                          }
+                        ],
+                        "id": 329,
+                        "name": "VariableDeclaration",
+                        "src": "1410:27:2"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract GuaranteeRequestExtender",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1573,
+                              "type": "type(contract GuaranteeRequestExtender)",
+                              "value": "GuaranteeRequestExtender"
+                            },
+                            "id": 330,
+                            "name": "Identifier",
+                            "src": "1439:24:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 232,
+                              "type": "address",
+                              "value": "guaranteeRequestExtender"
+                            },
+                            "id": 331,
+                            "name": "Identifier",
+                            "src": "1464:24:2"
+                          }
+                        ],
+                        "id": 332,
+                        "name": "FunctionCall",
+                        "src": "1439:50:2"
+                      }
+                    ],
+                    "id": 333,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1410:79:2"
+                  },
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 327
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            null
+                          ],
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "uint256",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "getEndDate",
+                              "referencedDeclaration": 1436,
+                              "type": "function () constant external returns (uint256)"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 329,
+                                  "type": "contract GuaranteeRequestExtender",
+                                  "value": "gr"
+                                },
+                                "id": 334,
+                                "name": "Identifier",
+                                "src": "1506:2:2"
+                              }
+                            ],
+                            "id": 335,
+                            "name": "MemberAccess",
+                            "src": "1506:13:2"
+                          }
+                        ],
+                        "id": 336,
+                        "name": "FunctionCall",
+                        "src": "1506:15:2"
+                      }
+                    ],
+                    "id": 337,
+                    "name": "Return",
+                    "src": "1499:22:2"
+                  }
+                ],
+                "id": 338,
+                "name": "Block",
+                "src": "1400:128:2"
+              }
+            ],
+            "id": 339,
+            "name": "FunctionDefinition",
+            "src": "1334:194:2"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getGuaranteeData",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 340,
+                "name": "ParameterList",
+                "src": "1560:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_contract_id",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 341,
+                        "name": "ElementaryTypeName",
+                        "src": "1588:7:2"
+                      }
+                    ],
+                    "id": 342,
+                    "name": "VariableDeclaration",
+                    "src": "1588:20:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_guaranteeRequest",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 343,
+                        "name": "ElementaryTypeName",
+                        "src": "1609:7:2"
+                      }
+                    ],
+                    "id": 344,
+                    "name": "VariableDeclaration",
+                    "src": "1609:25:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_customer",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 345,
+                        "name": "ElementaryTypeName",
+                        "src": "1635:7:2"
+                      }
+                    ],
+                    "id": 346,
+                    "name": "VariableDeclaration",
+                    "src": "1635:17:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_bank",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 347,
+                        "name": "ElementaryTypeName",
+                        "src": "1653:7:2"
+                      }
+                    ],
+                    "id": 348,
+                    "name": "VariableDeclaration",
+                    "src": "1653:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_beneficiary",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 349,
+                        "name": "ElementaryTypeName",
+                        "src": "1668:7:2"
+                      }
+                    ],
+                    "id": 350,
+                    "name": "VariableDeclaration",
+                    "src": "1668:20:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_purpose",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 351,
+                        "name": "ElementaryTypeName",
+                        "src": "1690:7:2"
+                      }
+                    ],
+                    "id": 352,
+                    "name": "VariableDeclaration",
+                    "src": "1690:16:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_amount",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 353,
+                        "name": "ElementaryTypeName",
+                        "src": "1707:4:2"
+                      }
+                    ],
+                    "id": 354,
+                    "name": "VariableDeclaration",
+                    "src": "1707:12:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_startDate",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 355,
+                        "name": "ElementaryTypeName",
+                        "src": "1720:4:2"
+                      }
+                    ],
+                    "id": 356,
+                    "name": "VariableDeclaration",
+                    "src": "1720:15:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_endDate",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 357,
+                        "name": "ElementaryTypeName",
+                        "src": "1736:4:2"
+                      }
+                    ],
+                    "id": 358,
+                    "name": "VariableDeclaration",
+                    "src": "1736:13:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_indexType",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "enum GuaranteeConst.IndexType",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IndexType",
+                          "referencedDeclaration": 477,
+                          "type": "enum GuaranteeConst.IndexType"
+                        },
+                        "id": 359,
+                        "name": "UserDefinedTypeName",
+                        "src": "1750:9:2"
+                      }
+                    ],
+                    "id": 360,
+                    "name": "VariableDeclaration",
+                    "src": "1750:20:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_indexDate",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 361,
+                        "name": "ElementaryTypeName",
+                        "src": "1771:4:2"
+                      }
+                    ],
+                    "id": 362,
+                    "name": "VariableDeclaration",
+                    "src": "1771:15:2"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_guaranteeState",
+                      "scope": 412,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "enum GuaranteeConst.GuaranteeState",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "GuaranteeState",
+                          "referencedDeclaration": 473,
+                          "type": "enum GuaranteeConst.GuaranteeState"
+                        },
+                        "id": 363,
+                        "name": "UserDefinedTypeName",
+                        "src": "1789:14:2"
+                      }
+                    ],
+                    "id": 364,
+                    "name": "VariableDeclaration",
+                    "src": "1789:30:2"
+                  }
+                ],
+                "id": 365,
+                "name": "ParameterList",
+                "src": "1587:233:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "assignments": [
+                        367
+                      ]
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "constant": false,
+                          "name": "gr",
+                          "scope": 412,
+                          "stateVariable": false,
+                          "storageLocation": "default",
+                          "type": "contract GuaranteeRequestExtender",
+                          "value": null,
+                          "visibility": "internal"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "GuaranteeRequestExtender",
+                              "referencedDeclaration": 1573,
+                              "type": "contract GuaranteeRequestExtender"
+                            },
+                            "id": 366,
+                            "name": "UserDefinedTypeName",
+                            "src": "1835:24:2"
+                          }
+                        ],
+                        "id": 367,
+                        "name": "VariableDeclaration",
+                        "src": "1835:27:2"
+                      },
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "contract GuaranteeRequestExtender",
+                          "type_conversion": true
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 1573,
+                              "type": "type(contract GuaranteeRequestExtender)",
+                              "value": "GuaranteeRequestExtender"
+                            },
+                            "id": 368,
+                            "name": "Identifier",
+                            "src": "1864:24:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 232,
+                              "type": "address",
+                              "value": "guaranteeRequestExtender"
+                            },
+                            "id": 369,
+                            "name": "Identifier",
+                            "src": "1889:24:2"
+                          }
+                        ],
+                        "id": 370,
+                        "name": "FunctionCall",
+                        "src": "1864:50:2"
+                      }
+                    ],
+                    "id": 371,
+                    "name": "VariableDeclarationStatement",
+                    "src": "1835:79:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "tuple()"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "components": [
+                                null,
+                                null,
+                                null,
+                                {
+                                  "attributes": {
+                                    "argumentTypes": null,
+                                    "overloadedDeclarations": [
+                                      null
+                                    ],
+                                    "referencedDeclaration": 350,
+                                    "type": "address",
+                                    "value": "_beneficiary"
+                                  },
+                                  "id": 372,
+                                  "name": "Identifier",
+                                  "src": "2080:12:2"
+                                },
+                                {
+                                  "attributes": {
+                                    "argumentTypes": null,
+                                    "overloadedDeclarations": [
+                                      null
+                                    ],
+                                    "referencedDeclaration": 352,
+                                    "type": "bytes32",
+                                    "value": "_purpose"
+                                  },
+                                  "id": 373,
+                                  "name": "Identifier",
+                                  "src": "2094:8:2"
+                                },
+                                {
+                                  "attributes": {
+                                    "argumentTypes": null,
+                                    "overloadedDeclarations": [
+                                      null
+                                    ],
+                                    "referencedDeclaration": 354,
+                                    "type": "uint256",
+                                    "value": "_amount"
+                                  },
+                                  "id": 374,
+                                  "name": "Identifier",
+                                  "src": "2105:7:2"
+                                },
+                                {
+                                  "attributes": {
+                                    "argumentTypes": null,
+                                    "overloadedDeclarations": [
+                                      null
+                                    ],
+                                    "referencedDeclaration": 356,
+                                    "type": "uint256",
+                                    "value": "_startDate"
+                                  },
+                                  "id": 375,
+                                  "name": "Identifier",
+                                  "src": "2114:10:2"
+                                },
+                                {
+                                  "attributes": {
+                                    "argumentTypes": null,
+                                    "overloadedDeclarations": [
+                                      null
+                                    ],
+                                    "referencedDeclaration": 358,
+                                    "type": "uint256",
+                                    "value": "_endDate"
+                                  },
+                                  "id": 376,
+                                  "name": "Identifier",
+                                  "src": "2126:8:2"
+                                },
+                                {
+                                  "attributes": {
+                                    "argumentTypes": null,
+                                    "overloadedDeclarations": [
+                                      null
+                                    ],
+                                    "referencedDeclaration": 360,
+                                    "type": "enum GuaranteeConst.IndexType",
+                                    "value": "_indexType"
+                                  },
+                                  "id": 377,
+                                  "name": "Identifier",
+                                  "src": "2136:10:2"
+                                },
+                                {
+                                  "attributes": {
+                                    "argumentTypes": null,
+                                    "overloadedDeclarations": [
+                                      null
+                                    ],
+                                    "referencedDeclaration": 362,
+                                    "type": "uint256",
+                                    "value": "_indexDate"
+                                  },
+                                  "id": 378,
+                                  "name": "Identifier",
+                                  "src": "2148:10:2"
+                                },
+                                null
+                              ],
+                              "isConstant": false,
+                              "isInlineArray": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "type": "tuple(,,,address,bytes32,uint256,uint256,uint256,enum GuaranteeConst.IndexType,uint256,)"
+                            },
+                            "id": 379,
+                            "name": "TupleExpression",
+                            "src": "2071:90:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "tuple(address,address,address,address,bytes32,uint256,uint256,uint256,enum GuaranteeConst.IndexType,uint256,enum GuaranteeConst.RequestState)",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    null
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "getGuaranteeRequestData",
+                                  "referencedDeclaration": 1461,
+                                  "type": "function () constant external returns (address,address,address,address,bytes32,uint256,uint256,uint256,enum GuaranteeConst.IndexType,uint256,enum GuaranteeConst.RequestState)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 367,
+                                      "type": "contract GuaranteeRequestExtender",
+                                      "value": "gr"
+                                    },
+                                    "id": 380,
+                                    "name": "Identifier",
+                                    "src": "2163:2:2"
+                                  }
+                                ],
+                                "id": 381,
+                                "name": "MemberAccess",
+                                "src": "2163:26:2"
+                              }
+                            ],
+                            "id": 382,
+                            "name": "FunctionCall",
+                            "src": "2163:28:2"
+                          }
+                        ],
+                        "id": 383,
+                        "name": "Assignment",
+                        "src": "2071:120:2"
+                      }
+                    ],
+                    "id": 384,
+                    "name": "ExpressionStatement",
+                    "src": "2071:120:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 344,
+                              "type": "address",
+                              "value": "_guaranteeRequest"
+                            },
+                            "id": 385,
+                            "name": "Identifier",
+                            "src": "2202:17:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 232,
+                              "type": "address",
+                              "value": "guaranteeRequestExtender"
+                            },
+                            "id": 386,
+                            "name": "Identifier",
+                            "src": "2220:24:2"
+                          }
+                        ],
+                        "id": 387,
+                        "name": "Assignment",
+                        "src": "2202:42:2"
+                      }
+                    ],
+                    "id": 388,
+                    "name": "ExpressionStatement",
+                    "src": "2202:42:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 342,
+                              "type": "address",
+                              "value": "_contract_id"
+                            },
+                            "id": 389,
+                            "name": "Identifier",
+                            "src": "2254:12:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    null
+                                  ],
+                                  "overloadedDeclarations": [
+                                    307
+                                  ],
+                                  "referencedDeclaration": 307,
+                                  "type": "function () constant returns (address)",
+                                  "value": "getId"
+                                },
+                                "id": 390,
+                                "name": "Identifier",
+                                "src": "2267:5:2"
+                              }
+                            ],
+                            "id": 391,
+                            "name": "FunctionCall",
+                            "src": "2267:7:2"
+                          }
+                        ],
+                        "id": 392,
+                        "name": "Assignment",
+                        "src": "2254:20:2"
+                      }
+                    ],
+                    "id": 393,
+                    "name": "ExpressionStatement",
+                    "src": "2254:20:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 346,
+                              "type": "address",
+                              "value": "_customer"
+                            },
+                            "id": 394,
+                            "name": "Identifier",
+                            "src": "2284:9:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    null
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "getCustomer",
+                                  "referencedDeclaration": 1421,
+                                  "type": "function () constant external returns (address)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 367,
+                                      "type": "contract GuaranteeRequestExtender",
+                                      "value": "gr"
+                                    },
+                                    "id": 395,
+                                    "name": "Identifier",
+                                    "src": "2294:2:2"
+                                  }
+                                ],
+                                "id": 396,
+                                "name": "MemberAccess",
+                                "src": "2294:14:2"
+                              }
+                            ],
+                            "id": 397,
+                            "name": "FunctionCall",
+                            "src": "2294:16:2"
+                          }
+                        ],
+                        "id": 398,
+                        "name": "Assignment",
+                        "src": "2284:26:2"
+                      }
+                    ],
+                    "id": 399,
+                    "name": "ExpressionStatement",
+                    "src": "2284:26:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "address"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 348,
+                              "type": "address",
+                              "value": "_bank"
+                            },
+                            "id": 400,
+                            "name": "Identifier",
+                            "src": "2320:5:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    null
+                                  ],
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "lValueRequested": false,
+                                  "member_name": "getBank",
+                                  "referencedDeclaration": 1426,
+                                  "type": "function () constant external returns (address)"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 367,
+                                      "type": "contract GuaranteeRequestExtender",
+                                      "value": "gr"
+                                    },
+                                    "id": 401,
+                                    "name": "Identifier",
+                                    "src": "2326:2:2"
+                                  }
+                                ],
+                                "id": 402,
+                                "name": "MemberAccess",
+                                "src": "2326:10:2"
+                              }
+                            ],
+                            "id": 403,
+                            "name": "FunctionCall",
+                            "src": "2326:12:2"
+                          }
+                        ],
+                        "id": 404,
+                        "name": "Assignment",
+                        "src": "2320:18:2"
+                      }
+                    ],
+                    "id": 405,
+                    "name": "ExpressionStatement",
+                    "src": "2320:18:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "enum GuaranteeConst.GuaranteeState"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 364,
+                              "type": "enum GuaranteeConst.GuaranteeState",
+                              "value": "_guaranteeState"
+                            },
+                            "id": 406,
+                            "name": "Identifier",
+                            "src": "2348:15:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "enum GuaranteeConst.GuaranteeState",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    null
+                                  ],
+                                  "overloadedDeclarations": [
+                                    436
+                                  ],
+                                  "referencedDeclaration": 436,
+                                  "type": "function () constant returns (enum GuaranteeConst.GuaranteeState)",
+                                  "value": "getGuaranteeState"
+                                },
+                                "id": 407,
+                                "name": "Identifier",
+                                "src": "2364:17:2"
+                              }
+                            ],
+                            "id": 408,
+                            "name": "FunctionCall",
+                            "src": "2364:19:2"
+                          }
+                        ],
+                        "id": 409,
+                        "name": "Assignment",
+                        "src": "2348:35:2"
+                      }
+                    ],
+                    "id": 410,
+                    "name": "ExpressionStatement",
+                    "src": "2348:35:2"
+                  }
+                ],
+                "id": 411,
+                "name": "Block",
+                "src": "1825:566:2"
+              }
+            ],
+            "id": 412,
+            "name": "FunctionDefinition",
+            "src": "1535:856:2"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getGuaranteeIPFSHash",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 413,
+                "name": "ParameterList",
+                "src": "2426:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 420,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes",
+                          "type": "bytes storage pointer"
+                        },
+                        "id": 414,
+                        "name": "ElementaryTypeName",
+                        "src": "2454:5:2"
+                      }
+                    ],
+                    "id": 415,
+                    "name": "VariableDeclaration",
+                    "src": "2454:5:2"
+                  }
+                ],
+                "id": 416,
+                "name": "ParameterList",
+                "src": "2453:7:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "functionReturnParameters": 416
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 238,
+                          "type": "bytes storage ref",
+                          "value": "guaranteeIPFSHash"
+                        },
+                        "id": 417,
+                        "name": "Identifier",
+                        "src": "2482:17:2"
+                      }
+                    ],
+                    "id": 418,
+                    "name": "Return",
+                    "src": "2475:24:2"
+                  }
+                ],
+                "id": 419,
+                "name": "Block",
+                "src": "2465:41:2"
+              }
+            ],
+            "id": 420,
+            "name": "FunctionDefinition",
+            "src": "2397:109:2"
+          },
+          {
+            "attributes": {
+              "constant": true,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "getGuaranteeState",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 421,
+                "name": "ParameterList",
+                "src": "2541:2:2"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_guaranteeState",
+                      "scope": 436,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "enum GuaranteeConst.GuaranteeState",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "GuaranteeState",
+                          "referencedDeclaration": 473,
+                          "type": "enum GuaranteeConst.GuaranteeState"
+                        },
+                        "id": 422,
+                        "name": "UserDefinedTypeName",
+                        "src": "2570:14:2"
+                      }
+                    ],
+                    "id": 423,
+                    "name": "VariableDeclaration",
+                    "src": "2570:30:2"
+                  }
+                ],
+                "id": 424,
+                "name": "ParameterList",
+                "src": "2569:32:2"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            null
+                          ],
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "bool",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                null
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 604,
+                              "type": "function () constant returns (bool)",
+                              "value": "isExpired"
+                            },
+                            "id": 425,
+                            "name": "Identifier",
+                            "src": "2620:9:2"
+                          }
+                        ],
+                        "id": 426,
+                        "name": "FunctionCall",
+                        "src": "2620:11:2"
+                      },
+                      {
+                        "children": [
+                          {
+                            "attributes": {
+                              "functionReturnParameters": 424
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": true,
+                                  "lValueRequested": false,
+                                  "member_name": "Expaired",
+                                  "referencedDeclaration": null,
+                                  "type": "enum GuaranteeConst.GuaranteeState"
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "overloadedDeclarations": [
+                                        null
+                                      ],
+                                      "referencedDeclaration": 473,
+                                      "type": "type(enum GuaranteeConst.GuaranteeState)",
+                                      "value": "GuaranteeState"
+                                    },
+                                    "id": 427,
+                                    "name": "Identifier",
+                                    "src": "2663:14:2"
+                                  }
+                                ],
+                                "id": 428,
+                                "name": "MemberAccess",
+                                "src": "2663:23:2"
+                              }
+                            ],
+                            "id": 429,
+                            "name": "Return",
+                            "src": "2655:31:2"
+                          }
+                        ],
+                        "id": 430,
+                        "name": "Block",
+                        "src": "2641:56:2"
+                      },
+                      {
+                        "children": [
+                          {
+                            "attributes": {
+                              "functionReturnParameters": 424
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 236,
+                                  "type": "enum GuaranteeConst.GuaranteeState",
+                                  "value": "gstate"
+                                },
+                                "id": 431,
+                                "name": "Identifier",
+                                "src": "2741:6:2"
+                              }
+                            ],
+                            "id": 432,
+                            "name": "Return",
+                            "src": "2733:14:2"
+                          }
+                        ],
+                        "id": 433,
+                        "name": "Block",
+                        "src": "2719:39:2"
+                      }
+                    ],
+                    "id": 434,
+                    "name": "IfStatement",
+                    "src": "2616:142:2"
+                  }
+                ],
+                "id": 435,
+                "name": "Block",
+                "src": "2606:159:2"
+              }
+            ],
+            "id": 436,
+            "name": "FunctionDefinition",
+            "src": "2515:250:2"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "implemented": true,
+              "isConstructor": false,
+              "modifiers": [
+                null
+              ],
+              "name": "terminateGuarantee",
+              "payable": false,
+              "scope": 454,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 437,
+                "name": "ParameterList",
+                "src": "2832:2:2"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 438,
+                "name": "ParameterList",
+                "src": "2847:0:2"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "enum GuaranteeConst.GuaranteeState"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 236,
+                              "type": "enum GuaranteeConst.GuaranteeState",
+                              "value": "gstate"
+                            },
+                            "id": 439,
+                            "name": "Identifier",
+                            "src": "2857:6:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "lValueRequested": false,
+                              "member_name": "Terminated",
+                              "referencedDeclaration": null,
+                              "type": "enum GuaranteeConst.GuaranteeState"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 473,
+                                  "type": "type(enum GuaranteeConst.GuaranteeState)",
+                                  "value": "GuaranteeState"
+                                },
+                                "id": 440,
+                                "name": "Identifier",
+                                "src": "2864:14:2"
+                              }
+                            ],
+                            "id": 441,
+                            "name": "MemberAccess",
+                            "src": "2864:25:2"
+                          }
+                        ],
+                        "id": 442,
+                        "name": "Assignment",
+                        "src": "2857:32:2"
+                      }
+                    ],
+                    "id": 443,
+                    "name": "ExpressionStatement",
+                    "src": "2857:32:2"
+                  },
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "isStructConstructorCall": false,
+                          "lValueRequested": false,
+                          "names": [
+                            null
+                          ],
+                          "type": "tuple()",
+                          "type_conversion": false
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": [
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                },
+                                {
+                                  "typeIdentifier": "t_address",
+                                  "typeString": "address"
+                                }
+                              ],
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 256,
+                              "type": "function (address,address,address) constant",
+                              "value": "Terminated"
+                            },
+                            "id": 444,
+                            "name": "Identifier",
+                            "src": "2918:10:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 232,
+                              "type": "address",
+                              "value": "guaranteeRequestExtender"
+                            },
+                            "id": 445,
+                            "name": "Identifier",
+                            "src": "2929:24:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "arguments": [
+                                null
+                              ],
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "isStructConstructorCall": false,
+                              "lValueRequested": false,
+                              "names": [
+                                null
+                              ],
+                              "type": "address",
+                              "type_conversion": false
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": [
+                                    null
+                                  ],
+                                  "overloadedDeclarations": [
+                                    307
+                                  ],
+                                  "referencedDeclaration": 307,
+                                  "type": "function () constant returns (address)",
+                                  "value": "getId"
+                                },
+                                "id": 446,
+                                "name": "Identifier",
+                                "src": "2954:5:2"
+                              }
+                            ],
+                            "id": 447,
+                            "name": "FunctionCall",
+                            "src": "2954:7:2"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "lValueRequested": false,
+                              "member_name": "sender",
+                              "referencedDeclaration": null,
+                              "type": "address"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 2147,
+                                  "type": "msg",
+                                  "value": "msg"
+                                },
+                                "id": 448,
+                                "name": "Identifier",
+                                "src": "2962:3:2"
+                              }
+                            ],
+                            "id": 449,
+                            "name": "MemberAccess",
+                            "src": "2962:10:2"
+                          }
+                        ],
+                        "id": 450,
+                        "name": "FunctionCall",
+                        "src": "2918:55:2"
+                      }
+                    ],
+                    "id": 451,
+                    "name": "ExpressionStatement",
+                    "src": "2918:55:2"
+                  }
+                ],
+                "id": 452,
+                "name": "Block",
+                "src": "2847:135:2"
+              }
+            ],
+            "id": 453,
+            "name": "FunctionDefinition",
+            "src": "2805:177:2"
+          }
+        ],
+        "id": 454,
+        "name": "ContractDefinition",
+        "src": "133:3232:2"
+      }
+    ],
+    "id": 455,
+    "name": "SourceUnit",
+    "src": "0:3366:2"
+  },
+  "networks": {},
+  "schemaVersion": "1.0.0",
+  "updatedAt": "2017-10-16T08:56:16.657Z"
+}

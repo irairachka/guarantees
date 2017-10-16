@@ -47,21 +47,21 @@ export interface Guarantee {
 
 
 export interface Customer {
-  customerID: string,
-  Name: string
-  Address: string
+  customerID: string;
+  Name: string;
+  Address: string;
 }
 
 
 export interface Bank {
-  bankID: string,
-  Name: string
-  Address: string
+  bankID: string;
+  Name: string;
+  Address: string;
 }
 
 
 export interface Beneficiary {
-  beneficiaryID: string,
-  Name: string
-  Address: string
+  beneficiaryID: string;
+  Name: string;
+  Address: string;
 }

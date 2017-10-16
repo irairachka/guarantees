@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {isNullOrUndefined} from "util";
 import {GRequest, Guarantee} from "../../interfaces/request";
-import {RequestState, GuaranteeState} from "../../interfaces/enum";
+import {EtheriumService} from "../../services/mock-etherium.service";
 
 
 @Component({
@@ -21,9 +20,12 @@ export class GuaranteeViewComponent implements OnInit{
   //   bank: 'הבנק',
   //   beneficiary: 'המוטב'
   // };
+  guaranteeHistory: any[];
   index: number = 1; // accordion open index
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
+
+  constructor(private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);
@@ -54,5 +56,11 @@ export class GuaranteeViewComponent implements OnInit{
 
   closeAccordion() {
     this.index = -1;
+  }
+
+  getGuaranteeHistory(e) {
+    this.truffleSRV.getGuarantyHistory(this.allGuaranties[e.index].GRequestID).then((res: any[]) => {
+      this.guaranteeHistory = res;
+    });
   }
 }

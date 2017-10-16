@@ -1,6 +1,6 @@
 <div class="ui-layout-column" [ngClass]="user !== undefined ? user : ''">
   <header class="view-header text-center ui-space-tb-large">
-    <label>מיטב</label>
+    <label>מוטב</label>
     <div class="header-text ui-layout-column ui-space-t-medium" ui-layout-align="space-around center">
       <label>ניהול ערבויות</label>
       <!--<div *ngIf="user==='beneficiary'">-->
@@ -39,14 +39,19 @@
           </label>
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
-          <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true">//theguaranteeState.Valid">
+          <p-accordion  styleClass="green" (onOpen)="getGuaranteeHistory($event)">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[2]:true">
+              <!--//theguaranteeState.Valid">-->
               <p-header>
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
               </p-header>
-              <accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>
+              <app-history [userType]="'beneficiary'" [todel_state]="2" [history]="guaranteeHistory"></app-history>
+              <app-actions [userType]="user" [data]="guar" (updateRequest)="updateRequestsender($event)"></app-actions>
+
+              <!--<accordion-content [userType]="'beneficiary'" [todel_state]=2 [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>-->
             </p-accordionTab>
+
           </p-accordion>
         </div>
       </div>
@@ -59,12 +64,12 @@
         </div>
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="green">
-            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[3,4]">//theguaranteeState.Valid">
+            <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[3,4]">
+              <!--//theguaranteeState.Valid">-->
               <p-header>
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)">
                 </guarantee-item>
               </p-header>
-              <!--<accordion-content [userType]="user" [data]="guar" (updateRequest)="updateGuaranteesender($event)"></accordion-content>-->
               </p-accordionTab>
           </p-accordion>
         </div>

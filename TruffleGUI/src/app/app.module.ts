@@ -21,10 +21,12 @@ import { ParseDatePipe } from './pipes/ParseDate/parse-date.pipe';
 import {FourDigitsPipe} from "./pipes/FourDigits/four-digits.pipe";
 import { WizardComponent } from './components/wizard/wizard.component';
 import {MessageService} from "primeng/components/common/messageservice";
+// import {GuaranteeService} from "./services/GuaranteeService";
 import { HistoryComponent } from './components/history/history.component';
 import {ActionsComponent} from "./components/actions/actions.component";
 import {AccordionContentComponent} from "./components/accordion-content/accordion-content.component";
 import {StatusIconComponent} from "./components/status-icon/status-icon.component";
+import {EtheriumService} from "./services/mock-etherium.service";
 
 @NgModule({
   imports: [
@@ -41,6 +43,7 @@ import {StatusIconComponent} from "./components/status-icon/status-icon.componen
     SharedModule
   ],
   declarations: [
+    // GuaranteeService,
     AppComponent,
     GuaranteeViewComponent,
     GuaranteeUserViewComponent,
@@ -60,8 +63,11 @@ import {StatusIconComponent} from "./components/status-icon/status-icon.componen
     StatusIconComponent
   ],
   providers: [
-    MessageService
+    MessageService,
+    EtheriumService
   ],
   bootstrap: [AppComponent]
 })
+
+
 export class AppModule { }
