@@ -56,6 +56,12 @@ contract IssuerManager  is Ownable {
         return issuerList.length;
     }
 
+    function getIssuerAddressesList() public constant returns (address[] )
+    {
+        return issuerList;
+
+    }
+
     function getIssuerById(uint _id) constant public returns(string , string , address )  {
 
         if(_id >= issuerList.length) {

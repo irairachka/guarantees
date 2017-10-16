@@ -4,24 +4,28 @@ import "./GuaranteeConst.sol";
 import "./GuaranteeExtender.sol";
 import "./GuaranteeRequestExtender.sol";
 
-contract DigitalGuaranteeBNHP is GuaranteeExtender
+contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
 {
     address guaranteeRequestExtender;
     address regulator;
 
-    GuaranteeState state;
+    GuaranteeState gstate;
     bytes guaranteeIPFSHash;
 
     event Issued(address  _requestId,address  _guaranteeId,address _msgSender,bytes _guaranteeIPFSHash);
     event Terminated(address  _requestId,address  _guaranteeId,address _msgSender );
 
+    function getGuaranteeRequest() constant public returns (address requestExtender)
+    {
+        return guaranteeRequestExtender;
+    }
 
 
     function DigitalGuaranteeBNHP(address _guaranteeRequestExtender,address _regulator,bytes _guaranteeIPFSHash) {
         guaranteeRequestExtender=_guaranteeRequestExtender;
         regulator=_regulator;
         guaranteeIPFSHash=_guaranteeIPFSHash;
-        state=GuaranteeState.Valid;
+        gstate=GuaranteeState.Valid;
         Issued(_guaranteeRequestExtender,this,msg.sender, _guaranteeIPFSHash);
     }
 
@@ -76,19 +80,20 @@ contract DigitalGuaranteeBNHP is GuaranteeExtender
         }
         else
         {
-            return  state;
+            return  gstate;
         }
 
     }
 
+//    event AAA(GuaranteeState);
 
-
-    function terminate() onlyBeneficiary public returns (bool)
+    function terminateGuarantee()  public
     {
-        Terminated(guaranteeRequestExtender,this,msg.sender);
-        state=GuaranteeState.Terminated;
+        gstate=GuaranteeState.Terminated;
+//    AAA(gstate);
+        Terminated(guaranteeRequestExtender,getId(),msg.sender);
 
-        return true;
+
     }
 
 
