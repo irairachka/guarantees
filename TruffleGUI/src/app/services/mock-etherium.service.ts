@@ -22,8 +22,8 @@ export class EtheriumService {
   web3:any;
   mockRequests = mockCustomerRequests;
   mockGuarantees = mockCustomerGuaranties;
-  Regulator = contract(Regulator_artifact);
-  GuaranteeRequest = contract(GuaranteeRequest_artifact);
+  // Regulator = contract(Regulator_artifact);
+  // GuaranteeRequest = contract(GuaranteeRequest_artifact);
   // DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
 
   accounts:any;
@@ -247,7 +247,7 @@ export class EtheriumService {
     });
   };
 
-  
+
   populateRequestData = (resultArr) => {
       const startDate = this.transformDateSolToJS(resultArr[6]);
       const endDate = this.transformDateSolToJS(resultArr[7]);
