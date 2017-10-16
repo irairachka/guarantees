@@ -29,6 +29,7 @@ contract BeneficiaryManager is Ownable{
         AddBeneficiary(_addr,_name,block.timestamp);
     }
 
+
     function getBeneficiary(address _addr) public constant returns(string _name, string _localAddress)
     {
 
