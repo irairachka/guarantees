@@ -10,10 +10,10 @@ import {Beneficiary, Customer, Guarantee} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
 import {GuaranteeState, RequestState} from "../interfaces/enum";
 
-// Import our contract artifacts and turn them into usable abstractions.
-const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
-const Regulator_artifact = require('../../../../build/contracts/Regulator.json');
-// const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
+// // Import our contract artifacts and turn them into usable abstractions.
+// const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
+// const Regulator_artifact = require('../../../../build/contracts/Regulator.json');
+// // const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
 
 
 @Injectable()
@@ -247,6 +247,7 @@ export class EtheriumService {
     });
   };
 
+  
   populateRequestData = (resultArr) => {
       const startDate = this.transformDateSolToJS(resultArr[6]);
       const endDate = this.transformDateSolToJS(resultArr[7]);

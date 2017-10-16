@@ -39,7 +39,10 @@ contract GuaranteeExtender is GuaranteeConst {
 
     function getGuaranteeState() constant public returns (GuaranteeState _guaranteeState);
 
-    function terminate() onlyBeneficiary public returns (bool);
+    function getGuaranteeRequest() constant public returns (address requestExtender);
+
+
+    function terminateGuarantee()  public ;
 
 //    function changeRequest(uint amount, string endDate, string comment) onlyBeneficiary returns (bool);
 

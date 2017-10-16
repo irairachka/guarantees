@@ -39,6 +39,13 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
         _;
     }
 
+    address  changeRequestGuaranteeAdr;
+
+
+    function isChangeRequest() public returns (bool)
+    {
+        return (changeRequestGuaranteeAdr!=address(0));
+    }
 
     //premissions modifier for beneficiary functions
     modifier onlyRegulator() {
@@ -52,14 +59,21 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
 
     address  regulator;
     address  guarantee;
-    address  changeRequest;
+
+    function getGuaranteeAddress() public returns (address)
+    {
+        return guarantee;
+    }
 
     function setRegulator() public
     {
         regulator=msg.sender;
     }
 
-
+    function getRegulator() public returns (address)
+    {
+        return regulator;
+    }
 
 
     //    function getId() constant returns (address);
@@ -101,12 +115,16 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     }
 
     function submit(string comment) onlyCustomer public returns (bool result) ;
-    function terminate() onlyRegulator public returns (bool result);
     function reject(string comment) onlyBank public returns (bool result);
-    function accept(string comment) onlyBank public returns (bool result);
+    function accept() onlyRegulator public returns (bool result);
     function withdrawal(string comment) onlyCustomer public returns (bool result);
     function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);
 
-    //    function changeRequested(bytes32 comment) onlyBank returns (bool result);
+    function terminateGuarantee()  public ;
+    function signComplite(bytes _guaranteeIPFSHash) onlyRegulator public returns (address);
+//    function change(string comment ,address newRewuestId) onlyRegulator public returns (bool result);
+
+    function changeRequested(uint _newamount, uint _newendDate) onlyRegulator returns (bool result);
+
 
 }

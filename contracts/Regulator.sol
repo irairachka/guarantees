@@ -76,7 +76,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-//    event AAA(uint length);
+    event AAA(uint length);
 
     function addGuaranteeRequest(address  _guaranteeRequest)  public
     {
@@ -84,73 +84,63 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         require(msg.sender == ge.getCustomer() && ge.isValid());
         ge.setRegulator();
         guaranteeRequests.push(_guaranteeRequest);
+//        AAA(1);
 
     }
 
-    event RequestGuaranteeSign(address  _guaranteeRequest,string path);
-    function requestGuaranteeSign(address  _guaranteeRequest)  public
+    event GuaranteeSign(address  _guaranteeRequest);
+    function acceptGuaranteeRequest(address  _guaranteeRequest)  public
     {
         GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-        require(ge.getRequestState()==RequestState.accepted);
-        RequestGuaranteeSign(_guaranteeRequest,"");
+        require(msg.sender == ge.getBank() && ge.isValid());
+
+
+        if (ge.accept()) {
+            GuaranteeSign(_guaranteeRequest);
+        }
+        else
+            throw;
     }
 
     function GuaranteeSignComplite(address  _guaranteeRequest,bytes _guaranteeIPFSHash)  public  returns (address)
     {
-        GuaranteeRequestExtender ger=GuaranteeRequestExtender(_guaranteeRequest);
-        require( ger.getRequestState()==RequestState.accepted && _checkArray(_guaranteeIPFSHash));
+        GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
+        require( ge.getRequestState()==RequestState.accepted && _checkArray(_guaranteeIPFSHash) && msg.sender == ge.getBank());
 
-        GuaranteeExtender gr= new DigitalGuaranteeBNHP(_guaranteeRequest,this,_guaranteeIPFSHash);
-        guarantees.push(address(gr));
-        return address(gr);
+        address gra=ge.signComplite(_guaranteeIPFSHash);
+        guarantees.push(gra);
+
+        return gra;
+
     }
 
 
-    function terminateGuarantee(address  _guaranteeRequest,address  _guarantee)  public
+    function terminateGuarantee(address  _guarantee)  public
     {
 
-        GuaranteeRequestExtender ger=GuaranteeRequestExtender(_guaranteeRequest);
+
+        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
+        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
+        require( _guarantee!= address(0) && ger.getGuaranteeAddress()!= address(0) && msg.sender == ger.getBeneficiary() );
+
+        ge.terminateGuarantee() ;
+        ger.terminateGuarantee();
+
+    }
+
+
+
+
+
+
+
+    function changeGuarantee(address  _guarantee ,uint _newamount, uint _newendDate)  returns (bool)  //onlyBeneficiary
+    {
+        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
+        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
         require( ger.getRequestState()==RequestState.accepted && msg.sender == ger.getBeneficiary() && _guarantee!= address(0));
 
-        ger.terminate() ;
-
-        GuaranteeExtender(_guarantee).terminate();
-
-
-
-    }
-
-
-
-
-
-
-
-    function changeGuarantee(address  _guaranteeRequest,address  _guarantee ,uint _newamount, uint _newendDate, string _comment)  returns (bool)  //onlyBeneficiary
-    {
-//        if (ge.getBeneficiary()!=msg.sender) throw;
-//            GuaranteeExtender ge=GuaranteeExtender(_guaranteeRequest);
-//
-//        {
-//            ( address _contract_id,address _customer,address _bank, address _beneficiary,
-//            string _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,
-//            uint _indexDate,RequestState _status) = ge.getGuaranteeRequestData();
-//            if (_status==RequestState.accepted && _amount>=_newamount && _newendDate<=_endDate)
-//            {
-//                address addr=new GuaranteeRequest(this,_customer,_bank ,_beneficiary,_purpose,_amount,_startDate,_endDate,_indexType ,_indexDate);
-//                ge.
-//                guaranteeRequests.push(addr);
-//                return addr;
-//            }
-//
-//        }
-//
-//
-//
-//    .endRequest(_comment)
-//        guaranteeRequests.push(addr);
-//        return addr;
-//
+        ger.changeRequested( _newamount,  _newendDate);
         return true;
     }
 
