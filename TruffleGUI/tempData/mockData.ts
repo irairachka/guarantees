@@ -150,16 +150,19 @@ export const mockexpandedRequest: ExpandedRequest[] =[
   shortrequest: mockCustomerRequests[0],
   log: [
     {
+      eventname:'created',
       date: mockCustomerRequests[0].StartDate,
       state: RequestState.created,
       comment: null
     },
     {
+      eventname:'waitingtobank',
       date: mockCustomerRequests[0].StartDate,
       state: RequestState.waitingtobank,
       comment: null
     },
     {
+      eventname:'accepted',
       date: mockCustomerRequests[0].StartDate,
       state: mockCustomerRequests[0].requestState,
       comment: "אושר על ידי משפטית"
@@ -171,12 +174,14 @@ export const mockexpandedRequest: ExpandedRequest[] =[
     shortrequest: mockCustomerRequests[1],
     log: [
       {
+        eventname:'created',
         date: mockCustomerRequests[1].StartDate,
         state: RequestState.created,
         comment: null
       },
 
       {
+        eventname:'waitingtobank',
         date: mockCustomerRequests[1].StartDate,
         state: mockCustomerRequests[1].requestState,
         comment: null
@@ -188,16 +193,19 @@ export const mockexpandedRequest: ExpandedRequest[] =[
     shortrequest: mockCustomerRequests[2],
     log: [
       {
+        eventname:'created',
         date: mockCustomerRequests[2].StartDate,
         state: RequestState.created,
         comment: null
       },
       {
+        eventname:'waitingtobank',
         date: mockCustomerRequests[2].StartDate,
         state: RequestState.waitingtobank,
         comment: null
       },
       {
+        eventname:'rejected',
         date: mockCustomerRequests[2].StartDate,
         state: mockCustomerRequests[2].requestState,
         comment: " לא אושר על ידי משפטית"
@@ -209,16 +217,19 @@ export const mockexpandedRequest: ExpandedRequest[] =[
     shortrequest: mockCustomerRequests[3],
     log: [
       {
+        eventname:'created',
         date: mockCustomerRequests[3].StartDate,
         state: RequestState.created,
         comment: null
       },
       {
+        eventname:'waitingtobank',
         date: mockCustomerRequests[3].StartDate,
         state: RequestState.waitingtobank,
         comment: null
       },
       {
+        eventname:'rejected',
         date: mockCustomerRequests[3].StartDate,
         state: mockCustomerRequests[3].requestState,
         comment: "ממתין למשפטית"
@@ -230,17 +241,20 @@ export const mockexpandedRequest: ExpandedRequest[] =[
     shortrequest: mockCustomerRequests[4],
     log: [
       {
+        eventname:'created',
         date: mockCustomerRequests[4].StartDate,
         state: RequestState.created,
         comment: null
       },
 
       {
+        eventname:'waitingtobank',
         date: mockCustomerRequests[4].StartDate,
         state: RequestState.waitingtobank,
         comment: null
       },
       {
+        eventname:'waitingtobank',
         date: mockCustomerRequests[4].StartDate,
         state: mockCustomerRequests[4].requestState,
         comment: null
@@ -251,17 +265,20 @@ export const mockexpandedRequest: ExpandedRequest[] =[
     shortrequest: mockCustomerRequests[5],
     log: [
       {
+        eventname:'created',
         date: mockCustomerRequests[5].StartDate,
         state: RequestState.created,
         comment: null
       },
 
       {
+        eventname:'waitingtobank',
         date: mockCustomerRequests[5].StartDate,
         state: RequestState.waitingtobank,
         comment: null
       },
       {
+        eventname:'rejected',
         date: mockCustomerRequests[5].StartDate,
         state: mockCustomerRequests[5].requestState,
         comment: "לא ברור למה ביקשו!!!"

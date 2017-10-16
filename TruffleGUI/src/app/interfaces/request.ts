@@ -23,6 +23,7 @@ export interface ExpandedRequest {
 
 
 export interface RequestFlowLog{
+  eventname:string;
   date: string;
   state: RequestState;
   comment: string;
