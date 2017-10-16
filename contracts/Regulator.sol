@@ -50,11 +50,8 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-  address []   guaranteeRequest;
 
-
-
- //   event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
+    event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
 //        owner = msg.sender;
 //
@@ -128,13 +125,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
     }
 
-    function getIssuerById(uint _id) constant public returns(string , string , address , issuerStatus )  {
 
-        if(_id >= issuerList.length) {
-            throw;
-        }
-        return  getIssuer([issuerList[_id]]);
-    }
 
 
 
@@ -168,12 +159,6 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         ger.changeRequested( _newamount,  _newendDate);
         return true;
     }
-
-//    function submit(string comment) onlyCustomer public returns (bool result) ;
-//    function termination(string comment) onlyBeneficiary public returns (bool result);
-//    function reject(string comment) onlyBank public returns (bool result);
-//    function withdrawal(string comment) onlyCustomer public returns (bool result);
-//    function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);
 
 
 
