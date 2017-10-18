@@ -21,80 +21,80 @@ contract('Regulator', function(accounts) {
 
     account=accounts[0];
 
-    it("should be empty at the beginning", function() {
-        return Regulator.deployed().then(function(instance) {
-            return instance.getIssuerCounter.call();
-        }).then(function(amount_issuer_counter) {
-            assert.equal(amount_issuer_counter, 0, "Registry wasn't empty!");
-        }).catch(function(error) {
-            console.error(error);
-            assert.equal(error.toString(),'',
-                'Error detected')
-        });
-    });
-
-
-    it("should create all data at the beginning", function() {
-        var Registry_instance;
-        return Regulator.deployed().then(function(instance) {
-            Registry_instance = instance;
-            return Registry_instance.getOwner.call();
-        }).then(function (regulatorAddress) {
-            account=regulatorAddress;
-            console.log("regulatorAddress:"+account);
-            return Registry_instance.submitIssuer(account ,"בנק הפועלים","הנגב 11 תל-אביב",{from: account});
-        }).then(function (result) {
-            for (var i = 0; i < result.logs.length; i++) {
-                var log = result.logs[i];
-
-                if (log.event == "AddIssuer") {
-                    // We found the event!
-                    console.log("submitIssuer:");
-                    console.log(log.args);
-                    // break;
-                    return Registry_instance.submitBeneficiary(account ,"Beneficiary 1","herzel 2 tel-aviv",{from: account});
-            }
-        }
-        assert.fail("can't add issuer");
-        // console.log(tx_id);
-        }).then(function (result) {
-            for (var i = 0; i < result.logs.length; i++) {
-                var log = result.logs[i];
-
-                if (log.event == "AddBeneficiary") {
-                    // We found the event!
-                    console.log("AddBeneficiary:");
-                    console.log(log.args);
-                    // break;
-                    return Registry_instance.submitCustomer(account ,"customer 1","herzel 1 rishon-le-zion",{from: account});
-                }
-            }
-            assert.fail("can't add Beneficiary");
-        }).then(function (result) {
-            for (var i = 0; i < result.logs.length; i++) {
-                var log = result.logs[i];
-
-                if (log.event == "AddCustomer") {
-                    // We found the event!
-                    console.log("AddCustomer:");
-                    console.log(log.args);
-                    // break;
-                    return Registry_instance.getCustomer(account);
-                }
-            }
-            // console.log("submitBeneficiary:");
-            assert.fail("can't add customer");
-            // return Registry_instance.getCustomer(account);
-        }).then(function (customer) {
-            console.log("customer",customer);
-
-        }).catch(function(error) {
-            console.error(error);
-            assert.equal(error.toString(),'',
-                'Error detected')
-        });
-    });
-
+    // it("should be empty at the beginning", function() {
+    //     return Regulator.deployed().then(function(instance) {
+    //         return instance.getIssuerCounter.call();
+    //     }).then(function(amount_issuer_counter) {
+    //         assert.equal(amount_issuer_counter, 0, "Registry wasn't empty!");
+    //     }).catch(function(error) {
+    //         console.error(error);
+    //         assert.equal(error.toString(),'',
+    //             'Error detected')
+    //     });
+    // });
+    //
+    //
+    // it("should create all data at the beginning", function() {
+    //     var Registry_instance;
+    //     return Regulator.deployed().then(function(instance) {
+    //         Registry_instance = instance;
+    //         return Registry_instance.getOwner.call();
+    //     }).then(function (regulatorAddress) {
+    //         account=regulatorAddress;
+    //         console.log("regulatorAddress:"+account);
+    //         return Registry_instance.submitIssuer(account ,"בנק הפועלים","הנגב 11 תל-אביב",{from: account});
+    //     }).then(function (result) {
+    //         for (var i = 0; i < result.logs.length; i++) {
+    //             var log = result.logs[i];
+    //
+    //             if (log.event == "AddIssuer") {
+    //                 // We found the event!
+    //                 console.log("submitIssuer:");
+    //                 console.log(log.args);
+    //                 // break;
+    //                 return Registry_instance.submitBeneficiary(account ,"Beneficiary 1","herzel 2 tel-aviv",{from: account});
+    //         }
+    //     }
+    //     assert.fail("can't add issuer");
+    //     // console.log(tx_id);
+    //     }).then(function (result) {
+    //         for (var i = 0; i < result.logs.length; i++) {
+    //             var log = result.logs[i];
+    //
+    //             if (log.event == "AddBeneficiary") {
+    //                 // We found the event!
+    //                 console.log("AddBeneficiary:");
+    //                 console.log(log.args);
+    //                 // break;
+    //                 return Registry_instance.submitCustomer(account ,"customer 1","herzel 1 rishon-le-zion",{from: account});
+    //             }
+    //         }
+    //         assert.fail("can't add Beneficiary");
+    //     }).then(function (result) {
+    //         for (var i = 0; i < result.logs.length; i++) {
+    //             var log = result.logs[i];
+    //
+    //             if (log.event == "AddCustomer") {
+    //                 // We found the event!
+    //                 console.log("AddCustomer:");
+    //                 console.log(log.args);
+    //                 // break;
+    //                 return Registry_instance.getCustomer(account);
+    //             }
+    //         }
+    //         // console.log("submitBeneficiary:");
+    //         assert.fail("can't add customer");
+    //         // return Registry_instance.getCustomer(account);
+    //     }).then(function (customer) {
+    //         console.log("customer",customer);
+    //
+    //     }).catch(function(error) {
+    //         console.error(error);
+    //         assert.equal(error.toString(),'',
+    //             'Error detected')
+    //     });
+    // });
+    //
     it("should test  all data at the beginning", function() {
         var Registry_instance;
         return Regulator.deployed().then(function(instance) {
@@ -130,19 +130,21 @@ contract('Regulator', function(accounts) {
                 'Error detected')
         });
     });
-    
 
-    function createRequestEt( userAccount , bankAccount, benefAccount , purpose,
-                            amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) {
+
+    createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
+                       amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
+    {
         var StartDateEt=Math.floor((StartDate/1000));
         var EndDateEt=Math.floor((EndDate/1000));
         var purposeEt=web3.fromUtf8(purpose);
+        var fullnameEt=web3.fromUtf8(fullname);
         var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
 
-        return (GuaranteeRequest.new(bankAccount,benefAccount,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{from: userAccount}));
+        return (GuaranteeRequest.new(bankAccount,benefAccount,fullname,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{from: userAccount}));
     };
 
-    function submitRequestEt( userAccount ,guaranteeRequestInstance ,comments,) {
+    submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
         console.log("submitRequest:",userAccount,guaranteeRequestInstance.address);
         return guaranteeRequestInstance.submit(comments,{from: userAccount});
     };
@@ -161,7 +163,8 @@ contract('Regulator', function(accounts) {
 
 
 
-    function addRequestEt( userAccount , reqaddress) {
+    addRequestEt=( userAccount , reqaddress) =>
+    {
         return Regulator.deployed().then(function(instance) {
             return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
         }).catch(function(error) {
@@ -169,11 +172,11 @@ contract('Regulator', function(accounts) {
         });
     };
 
-    function getRequestStateEt( userAccount , guaranteeRequestInstance) {
+    getRequestStateEt=( userAccount , guaranteeRequestInstance) =>{
         return guaranteeRequestInstance.getRequestState.call({from: userAccount});
     };
 
-    function getGuarantyStateEt( userAccount , guaranteeInstance) {
+    getGuarantyStateEt =( userAccount , guaranteeInstance) =>{
         return guaranteeInstance.getGuaranteeState.call({from: userAccount});
     };
 
@@ -186,7 +189,7 @@ contract('Regulator', function(accounts) {
     }).then(function (regulatorAddress) {
         account=regulatorAddress;
          console.log("regulatorAddress:",account);
-        return createRequestEt(account,account,account," purpose test",1000,Date.now()/1000,Date.now()/1000+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+        return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now()/1000,Date.now()/1000+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
       }).then(function (instance) {
 
@@ -210,7 +213,7 @@ contract('Regulator', function(accounts) {
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
             console.log("regulatorAddress:",account);
-            return createRequestEt(account,account,account," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
         }).then(function (requestInstance) {
              if (requestInstance!=null) {
@@ -261,27 +264,29 @@ contract('Regulator', function(accounts) {
 
 
 
-    function getOneRequest (requestAddress)  {
-      /** Gets one guarantee requests by id */
-      /** parses the data and sends to UI */
-      return GuaranteeRequest.at(requestAddress)
-        .then(function(guaranteeRequestinstance)  {
-            console.log("getOneRequest:get data");
-            return guaranteeRequestinstance.getGuaranteeRequestData.call();
-        }).then(function(result) {
-            console.log("getOneRequest:", result);
-          return populateRequestData(result);
-      })
-    .catch(function(e)  {
-        console.log(e);
-      });
+
+
+    getOneRequest =(requestAddress)=>  {
+        /** Gets one guarantee requests by id */
+        /** parses the data and sends to UI */
+        return GuaranteeRequest.at(requestAddress)
+            .then(function(guaranteeRequestinstance)  {
+                // console.log("getOneRequest:get data");
+                return guaranteeRequestinstance.getGuaranteeRequestData.call();
+            }).then(function(result) {
+                // console.log("getOneRequest:", result);
+                return populateRequestData(result);
+            })
+            .catch(function(e)  {
+                console.log(e);
+            });
     };
-    
+
 
 
     getBeneficiaryData = (id) => {
         return beneficiaries[0];
-            // return populateBenefisiaryData([id,'test','addr test']);
+        // return populateBenefisiaryData([id,'test','addr test']);
 
     };
 
@@ -292,7 +297,7 @@ contract('Regulator', function(accounts) {
     };
 
 
-    function populateBenefisiaryData(benefisiaryID,resultArr)  {
+    populateBenefisiaryData=(benefisiaryID,resultArr) => {
 
 
         var ask= {
@@ -304,32 +309,34 @@ contract('Regulator', function(accounts) {
 
         return ask;
     };
-    
-    function populateRequestData(resultArr)  {
+
+    populateRequestData=(resultArr)=>  {
 
         const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
-      const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
-    
-      var ask= {
-        GRequestID: resultArr[0],
-        customer: resultArr[1],
-        beneficiary: resultArr[2],
-        bank: resultArr[3],
-        beneficiaryName: getBeneficiaryData(resultArr[2]).name,
-        purpose: resultArr[4],
-        amount: resultArr[5].valueOf(),
-        StartDate: startDate,
-        EndDate: endDate,
-        indexType: resultArr[8].valueOf(),
-        indexDate: resultArr[9].valueOf(),
-        requestState: resultArr[10].valueOf()
-      };
-         // console.log("request data:", ask);
+        const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
+        const proposal=web3.toUtf8( resultArr[5]);
+        const full_name=web3.toUtf8( resultArr[4]);
+
+        var ask= {
+            GRequestID: resultArr[0],
+            customer: resultArr[1],
+            beneficiary: resultArr[2],
+            bank: resultArr[3],
+            beneficiaryName: getBeneficiaryData(resultArr[2]).name,
+            purpose: proposal,
+            amount: resultArr[6].valueOf(),
+            StartDate: startDate,
+            EndDate: endDate,
+            indexType: resultArr[9].valueOf(),
+            indexDate: resultArr[10].valueOf(),
+            requestState: resultArr[11].valueOf()
+        };
+        // console.log("request data:", ask);
 
         return ask;
     };
 
-    function getAllBeneficiaries() {
+    getAllBeneficiaries=()=> {
         // function getAllUserRequests() {
         /** Gets all guarantee requests for customer */
         customerGuaranties=[];
@@ -351,7 +358,7 @@ contract('Regulator', function(accounts) {
             })
     };
 
-    function getAllIssuers() {
+    getAllIssuers=() =>{
         // function getAllUserRequests() {
         /** Gets all guarantee requests for customer */
         issuers=[];
@@ -374,7 +381,7 @@ contract('Regulator', function(accounts) {
     };
 
 
-    function getAllUserRequests() {
+    getAllUserRequests=() =>{
         // function getAllUserRequests() {
         /** Gets all guarantee requests for customer */
         customerGuaranties=[];
@@ -382,27 +389,27 @@ contract('Regulator', function(accounts) {
             .then(function (instance) {
                 return instance.getRequestAddressList.call({from: this.account});
             }).then(function (guaranteeAddresses) {
-                 console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
+                console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
                 return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
                     return new Promise(resolve =>
                         getOneRequest(guaranteeAddress).then((returneddata) => resolve(returneddata)));
                 }));
-                
+
 
             }).catch(function (error) {
                 console.error(error);
                 assert.equal(error.toString(), '',
                     'Error detected')
             })
-        };
+    };
     // });
 
-    function getOneBeneficiary (beneficiaryAddress)  {
+    getOneBeneficiary = (beneficiaryAddress) => {
         /** Gets one guarantee requests by id */
         /** parses the data and sends to UI */
         return Regulator.deployed()
             .then(function (instance) {
-                   return instance.getBeneficiary.call(beneficiaryAddress);
+                return instance.getBeneficiary.call(beneficiaryAddress);
             }).then(function(result) {
                 console.log("getBeneficiary:", result);
                 return populateBenefisiaryData(beneficiaryAddress,result);
@@ -430,7 +437,7 @@ contract('Regulator', function(accounts) {
             });
     };
 
-    function getAllUserGuarantees() {
+    getAllUserGuarantees=() =>{
         // function getAllUserRequests() {
         /** Gets all guarantee requests for customer */
         customerGuaranties=[];
@@ -438,7 +445,7 @@ contract('Regulator', function(accounts) {
             .then(function (instance) {
                 return instance.getGuaranteeAddressesList.call({from: this.account});
             }).then(function (guaranteeAddresses) {
-                 console.log("guaranteeAddresses[]:", guaranteeAddresses);
+                console.log("guaranteeAddresses[]:", guaranteeAddresses);
                 return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
                     return new Promise(resolve =>
                         getOneGuarantee(guaranteeAddress).then((returneddata) => resolve(returneddata)));
@@ -452,7 +459,7 @@ contract('Regulator', function(accounts) {
             })
     };
 
-    function getOneGuarantee (requestAddress)  {
+    getOneGuarantee =(requestAddress) => {
         /** Gets one guarantee requests by id */
         /** parses the data and sends to UI */
         return GuaranteeExtender.at(requestAddress)
@@ -460,7 +467,7 @@ contract('Regulator', function(accounts) {
                 // console.log("getOneGuarantee:get data");
                 return guaranteeExtenderInstance.getGuaranteeData.call();
             }).then(function(result) {
-                 // console.log("getOneGuarantee:", result);
+                // console.log("getOneGuarantee:", result);
                 return populateGuaranteeData(result);
             })
             .catch(function(e)  {
@@ -469,10 +476,10 @@ contract('Regulator', function(accounts) {
     };
 
 
-    function getOneIssuer (issuerAddress)  {
+    getOneIssuer= (issuerAddress) => {
         /** Gets one guarantee requests by id */
         /** parses the data and sends to UI */
-        
+
         return Regulator.deployed()
             .then(function (instance) {
                 return instance.getIssuer.call(issuerAddress);
@@ -486,7 +493,7 @@ contract('Regulator', function(accounts) {
             });
     };
 
-    function populateIssuerAddressData(issuerId,resultArr)  {
+    populateIssuerAddressData=(issuerId,resultArr)=>  {
 
 
         var ask= {
@@ -499,10 +506,10 @@ contract('Regulator', function(accounts) {
 
         return ask;
     };
-    
-    function populateCustomerAddressData(customerID,resultArr)  {
 
-        
+    populateCustomerAddressData=(customerID,resultArr) => {
+
+
         var ask= {
             customerID: customerID,
             Name: resultArr[0],
@@ -513,35 +520,59 @@ contract('Regulator', function(accounts) {
 
         return ask;
     };
-        
-    function populateGuaranteeData(resultArr)  {
+
+    populateGuaranteeData=(resultArr) => {
         // console.log("populateGuaranteeData",resultArr);
-        const startDate = (new Date(resultArr[7].valueOf() * 1000) ).toDateString();
-        const endDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
-        const indexDate=resultArr[10].valueOf();
-        const proposal=web3.toUtf8( resultArr[5]);
-        const state= resultArr[11].valueOf();
+        const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
+        const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
+        const indexDate=resultArr[11].valueOf();
+        const proposal=web3.toUtf8( resultArr[6]);
+        const full_name=web3.toUtf8( resultArr[5]);
+        const state= resultArr[12].valueOf();
         var ask= {
             GuaranteeID: resultArr[0],
             GRequestID: resultArr[1],
             customer: resultArr[2],
             beneficiary: resultArr[4],
             bank: resultArr[3],
-            customerName: getOneCustomerData(resultArr[2]).Name,
+            customerName: full_name,
             StartDate: startDate,
             EndDate: endDate,
-            amount: resultArr[6].valueOf(),
+            amount: resultArr[7].valueOf(),
             purpose: proposal,
-            indexType: resultArr[9].valueOf(),
+            indexType: resultArr[10].valueOf(),
             indexDate: indexDate.valueOf(),
             guaranteeState: state.valueOf()
         };
 
 
-         console.log("populateGuaranteeData:", ask);
+        console.log("populateGuaranteeData:", ask);
 
         return ask;
     };
+
+
+     populateHistoryLineData=(event, args)=> {
+        const pDate = (new Date(args.timestamp.valueOf() * 1000) ).toDateString();
+        const state =args.curentstatus.valueOf();
+        var comment_ = args.commentline;
+        if (typeof(comment_) == "undefined") {
+            comment_ =""
+        }
+
+        var ask= {
+            eventname:event,
+            date: pDate,
+            state: state,
+            comment: comment_
+
+
+        };
+
+        return ask;
+    };
+
+
 
     it("should check Requests array ", function() {
         getAllUserRequests()
@@ -646,7 +677,7 @@ contract('Regulator', function(accounts) {
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
             console.log("regulatorAddress:",account);
-            return createRequestEt(account,account,account," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
         }).then(function (requestInstance) {
             if (requestInstance!=null) {
@@ -706,6 +737,75 @@ contract('Regulator', function(accounts) {
         });
     });
 
+    it("should reject request  ", function() {
+        var Regulator_instance;
+        var requestInstanceTmp;
+        return Regulator.deployed().then(function(instance) {
+            Regulator_instance = instance;
+            return Regulator_instance.getOwner.call();
+        }).then(function (regulatorAddress) {
+            account=regulatorAddress;
+            console.log("regulatorAddress:",account);
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
+        }).then(function (requestInstance) {
+            if (requestInstance!=null) {
+                requestInstanceTmp=getGuaranteeRequestInstance(requestInstance.address);
+                console.log("createRequest 2 result", requestInstance.address);
+                return addRequestEt(account, requestInstance.address);
+            }
+            else {
+
+                throw "can't create request!";
+            }
+        }).then(function(result) {
+            return getRequestStateEt(account,requestInstanceTmp);
+        }).then(function(result) {
+
+            assert.equal(result.valueOf(),0,
+                'Error in submision getRequestState should be 0');
+            // }).then(function(result) {
+            return submitRequestEt(account,requestInstanceTmp,'');
+        }).then(function(result) {
+            // console.log("submitRequest 2 result :",result);
+
+            // assert.equal(result.toString(),'true',
+            //     'Error in submision detected')
+            return getRequestStateEt(account,requestInstanceTmp);
+        }).then(function(result) {
+            // console.log("getRequestState  result :",result);
+
+            assert.equal(result.valueOf(),1,
+                'Error in submision detected')
+            return updateRequestEt(requestInstanceTmp ,' comment',2);
+        }).then(function(result) {
+
+            return getRequestStateEt(account,requestInstanceTmp);
+        }).then(function(result) {
+            // console.log("getRequestState  result :",result);
+
+            assert.equal(result.valueOf(),2,
+                'Error in change state detected')
+            // console.log("getRequestState  result :",result);
+            //     return requestInstanceTmp.accept();
+            return rejectRequestEt(requestInstanceTmp,"coment" );
+        }).then(function(result) {
+
+            return getRequestStateEt(account,requestInstanceTmp);
+        }).then(function(result) {
+            // console.log("getRequestState  result :",result);
+
+            assert.equal(result.valueOf(),8,
+                'Error in accept detected')
+
+        }).catch(function(error) {
+
+            console.error(error);
+            assert.equal(error.toString(),'',
+                'Error detected')
+        });
+    });
+
     it("should create  guarantee ", function() {
         var Regulator_instance;
         var requestInstanceTmp;
@@ -715,7 +815,7 @@ contract('Regulator', function(accounts) {
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
             console.log("regulatorAddress:",account);
-            return createRequestEt(account,account,account," purpose test",1000,Date.now()/1000,Date.now()/1000+10000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now()/1000,Date.now()/1000+10000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
         }).then(function (requestInstance) {
             if (requestInstance!=null) {
@@ -780,41 +880,46 @@ contract('Regulator', function(accounts) {
         });
     });
 
-    it("should  check change  guarantee ", function() {
-            var Regulator_instance;
-            var requestInstanceTmp;
-            return Regulator.deployed().then(function (instance) {
-                Regulator_instance = instance;
-                return Regulator_instance.getOwner.call();
-            }).then(function (regulatorAddress) {
-                account = regulatorAddress;
 
-                // console.log("getRequestState  result :",result);
-                // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
-                return getAllUserGuarantees();
-            }).then(function (result) {
-                        console.log("guarentees list before change:", result);console.log("guarentees list: after terminate", result);
-                        assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
 
-                return changeGuaranteeEt(result[0].GuaranteeID, 25550,  Date.now()/1000 + 222000);
-            }).then(function (result) {
-                console.log("guarentees list after change:", result);
-                return getAllUserGuarantees();
-            }).then(function (result) {
-                console.log("guarentees list before change:", result);
-                assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
-                return getAllUserRequests();
-            }).then(function (result) {
-                console.log("guarentees list before change:", result);
-                assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
 
-            }).catch(function (error) {
 
-                console.error(error);
-                assert.equal(error.toString(), '',
-                    'Error detected')
-            });
-        });
+
+    // it("should  check change  guarantee ", function() {
+    //         var Regulator_instance;
+    //         var requestInstanceTmp;
+    //         return Regulator.deployed().then(function (instance) {
+    //             Regulator_instance = instance;
+    //             return Regulator_instance.getOwner.call();
+    //         }).then(function (regulatorAddress) {
+    //             account = regulatorAddress;
+    //
+    //             // console.log("getRequestState  result :",result);
+    //             // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
+    //             return getAllUserGuarantees();
+    //         }).then(function (result) {
+    //                     console.log("guarentees list before change:", result);console.log("guarentees list: after terminate", result);
+    //                     assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
+    //
+    //             return changeGuaranteeEt(result[0].GuaranteeID, 25550,  Date.now()/1000 + 222000);
+    //         }).then(function (result) {
+    //             console.log("guarentees list after change:", result);
+    //             return getAllUserGuarantees();
+    //         }).then(function (result) {
+    //             console.log("guarentees list before change:", result);
+    //             assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
+    //             return getAllUserRequests();
+    //         }).then(function (result) {
+    //             console.log("guarentees list before change:", result);
+    //             assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
+    //
+    //         }).catch(function (error) {
+    //
+    //             console.error(error);
+    //             assert.equal(error.toString(), '',
+    //                 'Error detected')
+    //         });
+    //     });
 
     it("should  terminate  guarantee ", function() {
         var Regulator_instance;
@@ -856,9 +961,122 @@ contract('Regulator', function(accounts) {
         });
     });
 
-    
 
 
+    getGuarantyHistoryEt2 = (requestAddress) =>  {
+        var requestevents=[];
+        return Regulator.deployed().then(function(instance) {
+            var guaranteeRequest = GuaranteeRequest.at(requestAddress);
+            var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
+
+            return  allevents.get(function (error, result) {
+
+                // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+                console.log("getGuarantyHistoryEt2",error, result);
+                for (var i = result.length - 1; i >= 0; i--) {
+                    var cur_result = result[i];
+                    requestevents.push( populateHistoryLineData(cur_result.event,cur_result.args))
+                }
+                console.log("getGuarantyHistoryEt2 return ",requestevents);
+                return requestevents;
+            })
+        }).catch(function (error) {
+            console.log("getGuarantyHistoryEt2",error);
+
+            throw error;
+        });
+    },
+
+    //     getGuarantyHistoryEt3 = (requestAddress) =>  {
+    //         var requestevents=[];
+    //         return new Promise((resolve) => {
+    //
+    //             var guaranteeRequest = GuaranteeRequest.at(requestAddress);
+    //             var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
+    //
+    //             return allevents.get(function (error, result) {
+    //
+    //                 // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+    //                 console.log("getGuarantyHistoryEt2", error, result);
+    //                 for (var i = result.length - 1; i >= 0; i--) {
+    //                     var cur_result = result[i];
+    //                     requestevents.push(populateHistoryLineData(cur_result.event, cur_result.args))
+    //                 }
+    //                 console.log("getGuarantyHistoryEt2 return ", requestevents);
+    //                 var replay =
+    //                 {
+    //                     shortrequest: requestAddress,
+    //                     log: requestevents
+    //                 };
+    //
+    //                 resolve(replay);
+    //             })
+    //         })
+    //         // }).catch(function (error) {
+    //         //     console.log("getGuarantyHistoryEt2",error);
+    //         //
+    //         //     throw error;
+    //         // });
+    //     },
+
+        getGuarantyHistoryEt = (requestAddress) => {
+
+        return new Promise((resolve) => {
+
+
+            var requestevents = [];
+            var guaranteeRequest = GuaranteeRequest.at(requestAddress);
+            var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
+
+            return allevents.get(function (error, result) {
+
+                // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+                for (var i = result.length - 1; i >= 0; i--) {
+                    var cur_result = result[i];
+                    requestevents.push(populateHistoryLineData(cur_result.event, cur_result.args))
+                }
+
+                var replay=
+                {
+                    shortrequest: requestAddress,
+                    log: requestevents
+                  };
+                    
+                resolve(replay);
+
+            })
+        })
+    },
+
+        // requestevents = [...requestevents, populateHistoryLineData(cur_result)];
+
+
+
+
+    it("should  check guaranty  history ", function() {
+        var Regulator_instance;
+        var requestInstanceTmp;
+        return Regulator.deployed().then(function (instance) {
+            Regulator_instance = instance;
+            return Regulator_instance.getOwner.call();
+        }).then(function (regulatorAddress) {
+            account = regulatorAddress;
+
+            // console.log("getRequestState  result :",result);
+            // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
+            return getAllUserRequests();
+        }).then(function (result) {
+            return getGuarantyHistoryEt(result[0].GRequestID);
+        }).then(function (result) {
+            console.log("history list ", result);
+
+        }).catch(function (error) {
+
+            console.error(error);
+            assert.equal(error.toString(), '',
+                'Error detected')
+        });
+    });
 
 
 

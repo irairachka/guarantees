@@ -9,6 +9,7 @@ export interface GRequest {
   StartDate: string;
   EndDate: string;
   amount: number;
+  fullName: string;
   purpose: string;
   indexType: IndexType;
   indexDate: number;
@@ -23,6 +24,7 @@ export interface ExpandedRequest {
 
 
 export interface RequestFlowLog{
+  eventname:string;
   date: string;
   state: RequestState;
   comment: string;
@@ -39,6 +41,7 @@ export interface Guarantee {
   StartDate: string;
   EndDate: string;
   amount: number;
+  fullName: string;
   purpose: string;
   indexType: IndexType;
   indexDate: number;

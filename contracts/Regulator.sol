@@ -50,19 +50,16 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-  address []   guaranteeRequest;
 
-
-
- //   event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
+    event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
 //        owner = msg.sender;
-//
 
 
-//        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
-//        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
-//        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
+
+        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
+        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
+        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
         RegulatoryContractDeployed(msg.sender,"Mined",now);
     }
 
@@ -128,13 +125,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
     }
 
-    function getIssuerById(uint _id) constant public returns(string , string , address , issuerStatus )  {
 
-        if(_id >= issuerList.length) {
-            throw;
-        }
-        return  getIssuer([issuerList[_id]]);
-    }
 
 
 
@@ -168,12 +159,6 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         ger.changeRequested( _newamount,  _newendDate);
         return true;
     }
-
-//    function submit(string comment) onlyCustomer public returns (bool result) ;
-//    function termination(string comment) onlyBeneficiary public returns (bool result);
-//    function reject(string comment) onlyBank public returns (bool result);
-//    function withdrawal(string comment) onlyCustomer public returns (bool result);
-//    function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);
 
 
 

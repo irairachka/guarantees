@@ -49,17 +49,18 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
     }
 
 
-    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState)
+    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary,bytes32 _full_name, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState)
     {
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
 
 //        ( , _customer, _bank,  _beneficiary,  _purpose, _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
-        ( , , ,  _beneficiary, _purpose , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
+        ( , , ,  , _full_name, _purpose , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
 
         _guaranteeRequest=guaranteeRequestExtender;
         _contract_id=getId();
         _customer=gr.getCustomer();
         _bank=gr.getBank();
+        _beneficiary=gr.getBeneficiary();
         _guaranteeState=getGuaranteeState();
 
     }

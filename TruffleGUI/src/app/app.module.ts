@@ -26,7 +26,8 @@ import { HistoryComponent } from './components/history/history.component';
 import {ActionsComponent} from "./components/actions/actions.component";
 import {AccordionContentComponent} from "./components/accordion-content/accordion-content.component";
 import {StatusIconComponent} from "./components/status-icon/status-icon.component";
-import {EtheriumService} from "./services/mock-etherium.service";
+import {EtheriumService} from "./services/real-etherium.service";
+import {MockService} from "./services/mock-etherium.service";
 
 @NgModule({
   imports: [
@@ -64,6 +65,7 @@ import {EtheriumService} from "./services/mock-etherium.service";
   ],
   providers: [
     MessageService,
+    MockService,
     EtheriumService
   ],
   bootstrap: [AppComponent]

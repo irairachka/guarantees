@@ -95,7 +95,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     //    function getAddresses() constant returns (Addresses);
 
     function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
-    bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status);
+    bytes32 _full_name ,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status);
     function getProposalIPFSHash() constant public returns (bytes _proposalIPFSHash);
 
 //    function checkRegulator() constant public returns (bool) {
@@ -115,7 +115,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     }
 
     function submit(string comment) onlyCustomer public returns (bool result) ;
-    function reject(string comment) onlyBank public returns (bool result);
+    function reject(string comment)  public returns (bool result);
     function accept() onlyRegulator public returns (bool result);
     function withdrawal(string comment) onlyCustomer public returns (bool result);
     function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);

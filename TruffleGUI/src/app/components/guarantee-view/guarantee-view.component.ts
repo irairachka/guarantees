@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GRequest, Guarantee} from "../../interfaces/request";
-import {EtheriumService} from "../../services/mock-etherium.service";
+import {EtheriumService} from "../../services/real-etherium.service";
 
 
 @Component({
