@@ -208,7 +208,7 @@
       "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/IssuerManager.sol",
       "exportedSymbols": {
         "IssuerManager": [
-          1780
+          1778
         ]
       }
     },
@@ -222,39 +222,39 @@
             ".0"
           ]
         },
-        "id": 1622,
+        "id": 1620,
         "name": "PragmaDirective",
         "src": "0:23:7"
       },
       {
         "attributes": {
-          "SourceUnit": 1890,
+          "SourceUnit": 1888,
           "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/Ownable.sol",
           "file": "./Ownable.sol",
-          "scope": 1781,
+          "scope": 1779,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 1623,
+        "id": 1621,
         "name": "ImportDirective",
         "src": "25:23:7"
       },
       {
         "attributes": {
           "contractDependencies": [
-            1889
+            1887
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
-            1780,
-            1889
+            1778,
+            1887
           ],
           "name": "IssuerManager",
-          "scope": 1781
+          "scope": 1779
         },
         "children": [
           {
@@ -268,15 +268,15 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "Ownable",
-                  "referencedDeclaration": 1889,
+                  "referencedDeclaration": 1887,
                   "type": "contract Ownable"
                 },
-                "id": 1624,
+                "id": 1622,
                 "name": "UserDefinedTypeName",
                 "src": "77:7:7"
               }
             ],
-            "id": 1625,
+            "id": 1623,
             "name": "InheritanceSpecifier",
             "src": "77:7:7"
           },
@@ -290,7 +290,7 @@
                 "attributes": {
                   "name": "submited"
                 },
-                "id": 1626,
+                "id": 1624,
                 "name": "EnumValue",
                 "src": "111:8:7"
               },
@@ -298,7 +298,7 @@
                 "attributes": {
                   "name": "accepted"
                 },
-                "id": 1627,
+                "id": 1625,
                 "name": "EnumValue",
                 "src": "122:8:7"
               },
@@ -306,12 +306,12 @@
                 "attributes": {
                   "name": "rejected"
                 },
-                "id": 1628,
+                "id": 1626,
                 "name": "EnumValue",
                 "src": "132:8:7"
               }
             ],
-            "id": 1629,
+            "id": 1627,
             "name": "EnumDefinition",
             "src": "91:51:7"
           },
@@ -319,7 +319,7 @@
             "attributes": {
               "canonicalName": "IssuerManager.Issuer",
               "name": "Issuer",
-              "scope": 1780,
+              "scope": 1778,
               "visibility": "public"
             },
             "children": [
@@ -327,7 +327,33 @@
                 "attributes": {
                   "constant": false,
                   "name": "name",
-                  "scope": 1636,
+                  "scope": 1634,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "string storage pointer",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "string",
+                      "type": "string storage pointer"
+                    },
+                    "id": 1628,
+                    "name": "ElementaryTypeName",
+                    "src": "204:6:7"
+                  }
+                ],
+                "id": 1629,
+                "name": "VariableDeclaration",
+                "src": "204:11:7"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "localAddress",
+                  "scope": 1634,
                   "stateVariable": false,
                   "storageLocation": "default",
                   "type": "string storage pointer",
@@ -342,36 +368,10 @@
                     },
                     "id": 1630,
                     "name": "ElementaryTypeName",
-                    "src": "204:6:7"
-                  }
-                ],
-                "id": 1631,
-                "name": "VariableDeclaration",
-                "src": "204:11:7"
-              },
-              {
-                "attributes": {
-                  "constant": false,
-                  "name": "localAddress",
-                  "scope": 1636,
-                  "stateVariable": false,
-                  "storageLocation": "default",
-                  "type": "string storage pointer",
-                  "value": null,
-                  "visibility": "internal"
-                },
-                "children": [
-                  {
-                    "attributes": {
-                      "name": "string",
-                      "type": "string storage pointer"
-                    },
-                    "id": 1632,
-                    "name": "ElementaryTypeName",
                     "src": "221:6:7"
                   }
                 ],
-                "id": 1633,
+                "id": 1631,
                 "name": "VariableDeclaration",
                 "src": "221:19:7"
               },
@@ -379,7 +379,7 @@
                 "attributes": {
                   "constant": false,
                   "name": "addr",
-                  "scope": 1636,
+                  "scope": 1634,
                   "stateVariable": false,
                   "storageLocation": "default",
                   "type": "address",
@@ -392,17 +392,17 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 1634,
+                    "id": 1632,
                     "name": "ElementaryTypeName",
                     "src": "246:7:7"
                   }
                 ],
-                "id": 1635,
+                "id": 1633,
                 "name": "VariableDeclaration",
                 "src": "246:12:7"
               }
             ],
-            "id": 1636,
+            "id": 1634,
             "name": "StructDefinition",
             "src": "184:146:7"
           },
@@ -410,7 +410,7 @@
             "attributes": {
               "constant": false,
               "name": "issuers",
-              "scope": 1780,
+              "scope": 1778,
               "stateVariable": true,
               "storageLocation": "default",
               "type": "mapping(address => struct IssuerManager.Issuer storage ref)",
@@ -428,7 +428,7 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 1637,
+                    "id": 1635,
                     "name": "ElementaryTypeName",
                     "src": "387:7:7"
                   },
@@ -436,20 +436,20 @@
                     "attributes": {
                       "contractScope": null,
                       "name": "Issuer",
-                      "referencedDeclaration": 1636,
+                      "referencedDeclaration": 1634,
                       "type": "struct IssuerManager.Issuer storage pointer"
                     },
-                    "id": 1638,
+                    "id": 1636,
                     "name": "UserDefinedTypeName",
                     "src": "396:6:7"
                   }
                 ],
-                "id": 1639,
+                "id": 1637,
                 "name": "Mapping",
                 "src": "378:25:7"
               }
             ],
-            "id": 1640,
+            "id": 1638,
             "name": "VariableDeclaration",
             "src": "378:40:7"
           },
@@ -457,7 +457,7 @@
             "attributes": {
               "constant": false,
               "name": "issuerList",
-              "scope": 1780,
+              "scope": 1778,
               "stateVariable": true,
               "storageLocation": "default",
               "type": "address[] storage ref",
@@ -476,17 +476,17 @@
                       "name": "address",
                       "type": "address"
                     },
-                    "id": 1641,
+                    "id": 1639,
                     "name": "ElementaryTypeName",
                     "src": "424:7:7"
                   }
                 ],
-                "id": 1642,
+                "id": 1640,
                 "name": "ArrayTypeName",
                 "src": "424:12:7"
               }
             ],
-            "id": 1643,
+            "id": 1641,
             "name": "VariableDeclaration",
             "src": "424:23:7"
           },
@@ -503,7 +503,34 @@
                       "constant": false,
                       "indexed": false,
                       "name": "msgSender",
-                      "scope": 1653,
+                      "scope": 1651,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "type": "address"
+                        },
+                        "id": 1642,
+                        "name": "ElementaryTypeName",
+                        "src": "472:7:7"
+                      }
+                    ],
+                    "id": 1643,
+                    "name": "VariableDeclaration",
+                    "src": "472:17:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "name": "issuerAdr",
+                      "scope": 1651,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -518,37 +545,10 @@
                         },
                         "id": 1644,
                         "name": "ElementaryTypeName",
-                        "src": "472:7:7"
-                      }
-                    ],
-                    "id": 1645,
-                    "name": "VariableDeclaration",
-                    "src": "472:17:7"
-                  },
-                  {
-                    "attributes": {
-                      "constant": false,
-                      "indexed": false,
-                      "name": "issuerAdr",
-                      "scope": 1653,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "address",
-                      "value": null,
-                      "visibility": "internal"
-                    },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "address",
-                          "type": "address"
-                        },
-                        "id": 1646,
-                        "name": "ElementaryTypeName",
                         "src": "490:7:7"
                       }
                     ],
-                    "id": 1647,
+                    "id": 1645,
                     "name": "VariableDeclaration",
                     "src": "490:17:7"
                   },
@@ -557,7 +557,7 @@
                       "constant": false,
                       "indexed": false,
                       "name": "msgstr",
-                      "scope": 1653,
+                      "scope": 1651,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "string memory",
@@ -570,12 +570,12 @@
                           "name": "string",
                           "type": "string storage pointer"
                         },
-                        "id": 1648,
+                        "id": 1646,
                         "name": "ElementaryTypeName",
                         "src": "508:6:7"
                       }
                     ],
-                    "id": 1649,
+                    "id": 1647,
                     "name": "VariableDeclaration",
                     "src": "508:13:7"
                   },
@@ -584,7 +584,7 @@
                       "constant": false,
                       "indexed": false,
                       "name": "timestamp",
-                      "scope": 1653,
+                      "scope": 1651,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -597,22 +597,22 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 1650,
+                        "id": 1648,
                         "name": "ElementaryTypeName",
                         "src": "522:4:7"
                       }
                     ],
-                    "id": 1651,
+                    "id": 1649,
                     "name": "VariableDeclaration",
                     "src": "522:14:7"
                   }
                 ],
-                "id": 1652,
+                "id": 1650,
                 "name": "ParameterList",
                 "src": "471:66:7"
               }
             ],
-            "id": 1653,
+            "id": 1651,
             "name": "EventDefinition",
             "src": "455:83:7"
           },
@@ -623,7 +623,7 @@
               "isConstructor": false,
               "name": "submitIssuer",
               "payable": false,
-              "scope": 1780,
+              "scope": 1778,
               "visibility": "public"
             },
             "children": [
@@ -633,7 +633,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_addr",
-                      "scope": 1704,
+                      "scope": 1702,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -646,12 +646,12 @@
                           "name": "address",
                           "type": "address"
                         },
-                        "id": 1654,
+                        "id": 1652,
                         "name": "ElementaryTypeName",
                         "src": "566:7:7"
                       }
                     ],
-                    "id": 1655,
+                    "id": 1653,
                     "name": "VariableDeclaration",
                     "src": "566:13:7"
                   },
@@ -659,7 +659,33 @@
                     "attributes": {
                       "constant": false,
                       "name": "_name",
-                      "scope": 1704,
+                      "scope": 1702,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 1654,
+                        "name": "ElementaryTypeName",
+                        "src": "582:6:7"
+                      }
+                    ],
+                    "id": 1655,
+                    "name": "VariableDeclaration",
+                    "src": "582:12:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_localAddres",
+                      "scope": 1702,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "string memory",
@@ -674,41 +700,15 @@
                         },
                         "id": 1656,
                         "name": "ElementaryTypeName",
-                        "src": "582:6:7"
+                        "src": "596:6:7"
                       }
                     ],
                     "id": 1657,
                     "name": "VariableDeclaration",
-                    "src": "582:12:7"
-                  },
-                  {
-                    "attributes": {
-                      "constant": false,
-                      "name": "_localAddres",
-                      "scope": 1704,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "string memory",
-                      "value": null,
-                      "visibility": "internal"
-                    },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "string",
-                          "type": "string storage pointer"
-                        },
-                        "id": 1658,
-                        "name": "ElementaryTypeName",
-                        "src": "596:6:7"
-                      }
-                    ],
-                    "id": 1659,
-                    "name": "VariableDeclaration",
                     "src": "596:19:7"
                   }
                 ],
-                "id": 1660,
+                "id": 1658,
                 "name": "ParameterList",
                 "src": "565:51:7"
               },
@@ -719,7 +719,7 @@
                   ]
                 },
                 "children": [],
-                "id": 1663,
+                "id": 1661,
                 "name": "ParameterList",
                 "src": "634:0:7"
               },
@@ -736,16 +736,16 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 1853,
+                      "referencedDeclaration": 1851,
                       "type": "modifier ()",
                       "value": "onlyOwner"
                     },
-                    "id": 1661,
+                    "id": 1659,
                     "name": "Identifier",
                     "src": "617:9:7"
                   }
                 ],
-                "id": 1662,
+                "id": 1660,
                 "name": "ModifierInvocation",
                 "src": "617:9:7"
               },
@@ -754,7 +754,7 @@
                   {
                     "attributes": {
                       "assignments": [
-                        1665
+                        1663
                       ]
                     },
                     "children": [
@@ -762,7 +762,7 @@
                         "attributes": {
                           "constant": false,
                           "name": "issuer",
-                          "scope": 1704,
+                          "scope": 1702,
                           "stateVariable": false,
                           "storageLocation": "default",
                           "type": "struct IssuerManager.Issuer storage pointer",
@@ -774,15 +774,15 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "Issuer",
-                              "referencedDeclaration": 1636,
+                              "referencedDeclaration": 1634,
                               "type": "struct IssuerManager.Issuer storage pointer"
                             },
-                            "id": 1664,
+                            "id": 1662,
                             "name": "UserDefinedTypeName",
                             "src": "645:6:7"
                           }
                         ],
-                        "id": 1665,
+                        "id": 1663,
                         "name": "VariableDeclaration",
                         "src": "645:14:7"
                       },
@@ -802,11 +802,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1640,
+                              "referencedDeclaration": 1638,
                               "type": "mapping(address => struct IssuerManager.Issuer storage ref)",
                               "value": "issuers"
                             },
-                            "id": 1666,
+                            "id": 1664,
                             "name": "Identifier",
                             "src": "662:7:7"
                           },
@@ -816,21 +816,21 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1655,
+                              "referencedDeclaration": 1653,
                               "type": "address",
                               "value": "_addr"
                             },
-                            "id": 1667,
+                            "id": 1665,
                             "name": "Identifier",
                             "src": "670:5:7"
                           }
                         ],
-                        "id": 1668,
+                        "id": 1666,
                         "name": "IndexAccess",
                         "src": "662:14:7"
                       }
                     ],
-                    "id": 1669,
+                    "id": 1667,
                     "name": "VariableDeclarationStatement",
                     "src": "645:31:7"
                   },
@@ -855,7 +855,7 @@
                               "isPure": false,
                               "lValueRequested": true,
                               "member_name": "name",
-                              "referencedDeclaration": 1631,
+                              "referencedDeclaration": 1629,
                               "type": "string storage ref"
                             },
                             "children": [
@@ -865,16 +865,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1665,
+                                  "referencedDeclaration": 1663,
                                   "type": "struct IssuerManager.Issuer storage pointer",
                                   "value": "issuer"
                                 },
-                                "id": 1670,
+                                "id": 1668,
                                 "name": "Identifier",
                                 "src": "686:6:7"
                               }
                             ],
-                            "id": 1672,
+                            "id": 1670,
                             "name": "MemberAccess",
                             "src": "686:11:7"
                           },
@@ -884,21 +884,21 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1657,
+                              "referencedDeclaration": 1655,
                               "type": "string memory",
                               "value": "_name"
                             },
-                            "id": 1673,
+                            "id": 1671,
                             "name": "Identifier",
                             "src": "702:5:7"
                           }
                         ],
-                        "id": 1674,
+                        "id": 1672,
                         "name": "Assignment",
                         "src": "686:21:7"
                       }
                     ],
-                    "id": 1675,
+                    "id": 1673,
                     "name": "ExpressionStatement",
                     "src": "686:21:7"
                   },
@@ -923,7 +923,7 @@
                               "isPure": false,
                               "lValueRequested": true,
                               "member_name": "localAddress",
-                              "referencedDeclaration": 1633,
+                              "referencedDeclaration": 1631,
                               "type": "string storage ref"
                             },
                             "children": [
@@ -933,16 +933,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1665,
+                                  "referencedDeclaration": 1663,
                                   "type": "struct IssuerManager.Issuer storage pointer",
                                   "value": "issuer"
                                 },
-                                "id": 1676,
+                                "id": 1674,
                                 "name": "Identifier",
                                 "src": "717:6:7"
                               }
                             ],
-                            "id": 1678,
+                            "id": 1676,
                             "name": "MemberAccess",
                             "src": "717:19:7"
                           },
@@ -952,21 +952,21 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1659,
+                              "referencedDeclaration": 1657,
                               "type": "string memory",
                               "value": "_localAddres"
                             },
-                            "id": 1679,
+                            "id": 1677,
                             "name": "Identifier",
                             "src": "742:12:7"
                           }
                         ],
-                        "id": 1680,
+                        "id": 1678,
                         "name": "Assignment",
                         "src": "717:37:7"
                       }
                     ],
-                    "id": 1681,
+                    "id": 1679,
                     "name": "ExpressionStatement",
                     "src": "717:37:7"
                   },
@@ -991,7 +991,7 @@
                               "isPure": false,
                               "lValueRequested": true,
                               "member_name": "addr",
-                              "referencedDeclaration": 1635,
+                              "referencedDeclaration": 1633,
                               "type": "address"
                             },
                             "children": [
@@ -1001,16 +1001,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1665,
+                                  "referencedDeclaration": 1663,
                                   "type": "struct IssuerManager.Issuer storage pointer",
                                   "value": "issuer"
                                 },
-                                "id": 1682,
+                                "id": 1680,
                                 "name": "Identifier",
                                 "src": "764:6:7"
                               }
                             ],
-                            "id": 1684,
+                            "id": 1682,
                             "name": "MemberAccess",
                             "src": "764:11:7"
                           },
@@ -1020,21 +1020,21 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1655,
+                              "referencedDeclaration": 1653,
                               "type": "address",
                               "value": "_addr"
                             },
-                            "id": 1685,
+                            "id": 1683,
                             "name": "Identifier",
                             "src": "778:5:7"
                           }
                         ],
-                        "id": 1686,
+                        "id": 1684,
                         "name": "Assignment",
                         "src": "764:19:7"
                       }
                     ],
-                    "id": 1687,
+                    "id": 1685,
                     "name": "ExpressionStatement",
                     "src": "764:19:7"
                   },
@@ -1078,16 +1078,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1643,
+                                  "referencedDeclaration": 1641,
                                   "type": "address[] storage ref",
                                   "value": "issuerList"
                                 },
-                                "id": 1688,
+                                "id": 1686,
                                 "name": "Identifier",
                                 "src": "842:10:7"
                               }
                             ],
-                            "id": 1690,
+                            "id": 1688,
                             "name": "MemberAccess",
                             "src": "842:15:7"
                           },
@@ -1097,21 +1097,21 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1655,
+                              "referencedDeclaration": 1653,
                               "type": "address",
                               "value": "_addr"
                             },
-                            "id": 1691,
+                            "id": 1689,
                             "name": "Identifier",
                             "src": "858:5:7"
                           }
                         ],
-                        "id": 1692,
+                        "id": 1690,
                         "name": "FunctionCall",
                         "src": "842:22:7"
                       }
                     ],
-                    "id": 1693,
+                    "id": 1691,
                     "name": "ExpressionStatement",
                     "src": "842:22:7"
                   },
@@ -1155,11 +1155,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1653,
+                              "referencedDeclaration": 1651,
                               "type": "function (address,address,string memory,uint256) constant",
                               "value": "AddIssuer"
                             },
-                            "id": 1694,
+                            "id": 1692,
                             "name": "Identifier",
                             "src": "875:9:7"
                           },
@@ -1181,16 +1181,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2194,
+                                  "referencedDeclaration": 2213,
                                   "type": "msg",
                                   "value": "msg"
                                 },
-                                "id": 1695,
+                                "id": 1693,
                                 "name": "Identifier",
                                 "src": "885:3:7"
                               }
                             ],
-                            "id": 1696,
+                            "id": 1694,
                             "name": "MemberAccess",
                             "src": "885:10:7"
                           },
@@ -1200,11 +1200,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1655,
+                              "referencedDeclaration": 1653,
                               "type": "address",
                               "value": "_addr"
                             },
-                            "id": 1697,
+                            "id": 1695,
                             "name": "Identifier",
                             "src": "897:5:7"
                           },
@@ -1214,11 +1214,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1657,
+                              "referencedDeclaration": 1655,
                               "type": "string memory",
                               "value": "_name"
                             },
-                            "id": 1698,
+                            "id": 1696,
                             "name": "Identifier",
                             "src": "904:5:7"
                           },
@@ -1240,36 +1240,36 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2193,
+                                  "referencedDeclaration": 2212,
                                   "type": "block",
                                   "value": "block"
                                 },
-                                "id": 1699,
+                                "id": 1697,
                                 "name": "Identifier",
                                 "src": "910:5:7"
                               }
                             ],
-                            "id": 1700,
+                            "id": 1698,
                             "name": "MemberAccess",
                             "src": "910:15:7"
                           }
                         ],
-                        "id": 1701,
+                        "id": 1699,
                         "name": "FunctionCall",
                         "src": "875:51:7"
                       }
                     ],
-                    "id": 1702,
+                    "id": 1700,
                     "name": "ExpressionStatement",
                     "src": "875:51:7"
                   }
                 ],
-                "id": 1703,
+                "id": 1701,
                 "name": "Block",
                 "src": "634:299:7"
               }
             ],
-            "id": 1704,
+            "id": 1702,
             "name": "FunctionDefinition",
             "src": "544:389:7"
           },
@@ -1283,7 +1283,7 @@
               ],
               "name": "getIssuerCounter",
               "payable": false,
-              "scope": 1780,
+              "scope": 1778,
               "visibility": "public"
             },
             "children": [
@@ -1294,7 +1294,7 @@
                   ]
                 },
                 "children": [],
-                "id": 1705,
+                "id": 1703,
                 "name": "ParameterList",
                 "src": "1695:2:7"
               },
@@ -1304,7 +1304,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 1713,
+                      "scope": 1711,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1317,17 +1317,17 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 1706,
+                        "id": 1704,
                         "name": "ElementaryTypeName",
                         "src": "1723:4:7"
                       }
                     ],
-                    "id": 1707,
+                    "id": 1705,
                     "name": "VariableDeclaration",
                     "src": "1723:4:7"
                   }
                 ],
-                "id": 1708,
+                "id": 1706,
                 "name": "ParameterList",
                 "src": "1722:7:7"
               },
@@ -1335,7 +1335,7 @@
                 "children": [
                   {
                     "attributes": {
-                      "functionReturnParameters": 1708
+                      "functionReturnParameters": 1706
                     },
                     "children": [
                       {
@@ -1356,31 +1356,31 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1643,
+                              "referencedDeclaration": 1641,
                               "type": "address[] storage ref",
                               "value": "issuerList"
                             },
-                            "id": 1709,
+                            "id": 1707,
                             "name": "Identifier",
                             "src": "1747:10:7"
                           }
                         ],
-                        "id": 1710,
+                        "id": 1708,
                         "name": "MemberAccess",
                         "src": "1747:17:7"
                       }
                     ],
-                    "id": 1711,
+                    "id": 1709,
                     "name": "Return",
                     "src": "1740:24:7"
                   }
                 ],
-                "id": 1712,
+                "id": 1710,
                 "name": "Block",
                 "src": "1730:41:7"
               }
             ],
-            "id": 1713,
+            "id": 1711,
             "name": "FunctionDefinition",
             "src": "1670:101:7"
           },
@@ -1394,7 +1394,7 @@
               ],
               "name": "getIssuerAddressesList",
               "payable": false,
-              "scope": 1780,
+              "scope": 1778,
               "visibility": "public"
             },
             "children": [
@@ -1405,7 +1405,7 @@
                   ]
                 },
                 "children": [],
-                "id": 1714,
+                "id": 1712,
                 "name": "ParameterList",
                 "src": "1808:2:7"
               },
@@ -1415,7 +1415,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 1722,
+                      "scope": 1720,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address[] memory",
@@ -1434,22 +1434,22 @@
                               "name": "address",
                               "type": "address"
                             },
-                            "id": 1715,
+                            "id": 1713,
                             "name": "ElementaryTypeName",
                             "src": "1836:7:7"
                           }
                         ],
-                        "id": 1716,
+                        "id": 1714,
                         "name": "ArrayTypeName",
                         "src": "1836:9:7"
                       }
                     ],
-                    "id": 1717,
+                    "id": 1715,
                     "name": "VariableDeclaration",
                     "src": "1836:9:7"
                   }
                 ],
-                "id": 1718,
+                "id": 1716,
                 "name": "ParameterList",
                 "src": "1835:12:7"
               },
@@ -1457,7 +1457,7 @@
                 "children": [
                   {
                     "attributes": {
-                      "functionReturnParameters": 1718
+                      "functionReturnParameters": 1716
                     },
                     "children": [
                       {
@@ -1466,26 +1466,26 @@
                           "overloadedDeclarations": [
                             null
                           ],
-                          "referencedDeclaration": 1643,
+                          "referencedDeclaration": 1641,
                           "type": "address[] storage ref",
                           "value": "issuerList"
                         },
-                        "id": 1719,
+                        "id": 1717,
                         "name": "Identifier",
                         "src": "1869:10:7"
                       }
                     ],
-                    "id": 1720,
+                    "id": 1718,
                     "name": "Return",
                     "src": "1862:17:7"
                   }
                 ],
-                "id": 1721,
+                "id": 1719,
                 "name": "Block",
                 "src": "1852:35:7"
               }
             ],
-            "id": 1722,
+            "id": 1720,
             "name": "FunctionDefinition",
             "src": "1777:110:7"
           },
@@ -1499,7 +1499,7 @@
               ],
               "name": "getIssuerById",
               "payable": false,
-              "scope": 1780,
+              "scope": 1778,
               "visibility": "public"
             },
             "children": [
@@ -1509,7 +1509,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_id",
-                      "scope": 1757,
+                      "scope": 1755,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -1522,17 +1522,17 @@
                           "name": "uint",
                           "type": "uint256"
                         },
-                        "id": 1723,
+                        "id": 1721,
                         "name": "ElementaryTypeName",
                         "src": "1916:4:7"
                       }
                     ],
-                    "id": 1724,
+                    "id": 1722,
                     "name": "VariableDeclaration",
                     "src": "1916:8:7"
                   }
                 ],
-                "id": 1725,
+                "id": 1723,
                 "name": "ParameterList",
                 "src": "1915:10:7"
               },
@@ -1542,7 +1542,33 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 1757,
+                      "scope": 1755,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 1724,
+                        "name": "ElementaryTypeName",
+                        "src": "1950:6:7"
+                      }
+                    ],
+                    "id": 1725,
+                    "name": "VariableDeclaration",
+                    "src": "1950:6:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1755,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "string memory",
@@ -1557,36 +1583,10 @@
                         },
                         "id": 1726,
                         "name": "ElementaryTypeName",
-                        "src": "1950:6:7"
-                      }
-                    ],
-                    "id": 1727,
-                    "name": "VariableDeclaration",
-                    "src": "1950:6:7"
-                  },
-                  {
-                    "attributes": {
-                      "constant": false,
-                      "name": "",
-                      "scope": 1757,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "string memory",
-                      "value": null,
-                      "visibility": "internal"
-                    },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "string",
-                          "type": "string storage pointer"
-                        },
-                        "id": 1728,
-                        "name": "ElementaryTypeName",
                         "src": "1959:6:7"
                       }
                     ],
-                    "id": 1729,
+                    "id": 1727,
                     "name": "VariableDeclaration",
                     "src": "1959:6:7"
                   },
@@ -1594,7 +1594,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 1757,
+                      "scope": 1755,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -1607,17 +1607,17 @@
                           "name": "address",
                           "type": "address"
                         },
-                        "id": 1730,
+                        "id": 1728,
                         "name": "ElementaryTypeName",
                         "src": "1968:7:7"
                       }
                     ],
-                    "id": 1731,
+                    "id": 1729,
                     "name": "VariableDeclaration",
                     "src": "1968:7:7"
                   }
                 ],
-                "id": 1732,
+                "id": 1730,
                 "name": "ParameterList",
                 "src": "1949:28:7"
               },
@@ -1649,11 +1649,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1724,
+                              "referencedDeclaration": 1722,
                               "type": "uint256",
                               "value": "_id"
                             },
-                            "id": 1733,
+                            "id": 1731,
                             "name": "Identifier",
                             "src": "1993:3:7"
                           },
@@ -1675,21 +1675,21 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1643,
+                                  "referencedDeclaration": 1641,
                                   "type": "address[] storage ref",
                                   "value": "issuerList"
                                 },
-                                "id": 1734,
+                                "id": 1732,
                                 "name": "Identifier",
                                 "src": "2000:10:7"
                               }
                             ],
-                            "id": 1735,
+                            "id": 1733,
                             "name": "MemberAccess",
                             "src": "2000:17:7"
                           }
                         ],
-                        "id": 1736,
+                        "id": 1734,
                         "name": "BinaryOperation",
                         "src": "1993:24:7"
                       },
@@ -1697,24 +1697,24 @@
                         "children": [
                           {
                             "children": [],
-                            "id": 1737,
+                            "id": 1735,
                             "name": "Throw",
                             "src": "2033:5:7"
                           }
                         ],
-                        "id": 1738,
+                        "id": 1736,
                         "name": "Block",
                         "src": "2019:30:7"
                       }
                     ],
-                    "id": 1739,
+                    "id": 1737,
                     "name": "IfStatement",
                     "src": "1990:59:7"
                   },
                   {
                     "attributes": {
                       "assignments": [
-                        1741
+                        1739
                       ]
                     },
                     "children": [
@@ -1722,7 +1722,7 @@
                         "attributes": {
                           "constant": false,
                           "name": "ci",
-                          "scope": 1757,
+                          "scope": 1755,
                           "stateVariable": false,
                           "storageLocation": "memory",
                           "type": "struct IssuerManager.Issuer memory",
@@ -1734,15 +1734,15 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "Issuer",
-                              "referencedDeclaration": 1636,
+                              "referencedDeclaration": 1634,
                               "type": "struct IssuerManager.Issuer storage pointer"
                             },
-                            "id": 1740,
+                            "id": 1738,
                             "name": "UserDefinedTypeName",
                             "src": "2058:6:7"
                           }
                         ],
-                        "id": 1741,
+                        "id": 1739,
                         "name": "VariableDeclaration",
                         "src": "2058:16:7"
                       },
@@ -1762,11 +1762,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1640,
+                              "referencedDeclaration": 1638,
                               "type": "mapping(address => struct IssuerManager.Issuer storage ref)",
                               "value": "issuers"
                             },
-                            "id": 1742,
+                            "id": 1740,
                             "name": "Identifier",
                             "src": "2077:7:7"
                           },
@@ -1786,11 +1786,11 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1643,
+                                  "referencedDeclaration": 1641,
                                   "type": "address[] storage ref",
                                   "value": "issuerList"
                                 },
-                                "id": 1743,
+                                "id": 1741,
                                 "name": "Identifier",
                                 "src": "2085:10:7"
                               },
@@ -1800,32 +1800,32 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1724,
+                                  "referencedDeclaration": 1722,
                                   "type": "uint256",
                                   "value": "_id"
                                 },
-                                "id": 1744,
+                                "id": 1742,
                                 "name": "Identifier",
                                 "src": "2096:3:7"
                               }
                             ],
-                            "id": 1745,
+                            "id": 1743,
                             "name": "IndexAccess",
                             "src": "2085:15:7"
                           }
                         ],
-                        "id": 1746,
+                        "id": 1744,
                         "name": "IndexAccess",
                         "src": "2077:24:7"
                       }
                     ],
-                    "id": 1747,
+                    "id": 1745,
                     "name": "VariableDeclarationStatement",
                     "src": "2058:43:7"
                   },
                   {
                     "attributes": {
-                      "functionReturnParameters": 1732
+                      "functionReturnParameters": 1730
                     },
                     "children": [
                       {
@@ -1847,7 +1847,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "name",
-                              "referencedDeclaration": 1631,
+                              "referencedDeclaration": 1629,
                               "type": "string memory"
                             },
                             "children": [
@@ -1857,16 +1857,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1741,
+                                  "referencedDeclaration": 1739,
                                   "type": "struct IssuerManager.Issuer memory",
                                   "value": "ci"
                                 },
-                                "id": 1748,
+                                "id": 1746,
                                 "name": "Identifier",
                                 "src": "2120:2:7"
                               }
                             ],
-                            "id": 1749,
+                            "id": 1747,
                             "name": "MemberAccess",
                             "src": "2120:7:7"
                           },
@@ -1878,7 +1878,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "localAddress",
-                              "referencedDeclaration": 1633,
+                              "referencedDeclaration": 1631,
                               "type": "string memory"
                             },
                             "children": [
@@ -1888,16 +1888,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1741,
+                                  "referencedDeclaration": 1739,
                                   "type": "struct IssuerManager.Issuer memory",
                                   "value": "ci"
                                 },
-                                "id": 1750,
+                                "id": 1748,
                                 "name": "Identifier",
                                 "src": "2128:2:7"
                               }
                             ],
-                            "id": 1751,
+                            "id": 1749,
                             "name": "MemberAccess",
                             "src": "2128:15:7"
                           },
@@ -1909,7 +1909,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "addr",
-                              "referencedDeclaration": 1635,
+                              "referencedDeclaration": 1633,
                               "type": "address"
                             },
                             "children": [
@@ -1919,36 +1919,36 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1741,
+                                  "referencedDeclaration": 1739,
                                   "type": "struct IssuerManager.Issuer memory",
                                   "value": "ci"
                                 },
-                                "id": 1752,
+                                "id": 1750,
                                 "name": "Identifier",
                                 "src": "2144:2:7"
                               }
                             ],
-                            "id": 1753,
+                            "id": 1751,
                             "name": "MemberAccess",
                             "src": "2144:7:7"
                           }
                         ],
-                        "id": 1754,
+                        "id": 1752,
                         "name": "TupleExpression",
                         "src": "2119:33:7"
                       }
                     ],
-                    "id": 1755,
+                    "id": 1753,
                     "name": "Return",
                     "src": "2112:40:7"
                   }
                 ],
-                "id": 1756,
+                "id": 1754,
                 "name": "Block",
                 "src": "1979:180:7"
               }
             ],
-            "id": 1757,
+            "id": 1755,
             "name": "FunctionDefinition",
             "src": "1893:266:7"
           },
@@ -1962,7 +1962,7 @@
               ],
               "name": "getIssuer",
               "payable": false,
-              "scope": 1780,
+              "scope": 1778,
               "visibility": "public"
             },
             "children": [
@@ -1972,7 +1972,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_addr",
-                      "scope": 1779,
+                      "scope": 1777,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "address",
@@ -1985,17 +1985,17 @@
                           "name": "address",
                           "type": "address"
                         },
-                        "id": 1758,
+                        "id": 1756,
                         "name": "ElementaryTypeName",
                         "src": "2184:7:7"
                       }
                     ],
-                    "id": 1759,
+                    "id": 1757,
                     "name": "VariableDeclaration",
                     "src": "2184:13:7"
                   }
                 ],
-                "id": 1760,
+                "id": 1758,
                 "name": "ParameterList",
                 "src": "2183:15:7"
               },
@@ -2005,7 +2005,33 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 1779,
+                      "scope": 1777,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "string memory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string storage pointer"
+                        },
+                        "id": 1759,
+                        "name": "ElementaryTypeName",
+                        "src": "2223:6:7"
+                      }
+                    ],
+                    "id": 1760,
+                    "name": "VariableDeclaration",
+                    "src": "2223:6:7"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 1777,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "string memory",
@@ -2020,41 +2046,15 @@
                         },
                         "id": 1761,
                         "name": "ElementaryTypeName",
-                        "src": "2223:6:7"
+                        "src": "2232:6:7"
                       }
                     ],
                     "id": 1762,
                     "name": "VariableDeclaration",
-                    "src": "2223:6:7"
-                  },
-                  {
-                    "attributes": {
-                      "constant": false,
-                      "name": "",
-                      "scope": 1779,
-                      "stateVariable": false,
-                      "storageLocation": "default",
-                      "type": "string memory",
-                      "value": null,
-                      "visibility": "internal"
-                    },
-                    "children": [
-                      {
-                        "attributes": {
-                          "name": "string",
-                          "type": "string storage pointer"
-                        },
-                        "id": 1763,
-                        "name": "ElementaryTypeName",
-                        "src": "2232:6:7"
-                      }
-                    ],
-                    "id": 1764,
-                    "name": "VariableDeclaration",
                     "src": "2232:6:7"
                   }
                 ],
-                "id": 1765,
+                "id": 1763,
                 "name": "ParameterList",
                 "src": "2222:19:7"
               },
@@ -2063,7 +2063,7 @@
                   {
                     "attributes": {
                       "assignments": [
-                        1767
+                        1765
                       ]
                     },
                     "children": [
@@ -2071,7 +2071,7 @@
                         "attributes": {
                           "constant": false,
                           "name": "ci",
-                          "scope": 1779,
+                          "scope": 1777,
                           "stateVariable": false,
                           "storageLocation": "memory",
                           "type": "struct IssuerManager.Issuer memory",
@@ -2083,15 +2083,15 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "Issuer",
-                              "referencedDeclaration": 1636,
+                              "referencedDeclaration": 1634,
                               "type": "struct IssuerManager.Issuer storage pointer"
                             },
-                            "id": 1766,
+                            "id": 1764,
                             "name": "UserDefinedTypeName",
                             "src": "2254:6:7"
                           }
                         ],
-                        "id": 1767,
+                        "id": 1765,
                         "name": "VariableDeclaration",
                         "src": "2254:16:7"
                       },
@@ -2111,11 +2111,11 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1640,
+                              "referencedDeclaration": 1638,
                               "type": "mapping(address => struct IssuerManager.Issuer storage ref)",
                               "value": "issuers"
                             },
-                            "id": 1768,
+                            "id": 1766,
                             "name": "Identifier",
                             "src": "2273:7:7"
                           },
@@ -2125,27 +2125,27 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1759,
+                              "referencedDeclaration": 1757,
                               "type": "address",
                               "value": "_addr"
                             },
-                            "id": 1769,
+                            "id": 1767,
                             "name": "Identifier",
                             "src": "2281:5:7"
                           }
                         ],
-                        "id": 1770,
+                        "id": 1768,
                         "name": "IndexAccess",
                         "src": "2273:14:7"
                       }
                     ],
-                    "id": 1771,
+                    "id": 1769,
                     "name": "VariableDeclarationStatement",
                     "src": "2254:33:7"
                   },
                   {
                     "attributes": {
-                      "functionReturnParameters": 1765
+                      "functionReturnParameters": 1763
                     },
                     "children": [
                       {
@@ -2167,7 +2167,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "name",
-                              "referencedDeclaration": 1631,
+                              "referencedDeclaration": 1629,
                               "type": "string memory"
                             },
                             "children": [
@@ -2177,16 +2177,16 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1767,
+                                  "referencedDeclaration": 1765,
                                   "type": "struct IssuerManager.Issuer memory",
                                   "value": "ci"
                                 },
-                                "id": 1772,
+                                "id": 1770,
                                 "name": "Identifier",
                                 "src": "2306:2:7"
                               }
                             ],
-                            "id": 1773,
+                            "id": 1771,
                             "name": "MemberAccess",
                             "src": "2306:7:7"
                           },
@@ -2198,7 +2198,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "localAddress",
-                              "referencedDeclaration": 1633,
+                              "referencedDeclaration": 1631,
                               "type": "string memory"
                             },
                             "children": [
@@ -2208,50 +2208,50 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 1767,
+                                  "referencedDeclaration": 1765,
                                   "type": "struct IssuerManager.Issuer memory",
                                   "value": "ci"
                                 },
-                                "id": 1774,
+                                "id": 1772,
                                 "name": "Identifier",
                                 "src": "2314:2:7"
                               }
                             ],
-                            "id": 1775,
+                            "id": 1773,
                             "name": "MemberAccess",
                             "src": "2314:15:7"
                           }
                         ],
-                        "id": 1776,
+                        "id": 1774,
                         "name": "TupleExpression",
                         "src": "2305:25:7"
                       }
                     ],
-                    "id": 1777,
+                    "id": 1775,
                     "name": "Return",
                     "src": "2298:32:7"
                   }
                 ],
-                "id": 1778,
+                "id": 1776,
                 "name": "Block",
                 "src": "2243:95:7"
               }
             ],
-            "id": 1779,
+            "id": 1777,
             "name": "FunctionDefinition",
             "src": "2165:173:7"
           }
         ],
-        "id": 1780,
+        "id": 1778,
         "name": "ContractDefinition",
         "src": "50:2678:7"
       }
     ],
-    "id": 1781,
+    "id": 1779,
     "name": "SourceUnit",
     "src": "0:2729:7"
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-16T20:19:09.323Z"
+  "updatedAt": "2017-10-17T12:38:10.408Z"
 }

@@ -1,7 +1,7 @@
 import {GRequest, Bank, Customer, Guarantee, Beneficiary, ExpandedRequest} from "../src/app/interfaces/request";
 import {IndexType, RequestState, GuaranteeState} from "../src/app/interfaces/enum";
 
-const  addressOnChain='0xd532D3531958448e9E179729421B92962fb81Ddc';
+const  addressOnChain='0x006fbafdadf4ef72aebf71666537a6315fe24cae';
 
 
 const  addressOnChainRequest1='0xd532D3531958448e9E179729421B92962fb81Dd1';
@@ -41,6 +41,7 @@ export const mockCustomerRequests: GRequest[] = [
     StartDate: '10/05/17',
     EndDate: '10/05/19',
     amount: 10000,
+    fullName: 'ישראל ישראלי',
     purpose: 'מכרז נקיון',
     indexType: IndexType.CPI,
     indexDate: 1,
@@ -54,6 +55,7 @@ export const mockCustomerRequests: GRequest[] = [
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 250000,
+    fullName: 'ישראל ישראלי',
     purpose: 'מכרז בניה',
     indexType: IndexType.ConstructionMatirials,
     indexDate: 1,
@@ -67,6 +69,7 @@ export const mockCustomerRequests: GRequest[] = [
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 9500,
+    fullName: 'ישראל ישראלי',
     purpose: 'מכרז גינון',
     indexType: IndexType.None,
     indexDate: 1,
@@ -81,6 +84,7 @@ export const mockCustomerRequests: GRequest[] = [
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 775000,
+    fullName: 'ישראל ישראלי',
     purpose: 'מכרז תחבורה',
     indexType: IndexType.CPI,
     indexDate: 1,
@@ -94,6 +98,7 @@ export const mockCustomerRequests: GRequest[] = [
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 16000,
+    fullName: 'ישראל ישראלי',
     purpose: 'ספק תחזוקה',
     indexType: IndexType.None,
     indexDate: 1,
@@ -107,6 +112,7 @@ export const mockCustomerRequests: GRequest[] = [
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 500,
+    fullName: 'ישראל ישראלי',
     purpose: 'נסיון',
     indexType: IndexType.None,
     indexDate: 1,
@@ -125,6 +131,7 @@ export const mockCustomerGuaranties: Guarantee[] = [
     StartDate: '10/05/2017',
     EndDate: '10/05/2019',
     amount: 10000,
+    fullName: 'ישראל ישראלי',
     purpose: 'מכרז נקיון' ,
     indexType: IndexType.CPI,
     indexDate: 1,
