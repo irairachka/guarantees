@@ -92,7 +92,8 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
       amount: '',
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
-      hash: ['', Validators.required]
+      // hash: ['', Validators.required]
+      hash:''
     })
   }
 

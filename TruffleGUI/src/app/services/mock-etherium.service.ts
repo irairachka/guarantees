@@ -157,8 +157,8 @@ export class MockService {
           userId,
           bankId,
           benefId,
-          this.web3.fromUtf8(''),
-          this.web3.fromUtf8(purpose),
+          '',
+          purpose,
           amount,
           StartDate,
           EndDate,
@@ -240,8 +240,8 @@ export class MockService {
           acceptedItem.GRequestID,
           acceptedItem.GRequestID,
           acceptedItem.GRequestID,
-          this.web3.fromUtf8(this.getOneCustomerData(acceptedItem.customer).Name),
-          this.web3.fromUtf8(acceptedItem.purpose),
+          this.getOneCustomerData(acceptedItem.customer).Name,
+          acceptedItem.purpose,
           acceptedItem.amount,
           new Date(acceptedItem.StartDate).getTime()/1000,
           new Date(acceptedItem.EndDate).getTime()/1000,
@@ -349,11 +349,11 @@ export class MockService {
     });
   };
 
-  // getGuarantyHistory = (requestId) => {
-  //   return new Promise((resolve) => {
-  //     resolve(mockexpandedRequest[0].log);
-  //   });
-  // };
+  getGuarantyHistory = (requestId) => {
+    return new Promise((resolve) => {
+      resolve(mockexpandedRequest[0].log);
+    });
+  };
 
   /** ***********************/
   /**  Helper Function   ****/
@@ -367,8 +367,8 @@ export class MockService {
     //
     // const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
     // const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
-    const proposal=this.web3.toUtf8( resultArr[5]);
-    const full_name=this.web3.toUtf8( resultArr[4]);
+    const proposal= resultArr[5];
+    const full_name= resultArr[4];
 
     var ask= {
       GRequestID: resultArr[0],
@@ -399,8 +399,8 @@ export class MockService {
     // const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
     // const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
     const indexDate=resultArr[11].valueOf();
-    const proposal=this.web3.toUtf8( resultArr[6]);
-    const full_name=this.web3.toUtf8( resultArr[5]);
+    const proposal= resultArr[6];
+    const full_name= resultArr[5];
     const state= resultArr[12].valueOf();
     var ask= {
       GuaranteeID: resultArr[0],
