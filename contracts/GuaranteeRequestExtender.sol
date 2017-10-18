@@ -115,7 +115,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     }
 
     function submit(string comment) onlyCustomer public returns (bool result) ;
-    function reject(string comment) onlyBank public returns (bool result);
+    function reject(string comment)  public returns (bool result);
     function accept() onlyRegulator public returns (bool result);
     function withdrawal(string comment) onlyCustomer public returns (bool result);
     function bankStateChange(string comment ,RequestState _newState) onlyBank public returns (bool result);

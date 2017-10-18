@@ -54,12 +54,12 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
     event RegulatoryContractDeployed (address msgSender,string msgstr,uint timestamp);
     function Regulator(){
 //        owner = msg.sender;
-//
 
 
-//        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
-//        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
-//        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
+
+        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
+        submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
+        submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
         RegulatoryContractDeployed(msg.sender,"Mined",now);
     }
 

@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, Output, OnDestroy, OnInit, EventEmitter} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {isNullOrUndefined} from "util";
-import {userData} from "../../../../tempData/mockData";
+import {userData,beneficiaryData} from "../../../../tempData/mockData";
 import {Http} from "@angular/http";
 
 @Component({
@@ -39,6 +39,7 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   terminateReason: string;
   newValue: number;
   newDate: string;
+  beneficiary: any=beneficiaryData;
 
   constructor(private fb: FormBuilder,
               private http: Http) {
@@ -89,8 +90,8 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
       beneficiaryAddress: '',
       purpose: '',
       amount: '',
-      startDate: '',
-      endDate: '',
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
       hash: ['', Validators.required]
     })
   }

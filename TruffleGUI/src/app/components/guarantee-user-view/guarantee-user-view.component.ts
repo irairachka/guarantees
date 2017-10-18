@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {GRequest, Guarantee} from "../../interfaces/request";
-import {EtheriumService} from "../../services/mock-etherium.service";
+import {EtheriumService} from "../../services/real-etherium.service";
 
 
 @Component({
@@ -15,6 +15,7 @@ export class GuaranteeUserViewComponent implements OnInit{
   @Output() triggerModal: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   @Output() newRequest: EventEmitter<any> = new EventEmitter();
+  req1:GRequest[]
   requestHistory: any[];
   index: number = 1; // accordion open index
   // therequestState: RequestState ;
@@ -28,6 +29,7 @@ export class GuaranteeUserViewComponent implements OnInit{
   }
 
   openModal(e) {
+    console.log("openModal event",e);
     let modalData = {
       user: this.user,
       request: e
@@ -52,6 +54,7 @@ export class GuaranteeUserViewComponent implements OnInit{
   }
 
   getRequestHistory(e) {
+    console.log("getRequestHistory event",e,this.allRequests);
     this.truffleSRV.getRequestHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
       this.requestHistory = res;
     });

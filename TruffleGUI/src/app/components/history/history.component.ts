@@ -68,6 +68,7 @@ export class HistoryComponent implements OnInit {
 
   getHistory(id): any[] {
     // TODO - add real function
+    console.log('get History id:',id);
     return mockexpandedRequest[1].log;
   }
 

@@ -11,7 +11,7 @@
       <label for="cancelReason" class="cancelReason-label">דחיית הבקשה - מסיבה:</label>
       <div class="reject-container">
       <input placeholder="סיבת הדחיה" [(ngModel)]="cancelReason" id="cancelReason">
-      <button class="cancelReason-send-button secondary-button" (click)="changeRequest('reject')">שלח</button>
+      <button class="cancelReason-send-button secondary-button" (click)="changeRequest('reject')"> שלח דחייה</button>
       <!--<button (click)="changeRequest('reject')">דחיה</button>-->
       </div>
     </div>
@@ -23,21 +23,21 @@
       <label for="cancelGuarantee">ביטול הערבות</label>
       <div class="input-button-container">
         <input placeholder="" [(ngModel)]="terminateReason" id="cancelGuarantee">
-        <button class="prime-button" (click)="changeRequest('terminate')">שלח</button>
+        <button class="prime-button" (click)="changeRequest('terminate')">שלח ביטול</button>
       </div>
     </div>
     <div class="guarantee-container">
       <label for="reduceGuarantee">הקטנת סכום</label>
       <div class="input-button-container">
         <input placeholder="" [(ngModel)]="newValue" id="reduceGuarantee">
-        <button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח</button>
+        <!--<button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח</button>-->
       </div>
     </div>
     <div class="guarantee-container">
       <label for="extendGuarantee">הארכת תוקף</label>
       <div class="input-button-container">
         <input placeholder="" [(ngModel)]="newDate" id="extendGuarantee" type="date">
-        <button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח</button>
+        <button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח עדכון</button>
       </div>
     </div>
 

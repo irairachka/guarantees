@@ -199,7 +199,7 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
 
     event Rejected(address indexed requestId,address indexed msgSender,   RequestState   curentstatus,string commentline,uint timestamp);
     //bank reject request
-    function reject(string comment) onlyBank public returns (bool result)
+    function reject(string comment)  public returns (bool result)
     {
         require(status!=RequestState.accepted);
 

@@ -430,7 +430,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2194,
+                                  "referencedDeclaration": 2213,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1164,7 +1164,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2196,
+                                  "referencedDeclaration": 2215,
                                   "type": "uint256",
                                   "value": "now"
                                 },
@@ -1381,5 +1381,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-16T20:19:09.320Z"
+  "updatedAt": "2017-10-17T12:38:10.406Z"
 }

@@ -337,7 +337,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 1621,
+          "SourceUnit": 1619,
           "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeRequestExtender.sol",
           "file": "./GuaranteeRequestExtender.sol",
           "scope": 463,
@@ -355,7 +355,7 @@
           "contractDependencies": [
             536,
             628,
-            1889
+            1887
           ],
           "contractKind": "contract",
           "documentation": null,
@@ -364,7 +364,7 @@
             462,
             628,
             536,
-            1889
+            1887
           ],
           "name": "DigitalGuaranteeBNHP",
           "scope": 463
@@ -381,7 +381,7 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "Ownable",
-                  "referencedDeclaration": 1889,
+                  "referencedDeclaration": 1887,
                   "type": "contract Ownable"
                 },
                 "id": 227,
@@ -1242,7 +1242,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2226,
+                              "referencedDeclaration": 2245,
                               "type": "contract DigitalGuaranteeBNHP",
                               "value": "this"
                             },
@@ -1268,7 +1268,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2194,
+                                  "referencedDeclaration": 2213,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1386,7 +1386,7 @@
                           "overloadedDeclarations": [
                             null
                           ],
-                          "referencedDeclaration": 2226,
+                          "referencedDeclaration": 2245,
                           "type": "contract DigitalGuaranteeBNHP",
                           "value": "this"
                         },
@@ -1492,7 +1492,7 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "GuaranteeRequestExtender",
-                              "referencedDeclaration": 1620,
+                              "referencedDeclaration": 1618,
                               "type": "contract GuaranteeRequestExtender"
                             },
                             "id": 312,
@@ -1530,7 +1530,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1620,
+                              "referencedDeclaration": 1618,
                               "type": "type(contract GuaranteeRequestExtender)",
                               "value": "GuaranteeRequestExtender"
                             },
@@ -1595,7 +1595,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "getBeneficiary",
-                              "referencedDeclaration": 1476,
+                              "referencedDeclaration": 1474,
                               "type": "function () constant external returns (address)"
                             },
                             "children": [
@@ -1721,7 +1721,7 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "GuaranteeRequestExtender",
-                              "referencedDeclaration": 1620,
+                              "referencedDeclaration": 1618,
                               "type": "contract GuaranteeRequestExtender"
                             },
                             "id": 328,
@@ -1759,7 +1759,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1620,
+                              "referencedDeclaration": 1618,
                               "type": "type(contract GuaranteeRequestExtender)",
                               "value": "GuaranteeRequestExtender"
                             },
@@ -1824,7 +1824,7 @@
                               "isPure": false,
                               "lValueRequested": false,
                               "member_name": "getEndDate",
-                              "referencedDeclaration": 1481,
+                              "referencedDeclaration": 1479,
                               "type": "function () constant external returns (uint256)"
                             },
                             "children": [
@@ -2266,7 +2266,7 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "GuaranteeRequestExtender",
-                              "referencedDeclaration": 1620,
+                              "referencedDeclaration": 1618,
                               "type": "contract GuaranteeRequestExtender"
                             },
                             "id": 368,
@@ -2304,7 +2304,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 1620,
+                              "referencedDeclaration": 1618,
                               "type": "type(contract GuaranteeRequestExtender)",
                               "value": "GuaranteeRequestExtender"
                             },
@@ -2496,7 +2496,7 @@
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "member_name": "getGuaranteeRequestData",
-                                  "referencedDeclaration": 1508,
+                                  "referencedDeclaration": 1506,
                                   "type": "function () constant external returns (address,address,address,address,bytes32,bytes32,uint256,uint256,uint256,enum GuaranteeConst.IndexType,uint256,enum GuaranteeConst.RequestState)"
                                 },
                                 "children": [
@@ -2716,7 +2716,7 @@
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "member_name": "getCustomer",
-                                  "referencedDeclaration": 1466,
+                                  "referencedDeclaration": 1464,
                                   "type": "function () constant external returns (address)"
                                 },
                                 "children": [
@@ -2809,7 +2809,7 @@
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "member_name": "getBank",
-                                  "referencedDeclaration": 1471,
+                                  "referencedDeclaration": 1469,
                                   "type": "function () constant external returns (address)"
                                 },
                                 "children": [
@@ -2902,7 +2902,7 @@
                                   "isPure": false,
                                   "lValueRequested": false,
                                   "member_name": "getBeneficiary",
-                                  "referencedDeclaration": 1476,
+                                  "referencedDeclaration": 1474,
                                   "type": "function () constant external returns (address)"
                                 },
                                 "children": [
@@ -3538,7 +3538,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2194,
+                                  "referencedDeclaration": 2213,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -3583,5 +3583,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-10-16T20:19:09.724Z"
+  "updatedAt": "2017-10-18T10:15:23.113Z"
 }
