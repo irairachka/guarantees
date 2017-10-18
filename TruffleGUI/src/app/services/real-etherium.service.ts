@@ -90,7 +90,7 @@ export class EtheriumService extends MockService {
       }
       this.accounts = accs;
       this.account = this.accounts[0];
-
+      console.log('this.accounts',this.accounts)
       /** Part of original truffle **/
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution

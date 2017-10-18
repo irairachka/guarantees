@@ -1,8 +1,8 @@
 import {GRequest, Bank, Customer, Guarantee, Beneficiary, ExpandedRequest} from "../src/app/interfaces/request";
 import {IndexType, RequestState, GuaranteeState} from "../src/app/interfaces/enum";
 
-const  addressOnChain='0x006fbafdadf4ef72aebf71666537a6315fe24cae';
-
+// const  addressOnChain='0x006fbafdadf4ef72aebf71666537a6315fe24cae';
+const  addressOnChain='0x00a329c0648769a73afac7f9381e08fb43dbea72';
 
 const  addressOnChainRequest1='0xd532D3531958448e9E179729421B92962fb81Dd1';
 const  addressOnChainRequest2='0xd532D3531958448e9E179729421B92962fb81Dd2';
