@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Injectable, Inject} from '@angular/core';
 import {GRequest, Guarantee} from "../../interfaces/request";
 import {EtheriumService} from "../../services/real-etherium.service";
 
@@ -8,6 +8,7 @@ import {EtheriumService} from "../../services/real-etherium.service";
   templateUrl: './guarantee-bank-view.component.html',
   styleUrls: ['./guarantee-bank-view.component.scss']
 })
+@Injectable()
 export class GuaranteeBankViewComponent {
   @Input() user: string; // TODO - handle enum and convert to string
   @Input() allRequests: GRequest[];
@@ -25,7 +26,7 @@ export class GuaranteeBankViewComponent {
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
-  constructor(private truffleSRV: EtheriumService) {}
+  constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService) {}
 
   openModal(e) {
     console.log('openModal', e);
