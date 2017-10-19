@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Injectable, Inject} from '@angular/core';
 
 // Interfaces, mock data and utils
 import {
@@ -13,6 +13,7 @@ import {EtheriumService} from "./services/real-etherium.service";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+@Injectable()
 export class AppComponent implements OnInit, OnDestroy {
 
   // Requests and Guarantees
@@ -27,7 +28,7 @@ export class AppComponent implements OnInit, OnDestroy {
   customer: Customer;
   bank: Bank;
 
-  constructor(private truffleSRV: EtheriumService) {}
+  constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
     this.watcher();

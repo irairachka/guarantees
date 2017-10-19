@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Injectable, Inject} from '@angular/core';
 import {GRequest, Guarantee} from "../../interfaces/request";
 import {EtheriumService} from "../../services/real-etherium.service";
 
@@ -8,6 +8,7 @@ import {EtheriumService} from "../../services/real-etherium.service";
   templateUrl: './guarantee-view.component.html',
   styleUrls: ['./guarantee-view.component.scss']
 })
+@Injectable()
 export class GuaranteeViewComponent implements OnInit{
   @Input() user: string; // TODO - handle enum and convert to string
   @Input() allRequests: GRequest[];
@@ -25,7 +26,7 @@ export class GuaranteeViewComponent implements OnInit{
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
-  constructor(private truffleSRV: EtheriumService) {}
+  constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);

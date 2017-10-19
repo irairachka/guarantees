@@ -28,6 +28,7 @@ import {AccordionContentComponent} from "./components/accordion-content/accordio
 import {StatusIconComponent} from "./components/status-icon/status-icon.component";
 import {EtheriumService} from "./services/real-etherium.service";
 import {MockService} from "./services/mock-etherium.service";
+import {RealService} from "./services/real-etheriumwork.service";
 
 @NgModule({
   imports: [
@@ -65,8 +66,15 @@ import {MockService} from "./services/mock-etherium.service";
   ],
   providers: [
     MessageService,
-    MockService,
-    EtheriumService
+    {
+      provide: EtheriumService,
+      useClass: MockService
+      // MockService
+      // RealService
+    }
+
+
+
   ],
   bootstrap: [AppComponent]
 })

@@ -15,7 +15,6 @@ import {GuaranteeState, RequestState} from "../interfaces/enum";
 // const Regulator_artifact = require('../../../../build/contracts/Regulator.json');
 // // const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
 
-
 @Injectable()
 export class MockService {
   idmoc: number = 1000;

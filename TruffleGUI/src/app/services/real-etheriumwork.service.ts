@@ -25,7 +25,7 @@ let GuaranteeRequestExtender = contract(GuaranteeRequestExtender_artifact);
 
 
 @Injectable()
-export class EtheriumService extends MockService {
+export class RealService extends MockService {
   web3:any;
   currentMockId: number = 1000;
 
@@ -42,8 +42,8 @@ export class EtheriumService extends MockService {
 
   constructor(public msgService:MessageService) {
     super(msgService);
-    this.checkAndInstantiateWeb3();
-    this.onReady();
+      this.checkAndInstantiateWeb3();
+      this.onReady();
   }
 
   /** ******************** **/
@@ -104,20 +104,20 @@ export class EtheriumService extends MockService {
 
   getAllRequests = ()=> {
 
-    // if (this.realRequests==null)
-    // {
-    /** Gets all guarantee requests for customer */
-    return new Promise((resolve, reject)=> {
-      this.getAllUserRequestsEt().then((requestsEt)=> {
-        this.realRequests=[...mockCustomerRequests, ...requestsEt];
-        super.setMockRequests(this.realRequests);
-        resolve(this.realRequests);
-      }).catch((error)=> {
-        reject(error);
-      });
+     // if (this.realRequests==null)
+     // {
+      /** Gets all guarantee requests for customer */
+      return new Promise((resolve, reject)=> {
+        this.getAllUserRequestsEt().then((requestsEt)=> {
+          this.realRequests=[...mockCustomerRequests, ...requestsEt];
+          super.setMockRequests(this.realRequests);
+          resolve(this.realRequests);
+        }).catch((error)=> {
+          reject(error);
+        });
 
-    });
-    // }
+      });
+     // }
     // else
     //   new Promise((resolve, reject)=> {
     //     resolve(this.mockRequests);
@@ -126,15 +126,15 @@ export class EtheriumService extends MockService {
 
   getAllGuaranties = () => {
     // if (this.realGuarantees==null) {
-    return new Promise((resolve, reject)=> {
-      this.getAllUserGuarantees().then((GuarantiesEt)=> {
-        this.realGuarantees = [...mockCustomerGuaranties, ...GuarantiesEt];
-        super.setMockGuarantee(this.realGuarantees);
-        resolve(this.realGuarantees);
-      }).catch((error)=> {
-        reject(error);
-      });
-    })
+      return new Promise((resolve, reject)=> {
+        this.getAllUserGuarantees().then((GuarantiesEt)=> {
+          this.realGuarantees = [...mockCustomerGuaranties, ...GuarantiesEt];
+          super.setMockGuarantee(this.realGuarantees);
+          resolve(this.realGuarantees);
+        }).catch((error)=> {
+          reject(error);
+        });
+      })
     // }
     // else
     //   new Promise((resolve, reject)=> {
@@ -669,7 +669,7 @@ export class EtheriumService extends MockService {
         // console.log("getOneRequest:get data");
         return guaranteeRequestinstance.getGuaranteeRequestData.call();
       }).then((result) =>{
-        // console.log("getOneRequest:", result[7].valueOf(),result[8].valueOf());
+         // console.log("getOneRequest:", result[7].valueOf(),result[8].valueOf());
         return this.populateRequestData(result);
       })
       .catch(function(e)  {
@@ -822,7 +822,7 @@ export class EtheriumService extends MockService {
   };
 
   getAllUserGuarantees=() =>{
-    /** Gets all guarantee requests for customer */
+     /** Gets all guarantee requests for customer */
     let customerGuaranties=[];
     return Regulator.deployed()
       .then( (instance)=> {
@@ -907,7 +907,7 @@ export class EtheriumService extends MockService {
     const startDatet = this.transformDateSolToJS(resultArr[8].valueOf());
     const endDatet = this.transformDateSolToJS(resultArr[9].valueOf());
 
-    // console.log("dates",resultArr[8].valueOf(),startDatet,resultArr[9].valueOf(),endDatet);
+     // console.log("dates",resultArr[8].valueOf(),startDatet,resultArr[9].valueOf(),endDatet);
     // const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
     // const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
     const indexDate=resultArr[11].valueOf();
