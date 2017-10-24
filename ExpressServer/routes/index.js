@@ -15,7 +15,7 @@ router.get('/getAllGuarantees', function(req, res, next) {
 
 router.post('/terminateGuarantees', function(req, res, next) {
     service.terminateGuarantees(req).then(response => {
-        res.send(response);
+        res.send(false);
     });
 });
 
