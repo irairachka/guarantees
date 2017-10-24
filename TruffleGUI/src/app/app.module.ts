@@ -29,6 +29,7 @@ import {StatusIconComponent} from "./components/status-icon/status-icon.componen
 import {EtheriumService} from "./services/real-etherium.service";
 import {MockService} from "./services/mock-etherium.service";
 import {RealService} from "./services/real-etheriumwork.service";
+import {environment} from "../environments/environment";
 
 @NgModule({
   imports: [
@@ -66,15 +67,7 @@ import {RealService} from "./services/real-etheriumwork.service";
   ],
   providers: [
     MessageService,
-    {
-      provide: EtheriumService,
-      useClass: MockService
-      // MockService
-      // RealService
-    }
-
-
-
+    environment.service
   ],
   bootstrap: [AppComponent]
 })
