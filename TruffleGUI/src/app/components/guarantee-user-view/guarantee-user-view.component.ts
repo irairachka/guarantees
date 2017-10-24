@@ -18,6 +18,7 @@ export class GuaranteeUserViewComponent implements OnInit{
   @Output() newRequest: EventEmitter<any> = new EventEmitter();
   req1:GRequest[]
   requestHistory: any[];
+  guaranteeHistory: any[];
   index: number = 1; // accordion open index
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
@@ -57,6 +58,13 @@ export class GuaranteeUserViewComponent implements OnInit{
   getRequestHistory(req: GRequest) {
     this.truffleSRV.getRequestHistory(req.GRequestID).then((res: any[]) => {
       this.requestHistory = res;
+    });
+  }
+
+
+  getGuaranteeHistory(guar: Guarantee) {
+    this.truffleSRV.getGuarantyHistory(guar.GuaranteeID).then((res: any[]) => {
+      this.guaranteeHistory = res;
     });
   }
 

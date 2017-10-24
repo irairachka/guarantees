@@ -23,6 +23,7 @@ export class GuaranteeBankViewComponent {
   // };
   index: number = 0;
   requestHistory: any[];
+  guaranteeHistory: any[];
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
@@ -58,6 +59,12 @@ export class GuaranteeBankViewComponent {
     // this.setIndex(e.index);
     this.truffleSRV.getRequestHistory(req.GRequestID).then((res: any[]) => {
      this.requestHistory = res;
+    });
+  }
+
+  getGuaranteeHistory(guar: Guarantee) {
+    this.truffleSRV.getGuarantyHistory(guar.GuaranteeID).then((res: any[]) => {
+      this.guaranteeHistory = res;
     });
   }
 }

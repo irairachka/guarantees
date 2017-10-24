@@ -96,7 +96,7 @@
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="grey">
             <p-accordionTab *ngFor="let guar of allGuaranties | filterByKeyValue:'guaranteeState':[1]:true | orderByKey:'EndDate'">
-              <p-header>
+              <p-header (click)="getGuaranteeHistory(guar)">
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)"></guarantee-item>
               </p-header>
               </p-accordionTab>

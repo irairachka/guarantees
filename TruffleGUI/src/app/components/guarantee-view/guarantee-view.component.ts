@@ -22,7 +22,7 @@ export class GuaranteeViewComponent implements OnInit{
   //   beneficiary: 'המוטב'
   // };
   guaranteeHistory: any[];
-  index: number = 1; // accordion open index
+  index: number = 0; // accordion open index
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
@@ -43,11 +43,13 @@ export class GuaranteeViewComponent implements OnInit{
   }
   updateRequestsender(data){
     this.updateRequest.emit(data);
+    this.closeAccordion();
   }
 
   updateGuaranteesender(data){
     console.log('updateGuaranteesender', data);
     this.updateRequest.emit(data);
+    this.closeAccordion();
   }
 
   newRequestEmitter(e) {
@@ -55,12 +57,16 @@ export class GuaranteeViewComponent implements OnInit{
     this.newRequest.emit(e);
   }
 
+  setIndex(e) {
+    this.index = e.index;
+  }
+
   closeAccordion() {
     this.index = -1;
   }
 
-  getGuaranteeHistory(e) {
-    this.truffleSRV.getGuarantyHistory(this.allGuaranties[e.index].GRequestID).then((res: any[]) => {
+  getGuaranteeHistory(guar: Guarantee) {
+    this.truffleSRV.getGuarantyHistory(guar.GuaranteeID).then((res: any[]) => {
       this.guaranteeHistory = res;
     });
   }
