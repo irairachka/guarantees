@@ -40,14 +40,6 @@
         <div class="req-pending" >
           <p-accordion  styleClass="green" [activeIndex]="index" (onOpen)="setIndex($event.index)">
             <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[2]">
-              <!--therequestState.created,therequestState.waitingtobank,-->
-              <!--therequestState.handling,-->
-              <!--therequestState.waitingtobeneficiery,-->
-              <!--therequestState.withdrawed,-->
-              <!--therequestState.changeRequested,-->
-              <!--therequestState.rejected,-->
-              <!--therequestState.terminationRequest-->
-
               <p-header (click)="getRequestHistory(req)">
                 <request-item [request]="req" (emitRequest)="openModal($event)">
                 </request-item>
@@ -71,7 +63,7 @@
         <div *ngIf="allGuaranties" class="curr-guarantees">
           <p-accordion  styleClass="grey">
             <p-accordionTab *ngFor="let guar of allGuaranties">
-              <p-header>
+              <p-header (click)="getGuaranteeHistory(guar)">
                 <guarantee-item [guarantee]="guar" (emitGuarantee)="openModal($event)"></guarantee-item>
               </p-header>
               </p-accordionTab>
