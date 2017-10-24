@@ -57,7 +57,10 @@ export class MockService {
     console.log("getRequestHistory",requestAddress);
 
     return new Promise((resolve) => {
-      resolve(mockexpandedRequest[0].log);
+      resolve(
+        mockexpandedRequest[mockexpandedRequest.findIndex(item => {
+          return item.shortrequest.GRequestID === requestAddress
+        })].log);
     });
   };
 
