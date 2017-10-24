@@ -294,20 +294,10 @@ export class MockService {
     });
     terminatedGuarantee.guaranteeState = GuaranteeState.Terminated;
 
-      resolve(terminatedGuarantee);
-    });
-  };
-
-  terminateGuatantyComplite = (guaranteeId, requestId, comment , hashcode) => {
-    return new Promise((resolve, reject)=> {
-
-      // find and change state of selected request
-      let terminatedRequest = this.mockRequests.find((item) => {
-        return item.GRequestID === requestId;
+      resolve({
+        guarantee: terminatedGuarantee,
+        request: terminatedRequest
       });
-      terminatedRequest.requestState = RequestState.terminationRequest;
-
-      resolve(terminatedRequest);
     });
   };
 
@@ -327,29 +317,32 @@ export class MockService {
     updatedGuarantee.amount = amount;
     updatedGuarantee.EndDate = date;
 
-      resolve(unpdatedRequest);
+      resolve({
+        request: unpdatedRequest,
+        guarantee: updatedGuarantee
+      });
     });
   };
 
-  guaranteeUpdateCommit = (guatantyId, requestId, comment, amount, date) => {
-    return new Promise((resolve, reject)=> {
-
-      // find and change state of selected request
-      let unpdatedRequest = this.mockRequests.find((item) => {
-        return item.GRequestID === requestId;
-      });
-      unpdatedRequest.amount = amount;
-      unpdatedRequest.EndDate = date;
-
-      let updatedGuarantee = this.mockGuarantees.find((item) => {
-        return item.GuaranteeID === guatantyId;
-      });
-      updatedGuarantee.amount = amount;
-      updatedGuarantee.EndDate = date;
-
-      resolve( updatedGuarantee);
-    });
-  };
+  // guaranteeUpdateCommit = (guatantyId, requestId, comment, amount, date) => {
+  //   return new Promise((resolve, reject)=> {
+  //
+  //     // find and change state of selected request
+  //     let unpdatedRequest = this.mockRequests.find((item) => {
+  //       return item.GRequestID === requestId;
+  //     });
+  //     unpdatedRequest.amount = amount;
+  //     unpdatedRequest.EndDate = date;
+  //
+  //     let updatedGuarantee = this.mockGuarantees.find((item) => {
+  //       return item.GuaranteeID === guatantyId;
+  //     });
+  //     updatedGuarantee.amount = amount;
+  //     updatedGuarantee.EndDate = date;
+  //
+  //     resolve( updatedGuarantee);
+  //   });
+  // };
 
   getGuarantyHistory = (requestId) => {
     return new Promise((resolve) => {

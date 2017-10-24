@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     let newRequest = this.truffleSRV.createRequest(this.customer.customerID,
     this.bank.bankID, this.beneficiaries[0].beneficiaryID,
     e.purpose, e.amount, new Date(e.startDate).getTime()/1000, new Date(e.endDate).getTime()/1000, 0, 0).then((newRequest)=> {
-      console.log("newRequest", newRequest)
+      console.log("newRequest", newRequest);
       this.addNewUserRequests(newRequest);
       this.addNewBankRequests(newRequest);
     });
@@ -116,30 +116,22 @@ export class AppComponent implements OnInit, OnDestroy {
         break;
       case 'terminate':
         console.log(`terminate success! id: ${e.guaranteeId}`);
-        updatedRequest = this.truffleSRV.terminateGuatanty(e.guaranteeId, e.requestId, '', '').then((guarantee)=>{
-          this.updateUserGuarantees(guarantee);
-          this.updateBankGuarantees(guarantee);
-          this.updateBenefGuarantees(guarantee);
-          updatedRequest = this.truffleSRV.terminateGuatantyComplite(e.guaranteeId, e.requestId, '', '').then((updatedRequest)=> {
-
-            this.updateUserRequests(updatedRequest);
-            this.updateBankRequests(updatedRequest);
-          });
-
+        updatedRequest = this.truffleSRV.terminateGuatanty(e.guaranteeId, e.requestId, '', '').then((res)=>{
+          this.updateUserGuarantees(res.guarantee);
+          this.updateBankGuarantees(res.guarantee);
+          this.updateBenefGuarantees(res.guarantee);
+          this.updateUserRequests(res.request);
+          this.updateBankRequests(res.request);
         });
         break;
       case 'guaranteeUpdate':
         console.log(`update success! id: ${e.guaranteeId} amount: ${e.update.amount} date: ${e.update.date}`);
-        this.truffleSRV.guaranteeUpdate(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date).then((updatedRequest)=>{
-          this.updateUserRequests(updatedRequest);
-          this.updateBankRequests(updatedRequest);
-
-          this.truffleSRV.guaranteeUpdateCommit(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date).then((guarantee)=> {
-
-            this.updateUserGuarantees(guarantee);
-            this.updateBankGuarantees(guarantee);
-            this.updateBenefGuarantees(guarantee);
-          });
+        this.truffleSRV.guaranteeUpdate(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date).then((response:any)=>{
+          this.updateUserRequests(response.request);
+          this.updateBankRequests(response.request);
+          this.updateUserGuarantees(response.guarantee);
+          this.updateBankGuarantees(response.guarantee);
+          this.updateBenefGuarantees(response.guarantee);
         });
         break;
       default:
