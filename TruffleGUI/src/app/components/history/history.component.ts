@@ -1,13 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {GRequest} from "../../interfaces/request";
 import {mockexpandedRequest} from "../../../../tempData/mockData";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss']
 })
-export class HistoryComponent implements OnInit {
+export class HistoryComponent implements OnChanges {
   @Input() history: any[];
   @Input() request: GRequest;
   @Input() todel_state: any;
@@ -57,23 +58,22 @@ export class HistoryComponent implements OnInit {
     ]
   };
 
-  ngOnChanges(){
-    console.log('-----' , this.todel_state ,this.userType);
-    if(this.todel_state==1)
-      this.statusGraph="../../../assets/images/progress1.png";
-    else
-      this.statusGraph="../../../assets/images/progress2.png";
-
+  ngOnChanges(changes: SimpleChanges){
+    if(changes.history.currentValue !== changes.history.previousValue) {
+      this.parseHistoryData();
+      if(this.todel_state==1) {
+        this.statusGraph="../../../assets/images/progress1.png";
+      } else {
+        this.statusGraph="../../../assets/images/progress2.png";
+      }
+    }
   }
 
-  getHistory(id): any[] {
-    // TODO - add real function
-    console.log('get History id:',id);
-    return mockexpandedRequest[1].log;
-  }
-
-  ngOnInit() {
-    // console.log('this.allRequests', this.allRequests);
-    // console.log('this.allGuaranties', this.allGuaranties);
+  parseHistoryData() {
+    if(!isNullOrUndefined(this.history)) {
+      this.history = this.history.map(item => {
+        return item.date + "    " + item.comment;
+      });
+    }
   }
 }
