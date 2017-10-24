@@ -29,6 +29,7 @@ import {StatusIconComponent} from "./components/status-icon/status-icon.componen
 import {EtheriumService} from "./services/real-etherium.service";
 import {MockService} from "./services/mock-etherium.service";
 import {RealService} from "./services/real-etheriumwork.service";
+import {RemoteService} from "./services/remote-etherium.service";
 import {environment} from "../environments/environment";
 
 @NgModule({
