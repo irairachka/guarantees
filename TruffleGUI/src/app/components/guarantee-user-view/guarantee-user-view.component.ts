@@ -54,10 +54,10 @@ export class GuaranteeUserViewComponent implements OnInit{
     this.index = -1;
   }
 
-  getRequestHistory(e) {
-    console.log("getRequestHistory event",e,this.allRequests);
-    this.truffleSRV.getRequestHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
+  getRequestHistory(req: GRequest) {
+    this.truffleSRV.getRequestHistory(req.GRequestID).then((res: any[]) => {
       this.requestHistory = res;
     });
   }
+
 }

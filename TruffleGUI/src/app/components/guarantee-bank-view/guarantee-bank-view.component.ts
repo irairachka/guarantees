@@ -54,9 +54,9 @@ export class GuaranteeBankViewComponent {
     this.index = -1;
   }
 
-  getRequestHistory(e) {
-    this.setIndex(e.index);
-    this.truffleSRV.getRequestHistory(this.allRequests[e.index].GRequestID).then((res: any[]) => {
+  getRequestHistory(req: GRequest) {
+    // this.setIndex(e.index);
+    this.truffleSRV.getRequestHistory(req.GRequestID).then((res: any[]) => {
      this.requestHistory = res;
     });
   }
