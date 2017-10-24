@@ -16,9 +16,9 @@
           </label>
         </div>
         <div class="req-for-treatment">
-          <p-accordion styleClass="red" (onOpen)="getRequestHistory($event)">
+          <p-accordion styleClass="red">
             <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[1] "><!--"//[therequestState.waitingtocustomer,therequestState.accepted]"> -->
-              <p-header>
+              <p-header (click)="getRequestHistory(req)">
                 <request-item [request]="req" (emitRequest)="openModal($event)"></request-item>
               </p-header>
               <app-history [userType]="user" [todel_state]="2" [history]="requestHistory"></app-history>
@@ -38,7 +38,7 @@
           </label>
         </div>
         <div class="req-pending" >
-          <p-accordion  styleClass="green" (onOpen)="getRequestHistory($event)" [activeIndex]="index">
+          <p-accordion  styleClass="green" [activeIndex]="index" (onOpen)="setIndex($event.index)">
             <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[2]">
               <!--therequestState.created,therequestState.waitingtobank,-->
               <!--therequestState.handling,-->
@@ -48,7 +48,7 @@
               <!--therequestState.rejected,-->
               <!--therequestState.terminationRequest-->
 
-              <p-header>
+              <p-header (click)="getRequestHistory(req)">
                 <request-item [request]="req" (emitRequest)="openModal($event)">
                 </request-item>
               </p-header>
