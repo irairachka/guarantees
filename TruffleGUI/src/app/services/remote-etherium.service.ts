@@ -52,6 +52,13 @@ export class RemoteService extends MockService {
             guarantee: terminatedGuarantee,
             request: terminatedRequest
           };
+        } else {
+          this.msgService.add({
+            severity: 'error',
+            summary: 'תקלת תקשורת',
+            detail: 'Etherium Fatal Error!!!'
+          });
+          return;
         }
       }).toPromise();
   };

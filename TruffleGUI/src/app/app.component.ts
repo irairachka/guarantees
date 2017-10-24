@@ -7,6 +7,7 @@ import {
 
 import {GRequest, Guarantee, Beneficiary, Customer, ExpandedRequest, Bank} from "./interfaces/request";
 import {EtheriumService} from "./services/real-etherium.service";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-root',
@@ -117,11 +118,13 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'terminate':
         console.log(`terminate success! id: ${e.guaranteeId}`);
         updatedRequest = this.truffleSRV.terminateGuatanty(e.guaranteeId, e.requestId, '', '').then((res)=>{
-          this.updateUserGuarantees(res.guarantee);
-          this.updateBankGuarantees(res.guarantee);
-          this.updateBenefGuarantees(res.guarantee);
-          this.updateUserRequests(res.request);
-          this.updateBankRequests(res.request);
+          if(!isNullOrUndefined(res)) {
+            this.updateUserGuarantees(res.guarantee);
+            this.updateBankGuarantees(res.guarantee);
+            this.updateBenefGuarantees(res.guarantee);
+            this.updateUserRequests(res.request);
+            this.updateBankRequests(res.request);
+          }
         });
         break;
       case 'guaranteeUpdate':
