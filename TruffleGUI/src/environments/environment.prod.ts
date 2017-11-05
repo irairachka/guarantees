@@ -3,8 +3,10 @@ import {RealService} from "../app/services/real-etheriumwork.service";
 
 export const environment = {
   production: true,
+  server:'35.158.139.208',
   service: {
     provide: EtheriumService,
     useClass: RealService
   }
+
 };
