@@ -1,1 +1,1 @@
-forever start -c "npm start" ./
+forever start -c "npm start --env=prod" ./

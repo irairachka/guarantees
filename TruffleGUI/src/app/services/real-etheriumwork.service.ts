@@ -10,6 +10,7 @@ import {Beneficiary, Customer, Guarantee,GRequest} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
 import {GuaranteeState, RequestState} from "../interfaces/enum";
 import {MockService} from "./mock-etherium.service";
+import {environment} from "../../environments/environment";
 // Import our contract artifacts and turn them into usable abstractions.
 const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
 const Regulator_artifact = require('../../../../build/contracts/Regulator.json');

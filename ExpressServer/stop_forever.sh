@@ -1,1 +1,1 @@
-forever stop -c "npm stop" ./
+forever stop -c "npm stop --env=prod" ./
