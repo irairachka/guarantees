@@ -113,6 +113,12 @@ export class RealService extends MockService {
           super.setMockRequests(this.realRequests);
           resolve(this.realRequests);
         }).catch((error)=> {
+
+          this.msgService.add({
+            severity: 'error',
+            summary: 'תקלת בבלוקציין',
+            detail: 'Etherium Fatal Error!!!'
+          });
           reject(error);
         });
 
@@ -132,6 +138,11 @@ export class RealService extends MockService {
           super.setMockGuarantee(this.realGuarantees);
           resolve(this.realGuarantees);
         }).catch((error)=> {
+          this.msgService.add({
+            severity: 'error',
+            summary: 'תקלת בבלוקציין',
+            detail: 'Etherium Fatal Error!!!'
+          });
           reject(error);
         });
       })
@@ -151,13 +162,15 @@ export class RealService extends MockService {
     let addressOfIns;
     const startDate =  StartDate;
     const endDate = EndDate ;
-    // console.log("createRequest dates",StartDate, EndDate);
+    console.log("createRequest dates",StartDate, EndDate);
+
     return new Promise((resolve, reject)=> {
+      // debugger;
       return this.createRequestEt(userId, bankId, benefId, "full name", purpose,
         amount, StartDate*1000, EndDate*1000, indexType, indexDate, 'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2')
         .then((instance) => {
 
-          // console.log("createRequest result", instance);
+          console.log("createRequest result", instance);
           newItem = this.populateRequestData(
             [instance.address,
               userId,
@@ -176,8 +189,12 @@ export class RealService extends MockService {
           addressOfIns = instance.address;
           this.addRequestEt(this.account, addressOfIns).then((result) => {
 
+            console.log("addRequestEt result", instance);
+
 
             this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '').then((result) => {
+
+              console.log("submitRequestEt result", instance);
 
               newItem = this.populateRequestData(
                 [instance.address,
@@ -201,31 +218,38 @@ export class RealService extends MockService {
                 detail: 'בקשה לערבות חדשה נשלחה בהצלחה'
               });
               // console.log("newItem", newItem);
-              this.mockRequests = [...mockCustomerRequests, newItem];
+              this.mockRequests = [...this.mockRequests, newItem];
               resolve(newItem);
 
             }).catch((error)=> {
-              console.error(error);
+              console.error('error',error);
               this.msgService.add({
-                severity: 'success',
+                severity: 'warn',
                 summary: 'ערבות חדשה',
-                detail: 'בקשה לערבות חדשה נשלחה בהצלחה'
+                detail: 'בקשה לערבות חדשה נכשלה חלקית'
               });
-              // console.log("newItem", newItem);
-              this.mockRequests = [...mockCustomerRequests, newItem];
+              this.mockRequests = [...this.mockRequests, newItem];
               resolve(newItem);
             })
           }).catch((error) => {
-            console.error(error);
-            this.msgService.add({severity: 'success', summary: 'ערבות חדשה', detail: 'בקשה לערבות חדשה נשלחה בהצלחה'});
-            console.log("newItem", newItem);
-            this.mockRequests = [...mockCustomerRequests, newItem];
+            console.error('error',error);
+            this.msgService.add({
+              severity: '׳warn',
+              summary: 'ערבות חדשה',
+              detail: 'בקשה לערבות חדשה נכשלה חלקית'
+            });console.log("newItem", newItem);
+            this.mockRequests = [...this.mockRequests, newItem];
             resolve(newItem);
           })
 
 
         }).catch((error) => {
-          console.error(error);
+          console.error('error',error);
+          this.msgService.add({
+            severity: 'error',
+            summary: 'ערבות חדשה',
+            detail: 'בקשה לערבות חדשה נכשלה'
+          });
           reject(error);
           // throw error;
           //   this.currentMockId = this.currentMockId +1;
@@ -246,7 +270,7 @@ export class RealService extends MockService {
           //    );
           // this.msgService.add({severity: 'success', summary:'ערבות חדשה', detail:'בקשה לערבות חדשה נשלחה בהצלחה'});
           // console.log("newItem",newItem);
-          // this.mockRequests = [...mockCustomerRequests, newItem];
+          // this.mockRequests = [...this.mockRequests, newItem];
           // return newItem ;
         });
     });
@@ -263,10 +287,19 @@ export class RealService extends MockService {
         updatedItem.requestState = RequestState.withdrawed;
         // console.log('updatedItem',updatedItem);
         resolve(updatedItem);
-
+        this.msgService.add({
+          severity: 'success',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לערבות בוטלה בהצלחה'
+        });
 
       }).catch((error)=> {
-        console.error(error);
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה למשיכת ערבות  נכשלה'
+        });
         reject(error);
 
       })
@@ -287,10 +320,22 @@ export class RealService extends MockService {
           return item.GRequestID === requestId;
         });
         updatedItem.requestState = RequestState.handling;
+        this.msgService.add({
+          severity: 'success',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לערבות עודכנה בהצלחה'
+        });
         resolve(updatedItem);
 
+
       }).catch((error)=> {
-        console.error(error);
+        console.error('error',error);
+
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לעדכון ערבות  נכשלה'
+        });
         reject(error);
 
       })
@@ -301,7 +346,9 @@ export class RealService extends MockService {
   };
 
 
-  rejectRequest = (requestId, comment):any => {
+
+
+  rejectRequest = (requestId, comment) => {
     return new Promise((resolve, reject)=> {
       // console.log('rejectRequest',requestId);
       if(comment == null) comment="NaN";
@@ -311,10 +358,16 @@ export class RealService extends MockService {
           return item.GRequestID === requestId;
         });
         rejectedItem.requestState = RequestState.rejected;
+
         resolve(rejectedItem);
 
       }).catch((error)=> {
-        console.error(error);
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לדחית ערבות  נכשלה'
+        });
         reject(error);
 
       })
@@ -324,11 +377,9 @@ export class RealService extends MockService {
     });
   };
 
-
-
-  acceptRequest = (requestId, comment , hashcode):any => {
+  acceptRequest = (requestId, comment , hashcode) => {
     return new Promise((resolve, reject)=> {
-      // console.log('rejectRequest',requestId);
+       console.log('acceptRequest',requestId);
       this.acceptRequestEt(requestId).then((result) => {
 
 
@@ -342,7 +393,12 @@ export class RealService extends MockService {
         resolve(acceptedItem);
 
       }).catch((error)=> {
-        console.error(error);
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לאישור ערבות  נכשלה'
+        });
         reject(error);
 
 
@@ -350,12 +406,12 @@ export class RealService extends MockService {
     })
   };
 
-
   guaranteeSignComplite = (requestId, comment , hashcode):any => {
     return new Promise((resolve, reject)=> {
 
-      // console.log("before guaranteeSignComplite res",requestId, comment , hashcode);
+       console.log("before guaranteeSignComplite res",requestId, comment , hashcode);
       this.guaranteeSignCompliteEt(requestId, hashcode).then((result2) => {
+        console.log("after guaranteeSignComplite result2",result2);
 
 
         // find and change state of selected request
@@ -395,11 +451,21 @@ export class RealService extends MockService {
         );
 
         this.mockGuarantees = [...this.mockGuarantees, guarantee];
+        this.msgService.add({
+          severity: 'success',
+          summary: 'ערבות חדשה',
+          detail: 'בוצע חשיפה לערבות חדשה בהצלחה'
+        });
         resolve(guarantee);
 
 
       }).catch((error)=> {
-        console.error(error);
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה להוצאת האישור ערבות  נכשלה'
+        });
         reject(error);
 
       })
@@ -409,10 +475,10 @@ export class RealService extends MockService {
 
   terminateGuatanty = (guaranteeId, requestId, comment , hashcode):any => {
     return new Promise((resolve, reject)=> {
-      // console.log('rejectRequest',requestId);
+       console.log('terminateGuatanty',requestId,guaranteeId,this.mockGuarantees);
       this.terminateGuaranteeEt(guaranteeId).then((result) => {
-
-
+        console.log('terminateGuatanty - ',guaranteeId,this.getAllGuaranties(),result);
+        // debugger;
         // find and change state of selected request
         let terminatedRequest = this.mockRequests.find((item) => {
           return item.GRequestID === requestId;
@@ -424,10 +490,18 @@ export class RealService extends MockService {
         });
         terminatedGuarantee.guaranteeState = GuaranteeState.Terminated;
 
-        resolve(terminatedGuarantee);
+        resolve({
+          guarantee: terminatedGuarantee,
+          request: terminatedRequest
+        });
 
       }).catch((error)=> {
-        console.error(error);
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לביטול ערבות  נכשלה'
+        });
         reject(error);
 
 
@@ -436,27 +510,25 @@ export class RealService extends MockService {
   };
 
 
-  terminateGuatantyComplite = (guaranteeId, requestId, comment , hashcode) => {
+
+
+  getGuarantyHistory = (requestId):any => {
     return new Promise((resolve, reject)=> {
-
-      // find and change state of selected request
-      let terminatedRequest = this.mockRequests.find((item) => {
-        return item.GRequestID === requestId;
-      });
-      terminatedRequest.requestState = RequestState.terminationRequest;
-
-      resolve(terminatedRequest);
-    });
-  };
-
-
-  getGuarantyHistory = (requestId) => {
-    return new Promise((resolve) => {
       this.getGuarantyHistoryEt(requestId).then((history)=>
       {
         console.log(history);
         resolve(history);
-      });
+      }).catch((error)=> {
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לקבלת איסטוריה  נכשלה'
+        });
+        reject(error);
+
+
+      })
 
     });
   };
@@ -480,7 +552,7 @@ export class RealService extends MockService {
     var fullnameEt=this.web3.fromUtf8(fullname);
     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
 
-    return (GuaranteeRequest.new(bankAccount,benefAccount,fullname,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{gas:4000000,from: userAccount}));
+    return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{gas:4000000,from: userAccount}));
   };
 
   submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
@@ -520,11 +592,28 @@ export class RealService extends MockService {
   };
 
 
+  guaranteeUpdate = (guatantyId, requestId, comment, amount, date):any => {
+    return new Promise((resolve, reject)=> {
 
+      // find and change state of selected request
+      let unpdatedRequest = this.mockRequests.find((item) => {
+        return item.GRequestID === requestId;
+      });
+      unpdatedRequest.amount = amount;
+      unpdatedRequest.EndDate = date;
 
+      let updatedGuarantee = this.mockGuarantees.find((item) => {
+        return item.GuaranteeID === guatantyId;
+      });
+      updatedGuarantee.amount = amount;
+      updatedGuarantee.EndDate = date;
 
-
-
+      resolve({
+        request: unpdatedRequest,
+        guarantee: updatedGuarantee
+      });
+    });
+  };
 
 
 
@@ -560,7 +649,7 @@ export class RealService extends MockService {
 
 
   guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
-    // אישור של בנק
+    // אישור של
     // if  (hashcode) {
     var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
     const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
@@ -569,19 +658,26 @@ export class RealService extends MockService {
     return Regulator.deployed()
       .then( (instance)=> {
         console.log("guaranteeSignCompliteEt",requestId,guaranteeIPFSHash);
-        return instance.GuaranteeSignComplite.call(requestId,hashcodeBug,{from: this.account});
+        return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: this.account});
+      }).then( (tx)=> {
+        var guaranteeRequest = GuaranteeRequest.at(requestId);
+        return guaranteeRequest.getGuaranteeAddress.call();
+
+
       }).catch(function (error) {
+        console.error('error',error);
         throw error;
       })
 
   };
+
 
   terminateGuaranteeEt = (garantyId) => {
 
     return Regulator.deployed()
       .then( (instance) =>{
         console.log("terminateGuaranteeEt garantyId",garantyId);
-        return instance.terminateGuarantee(garantyId ,{from:this.account});
+        return instance.terminateGuarantee(garantyId,{from:this.account});
       }).catch(function (error) {
         throw error;
       })
@@ -611,14 +707,14 @@ export class RealService extends MockService {
 
 
 
-  getGuarantyHistoryEt = (requestAddress) => {
+  getGuarantyHistoryEt = (guaranteeAddress) => {
 
     return new Promise((resolve) => {
 
 
       var requestevents = [];
-      var guaranteeRequest = GuaranteeRequest.at(requestAddress);
-      var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
+      var guarantee = DigitalGuaranteeBNHP.at(guaranteeAddress);
+      var allevents = guarantee.allEvents({fromBlock: 0, toBlock: 'latest'})
 
       return allevents.get( (error, result)=> {
 
@@ -630,7 +726,7 @@ export class RealService extends MockService {
 
         var replay=
         {
-          shortrequest: requestAddress,
+          shortguarantee: guaranteeAddress,
           log: requestevents
         };
 
@@ -641,6 +737,7 @@ export class RealService extends MockService {
   };
 
   private populateHistoryLineData(event:any, args:any) {
+    console.log("populateHistoryLineData",event, args);
     const pDate = (new Date(args.timestamp.valueOf() * 1000) ).toDateString();
     const state =args.curentstatus.valueOf();
     var comment_ = args.commentline;
@@ -775,7 +872,7 @@ export class RealService extends MockService {
       .then( (instance)=> {
         return instance.getRequestAddressList.call();//({from: this.account});
       }).then( (guaranteeAddresses)=> {
-        // console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
+        console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
         return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
           return new Promise(resolve =>
             this.getOneRequest(guaranteeAddress).then((returneddata) => resolve(returneddata)));
@@ -914,6 +1011,7 @@ export class RealService extends MockService {
     const proposal=this.web3.toUtf8( resultArr[6]);
     const full_name=this.web3.toUtf8( resultArr[5]);
     const state= resultArr[12].valueOf();
+    // console.log("state",state,resultArr);
     var ask= {
       GuaranteeID: resultArr[0],
       GRequestID: resultArr[1],

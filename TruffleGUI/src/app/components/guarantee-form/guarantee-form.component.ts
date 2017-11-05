@@ -16,6 +16,7 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   newGuarantee: FormGroup;
+  uploadurl:string='http://35.158.139.208:9080/uploadpdfwhash';
   // state: any[] = [
   //   {
   //     label: "המבקש",

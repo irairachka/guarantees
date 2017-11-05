@@ -38,5 +38,16 @@ module.exports = {
     fs: 'empty',
     net: 'empty',
     tls: 'empty'
+  } ,
+  devServer: {
+    contentBase: path.join(__dirname, "dist"),
+    compress: true,
+    port: 9000,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: false
+      }
+    }
   }
 }

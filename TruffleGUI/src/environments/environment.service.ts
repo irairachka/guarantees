@@ -6,14 +6,11 @@
 import {MockService} from "../app/services/mock-etherium.service";
 import {EtheriumService} from "../app/services/real-etherium.service";
 import {RemoteService} from "../app/services/remote-etherium.service";
-import {RealService} from "../app/services/real-etheriumwork.service";
 
 export const environment = {
   production: false,
   service: {
     provide: EtheriumService,
-    useClass: MockService
-    // useClass: RealService
-    // useClass: RemoteService
+    useClass: RemoteService
   }
 };

@@ -4,16 +4,19 @@ import {MockService} from "./mock-etherium.service";
 import {Http} from "@angular/http";
 import 'rxjs/add/operator/map'
 import {GuaranteeState, RequestState} from "../interfaces/enum";
-
+import 'rxjs/add/operator/toPromise';
+import {RealService} from "./real-etheriumwork.service";
 
 @Injectable()
-export class RemoteService extends MockService {
+
+export class RemoteService extends RealService {
   web3:any;
 
   accounts:any;
   account:any;
 
   private api: string = '/api';
+  // private api: string =  'http://localhost:3000/api';
 
 
   constructor(public msgService:MessageService, private http: Http) {
@@ -25,16 +28,39 @@ export class RemoteService extends MockService {
 
   getAllGuaranties = () => {
     return this.http.get(`${this.api}/getAllGuarantees`).map(res => {
-        res = res.json();
+      res = res.json();
+      //todo check is it right
+      if(res) {
         super.setMockGuarantee(res);
         return res;
-      }).toPromise();
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
   };
 
-  terminateGuatanty = (guaranteeId, requestId, comment , hashcode) => {
+  // getAllGuaranties = () => {
+  //   return this.http.get(`${this.api}/getAllGuarantees`).map(res => {
+  //     res = res.json();
+  //     super.setMockGuarantee(res);
+  //     return res;
+  //   }).toPromise();
+  // };
+
+
+  terminateGuatanty = (guaranteeId, requestId, comment , hashcode):any => {
     return this.http.post(`${this.api}/terminateGuarantees`, {
         guaranteeId,
-        requestId
+        requestId ,
+        comment ,
+        hashcode
       }).map(res => {
         res = res.json();
         console.log('res', res);
@@ -63,15 +89,30 @@ export class RemoteService extends MockService {
       }).toPromise();
   };
 
-  guaranteeUpdate = (guatantyId, requestId, comment, amount, date) => {
+
+  guaranteeUpdate = (guatantyId, requestId, comment, amount, date):any => {
+
+
+
+
+
+
+
+
+
+
     return this.http.post(`${this.api}/updateGuarantees`, {
       guatantyId,
-      requestId
+      requestId,
+      comment,
+      amount,
+      date
     }).map(res => {
       res = res.json();
       console.log('res', res);
       // update mock
       if (res) {
+        // find and change state of selected request
         let unpdatedRequest = this.mockRequests.find((item) => {
           return item.GRequestID === requestId;
         });
@@ -83,10 +124,18 @@ export class RemoteService extends MockService {
         });
         updatedGuarantee.amount = amount;
         updatedGuarantee.EndDate = date;
-        return {
-          guarantee: updatedGuarantee,
-          request: unpdatedRequest
-        };
+
+        return({
+          request: unpdatedRequest,
+          guarantee: updatedGuarantee
+        });
+      } else {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
       }
     }).toPromise();
   };
