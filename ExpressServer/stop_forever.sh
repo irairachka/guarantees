@@ -1,1 +1,1 @@
-forever start -c "npm start" ./
+forever stop -c "npm stop" ./
