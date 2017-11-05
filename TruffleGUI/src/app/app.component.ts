@@ -109,16 +109,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
         break;
       case 'reject':
-        console.log(`reject success! id: ${e.requestId} comment: ${e.details}`);
         updatedRequest = this.truffleSRV.rejectRequest(e.requestId, e.details).then((updatedRequest)=>{
-              this.updateUserRequests(updatedRequest);
-              this.updateBankRequests(updatedRequest);
-          });
+          if(!isNullOrUndefined(updatedRequest)) {
+            console.log(`reject success! id: ${e.requestId} comment: ${e.details}`);
+            this.updateUserRequests(updatedRequest);
+            this.updateBankRequests(updatedRequest);
+          }
+        });
         break;
       case 'terminate':
-        console.log(`terminate success! id: ${e.guaranteeId}`);
         updatedRequest = this.truffleSRV.terminateGuatanty(e.guaranteeId, e.requestId, '', '').then((res)=>{
           if(!isNullOrUndefined(res)) {
+            console.log(`terminate success! id: ${e.guaranteeId}`,res);
             this.updateUserGuarantees(res.guarantee);
             this.updateBankGuarantees(res.guarantee);
             this.updateBenefGuarantees(res.guarantee);

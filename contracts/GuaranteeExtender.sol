@@ -27,24 +27,25 @@ contract GuaranteeExtender is GuaranteeConst {
     //    function getIndexType() constant returns (IndexType);
     //    function getIndexDate() constant returns (uint);
 
-    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary,bytes32 _full_name, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState);
+    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary,bytes32 _full_name, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _gState);
     function getGuaranteeIPFSHash() constant public returns (bytes);
 
 
     // function endRequest(string comment) onlyBeneficiary returns (bool);
-
+//    event AAA (uint nowtime,uint enddate,bool isExpired);
     function isExpired() constant public returns (bool) {
-        return (getEndDate()>now);
+//        AAA(now,getEndDate(),getEndDate()<now);
+        return (getEndDate()<now);
     }
 
-    function getGuaranteeState() constant public returns (GuaranteeState _guaranteeState);
+    function getState() constant public returns (GuaranteeState );
 
     function getGuaranteeRequest() constant public returns (address requestExtender);
 
 
     function terminateGuarantee()  public ;
 
-//    function changeRequest(uint amount, string endDate, string comment) onlyBeneficiary returns (bool);
+    function changeRequest(uint amount, string endDate, string comment) ;
 
 
 }

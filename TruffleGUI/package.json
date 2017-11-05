@@ -5,6 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 9090 --proxy-config proxy.conf.json",
+    "startr": "ng serve --host 0.0.0.0 --port 9090 --si=MockService",
+    "startp": "ng serve --host 172.31.12.56 --public-host 35.158.139.208 --disable-host-check --port 9091",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

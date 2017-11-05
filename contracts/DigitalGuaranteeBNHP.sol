@@ -3,6 +3,7 @@ pragma solidity ^0.4.11;
 import "./GuaranteeConst.sol";
 import "./GuaranteeExtender.sol";
 import "./GuaranteeRequestExtender.sol";
+import "./Ownable.sol";
 
 contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
 {
@@ -12,8 +13,8 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
     GuaranteeState gstate;
     bytes guaranteeIPFSHash;
 
-    event Issued(address  _requestId,address  _guaranteeId,address _msgSender,bytes _guaranteeIPFSHash);
-    event Terminated(address  _requestId,address  _guaranteeId,address _msgSender );
+    event Issued(address  _requestId,address  _guaranteeId,address _msgSender,bytes _guaranteeIPFSHash,GuaranteeState   curentstatus,uint timestamp);
+    event Terminated(address  _requestId,address  _guaranteeId,address _msgSender ,GuaranteeState   curentstatus,uint timestamp);
 
     function getGuaranteeRequest() constant public returns (address requestExtender)
     {
@@ -26,7 +27,7 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
         regulator=_regulator;
         guaranteeIPFSHash=_guaranteeIPFSHash;
         gstate=GuaranteeState.Valid;
-        Issued(_guaranteeRequestExtender,this,msg.sender, _guaranteeIPFSHash);
+        Issued(_guaranteeRequestExtender,this,msg.sender, _guaranteeIPFSHash,gstate,now);
     }
 
 
@@ -49,7 +50,7 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
     }
 
 
-    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary,bytes32 _full_name, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _guaranteeState)
+    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary,bytes32 _full_name, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _gState)
     {
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
 
@@ -61,7 +62,7 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
         _customer=gr.getCustomer();
         _bank=gr.getBank();
         _beneficiary=gr.getBeneficiary();
-        _guaranteeState=getGuaranteeState();
+        _gState=getState();
 
     }
 
@@ -72,17 +73,29 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
 
 
 
+    event AAA (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
+    event BBB (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
+    event CCC (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
 
-    function getGuaranteeState() constant  public returns (GuaranteeState _guaranteeState)
+
+    function getState() constant  public returns (GuaranteeState )
     {
+        AAA(now,getEndDate(),getEndDate()<now,gstate);
+
+    if (gstate==GuaranteeState.Valid)
+        {
+            BBB(now,getEndDate(),getEndDate()<now,gstate);
+
         if (isExpired())
-        {
+            {
+                CCC(now,getEndDate(),getEndDate()<now,gstate);
+
             return  GuaranteeState.Expaired;
+            }
         }
-        else
-        {
+
             return  gstate;
-        }
+
 
     }
 
@@ -92,20 +105,18 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
     {
         gstate=GuaranteeState.Terminated;
 //    AAA(gstate);
-        Terminated(guaranteeRequestExtender,getId(),msg.sender);
-
+        Terminated(guaranteeRequestExtender,getId(),msg.sender,gstate,now);
 
     }
 
 
 
-//    event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string comment);
-//
-//    function changeRequest(uint _amount, string _endDate, string _comment) onlyBeneficiary returns (bool)
-//    {
-//        ChangeRequested(guaranteeRequestExtender,this,msg.sender,_amount,  _endDate, _comment);
-//        throw;
-//    }
+   event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string commentline,GuaranteeState   curentstatus,uint timestamp);
+
+    function changeRequest(uint _amount, string _endDate, string _comment)
+    {
+        ChangeRequested(guaranteeRequestExtender,this,msg.sender,_amount,  _endDate, _comment,gstate,now);
+    }
 
 
 }

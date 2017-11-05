@@ -58,6 +58,8 @@ export class StatusIconComponent {
       case GuaranteeState.Terminated:
         this.statusIcon ='fa-times-circle';
         break;
+      case GuaranteeState.Expired:
+        this.statusIcon ='fa-hourglass-end';
       default:
         break;
     }

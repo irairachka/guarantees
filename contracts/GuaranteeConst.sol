@@ -2,7 +2,7 @@ pragma solidity ^0.4.13;
 
 contract GuaranteeConst {
     //guarantee request states
-    enum RequestState { created, waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest }
+    enum RequestState { created, waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest ,Expaired}
 
 
     enum GuaranteeState { None, Valid, Expaired ,Terminated , Reissed}

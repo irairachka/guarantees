@@ -9,6 +9,7 @@ import {
 import {Beneficiary, Customer, Guarantee,GRequest} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
 import {GuaranteeState, RequestState} from "../interfaces/enum";
+import {_catch} from "rxjs/operator/catch";
 
 // // Import our contract artifacts and turn them into usable abstractions.
 // const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
@@ -57,10 +58,26 @@ export class MockService {
     console.log("getRequestHistory",requestAddress);
 
     return new Promise((resolve) => {
-      resolve(
-        mockexpandedRequest[mockexpandedRequest.findIndex(item => {
+      var history;
+      try{
+        history=mockexpandedRequest[mockexpandedRequest.findIndex(item => {
           return item.shortrequest.GRequestID === requestAddress
-        })].log);
+        })].log
+      }
+      catch(error)
+      {
+        history= [
+        {
+          eventname:'Not_Find',
+          date: '01/01/1970',
+          state: RequestState.created,
+          comment: "hustory not exist in mock data!"
+        }
+      ];
+      }
+      resolve(
+        history
+        );
     });
   };
 
@@ -71,7 +88,7 @@ export class MockService {
   getAllRequests = ()=> {
     /** Gets all guarantee requests for customer */
     return new Promise((resolve)=> {
-      resolve(mockCustomerRequests);
+      resolve(this.mockRequests);
     });
   };
 
@@ -82,7 +99,7 @@ export class MockService {
 
   getAllGuaranties = () => {
     return new Promise((resolve) => {
-      resolve(mockCustomerGuaranties);
+      resolve(this.mockGuarantees);
     });
   };
 
@@ -169,7 +186,7 @@ export class MockService {
           RequestState.waitingtobank
         ]
       );
-      this.mockRequests = [...mockCustomerRequests, newItem];
+      this.mockRequests = [...this.mockRequests, newItem];
       resolve(newItem);
     });
   };
@@ -187,7 +204,7 @@ export class MockService {
     });
   };
 
-  updateRequest = (requestId, comment) => {
+  updateRequest = (requestId, comment):any => {
     // עדכון של בנק
     return new Promise((resolve, reject)=> {
       let updatedItem = this.mockRequests.find((item) => {
@@ -280,7 +297,7 @@ export class MockService {
 
 
 
-  terminateGuatanty = (guaranteeId, requestId, comment , hashcode) => {
+  terminateGuatanty = (guaranteeId, requestId, comment , hashcode):any => {
     return new Promise((resolve, reject)=> {
 
       // find and change state of selected request
@@ -301,7 +318,7 @@ export class MockService {
     });
   };
 
-  guaranteeUpdate = (guatantyId, requestId, comment, amount, date) => {
+  guaranteeUpdate = (guatantyId, requestId, comment, amount, date):any => {
     return new Promise((resolve, reject)=> {
 
       // find and change state of selected request
@@ -344,7 +361,7 @@ export class MockService {
   //   });
   // };
 
-  getGuarantyHistory = (requestId) => {
+  getGuarantyHistory = (requestId):any => {
     return new Promise((resolve) => {
       resolve(mockexpandedRequest[0].log);
     });
