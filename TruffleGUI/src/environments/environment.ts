@@ -14,8 +14,8 @@ export const environment = {
   server:'35.158.139.208',
   service: {
     provide: EtheriumService,
-    // useClass: MockService
+    useClass: MockService
     // useClass: RealService
-    useClass: RemoteService
+    // useClass: RemoteService
   }
 };

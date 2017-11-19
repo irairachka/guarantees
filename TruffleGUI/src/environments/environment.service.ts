@@ -9,7 +9,7 @@ import {RemoteService} from "../app/services/remote-etherium.service";
 
 export const environment = {
   production: false,
-  server:'localhost',
+  server:'35.158.139.208',
   service: {
     provide: EtheriumService,
     useClass: RemoteService
