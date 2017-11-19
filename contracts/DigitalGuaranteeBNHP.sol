@@ -55,7 +55,7 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
         GuaranteeRequestExtender gr= GuaranteeRequestExtender(guaranteeRequestExtender);
 
 //        ( , _customer, _bank,  _beneficiary,  _purpose, _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
-        ( , , ,  , _full_name, _purpose , _amount, _startDate, _endDate, _indexType, _indexDate, ) =gr.getGuaranteeRequestData();
+        ( , , ,  , _full_name, _purpose , _amount, _startDate, _endDate, _indexType, _indexDate, , ,) =gr.getGuaranteeRequestData();
 
         _guaranteeRequest=guaranteeRequestExtender;
         _contract_id=getId();
@@ -73,22 +73,22 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
 
 
 
-    event AAA (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
-    event BBB (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
-    event CCC (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
+//    event AAA (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
+//    event BBB (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
+//    event CCC (uint nowtime,uint enddate,bool isExpired,GuaranteeState state);
 
 
     function getState() constant  public returns (GuaranteeState )
     {
-        AAA(now,getEndDate(),getEndDate()<now,gstate);
+//        AAA(now,getEndDate(),getEndDate()<now,gstate);
 
     if (gstate==GuaranteeState.Valid)
         {
-            BBB(now,getEndDate(),getEndDate()<now,gstate);
+//            BBB(now,getEndDate(),getEndDate()<now,gstate);
 
         if (isExpired())
             {
-                CCC(now,getEndDate(),getEndDate()<now,gstate);
+//                CCC(now,getEndDate(),getEndDate()<now,gstate);
 
             return  GuaranteeState.Expaired;
             }
@@ -111,12 +111,6 @@ contract DigitalGuaranteeBNHP is Ownable,GuaranteeExtender
 
 
 
-   event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string commentline,GuaranteeState   curentstatus,uint timestamp);
-
-    function changeRequest(uint _amount, string _endDate, string _comment)
-    {
-        ChangeRequested(guaranteeRequestExtender,this,msg.sender,_amount,  _endDate, _comment,gstate,now);
-    }
 
 
 }

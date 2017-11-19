@@ -12,18 +12,21 @@ contract ChangeGuaranteeRequest is GuaranteeRequestExtender
 
 //    bytes  theproposalIPFSHash;
 
-    address  changeRequestGuaranteeAdr;
+    address public  changeRequestGuaranteeAdr;
 
+    event ChangeGuaranteeRequestCreated (address guaranteeExtender,uint requestAmount, uint requestEndDate,uint timestamp);
 
-    function ChangeGuaranteeRequest(address guaranteeRequestExtender,uint requestAmount, uint requestEndDate){
-        changeRequestGuaranteeAdr=guaranteeRequestExtender;
-//        GuaranteeRequestExtender ger=GuaranteeRequestExtender(guaranteeRequestExtender);
+    function ChangeGuaranteeRequest(address guaranteeExtender,uint requestAmount, uint requestEndDate){
+        DigitalGuaranteeBNHP ge=DigitalGuaranteeBNHP(guaranteeExtender);
+
+        changeRequestGuaranteeAdr=ge.getGuaranteeRequest();
         amount=requestAmount;
         endDate=requestEndDate;
-        status=RequestState.created;
+        status=RequestState.waitingtobank;
 
 
-        changeOwner(GuaranteeRequestExtender(guaranteeRequestExtender).getCustomer());
+        changeOwner(GuaranteeRequestExtender(changeRequestGuaranteeAdr).getCustomer());
+        ChangeGuaranteeRequestCreated(guaranteeExtender, requestAmount,  requestEndDate,now);
     }
 
     function getId() constant public returns (address _contract_id)
@@ -48,33 +51,42 @@ contract ChangeGuaranteeRequest is GuaranteeRequestExtender
 
 
     function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
-    bytes32 _full_name ,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status)
+    bytes32 _full_name ,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status ,bool _isChangeGuarantee,address _changedGuarantee)
     {
 
-        ( , , , _beneficiary , _full_name, _purpose , , _startDate, , _indexType, _indexDate, _status) =GuaranteeRequestExtender(changeRequestGuaranteeAdr).getGuaranteeRequestData();
+        ( , , ,  , _full_name, _purpose , , _startDate, , _indexType, _indexDate, , , ) =GuaranteeRequestExtender(changeRequestGuaranteeAdr).getGuaranteeRequestData();
 
         _customer=getCustomer();
+        _beneficiary=getBeneficiary();
         _bank=getBank();
         _contract_id=getId();
         _amount=amount;
+        _status=status;
         _endDate=endDate;
+        _isChangeGuarantee=true;
+        _changedGuarantee=changeRequestGuaranteeAdr;
 
     }
 
-    function getProposalIPFSHash() constant public returns (bytes )
+
+
+    function getProposalIPFSHash() constant public returns (bytes _roposalIPFSHash)
     {
-    //        bytes propIPFS=GuaranteeRequestExtender(getChangeRequestGuarantee()).getProposalIPFSHash();
+//            _roposalIPFSHash=GuaranteeRequestExtender(getChangeRequestGuarantee()).getProposalIPFSHash();
         return "";
 
     }
 
 
 
-
-
     function getChangeRequestGuarantee() constant public returns (address )
     {
         return changeRequestGuaranteeAdr;
+    }
+
+    function isValid() constant public returns (bool) {
+
+        return ( getBank()!= address(0) && getBeneficiary()!= address(0));
     }
 
 }

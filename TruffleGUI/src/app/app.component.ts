@@ -69,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
     // console.log("handleCreateRequest date",new Date(e.startDate).getTime()/1000,e.endDate);
     let newRequest = this.truffleSRV.createRequest(this.customer.customerID,
     this.bank.bankID, this.beneficiaries[0].beneficiaryID,
-    e.purpose, e.amount, new Date(e.startDate).getTime()/1000, new Date(e.endDate).getTime()/1000, 0, 0).then((newRequest)=> {
+    e.purpose, e.amount, e.startDate, e.endDate, 0, 0).then((newRequest)=> {
       console.log("newRequest", newRequest);
       this.addNewUserRequests(newRequest);
       this.addNewBankRequests(newRequest);
@@ -96,14 +96,27 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'accept':
         console.log(`accept success! id: ${e.requestId}`);
          this.truffleSRV.acceptRequest(e.requestId, '', '').then((updatedRequest)=>{
-            this.updateUserRequests(updatedRequest);
-            this.updateBankRequests(updatedRequest);
+           // debugger;
+           if(!isNullOrUndefined(updatedRequest)) {
+             console.log(`acceptRequest success! id: ${e}`, updatedRequest);
+
+             this.updateUserRequests(updatedRequest.request);
+             this.updateBankRequests(updatedRequest.request);
+
+             if (updatedRequest.terminatedguarantee != null) {
+               this.updateUserGuarantees(updatedRequest.terminatedguarantee);
+               this.updateBankGuarantees(updatedRequest.terminatedguarantee);
+               this.updateBenefGuarantees(updatedRequest.terminatedguarantee);
+             }
+           }
 
            this.truffleSRV.guaranteeSignComplite(e.requestId, '', '').then((guarantee)=>{
+             // debugger;
              this.addNewUserGuarantee(guarantee);
              this.addNewBankGuarantee(guarantee);
              this.addNewBenefGuarantee(guarantee);
            });
+
         });
 
 
@@ -132,12 +145,9 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'guaranteeUpdate':
         console.log(`update success! id: ${e.guaranteeId} amount: ${e.update.amount} date: ${e.update.date}`);
         this.truffleSRV.guaranteeUpdate(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date).then((response:any)=>{
-          this.updateUserRequests(response.request);
-          this.updateBankRequests(response.request);
-          this.updateUserGuarantees(response.guarantee);
-          this.updateBankGuarantees(response.guarantee);
-          this.updateBenefGuarantees(response.guarantee);
-        });
+          this.addNewUserRequests(response);
+          this.addNewBankRequests(response);
+          });
         break;
       default:
         break;

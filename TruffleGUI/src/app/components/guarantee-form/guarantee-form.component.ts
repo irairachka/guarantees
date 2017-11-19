@@ -89,8 +89,8 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
       userAddress: this.userDetails.Address,
       beneficiary: '',
       beneficiaryAddress: '',
-      purpose: '',
-      amount: '',
+      purpose: ['', Validators.required],
+      amount: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       // hash: ['', Validators.required]
