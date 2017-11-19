@@ -109,9 +109,10 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
 
 
     //    function getAddresses() constant returns (Addresses);
-
     function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
-    bytes32 _full_name ,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status);
+    bytes32 _full_name,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status ,bool _isChangeGuarantee,address _changedGuarantee);
+//    function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
+//    bytes32 _full_name ,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status);
     function getProposalIPFSHash() constant public returns (bytes );
 
 //    function checkRegulator() constant public returns (bool) {
@@ -123,7 +124,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     //    function setRequestState(RequestState)  returns (RequestState);
 
     function isExpired() constant public returns (bool) {
-        return (getEndDate()>now);
+        return (getEndDate()<now);
     }
 
     function isValid() constant public returns (bool) {
@@ -239,7 +240,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     function accept() onlyRegulator public returns (bool result)
     {
 
-        require((status==RequestState.waitingtobank || status==RequestState.handling || status==RequestState.changeRequested)  && guarantee==address(0));
+        require((status==RequestState.waitingtobank || status==RequestState.handling )  && guarantee==address(0));
 
         status=RequestState.accepted;
         Accepted(getId(),msg.sender,   status,now);
@@ -272,7 +273,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
         if (isChangeRequest())
         {
             GuarantieChangeSigned(getId(),gr.getId(),   status,now);
-            GuaranteeExtender(getChangeRequestGuarantee()).terminateGuarantee();
+//            GuaranteeExtender(getChangeRequestGuarantee()).terminateGuarantee();
         }
         else
         {

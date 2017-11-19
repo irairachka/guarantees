@@ -87,7 +87,7 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
 
 
     function getGuaranteeRequestData() constant public returns (address _contract_id,address _customer,address _bank, address _beneficiary,
-    bytes32 _full_name,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status)
+    bytes32 _full_name,bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate,RequestState _status ,bool _isChangeGuarantee,address _changedGuarantee)
     {
 
         _contract_id=getId();
@@ -102,6 +102,10 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
         _indexType=indexType;
         _indexDate=indexDate;
         _status=status;
+        _isChangeGuarantee=isChangeRequest();
+        _changedGuarantee=getChangeRequestGuarantee();
+
+
     }
     function getProposalIPFSHash() public constant returns (bytes )
     {

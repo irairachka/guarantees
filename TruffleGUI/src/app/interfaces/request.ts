@@ -14,6 +14,8 @@ export interface GRequest {
   indexType: IndexType;
   indexDate: number;
   requestState: RequestState;
+  ischangeRequest:boolean;
+  changeRequest:string;
 }
 
 export interface ExpandedRequest {
@@ -22,6 +24,12 @@ export interface ExpandedRequest {
 
 }
 
+
+export interface ExpandedGuarantee {
+  shortrequest: Guarantee;
+  log: RequestFlowLog[] ;
+
+}
 
 export interface RequestFlowLog{
   eventname:string;
@@ -46,6 +54,7 @@ export interface Guarantee {
   indexType: IndexType;
   indexDate: number;
   guaranteeState: GuaranteeState;
+
 }
 
 

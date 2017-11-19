@@ -6,35 +6,35 @@ import {
   mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData,
   mockBankRequests, mockBankGuaranties, mockbeneficiaries, mockexpandedRequest
 } from "../../../tempData/mockData";
-import {Beneficiary, Customer, Guarantee,GRequest} from "../interfaces/request";
+import {Beneficiary, Customer, Guarantee, GRequest, ExpandedGuarantee} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
 import {GuaranteeState, RequestState} from "../interfaces/enum";
 import {MockService} from "./mock-etherium.service";
 import {environment} from "../../environments/environment";
+import {isNullOrUndefined} from "util";
 // Import our contract artifacts and turn them into usable abstractions.
 const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
 const Regulator_artifact = require('../../../../build/contracts/Regulator.json');
 const DigitalGuaranteeBNHP_artifact = require('../../../../build/contracts/DigitalGuaranteeBNHP.json');
 const GuaranteeRequestExtender_artifact = require('../../../../build/contracts/GuaranteeRequestExtender.json');
 const GuaranteeExtender_artifact = require('../../../../build/contracts/GuaranteeExtender.json');
+const ChangeGuaranteeRequest_artifact = require('../../../../build/contracts/ChangeGuaranteeRequest.json');
 
 let Regulator = contract(Regulator_artifact);
 let GuaranteeRequest = contract(GuaranteeRequest_artifact);
 let DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
 let GuaranteeExtender = contract(GuaranteeExtender_artifact);
 let GuaranteeRequestExtender = contract(GuaranteeRequestExtender_artifact);
-
+let ChangeGuaranteeRequest= contract(ChangeGuaranteeRequest_artifact);
 
 @Injectable()
 export class RealService extends MockService {
   web3:any;
-  currentMockId: number = 1000;
+  // currentMockId: number = 1000;
 
-  realRequests =null;
-  realGuarantees =null;
-
-
-
+  realRequests =[];
+  realGuarantees =[];
+  realCustomers =[];
 
   accounts:any;
   account:any;
@@ -69,7 +69,7 @@ export class RealService extends MockService {
     DigitalGuaranteeBNHP.setProvider(this.web3.currentProvider);
     GuaranteeExtender.setProvider(this.web3.currentProvider);
     GuaranteeRequestExtender.setProvider(this.web3.currentProvider);
-
+    ChangeGuaranteeRequest.setProvider(this.web3.currentProvider);
 
 
     this.web3.eth.getAccounts((err, accs) => {
@@ -111,7 +111,7 @@ export class RealService extends MockService {
      // {
       /** Gets all guarantee requests for customer */
       return new Promise((resolve, reject)=> {
-        this.getAllUserRequestsEt().then((requestsEt)=> {
+        this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
           this.realRequests=[...mockCustomerRequests, ...requestsEt];
           super.setMockRequests(this.realRequests);
           resolve(this.realRequests);
@@ -133,10 +133,10 @@ export class RealService extends MockService {
     //   });
   };
 
-  getAllGuaranties = () => {
+  getAllGuaranties = (customerAddress=this.account) => {
     // if (this.realGuarantees==null) {
       return new Promise((resolve, reject)=> {
-        this.getAllUserGuarantees().then((GuarantiesEt)=> {
+        this.getAllUserGuarantees(this.account).then((GuarantiesEt)=> {
           this.realGuarantees = [...mockCustomerGuaranties, ...GuarantiesEt];
           super.setMockGuarantee(this.realGuarantees);
           resolve(this.realGuarantees);
@@ -148,7 +148,7 @@ export class RealService extends MockService {
           });
           reject(error);
         });
-      })
+      });
     // }
     // else
     //   new Promise((resolve, reject)=> {
@@ -163,14 +163,15 @@ export class RealService extends MockService {
 
     let newItem ;
     let addressOfIns;
-    const startDate =  StartDate;
-    const endDate = EndDate ;
-    console.log("createRequest dates",StartDate, EndDate);
+    const thestartDate =  this.transformDateJSToSol(StartDate);
+    const theendDate = this.transformDateJSToSol(EndDate) ;
+    console.log("createRequest ",userId, bankId, benefId, "full name", purpose,
+      amount, thestartDate, theendDate, indexType, indexDate);
 
     return new Promise((resolve, reject)=> {
       // debugger;
       return this.createRequestEt(userId, bankId, benefId, "full name", purpose,
-        amount, StartDate*1000, EndDate*1000, indexType, indexDate, 'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2')
+        amount, thestartDate, theendDate, indexType, indexDate, 'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2')
         .then((instance) => {
 
           console.log("createRequest result", instance);
@@ -182,11 +183,13 @@ export class RealService extends MockService {
               this.web3.fromUtf8(''),
               this.web3.fromUtf8(purpose),
               amount,
-              startDate,
-              endDate,
+              thestartDate,
+              theendDate,
               indexType,
               indexDate,
-              RequestState.created
+              RequestState.created,
+              false  ,
+              ''
             ]
           );
           addressOfIns = instance.address;
@@ -207,11 +210,13 @@ export class RealService extends MockService {
                   this.web3.fromUtf8(''),
                   this.web3.fromUtf8(purpose),
                   amount,
-                  startDate,
-                  endDate,
+                  thestartDate,
+                  theendDate,
                   indexType,
                   indexDate,
-                  RequestState.waitingtobank
+                  RequestState.waitingtobank,
+                  false,
+                  ''
                 ]
               );
 
@@ -254,27 +259,7 @@ export class RealService extends MockService {
             detail: 'בקשה לערבות חדשה נכשלה'
           });
           reject(error);
-          // throw error;
-          //   this.currentMockId = this.currentMockId +1;
-          //    newItem = this.populateRequestData(
-          //     [''+this.currentMockId,
-          //       userId,
-          //       bankId,
-          //       benefId,
-          //       this.web3.fromUtf8(''),
-          //       this.web3.fromUtf8(purpose),
-          //       amount,
-          //       startDate,
-          //       endDate,
-          //       indexType,
-          //       indexDate,
-          //       RequestState.waitingtobank
-          //     ]
-          //    );
-          // this.msgService.add({severity: 'success', summary:'ערבות חדשה', detail:'בקשה לערבות חדשה נשלחה בהצלחה'});
-          // console.log("newItem",newItem);
-          // this.mockRequests = [...this.mockRequests, newItem];
-          // return newItem ;
+
         });
     });
 
@@ -380,11 +365,14 @@ export class RealService extends MockService {
     });
   };
 
-  acceptRequest = (requestId, comment , hashcode) => {
+
+
+
+
+  acceptRequest = (requestId, comment , hashcode):any => {
     return new Promise((resolve, reject)=> {
        console.log('acceptRequest',requestId);
       this.acceptRequestEt(requestId).then((result) => {
-
 
 
         // find and change state of selected request
@@ -393,7 +381,29 @@ export class RealService extends MockService {
         });
         acceptedItem.requestState = RequestState.accepted;
 
-        resolve(acceptedItem);
+        if (acceptedItem.ischangeRequest)
+        {
+          let terminatedGuarantee = this.mockGuarantees.find((item) => {
+            return item.GRequestID === acceptedItem.changeRequest;
+          });
+          terminatedGuarantee.guaranteeState = GuaranteeState.Terminated;
+
+          // console.log('acceptRequest',acceptedItem.ischangeRequest,terminatedGuarantee,acceptedItem);
+          resolve({
+            terminatedguarantee: terminatedGuarantee,
+            request: acceptedItem
+          });
+        }
+        else
+        {
+          // console.log('acceptRequest',acceptedItem.ischangeRequest,null,acceptedItem);
+
+          resolve({
+            terminatedguarantee: null,
+            request: acceptedItem
+          });
+        }
+
 
       }).catch((error)=> {
         console.error('error',error);
@@ -409,6 +419,7 @@ export class RealService extends MockService {
     })
   };
 
+
   guaranteeSignComplite = (requestId, comment , hashcode):any => {
     return new Promise((resolve, reject)=> {
 
@@ -416,6 +427,16 @@ export class RealService extends MockService {
       this.guaranteeSignCompliteEt(requestId, hashcode).then((result2) => {
         console.log("after guaranteeSignComplite result2",result2);
 
+        if (result2 =='0x0000000000000000000000000000000000000000')
+        {
+          this.msgService.add({
+            severity: 'error',
+            summary: 'ערבות חדשה',
+            detail: 'בקשה להוצאת האישור ערבות  נכשלה'
+          });
+          reject('בקשה להוצאת האישור ערבות  נכשלה');
+          return;
+        }
 
         // find and change state of selected request
         let acceptedItem = this.mockRequests.find((item) => {
@@ -424,42 +445,49 @@ export class RealService extends MockService {
         acceptedItem.requestState = RequestState.accepted;
 
 
-        var startDate=acceptedItem.StartDate.split("/");
-        var newstartDate=startDate[1]+"/"+startDate[0]+"/"+startDate[2];
-        var endDate=acceptedItem.EndDate.split("/");
-        var newsendDate=endDate[1]+"/"+endDate[0]+"/"+endDate[2];
+
+        // var startDate=acceptedItem.StartDate.split("/");
+        // var newstartDate=startDate[1]+"/"+startDate[0]+"/"+startDate[2];
+        // var endDate=acceptedItem.EndDate.split("/");
+        // var newsendDate=endDate[1]+"/"+endDate[0]+"/"+endDate[2];
 
         // alert(new Date(newDate).getTime())
 
-        const startDatet=new Date(newstartDate).getTime()/1000;
-        const endDatet=new Date(newsendDate).getTime()/1000;
+        const startDatet=this.transformDateJSToSol(acceptedItem.StartDate);
+          // new Date(newstartDate).getTime()/1000;
+        const endDatet=this.transformDateJSToSol(acceptedItem.EndDate);
+          // new Date(newsendDate).getTime()/1000;
         // console.log("guaranteeSignComplite ",acceptedItem.StartDate,startDatet,acceptedItem.EndDate,endDatet);
 
-        // generate new guarantee
-        let guarantee =  this.populateGuaranteeData(
-          [ result2,
-            acceptedItem.GRequestID,
-            acceptedItem.GRequestID,
-            acceptedItem.GRequestID,
-            acceptedItem.GRequestID,
-            this.web3.fromUtf8(this.getOneCustomerData(acceptedItem.customer).Name),
-            this.web3.fromUtf8(acceptedItem.purpose),
-            acceptedItem.amount,
-            startDatet,
-            endDatet,
-            acceptedItem.indexType,
-            acceptedItem.indexDate,
-            GuaranteeState.Valid
-          ]
-        );
+        this.getOneCustomerDataP(acceptedItem.customer).then((customer)=>
+        {
 
-        this.mockGuarantees = [...this.mockGuarantees, guarantee];
-        this.msgService.add({
-          severity: 'success',
-          summary: 'ערבות חדשה',
-          detail: 'בוצע חשיפה לערבות חדשה בהצלחה'
-        });
-        resolve(guarantee);
+
+          // generate new guarantee
+          let guarantee =  this.populateGuaranteeData(
+            [ result2,
+              requestId,
+              acceptedItem.customer,
+              acceptedItem.bank,
+              acceptedItem.beneficiary,
+              this.web3.fromUtf8(customer.Name),
+              this.web3.fromUtf8(acceptedItem.purpose),
+              acceptedItem.amount,
+              startDatet,
+              endDatet,
+              acceptedItem.indexType,
+              acceptedItem.indexDate,
+              GuaranteeState.Valid
+            ]
+          );
+
+          this.mockGuarantees = [...this.mockGuarantees, guarantee];
+          this.msgService.add({
+            severity: 'success',
+            summary: 'ערבות חדשה',
+            detail: 'בוצע חשיפה לערבות חדשה בהצלחה'
+          });
+          resolve(guarantee);
 
 
       }).catch((error)=> {
@@ -473,13 +501,14 @@ export class RealService extends MockService {
 
       })
     });
+  });
   };
 
 
-  terminateGuatanty = (guaranteeId, requestId, comment , hashcode):any => {
+  terminateGuatanty = (guaranteeId, requestId, comment , hashcode,customerAddress=this.account):any => {
     return new Promise((resolve, reject)=> {
        console.log('terminateGuatanty',requestId,guaranteeId,this.mockGuarantees);
-      this.terminateGuaranteeEt(guaranteeId).then((result) => {
+      this.terminateGuaranteeEt(this.account,guaranteeId).then((result) => {
         console.log('terminateGuatanty - ',guaranteeId,this.getAllGuaranties(),result);
         // debugger;
         // find and change state of selected request
@@ -513,6 +542,89 @@ export class RealService extends MockService {
   };
 
 
+  guaranteeUpdate = (guatantyId, requestId, comment, amount, date ,customerAddress=this.account):any => {
+    return new Promise((resolve, reject)=> {
+
+      // find and change state of selected request
+      let unpdateRequest = this.mockRequests.find((item) => {
+        return item.GRequestID === requestId;
+      });
+
+
+      if (date ==='undefined' || date =='')
+        date=unpdateRequest.EndDate;
+
+       console.log('guaranteeUpdate',date,this.transformDateJSToSol(date) );
+      this.changeGuaranteeEt(customerAddress,guatantyId,amount,this.transformDateJSToSol(date) ).then((newRequestAddress) => {
+
+        // make new request
+        let newItem = this.populateRequestData(
+          [ newRequestAddress,
+            unpdateRequest.customer,
+            unpdateRequest.bank,
+            unpdateRequest.beneficiary,
+            this.web3.fromUtf8(unpdateRequest.fullName),
+            this.web3.fromUtf8(unpdateRequest.purpose),
+            amount,
+            this.transformDateJSToSol(unpdateRequest.StartDate),
+            this.transformDateJSToSol(date),
+            // new Date(unpdateRequest.StartDate).getTime()/1000,
+            // new Date(date).getTime()/1000,
+            unpdateRequest.indexType,
+            unpdateRequest.indexDate,
+            RequestState.waitingtobank,
+            true,
+            requestId
+          ]
+        );
+
+
+        this.mockRequests = [...this.mockRequests, newItem];
+        this.msgService.add({severity: 'success', summary: 'שינוי ערבות', detail: 'בקשה לשינוי הערבות  נשלחה בהצלחה'});
+
+        resolve(newItem);
+
+
+
+      }).catch((error)=> {
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לביטול ערבות  נכשלה'
+        });
+        reject(error);
+
+
+      })
+    });
+  };
+
+
+  getRequestHistory = (requestAddress):any => {
+    console.log('getRequestHistory');
+    return new Promise((resolve, reject)=> {
+      this.getRequestHistoryEt(requestAddress).then((history)=>
+      {
+        console.log(history);
+        resolve(history);
+      }).catch((error)=> {
+        console.error('error',error);
+        this.msgService.add({
+          severity: 'error',
+          summary: 'ערבות חדשה',
+          detail: 'בקשה לקבלת פירוט נכשלה'
+        });
+        reject(error);
+
+
+      })
+
+    });
+  };
+
+
+
 
 
   getGuarantyHistory = (requestId):any => {
@@ -526,7 +638,7 @@ export class RealService extends MockService {
         this.msgService.add({
           severity: 'error',
           summary: 'ערבות חדשה',
-          detail: 'בקשה לקבלת איסטוריה  נכשלה'
+          detail: 'בקשה לקבלת פירוט נכשלה'
         });
         reject(error);
 
@@ -549,13 +661,14 @@ export class RealService extends MockService {
   createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
                      amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
   {
-    var StartDateEt=Math.floor((StartDate/1000));
-    var EndDateEt=Math.floor((EndDate/1000));
+    // var StartDateEt=Math.floor((StartDate/1000));
+    // var EndDateEt=Math.floor((EndDate/1000));
+    // if (purpose === 'undefined' || purpose==null)
+    //   purpose=' ';
     var purposeEt=this.web3.fromUtf8(purpose);
     var fullnameEt=this.web3.fromUtf8(fullname);
     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
-
-    return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{gas:4000000,from: userAccount}));
+    return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
   };
 
   submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
@@ -595,28 +708,28 @@ export class RealService extends MockService {
   };
 
 
-  guaranteeUpdate = (guatantyId, requestId, comment, amount, date):any => {
-    return new Promise((resolve, reject)=> {
-
-      // find and change state of selected request
-      let unpdatedRequest = this.mockRequests.find((item) => {
-        return item.GRequestID === requestId;
-      });
-      unpdatedRequest.amount = amount;
-      unpdatedRequest.EndDate = date;
-
-      let updatedGuarantee = this.mockGuarantees.find((item) => {
-        return item.GuaranteeID === guatantyId;
-      });
-      updatedGuarantee.amount = amount;
-      updatedGuarantee.EndDate = date;
-
-      resolve({
-        request: unpdatedRequest,
-        guarantee: updatedGuarantee
-      });
-    });
-  };
+  // guaranteeUpdate = (guatantyId, requestId, comment, amount, date):any => {
+  //   return new Promise((resolve, reject)=> {
+  //
+  //     // find and change state of selected request
+  //     let unpdatedRequest = this.mockRequests.find((item) => {
+  //       return item.GRequestID === requestId;
+  //     });
+  //     unpdatedRequest.amount = amount;
+  //     unpdatedRequest.EndDate = date;
+  //
+  //     let updatedGuarantee = this.mockGuarantees.find((item) => {
+  //       return item.GuaranteeID === guatantyId;
+  //     });
+  //     updatedGuarantee.amount = amount;
+  //     updatedGuarantee.EndDate = date;
+  //
+  //     resolve({
+  //       request: unpdatedRequest,
+  //       guarantee: updatedGuarantee
+  //     });
+  //   });
+  // };
 
 
 
@@ -663,6 +776,7 @@ export class RealService extends MockService {
         console.log("guaranteeSignCompliteEt",requestId,guaranteeIPFSHash);
         return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: this.account});
       }).then( (tx)=> {
+        console.log('guaranteeSignCompliteEt tx',tx);
         var guaranteeRequest = GuaranteeRequest.at(requestId);
         return guaranteeRequest.getGuaranteeAddress.call();
 
@@ -675,29 +789,19 @@ export class RealService extends MockService {
   };
 
 
-  terminateGuaranteeEt = (garantyId) => {
+  terminateGuaranteeEt = (userAccount,garantyId) => {
 
     return Regulator.deployed()
       .then( (instance) =>{
         console.log("terminateGuaranteeEt garantyId",garantyId);
-        return instance.terminateGuarantee(garantyId,{from:this.account});
+        return instance.terminateGuarantee(garantyId,{from:userAccount});
       }).catch(function (error) {
         throw error;
       })
 
   };
 
-  changeGuaranteeEt = (gauranteeId,ammount,dateEnd) => {
 
-    return Regulator.deployed()
-      .then( (instance)=> {
-        console.log("acceptRequestEt requestId",gauranteeId)
-        return instance.changeGuarantee(gauranteeId,ammount,dateEnd);
-      }).catch(function (error) {
-        throw error;
-      })
-
-  };
 
   terminateGuatantyEt = (guaranteeId, requestId) => {
     return Regulator.deployed().then((instance)=> {
@@ -708,6 +812,39 @@ export class RealService extends MockService {
 
   };
 
+
+  getRequestHistoryEt = (requestAddress) => {
+
+    return new Promise((resolve) => {
+
+
+      var requestevents = [];
+      var guaranteeRequest = GuaranteeRequest.at(requestAddress);
+      var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
+
+      return allevents.get( (error, result) =>{
+
+        // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+        for (var i = result.length - 1; i >= 0; i--) {
+          var cur_result = result[i];
+          // console.log('getRequestHistoryEt',cur_result);
+          let line=this.populateHistoryLineData(cur_result.event, cur_result.args);
+          if (!isNullOrUndefined(line))
+            requestevents.push(line);
+        }
+
+        var replay=
+        {
+          shortrequest: requestAddress,
+          log: requestevents
+        };
+
+        resolve(replay);
+
+      });
+
+    })
+  };
 
 
   getGuarantyHistoryEt = (guaranteeAddress) => {
@@ -724,7 +861,9 @@ export class RealService extends MockService {
         // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
         for (var i = result.length - 1; i >= 0; i--) {
           var cur_result = result[i];
-          requestevents.push(this.populateHistoryLineData(cur_result.event, cur_result.args));
+          let line=this.populateHistoryLineData(cur_result.event, cur_result.args);
+          if (!isNullOrUndefined(line))
+            requestevents.push(line);
         }
 
         var replay=
@@ -739,25 +878,31 @@ export class RealService extends MockService {
     })
   };
 
-  private populateHistoryLineData(event:any, args:any) {
+   populateHistoryLineData =(event:any, args:any) => {
     console.log("populateHistoryLineData",event, args);
-    const pDate = (new Date(args.timestamp.valueOf() * 1000) ).toDateString();
-    const state =args.curentstatus.valueOf();
-    var comment_ = args.commentline;
-    if (typeof(comment_) == "undefined") {
-      comment_ =""
-    }
+     if (!isNullOrUndefined(event) && !isNullOrUndefined(args))
+       {
 
-    var ask= {
-      eventname:event,
-      date: pDate,
-      state: state,
-      comment: comment_
+         const pDate = (new Date(args.timestamp.valueOf() * 1000) ).toDateString();
+         const state =args.curentstatus.valueOf();
+         var comment_ = args.commentline;
+         if (typeof(comment_) == "undefined") {
+           comment_ =""
+         }
+
+         var ask= {
+           eventname:event,
+           date: pDate,
+           state: state,
+           comment: comment_
 
 
-    };
+         };
 
-    return ask;
+         return ask;
+
+       }
+
   };
 
 
@@ -796,7 +941,6 @@ export class RealService extends MockService {
   };
 
   populateRequestData=(resultArr)=>  {
-    // console.log(resultArr);
     const startDate = this.transformDateSolToJS(resultArr[7].valueOf());
     const endDate = this.transformDateSolToJS(resultArr[8].valueOf());
 
@@ -805,6 +949,9 @@ export class RealService extends MockService {
     //  console.log('startDate1',resultArr[7] * 1000,startDate,'endDate1',resultArr[8] * 1000,endDate);
     const proposal=this.web3.toUtf8( resultArr[5]);
     const full_name=this.web3.toUtf8( resultArr[4]);
+    const ischangeRequest=(resultArr[12] === 'true' || resultArr[12] == true);
+    const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+
 
     var ask= {
       GRequestID: resultArr[0],
@@ -819,11 +966,20 @@ export class RealService extends MockService {
       EndDate: endDate,
       indexType: parseInt(resultArr[9].valueOf()),
       indexDate: parseInt(resultArr[10].valueOf()),
-      requestState: parseInt(resultArr[11].valueOf())
+      requestState: parseInt(resultArr[11].valueOf()),
+      ischangeRequest: ischangeRequest ,
+      changeRequest:changeRequestId
+      // ischangeRequest: (resultArr[12] === 'true')
     };
     // console.log("request data:", ask);
 
+    // console.log('populateRequestData',resultArr ,ask);
+
     return ask;
+
+
+
+
   };
 
   getAllBeneficiariesEt=()=> {
@@ -867,13 +1023,13 @@ export class RealService extends MockService {
   };
 
 
-  getAllUserRequestsEt=() =>{
+  getAllUserRequestsEt=(useraccount) =>{
     // function getAllUserRequests() {
     /** Gets all guarantee requests for customer */
     let customerGuaranties=[];
     return Regulator.deployed()
       .then( (instance)=> {
-        return instance.getRequestAddressList.call();//({from: this.account});
+        return instance.getRequestAddressList.call({from: useraccount});
       }).then( (guaranteeAddresses)=> {
         console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
         return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
@@ -905,28 +1061,14 @@ export class RealService extends MockService {
 
 
 
-  getOneCustomerEt =(customerAddress) => {
-    /** Gets one guarantee requests by id */
-    /** parses the data and sends to UI */
-    return Regulator.deployed()
-      .then( (instance)=> {
 
-        return instance.getCustomer.call(customerAddress);
-      }).then((result)=> {
-        console.log("getcustomer:", result);
-        return this.populateCustomerAddressData(customerAddress,result);
-      })
-      .catch(function(e)  {
-        console.log(e);
-      });
-  };
 
-  getAllUserGuarantees=() =>{
+  getAllUserGuarantees=(userAccount) =>{
      /** Gets all guarantee requests for customer */
     let customerGuaranties=[];
     return Regulator.deployed()
       .then( (instance)=> {
-        return instance.getGuaranteeAddressesList.call({from: this.account});
+        return instance.getGuaranteeAddressesList.call({from: userAccount});
       }).then( (guaranteeAddresses) =>{
         console.log("guaranteeAddresses[]:", guaranteeAddresses);
         return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
@@ -988,21 +1130,10 @@ export class RealService extends MockService {
     return ask;
   };
 
-  populateCustomerAddressData=(customerID,resultArr) => {
 
-
-    var ask= {
-      customerID: customerID,
-      Name: resultArr[0],
-      Address: resultArr[1]
-    };
-
-    // console.log("request data:", ask);
-
-    return ask;
-  };
 
   populateGuaranteeData=(resultArr) => {
+
 
     const startDatet = this.transformDateSolToJS(resultArr[8].valueOf());
     const endDatet = this.transformDateSolToJS(resultArr[9].valueOf());
@@ -1034,6 +1165,105 @@ export class RealService extends MockService {
 
 
     // console.log("populateGuaranteeData:", ask);
+
+    return ask;
+  };
+
+
+  changeGuaranteeEt = (userAccount ,guaranteeId , amount,  EndDate) => {
+
+    // var EndDateEt=Math.floor((EndDate/1000));
+    var Regulator_instance,ChangeGuaranteeRequestinstanceAddress;
+
+    return Regulator.deployed()
+      .then( (instance) => {
+        Regulator_instance=instance;
+        console.log("change  guaranteeId", guaranteeId)
+        return ChangeGuaranteeRequest.new(guaranteeId, amount, EndDate,{gas:5900000,from: userAccount});
+      })
+      .then( (ChangeGuaranteeRequestinstance) => {
+        console.log("change  guaranteeId ChangeGuaranteeRequestinstance", ChangeGuaranteeRequestinstance.address,ChangeGuaranteeRequestinstance)
+        ChangeGuaranteeRequestinstanceAddress=ChangeGuaranteeRequestinstance.address;
+        return Regulator_instance.changeGuaranteeM(ChangeGuaranteeRequestinstanceAddress,{from: userAccount});
+      })
+      .then( (tx) =>{
+        return new Promise((resolve)=> {
+          resolve(ChangeGuaranteeRequestinstanceAddress);
+        })
+      }).catch( (error) =>{
+        console.error(error);
+        throw error;
+      })
+
+  };
+
+
+  getOneCustomerData = (customerAddress): Customer => {
+
+      for (var i in this.realCustomers) {
+        if (this.realCustomers[i].customerID == customerAddress) {
+          return(this.realCustomers[i]);
+        }
+      }
+
+    return {
+      customerID: customerAddress,
+      Name: 'ישראל ישראלי',
+      Address: 'יצחק כצנסלון 5, תל אביב'
+    };
+
+  };
+
+  getOneCustomerDataP = (customerAddress):any => {
+    return new Promise((resolve, reject)=> {
+      for (var i in this.realCustomers) {
+        if (this.realCustomers[i].customerID == customerAddress) {
+          resolve(this.realCustomers[i]);
+        }
+      }
+
+      this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
+        this.realCustomers = [...this.realCustomers, loadCustomer];
+        resolve(loadCustomer);
+      }).catch((error)=> {
+
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת בבלוקציין',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        reject(error);
+      });
+
+    });
+  };
+
+  getOneCustomerEt =(customerAddress) => {
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    return Regulator.deployed()
+      .then( (instance)=> {
+
+        return instance.getCustomer.call(customerAddress);
+      }).then((result)=> {
+        console.log("getcustomer:", result);
+        return this.populateCustomerAddressData(customerAddress,result);
+      })
+      .catch(function(e)  {
+        console.log(e);
+      });
+  };
+
+  populateCustomerAddressData=(customerID,resultArr) => {
+
+
+    var ask= {
+      customerID: customerID,
+      Name: resultArr[0],
+      Address: resultArr[1]
+    };
+
+    // console.log("request data:", ask);
 
     return ask;
   };

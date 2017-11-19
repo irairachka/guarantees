@@ -202,7 +202,7 @@
       },
       {
         "attributes": {
-          "SourceUnit": 2130,
+          "SourceUnit": 2131,
           "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/Ownable.sol",
           "file": "./Ownable.sol",
           "scope": 135,
@@ -218,14 +218,14 @@
       {
         "attributes": {
           "contractDependencies": [
-            2129
+            2130
           ],
           "contractKind": "contract",
           "documentation": null,
           "fullyImplemented": true,
           "linearizedBaseContracts": [
             134,
-            2129
+            2130
           ],
           "name": "BeneficiaryManager",
           "scope": 135
@@ -242,7 +242,7 @@
                 "attributes": {
                   "contractScope": null,
                   "name": "Ownable",
-                  "referencedDeclaration": 2129,
+                  "referencedDeclaration": 2130,
                   "type": "contract Ownable"
                 },
                 "id": 3,
@@ -622,7 +622,7 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 2093,
+                      "referencedDeclaration": 2094,
                       "type": "modifier ()",
                       "value": "onlyOwner"
                     },
@@ -1023,7 +1023,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2410,
+                                  "referencedDeclaration": 2466,
                                   "type": "block",
                                   "value": "block"
                                 },
@@ -1529,7 +1529,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2429,
+                              "referencedDeclaration": 2485,
                               "type": "function (bool)",
                               "value": "require"
                             },
@@ -1939,5 +1939,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-11-05T14:40:10.271Z"
+  "updatedAt": "2017-11-19T12:25:36.977Z"
 }

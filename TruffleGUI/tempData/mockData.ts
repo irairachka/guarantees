@@ -1,8 +1,8 @@
 import {GRequest, Bank, Customer, Guarantee, Beneficiary, ExpandedRequest} from "../src/app/interfaces/request";
 import {IndexType, RequestState, GuaranteeState} from "../src/app/interfaces/enum";
 
-const  addressOnChain='0x006fbafdadf4ef72aebf71666537a6315fe24cae';
-// const  addressOnChain='0x00a329c0648769a73afac7f9381e08fb43dbea72';
+const  addressOnChain='0x00a329c0648769a73afac7f9381e08fb43dbea72';
+// const  addressOnChain='0x006fbafdadf4ef72aebf71666537a6315fe24cae';
 
 const  addressOnChainRequest1='0xd532D3531958448e9E179729421B92962fb81Dd1';
 const  addressOnChainRequest2='0xd532D3531958448e9E179729421B92962fb81Dd2';
@@ -15,8 +15,8 @@ const  addressOnChainGuaranty1='0xd532D3531958448e9E179729421B92962fb81Dc1';
 
 export const beneficiaryData: Beneficiary = {
   beneficiaryID: addressOnChain,
-  Name: "עיריית ת׳׳א" ,
-  Address: "אבן גבירול 69 תל אביב-יפו"
+  Name: "עיריית ראשון לציון" ,
+  Address: "הכרמל 20, ראשון לציון"
 };
 
 export const userData: Customer = {
@@ -45,7 +45,9 @@ export const mockCustomerRequests: GRequest[] = [
     purpose: 'מכרז נקיון',
     indexType: IndexType.CPI,
     indexDate: 1,
-    requestState: RequestState.accepted
+    requestState: RequestState.accepted,
+    ischangeRequest: false,
+    changeRequest:''
   },{
     GRequestID: addressOnChainRequest2,
     customer: addressOnChain,
@@ -59,7 +61,9 @@ export const mockCustomerRequests: GRequest[] = [
     purpose: 'מכרז בניה',
     indexType: IndexType.ConstructionMatirials,
     indexDate: 1,
-    requestState: RequestState.waitingtobank
+    requestState: RequestState.waitingtobank,
+    ischangeRequest: false,
+    changeRequest:''
   },{
     GRequestID: addressOnChainRequest3,
     customer: addressOnChain,
@@ -73,7 +77,9 @@ export const mockCustomerRequests: GRequest[] = [
     purpose: 'מכרז גינון',
     indexType: IndexType.None,
     indexDate: 1,
-    requestState: RequestState.rejected
+    requestState: RequestState.rejected,
+    ischangeRequest: false,
+    changeRequest:''
   },
   {
     GRequestID: addressOnChainRequest4,
@@ -88,7 +94,9 @@ export const mockCustomerRequests: GRequest[] = [
     purpose: 'מכרז תחבורה',
     indexType: IndexType.CPI,
     indexDate: 1,
-    requestState: RequestState.handling
+    requestState: RequestState.handling,
+    ischangeRequest: false,
+    changeRequest:''
   },{
     GRequestID: addressOnChainRequest5,
     customer: addressOnChain,
@@ -102,7 +110,9 @@ export const mockCustomerRequests: GRequest[] = [
     purpose: 'ספק תחזוקה',
     indexType: IndexType.None,
     indexDate: 1,
-    requestState: RequestState.withdrawed
+    requestState: RequestState.withdrawed,
+    ischangeRequest: false,
+    changeRequest:''
   },{
     GRequestID: addressOnChainRequest6,
     customer: addressOnChain,
@@ -116,7 +126,9 @@ export const mockCustomerRequests: GRequest[] = [
     purpose: 'נסיון',
     indexType: IndexType.None,
     indexDate: 1,
-    requestState: RequestState.waitingtocustomer
+    requestState: RequestState.waitingtocustomer,
+    ischangeRequest: false,
+    changeRequest:''
   }
 ];
 

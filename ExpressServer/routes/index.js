@@ -10,13 +10,13 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/api/getAllGuarantees', function(req, res, next) {
-    service.getAllUserGuarantees().then(response => {
+    service.getAllUserGuarantees(req).then(response => {
       res.send(response);
   })
 });
 
 router.get('/api/check', function(req, res, next) {
-    service.getCheck().then(response => {
+    service.getCheck(req).then(response => {
         res.send(response);
     })
 });

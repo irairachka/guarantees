@@ -45,7 +45,13 @@ contract GuaranteeExtender is GuaranteeConst {
 
     function terminateGuarantee()  public ;
 
-    function changeRequest(uint amount, string endDate, string comment) ;
+
+    event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, string endDate,string commentline,GuaranteeState   curentstatus,uint timestamp);
+
+    function changeRequest(uint _amount, string _endDate, string _comment)
+    {
+        ChangeRequested(getId(),this,msg.sender,_amount,  _endDate, _comment,getState(),now);
+    }
 
 
 }
