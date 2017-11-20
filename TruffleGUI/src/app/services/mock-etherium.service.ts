@@ -44,6 +44,8 @@ export class MockService {
   {
     this.mockGuarantees=mockGuarantees;
   };
+
+  
   /************************/
   /**  Get User Data   ****/
   /************************/
@@ -495,27 +497,6 @@ export class MockService {
 
 
 
-  // populateRequestData = (resultArr) => {
-  //     const startDate = this.transformDateSolToJS(resultArr[6]);
-  //     const endDate = this.transformDateSolToJS(resultArr[7]);
-  //
-  //
-  //     return {
-  //       GRequestID: resultArr[0],
-  //       customer: resultArr[1],
-  //       beneficiary: resultArr[3],
-  //       bank: resultArr[2],
-  //       beneficiaryName: this.getBeneficiaryData(resultArr[3]).Name,
-  //       purpose: resultArr[4],
-  //       amount: resultArr[5].valueOf(),
-  //       StartDate: startDate,
-  //       EndDate: endDate,
-  //       indexType: resultArr[8].valueOf(),
-  //       indexDate: resultArr[9].valueOf(),
-  //       requestState: resultArr[10].valueOf()
-  //     };
-  //   };
-
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);
     return date.toLocaleDateString('en-GB');
@@ -539,15 +520,7 @@ export class MockService {
 
   };
 
-  // getOneCustomerData = (customerAddress): Customer => {
-  //   for (var i in mockcustomers) {
-  //     if (mockcustomers[i].customerID==customerAddress) {
-  //       return mockcustomers[i];
-  //     }
-  //   }
-  //   return mockcustomers[0];
-  // };
-
+  
   getOneCustomerDataP = (customerAddress):any => {
     return new Promise((resolve)=> {
       for (var i in mockcustomers) {

@@ -1,14 +1,5 @@
-// import { Injectable, isDevMode } from '@angular/core';
-// import {MessageService} from "primeng/components/common/messageservice";
-// import {
-//     mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData,
-//     mockBankRequests, mockBankGuaranties, mockbeneficiaries, mockexpandedRequest
-// } from "../../../tempData/mockData";
-// import {Beneficiary, Customer, Guarantee,GRequest} from "../interfaces/request";
-// import {Observable} from "rxjs/Rx";
-// import {GuaranteeState, RequestState} from "../interfaces/enum";
-// import {MockService} from "./mock-etherium.service";
-// Import our contract artifacts and turn them into usable abstractions.
+
+
 
 const Web3 = require('web3');
 const contract = require('truffle-contract');
@@ -19,8 +10,6 @@ const DigitalGuaranteeBNHP_artifact = require('../../build/contracts/DigitalGuar
 const GuaranteeRequestExtender_artifact = require('../../build/contracts/GuaranteeRequestExtender.json');
 const GuaranteeExtender_artifact = require('../../build/contracts/GuaranteeExtender.json');
 const ChangeGuaranteeRequest_artifact = require('../../build/contracts/ChangeGuaranteeRequest.json');
-
-
 
 let Regulator = contract(Regulator_artifact);
 let GuaranteeRequest = contract(GuaranteeRequest_artifact);
@@ -90,6 +79,10 @@ onReady () {
         // });
     });
 };
+
+    isNullOrUndefined(object) {
+       return (object == null || object === undefined);
+    }
 
     checkService(customerAddress=this.account)
     {
@@ -248,6 +241,88 @@ onReady () {
     };
 
 
+    getGuarantyHistory (requestId,customerAddress=this.account)  {
+        return new Promise((resolve, reject)=> {
+
+            // console.log('getGuarantyHistory',requestId,customerAddress);
+            this.getGuarantyHistoryEt(requestId).then((history)=>
+            {
+                console.log(history);
+                resolve(history);
+            }).catch((error)=> {
+                console.error('error',error);
+                // this.msgService.add({
+                //     severity: 'error',
+                //     summary: 'ערבות חדשה',
+                //     detail: 'בקשה לקבלת פירוט נכשלה'
+                // });
+                reject(error);
+
+
+            })
+
+        });
+    };
+
+    getGuarantyHistoryEt  (guaranteeAddress)  {
+
+        return new Promise((resolve,reject) => {
+
+
+            var requestevents = [];
+            var guarantee = DigitalGuaranteeBNHP.at(guaranteeAddress);
+            var allevents = guarantee.allEvents({fromBlock: 0, toBlock: 'latest'})
+
+            return allevents.get( (error, result)=> {
+
+                if (error)
+                    reject(error);
+                // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+                for (var i = result.length - 1; i >= 0; i--) {
+                    var cur_result = result[i];
+                    let line=this.populateHistoryLineData(cur_result.event, cur_result.args);
+                    if (!this.isNullOrUndefined(line))
+                        requestevents.push(line);
+                }
+
+                var replay=
+                {
+                    shortguarantee: guaranteeAddress,
+                    log: requestevents
+                };
+
+                resolve(replay);
+
+            });
+        })
+    };
+
+    populateHistoryLineData (event, args)  {
+        console.log("populateHistoryLineData",event, args);
+        if (!this.isNullOrUndefined(event) && !this.isNullOrUndefined(args))
+        {
+
+            const pDate = (new Date(args.timestamp.valueOf() * 1000) ).toDateString();
+            const state =args.curentstatus.valueOf();
+            var comment_ = args.commentline;
+            if (typeof(comment_) == "undefined") {
+                comment_ =""
+            }
+
+            var ask= {
+                eventname:event,
+                date: pDate,
+                state: state,
+                comment: comment_
+
+
+            };
+
+            return ask;
+
+        }
+
+    };
 
 
 
@@ -415,7 +490,7 @@ onReady () {
             .then( (ChangeGuaranteeRequestinstance) => {
                 // console.log("change  guaranteeId ChangeGuaranteeRequestinstance", ChangeGuaranteeRequestinstance.address,ChangeGuaranteeRequestinstance)
                 ChangeGuaranteeRequestinstanceAddress=ChangeGuaranteeRequestinstance.address;
-                return Regulator_instance.changeGuaranteeM(ChangeGuaranteeRequestinstanceAddress,{from: userAccount});
+                return Regulator_instance.changeGuarantee(ChangeGuaranteeRequestinstanceAddress,guaranteeId,{from: userAccount});
             })
             .then( (tx) =>{
                 return new Promise((resolve)=> {
@@ -583,4 +658,16 @@ getCheck: (request) => {
         console.log('request', guaranteeId, requestId, comment, amount, date,customerAddress);
         return realService.guaranteeUpdate(guaranteeId, requestId, comment, amount, date,customerAddress)
     },
+
+
+    getGuarantyHistory: (request) => {
+
+        let guaranteeId = request.query.guaranteeId;
+        let customerAddress= request.query.customerAddress;
+        if (typeof(customerAddress) === "undefined")
+            customerAddress=account;
+        console.log('request', guaranteeId);
+        return realService.getGuarantyHistory(guaranteeId,customerAddress);
+    },
+
 }

@@ -152,25 +152,25 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-    function changeGuarantee(address  _guarantee ,uint _newamount, uint _newendDate)  returns (bool)  //onlyBeneficiary
-    {
-//        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
-//        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
-//        require( ger.getRequestState()==RequestState.accepted && msg.sender == ger.getBeneficiary() && _guarantee!= address(0));
+//    function changeGuarantee(address  _guarantee ,uint _newamount, uint _newendDate)  returns (bool)  //onlyBeneficiary
+//    {
+////        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
+////        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
+////        require( ger.getRequestState()==RequestState.accepted && msg.sender == ger.getBeneficiary() && _guarantee!= address(0));
+////
+////        ger.changeRequested( _newamount,  _newendDate);
+////        ChangeGuaranteeRequest newger=new ChangeGuaranteeRequest(ge.getGuaranteeRequest(),_newamount, _newendDate);
+////        guaranteeRequests.push(newger.getId());
 //
-//        ger.changeRequested( _newamount,  _newendDate);
-//        ChangeGuaranteeRequest newger=new ChangeGuaranteeRequest(ge.getGuaranteeRequest(),_newamount, _newendDate);
-//        guaranteeRequests.push(newger.getId());
+////        guaranteeRequests.push( new ChangeGuaranteeRequest(ge.getGuaranteeRequest(),_newamount, _newendDate).getId());
+////        return true;
+//    }
 
-//        guaranteeRequests.push( new ChangeGuaranteeRequest(ge.getGuaranteeRequest(),_newamount, _newendDate).getId());
-//        return true;
-    }
-
-    function changeGuaranteeM(address  _changeGuaranteeRequest )  public  returns (address)//onlyBeneficiary
+    function changeGuarantee(address  _changeGuaranteeRequest,address guarantie )  public  returns (address)//onlyBeneficiary
     {
         ChangeGuaranteeRequest newger=ChangeGuaranteeRequest(_changeGuaranteeRequest);
         require(msg.sender == newger.getBeneficiary() && newger.isValid() && newger.isChangeRequest());
-//        GuaranteeExtender(GuaranteeExtender(newger.getChangeRequestGuarantee())
+        GuaranteeExtender(guarantie).changeRequest(newger.getAmount(),newger.getEndDate());
 //            .getChangeRequestGuarantee()).
         newger.setRegulator();
         guaranteeRequests.push(_changeGuaranteeRequest);

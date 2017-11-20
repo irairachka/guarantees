@@ -744,7 +744,7 @@ contract('Regulator', function(accounts) {
             })
             .then( (ChangeGuaranteeRequestinstance) => {
                 ChangeGuaranteeRequestinstanceAddress=ChangeGuaranteeRequestinstance.address;
-                return Regulator_instance.changeGuaranteeM(ChangeGuaranteeRequestinstanceAddress);
+                return Regulator_instance.changeGuarantee(ChangeGuaranteeRequestinstanceAddress,guaranteeId);
             })
             .then( (tx) =>{
                 return new Promise((resolve)=> {
