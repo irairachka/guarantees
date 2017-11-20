@@ -114,7 +114,8 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.newGuarantee.reset();
+    // this.newGuarantee.reset();
+    this.createForm();
     this.selectedRequestsStates = '';
     this.cancelReason = '';
     this.terminateReason = '';
