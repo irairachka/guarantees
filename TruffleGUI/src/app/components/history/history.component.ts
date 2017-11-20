@@ -65,6 +65,7 @@ export class HistoryComponent implements OnChanges {
       (!isNullOrUndefined(this.Ghistory) && changes.Ghistory.currentValue !== changes.Ghistory.previousValue))
   {
       this.parseHistoryData();
+      console.log('this.Rhistory', this.Rhistory);
       if(this.todel_state==1) {
         this.statusGraph="../../../assets/images/progress1.png";
       } else {
@@ -80,6 +81,7 @@ export class HistoryComponent implements OnChanges {
         return item.date + "    " + item.comment + " "+ item.eventname;
       });
     }
+    console.log('this.history', this.history);
     if(!isNullOrUndefined(this.Ghistory) && !isNullOrUndefined(this.Ghistory.log)) {
       console.log('parseHistoryData this.history',this.Ghistory.log);
       this.history = this.Ghistory.log.map(item => {
