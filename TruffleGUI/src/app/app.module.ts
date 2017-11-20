@@ -31,6 +31,7 @@ import {MockService} from "./services/mock-etherium.service";
 import {RealService} from "./services/real-etheriumwork.service";
 import {RemoteService} from "./services/remote-etherium.service";
 import {environment} from "../environments/environment";
+import { AccordionWrapperComponent } from './components/accordion-wrapper/accordion-wrapper.component';
 
 @NgModule({
   imports: [
@@ -64,7 +65,8 @@ import {environment} from "../environments/environment";
     HistoryComponent,
     ActionsComponent,
     AccordionContentComponent,
-    StatusIconComponent
+    StatusIconComponent,
+    AccordionWrapperComponent
   ],
   providers: [
     MessageService,
