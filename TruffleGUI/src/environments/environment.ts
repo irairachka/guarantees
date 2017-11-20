@@ -10,8 +10,10 @@ import {RealService} from "../app/services/real-etheriumwork.service";
 
 export const environment = {
   production: false,
-  // server:'localhost',
-  server:'35.158.139.208',
+  server:'localhost',
+  // server:'35.158.139.208',
+  apiserver:'http://localhost:3000',
+  // apiserver:'',
   service: {
     provide: EtheriumService,
     useClass: MockService
