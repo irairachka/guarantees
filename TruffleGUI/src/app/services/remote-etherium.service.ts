@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map'
 import {GuaranteeState, RequestState} from "../interfaces/enum";
 import 'rxjs/add/operator/toPromise';
 import {RealService} from "./real-etheriumwork.service";
+import {environment} from "../../environments/environment";
 
 @Injectable()
 
@@ -15,8 +16,10 @@ export class RemoteService extends RealService {
   accounts:any;
   account:any;
 
-  // private api: string = '/api';
-  private api: string =  'http://localhost:3000/api';
+  private api:string =environment.apiserver+"/api";
+  // private  server: string =environment.server;
+  // private api: string =  '/api';
+  // private api: string =  'http://localhost:3000/api';
 
 
   constructor(public msgService:MessageService, private http: Http) {
@@ -113,53 +116,52 @@ export class RemoteService extends RealService {
       date=unpdateRequest.EndDate;
 
     console.log('call update by url ',guaranteeId, requestId, comment, amount, date,customerAddress)
-    return this.http.post(`${this.api}/updateGuarantees`, {
-      guaranteeId,
-      requestId,
-      comment,
-      amount,
-      date,
-      customerAddress
-    }).map(res => {
-      console.log('res is',res);
-      let reqid = res.text();
-      // update mock
-      if (reqid) {
-
-
-        // make new request
-        let newItem = this.populateRequestData(
-          [reqid,
-            unpdateRequest.customer,
-            unpdateRequest.bank,
-            unpdateRequest.beneficiary,
-            this.web3.fromUtf8(unpdateRequest.fullName),
-            this.web3.fromUtf8(unpdateRequest.purpose),
-            amount,
-            this.transformDateJSToSol(unpdateRequest.StartDate),
-            this.transformDateJSToSol(date),
-            unpdateRequest.indexType,
-            unpdateRequest.indexDate,
-            RequestState.waitingtobank,
-            true,
-            requestId
-          ]
-        );
-
-        this.mockRequests = [...this.mockRequests, newItem];
-        this.msgService.add({severity: 'success', summary: 'שינוי ערבות', detail: 'בקשה לשינוי הערבות  נשלחה בהצלחה'});
-
-        return(newItem);
-
-      } else {
-        this.msgService.add({
-          severity: 'error',
-          summary: 'תקלת תקשורת',
-          detail: 'Etherium Fatal Error!!!'
-        });
-        return;
-      }
-    }).toPromise();
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.api}/updateGuarantees`, {
+        guaranteeId,
+        requestId,
+        comment,
+        amount,
+        date,
+        customerAddress
+      }).subscribe(res => {
+        console.log('res is',res);
+        let reqid = res.text();
+        // update mock
+        if (reqid) {
+          // make new request
+          this.populateRequestDataP(
+            [reqid,
+              unpdateRequest.customer,
+              unpdateRequest.bank,
+              unpdateRequest.beneficiary,
+              this.web3.fromUtf8(unpdateRequest.fullName),
+              this.web3.fromUtf8(unpdateRequest.purpose),
+              amount,
+              this.transformDateJSToSol(unpdateRequest.StartDate),
+              this.transformDateJSToSol(date),
+              unpdateRequest.indexType,
+              unpdateRequest.indexDate,
+              RequestState.waitingtobank,
+              true,
+              requestId
+            ]
+          ).then((newItem)=>{
+            console.log('guaranteeUpdate add',newItem);
+            this.mockRequests = [...this.mockRequests, newItem];
+            this.msgService.add({severity: 'success', summary: 'שינוי ערבות', detail: 'בקשה לשינוי הערבות  נשלחה בהצלחה'});
+            resolve(newItem);
+          });
+        } else {
+          this.msgService.add({
+            severity: 'error',
+            summary: 'תקלת תקשורת',
+            detail: 'Etherium Fatal Error!!!'
+          });
+          reject('error');
+        }
+      });
+    });
   };
 
 

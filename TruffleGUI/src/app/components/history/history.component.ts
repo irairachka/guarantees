@@ -60,7 +60,10 @@ export class HistoryComponent implements OnChanges {
   // };
 
   ngOnChanges(changes: SimpleChanges){
-    if(changes.Rhistory.currentValue !== changes.Rhistory.previousValue) {
+    if((!isNullOrUndefined(this.Rhistory) && changes.Rhistory.currentValue !== changes.Rhistory.previousValue)
+  ||
+      (!isNullOrUndefined(this.Ghistory) && changes.Ghistory.currentValue !== changes.Ghistory.previousValue))
+  {
       this.parseHistoryData();
       if(this.todel_state==1) {
         this.statusGraph="../../../assets/images/progress1.png";
@@ -71,14 +74,13 @@ export class HistoryComponent implements OnChanges {
   }
 
   parseHistoryData() {
-    if(!isNullOrUndefined(this.Rhistory)) {
+    if(!isNullOrUndefined(this.Rhistory) && !isNullOrUndefined(this.Rhistory.log)) {
       // console.log('parseHistoryData this.history',this.Rhistory.log);
       this.history = this.Rhistory.log.map(item => {
         return item.date + "    " + item.comment + " "+ item.eventname;
       });
     }
-
-    if(!isNullOrUndefined(this.Ghistory)) {
+    if(!isNullOrUndefined(this.Ghistory) && !isNullOrUndefined(this.Ghistory.log)) {
       console.log('parseHistoryData this.history',this.Ghistory.log);
       this.history = this.Ghistory.log.map(item => {
         return item.date + "    " + item.comment + " "+ item.eventname;

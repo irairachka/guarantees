@@ -800,7 +800,13 @@
     "name": "SourceUnit",
     "src": "0:494:9"
   },
-  "networks": {},
+  "networks": {
+    "17": {
+      "events": {},
+      "links": {},
+      "address": "0xd3e823568ca0112ce32aa13330d6d5806e5c0761"
+    }
+  },
   "schemaVersion": "1.0.0",
-  "updatedAt": "2017-11-19T12:25:36.986Z"
+  "updatedAt": "2017-11-19T18:53:30.048Z"
 }

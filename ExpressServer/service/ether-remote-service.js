@@ -33,30 +33,31 @@ let ChangeGuaranteeRequest= contract(ChangeGuaranteeRequest_artifact);
 let accounts;
 let account;
 let web3;
-let realCustomers=[];
+let realCustomers = [];
+let realBeneficiaries=[];
+let realIssuers=[];
  
 class RealService {
 
-
-
     constructor() {
-    this.checkAndInstantiateWeb3();
-    this.onReady();
-}
+        this.checkAndInstantiateWeb3();
+        this.onReady();
+
+    }
 
 /** ******************** **/
 /**  Setup Functions     **/
 /** ******************** **/
 
-checkAndInstantiateWeb3  ()  {
-    if (typeof this.web3 !== 'undefined') {
-        console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 MetaCoin, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask")
-        this.web3 = new Web3(this.web3.currentProvider);
-    } else {
-        console.warn("No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
-        this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
-    }
-};
+    checkAndInstantiateWeb3  ()  {
+        if (typeof this.web3 !== 'undefined') {
+            console.warn("Using web3 detected from external source. If you find that your accounts don't appear or you have 0 MetaCoin, ensure you've configured that source properly. If using MetaMask, see the following link. Feel free to delete this warning. :) http://truffleframework.com/tutorials/truffle-and-metamask")
+            this.web3 = new Web3(this.web3.currentProvider);
+        } else {
+            console.warn("No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
+            this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
+    };
 
 onReady () {
     Regulator.setProvider(this.web3.currentProvider);
@@ -107,6 +108,7 @@ onReady () {
                 // super.setMockGuarantee(this.realGuarantees);
                 resolve([ ...GuarantiesEt]);
             }).catch((error)=> {
+                console.error(error);
                 reject(error);
             });
         })
@@ -119,41 +121,55 @@ onReady () {
     };
 
 
-    getOneCustomerData  (customerAddress)  {
-
-        for (var i in this.realCustomers) {
-            if (this.realCustomers[i].customerID == customerAddress) {
-                return(this.realCustomers[i]);
-            }
-        }
-
-        return {
-            customerID: customerAddress,
-            Name: 'ישראל ישראלי',
-            Address: 'יצחק כצנסלון 5, תל אביב'
-        };
 
 
+    getBeneficiaryEt (beneficiaryAddress)  {
+        /** Gets one guarantee requests by id */
+        /** parses the data and sends to UI */
+        return Regulator.deployed()
+            .then( (instance)=> {
+
+                return instance.getBeneficiary.call(beneficiaryAddress);
+            }).then((result)=> {
+                console.log("getcustomer:", result);
+                return this.populateBeneficiaryData(beneficiaryAddress,result);
+            })
+            .catch(function(error)  {
+                console.error(error);
+            });
     };
+
+
+    populateBeneficiaryData (benefisiaryID,resultArr)  {
+
+
+        var ask= {
+            beneficiaryID: benefisiaryID,
+            Name: resultArr[0] ,
+            Address: resultArr[1]
+        };
+        // console.log("request data:", ask);
+
+        return ask;
+    };
+
+
 
     getOneCustomerDataP  (customerAddress)  {
         return new Promise((resolve, reject)=> {
-            for (var i in this.realCustomers) {
-                if (this.realCustomers[i].customerID == customerAddress) {
-                    resolve(this.realCustomers[i]);
+            for (var i in realCustomers) {
+                if (realCustomers[i].customerID == customerAddress) {
+                    resolve(realCustomers[i]);
                 }
             }
 
-            this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
-                this.realCustomers = [...this.realCustomers, loadCustomer];
-                resolve(loadCustomer);
+            this.getOneCustomerEt(customerAddress).then((loadedCustomer)=> {
+                console.log('loadedCustomer',loadedCustomer);
+                realCustomers = [...realCustomers, loadedCustomer];
+                resolve(loadedCustomer);
             }).catch((error)=> {
+                console.error(error);
 
-                this.msgService.add({
-                    severity: 'error',
-                    summary: 'תקלת בבלוקציין',
-                    detail: 'Etherium Fatal Error!!!'
-                });
                 reject(error);
             });
 
@@ -171,8 +187,8 @@ onReady () {
                 console.log("getcustomer:", result);
                 return this.populateCustomerAddressData(customerAddress,result);
             })
-            .catch(function(e)  {
-                console.log(e);
+            .catch(function(error)  {
+                console.error(error);
             });
     };
 
@@ -207,25 +223,30 @@ onReady () {
 
 
             }).catch(function (error) {
+                console.error(error);
                 throw error;
             })
     };
 
-    getOneGuarantee (requestAddress)  {
+    getOneGuarantee (requestAddress,customerAddress=this.account)  {
         /** Gets one guarantee requests by id */
         /** parses the data and sends to UI */
         return GuaranteeExtender.at(requestAddress)
             .then((guaranteeExtenderInstance)=>  {
                 // console.log("getOneGuarantee:get data");
-                return guaranteeExtenderInstance.getGuaranteeData.call();
+                return guaranteeExtenderInstance.getGuaranteeData.call({from:customerAddress});
             }).then((result) =>{
                 // console.log("getOneGuarantee:", result);
-                return this.populateGuaranteeData(result);
+                return this.populateGuaranteeDataP(result);
+            }).then((result) =>{
+                return result;
             })
-            .catch(function(e)  {
-                console.log(e);
+            .catch(function(error)  {
+                console.error(error);
+                throw error;
             });
     };
+
 
 
 
@@ -260,40 +281,53 @@ onReady () {
     };
 
 
-    populateGuaranteeData(resultArr)  {
+    populateGuaranteeDataP (resultArr)  {
 
-        const startDatet = this.transformDateSolToJS(resultArr[8].valueOf());
-        const endDatet = this.transformDateSolToJS(resultArr[9].valueOf());
+        return new Promise((resolve, reject)=> {
 
-        // console.log("dates",resultArr[8].valueOf(),startDatet,resultArr[9].valueOf(),endDatet);
-        // const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
-        // const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
-        const indexDate=resultArr[11].valueOf();
-        const proposal=this.web3.toUtf8( resultArr[6]);
-        const full_name=this.web3.toUtf8( resultArr[5]);
-        const state= resultArr[12].valueOf();
-        var ask= {
-            GuaranteeID: resultArr[0],
-            GRequestID: resultArr[1],
-            customer: resultArr[2],
-            beneficiary: resultArr[4],
-            bank: resultArr[3],
-            customerName: this.getOneCustomerData(resultArr[2]).Name,
-            StartDate: startDatet,
-            EndDate: endDatet,
-            amount: parseInt(resultArr[7].valueOf()),
-            fullName:full_name,
-            purpose: proposal,
-            indexType: parseInt(resultArr[10].valueOf()),
-            indexDate: parseInt(indexDate.valueOf()),
-            guaranteeState: parseInt(state.valueOf())
-        };
+            const startDatet = this.transformDateSolToJS(resultArr[8].valueOf());
+            const endDatet = this.transformDateSolToJS(resultArr[9].valueOf());
+
+            // console.log("dates",resultArr[8].valueOf(),startDatet,resultArr[9].valueOf(),endDatet);
+            // const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
+            // const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
+            const indexDate = resultArr[11].valueOf();
+            const proposal = this.web3.toUtf8(resultArr[6]);
+            const full_name = this.web3.toUtf8(resultArr[5]);
+            const state = resultArr[12].valueOf();
+             console.log("state",state,resultArr);
+
+            this.getOneCustomerDataP(resultArr[2]).then((customer)=> {
 
 
-        // console.log("populateGuaranteeData:", ask);
+                var ask = {
+                    GuaranteeID: resultArr[0],
+                    GRequestID: resultArr[1],
+                    customer: resultArr[2],
+                    beneficiary: resultArr[4],
+                    bank: resultArr[3],
+                    customerName: customer.Name,
+                    StartDate: startDatet,
+                    EndDate: endDatet,
+                    amount: parseInt(resultArr[7].valueOf()),
+                    fullName: full_name,
+                    purpose: proposal,
+                    indexType: parseInt(resultArr[10].valueOf()),
+                    indexDate: parseInt(indexDate.valueOf()),
+                    guaranteeState: parseInt(state.valueOf())
+                };
 
-        return ask;
+
+                // console.log("populateGuaranteeData:", ask);
+
+                resolve(ask);
+            }).catch((error)=> {
+                console.error(error);
+                reject(error);
+            });
+        });
     };
+
 
     terminateGuatanty  (guaranteeId, requestId, comment , hashcode,customerAddress=this.account)  {
         return new Promise((resolve, reject)=> {
@@ -317,6 +351,7 @@ onReady () {
                 console.log("terminateGuaranteeEt garantyId",garantyId,"from: account-",account);
                 return instance.terminateGuarantee(garantyId ,{from:customerAddress});
             }).catch(function (error) {
+                console.error(error);
                 throw error;
             })
 
@@ -395,6 +430,81 @@ onReady () {
     };
 
 
+    getOneRequest (requestAddress,customerAddress=this.account)  {
+        /** Gets one guarantee requests by id */
+        /** parses the data and sends to UI */
+        console.log('test');
+        return GuaranteeRequest.at(requestAddress)
+            .then((guaranteeRequestinstance)=>  {
+                // console.log("getOneRequest:get data");
+                console.log('test1');
+                return guaranteeRequestinstance.getGuaranteeRequestData.call({from:customerAddress});
+            }).then((result) =>{
+                // console.log("getOneRequest:", result[7].valueOf(),result[8].valueOf());
+                return this.populateRequestDataP(result);
+            }).then((result) =>{
+                return result;
+            })
+            .catch(function(error)  {
+                console.log('hello');
+                console.error(error);
+                throw error;
+            });
+    };
+
+    populateRequestDataP(resultArr)  {
+        return  new Promise((resolve,reject) =>
+        {
+
+            const startDate = this.transformDateSolToJS(resultArr[7].valueOf());
+            const endDate = this.transformDateSolToJS(resultArr[8].valueOf());
+
+            // const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
+            // const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
+            //  console.log('startDate1',resultArr[7] * 1000,startDate,'endDate1',resultArr[8] * 1000,endDate);
+            const proposal=this.web3.toUtf8( resultArr[5]);
+            const full_name=this.web3.toUtf8( resultArr[4]);
+            const ischangeRequest=(resultArr[12] === 'true' || resultArr[12] == true);
+            const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+
+            this.getOneCustomerDataP(resultArr[2]).then((beneficiary)=> {
+
+                var ask = {
+                    GRequestID: resultArr[0],
+                    customer: resultArr[1],
+                    beneficiary: resultArr[2],
+                    bank: resultArr[3],
+                    beneficiaryName: beneficiary.Name,
+                    fullName: full_name,
+                    purpose: proposal,
+                    amount: parseInt(resultArr[6].valueOf()),
+                    StartDate: startDate,
+                    EndDate: endDate,
+                    indexType: parseInt(resultArr[9].valueOf()),
+                    indexDate: parseInt(resultArr[10].valueOf()),
+                    requestState: parseInt(resultArr[11].valueOf()),
+                    ischangeRequest: ischangeRequest,
+                    changeRequest: changeRequestId
+                    // ischangeRequest: (resultArr[12] === 'true')
+                };
+                // console.log("request data:", ask);
+
+
+                resolve(ask) ;
+            }).catch((error)=> {
+
+                // this.msgService.add({
+                //   severity: 'error',
+                //   summary: 'תקלת בבלוקציין',
+                //   detail: 'Etherium Fatal Error!!!'
+                // });
+                reject(error);
+            });
+
+        });
+    };
+
+
 
 }
 
@@ -412,7 +522,28 @@ module.exports = {
 
     },
 
-    getCheck: (request) => {
+    getGuarantee: (request) => {
+        let customerAddress= request.query.customerAddress;
+        let guaranteeId= request.query.guaranteeId;
+        if (typeof(customerAddress) === "undefined")
+            customerAddress=account;
+        return realService.getOneGuarantee(guaranteeId,customerAddress);
+
+    },
+
+    getRequestStatus:(request) => {
+        let customerAddress= request.query.customerAddress;
+        let requestId= request.query.requestId;
+        if (typeof(customerAddress) === "undefined") {
+            customerAddress=account;
+        }
+        return realService.getOneRequest(requestId,customerAddress);
+
+
+    },
+
+
+getCheck: (request) => {
         return new Promise(resolve => {
 
             let customerAddress= request.query.customerAddress;
