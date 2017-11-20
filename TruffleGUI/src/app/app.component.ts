@@ -29,9 +29,12 @@ export class AppComponent implements OnInit, OnDestroy {
   customer: Customer;
   bank: Bank;
 
-  constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService) {}
+  constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService)
+  {}
+
 
   ngOnInit() {
+
     this.watcher();
     // Get user, bank and beneficiary data
     this.truffleSRV.getCustomerData().then((res: Customer) => {
@@ -66,7 +69,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   handleCreateRequest = (e) => {
-    // console.log("handleCreateRequest date",new Date(e.startDate).getTime()/1000,e.endDate);
+     console.log("handleCreateRequest ",this.customer,this.bank,this.beneficiaries);
     let newRequest = this.truffleSRV.createRequest(this.customer.customerID,
     this.bank.bankID, this.beneficiaries[0].beneficiaryID,
     e.purpose, e.amount, e.startDate, e.endDate, 0, 0).then((newRequest)=> {

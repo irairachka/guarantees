@@ -3,7 +3,7 @@ const Web3 = require('web3');
 const contract = require('truffle-contract');
 import {MessageService} from "primeng/components/common/messageservice";
 import {
-  mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData,
+  mockCustomerRequests, mockcustomers, mockCustomerGuaranties, bankData, userData ,
   mockBankRequests, mockBankGuaranties, mockbeneficiaries, mockexpandedRequest
 } from "../../../tempData/mockData";
 import {Beneficiary, Customer, Guarantee, GRequest, ExpandedGuarantee} from "../interfaces/request";
@@ -40,7 +40,7 @@ export class RealService extends MockService {
 
   accounts:any;
   account:any;
-
+  // ready:boolean=false;
 
 
   constructor(public msgService:MessageService) {
@@ -52,6 +52,7 @@ export class RealService extends MockService {
   /** ******************** **/
   /**  Setup Functions     **/
   /** ******************** **/
+
 
   checkAndInstantiateWeb3 = () => {
     var url="http://"+environment.server+":8545";  //"http://localhost:8545"
@@ -88,6 +89,7 @@ export class RealService extends MockService {
       }
       this.accounts = accs;
       this.account = this.accounts[0];
+      // this.ready=true;
       console.log('this.accounts',this.accounts)
       /** Part of original truffle **/
       // This is run from window:load and ZoneJS is not aware of it we
@@ -98,14 +100,32 @@ export class RealService extends MockService {
     });
   };
 
+  lasyInit=()=>{
+    return new Promise((resolve, reject)=> {
+      this.web3.eth.getAccounts((err, accs) => {
+        if (err != null) {
+          reject('תקלת תקשורת');
+          return;
+        }
+
+        if (accs.length === 0) {
+          reject(
+            'Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.'
+          );
+          return;
+        }
+        this.accounts = accs;
+        this.account = this.accounts[0];
+        resolve(this.account);
+
+      });
+    })
+  };
+
   /************************/
   /**  replaced   ****/
   /************************/
 
-  // getAllRequests = ()=> {
-  //   /** Gets all guarantee requests for customer */
-  //      return this.getAllUserRequestsEt();
-  //   };
 
   getAllRequests = ()=> {
 
@@ -114,7 +134,7 @@ export class RealService extends MockService {
       /** Gets all guarantee requests for customer */
       return new Promise((resolve, reject)=> {
         this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
-          this.realRequests=[...mockCustomerRequests, ...requestsEt];
+          this.realRequests=[ ...requestsEt];
           super.setMockRequests(this.realRequests);
           resolve(this.realRequests);
         }).catch((error)=> {
@@ -139,7 +159,7 @@ export class RealService extends MockService {
     // if (this.realGuarantees==null) {
       return new Promise((resolve, reject)=> {
         this.getAllUserGuarantees(this.account).then((GuarantiesEt)=> {
-          this.realGuarantees = [...mockCustomerGuaranties, ...GuarantiesEt];
+          this.realGuarantees = [ ...GuarantiesEt];
           super.setMockGuarantee(this.realGuarantees);
           resolve(this.realGuarantees);
         }).catch((error)=> {
@@ -158,6 +178,369 @@ export class RealService extends MockService {
     //   });
 
   };
+
+
+  /************************/
+  /**  Get User Data   ****/
+  /************************/
+
+  getCustomerData = (customerAddress?) => {
+    // debugger;
+    return new Promise((resolve, reject)=> {
+      if (isNullOrUndefined(customerAddress )) {
+        if (!isNullOrUndefined(this.account)) {
+          customerAddress = this.account;
+        }
+        else {
+          console.log('customerAddress and this.account is undefined', customerAddress, this.account);
+          //todo to delete
+          return this.lasyInit().then((customerAddress)=> {
+            // console.log('lasyInit done :',customerAddress);
+            return this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
+              // this.realCustomers.add(loadCustomer)
+              // console.log(this);
+              this.realCustomers = [...this.realCustomers, loadCustomer];
+              resolve(loadCustomer);
+            });
+          });
+        }
+      }
+
+      for (var i in this.realCustomers) {
+        if (this.realCustomers[i].customerID == customerAddress) {
+          resolve(this.realCustomers[i]);
+        }
+      }
+
+
+      this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
+        // this.realCustomers.add(loadCustomer)
+        // console.log(this);
+        this.realCustomers = [...this.realCustomers, loadCustomer];
+        resolve(loadCustomer);
+      }).catch((error)=> {
+
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת בבלוקציין',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        reject(error);
+      });
+
+    });
+  };
+
+
+  getOneCustomerEt =(customerAddress) => {
+
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    return Regulator.deployed()
+      .then( (instance)=> {
+        console.log("getcustomer:customerAddress", customerAddress);
+        return instance.getCustomer.call(customerAddress , {from: this.account});
+      }).then((result) =>{
+        console.log("getcustomer:", result);
+        return this.populateCustomerAddressData(customerAddress,result);
+      })
+      .catch((e)  =>{
+        console.log(e);
+      });
+  };
+
+
+  populateCustomerAddressData=(customerID,resultArr) => {
+
+
+    var ask= {
+      customerID: customerID,
+      Name: resultArr[0],
+      Address: resultArr[1]
+    };
+
+    // console.log("request data:", ask);
+
+    return ask;
+  };
+
+
+
+  /** ****************** **/
+  /**  Get Bank Data     **/
+  /** ****************** **/
+
+  getBankData = (customerAddress?) => {
+    // debugger;
+    return new Promise((resolve, reject)=> {
+      if (isNullOrUndefined(customerAddress )) {
+        if (!isNullOrUndefined(this.account)) {
+          customerAddress = this.account;
+        }
+        else {
+          console.log('customerAddress and this.account is undefined', customerAddress, this.account);
+          //todo to delete
+          return this.lasyInit().then((customerAddress)=> {
+            // console.log('lasyInit done :',customerAddress);
+            return this.getIssierEt(customerAddress).then((loadCustomer)=> {
+              // this.realCustomers.add(loadCustomer)
+              // console.log(this);
+              this.realIssuers = [...this.realIssuers, loadCustomer];
+              resolve(loadCustomer);
+            });
+          });
+        }
+      }
+
+      for (var i in this.realIssuers) {
+        if (this.realIssuers[i].bankID == customerAddress) {
+          resolve(this.realIssuers[i]);
+        }
+      }
+
+
+      this.getIssierEt(customerAddress).then((loadCustomer)=> {
+        // this.realCustomers.add(loadCustomer)
+        // console.log(this);
+        this.realIssuers = [...this.realIssuers, loadCustomer];
+        resolve(loadCustomer);
+      }).catch((error)=> {
+
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת בבלוקציין',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        reject(error);
+      });
+
+    });
+  };
+
+
+
+  // getBankData = (requestAddress?) => {
+  //
+  //   return new Promise((resolve) => {
+  //     if (isNullOrUndefined(requestAddress )) {
+  //       if (isNullOrUndefined(this.account ))
+  //       {
+  //         return this.lasyInit().then((requestAddress)=>{
+  //           return this.getOneIssuerDataP(requestAddress);
+  //         })
+  //         // //todo to delete
+  //         // resolve(bankData);
+  //         // return;
+  //
+  //       }
+  //       else
+  //         requestAddress = this.account;
+  //     }
+  //     return this.getOneIssuerDataP(requestAddress);
+  //   });
+  //
+  //
+  // };
+
+  getAllBankRequests = () => {
+    /** Gets all guarantee requests for customer */
+    /** parses the data and sends to UI          */
+    return this.getAllRequests();
+  };
+
+
+
+  getAllBankGuaranties = () => {
+    return this.getAllGuaranties();
+  };
+
+
+
+  getAllIssuersEt=() =>{
+    // function getAllUserRequests() {
+    /** Gets all guarantee requests for customer */
+    let  issuers=[];
+    return Regulator.deployed()
+      .then( (instance)=> {
+        return instance.getIssuerAddressesList.call({from: this.account});
+      }).then( (issuersAddresses)=> {
+        console.log("issuersAddresses[]:", issuersAddresses);
+        return Promise.all(issuersAddresses.map((issuersAddress) => {
+          return new Promise(resolve =>
+            this.getBankData(issuersAddresses).then((returneddata) => resolve(returneddata)));
+        }));
+
+
+      }).catch(function (error) {
+        throw error;
+      })
+  };
+
+
+  // getOneIssuerDataP = (bankID):any => {
+  //   return new Promise((resolve, reject)=> {
+  //     for (var i in this.realIssuers) {
+  //       if (this.realIssuers[i].bankID == bankID) {
+  //         resolve(this.realIssuers[i]);
+  //       }
+  //     }
+  //
+  //     this.getIssierEt(bankID).then((loadIssuer)=> {
+  //       this.realIssuers = [...this.realIssuers, loadIssuer];
+  //       resolve(loadIssuer);
+  //     }).catch((error)=> {
+  //
+  //       this.msgService.add({
+  //         severity: 'error',
+  //         summary: 'תקלת בבלוקציין',
+  //         detail: 'Etherium Fatal Error!!!'
+  //       });
+  //       reject(error);
+  //     });
+  //
+  //   });
+  // };
+
+  getIssierEt =(issierAddress) => {
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    return Regulator.deployed()
+      .then( (instance)=> {
+
+        return instance.getIssuer.call(issierAddress, {from: this.account});
+      }).then((result)=> {
+        console.log("issier:", result);
+        return this.populateIssuerData(issierAddress,result);
+      })
+      .catch((e)  =>{
+        console.log(e);
+      });
+  };
+
+  populateIssuerData=(issierID,resultArr) => {
+
+
+    var ask= {
+      bankID: issierID,
+      Name: resultArr[0],
+      Address: resultArr[1]
+    };
+
+    // console.log("request data:", ask);
+
+    return ask;
+  };
+
+
+  /** ************************* **/
+  /**  Get Beneficiary Data     **/
+  /** ************************* **/
+
+  getAllBeneficiaries = () => {
+    return this.getAllBeneficiariesEt();
+  };
+
+  getAllBeneficiariesEt=()=> {
+    // function getAllUserRequests() {
+    /** Gets all guarantee requests for customer */
+    let customerGuaranties=[];
+    return Regulator.deployed()
+      .then( (instance)=> {
+        return instance.getBeneficiaryAddresses.call({from: this.account});
+      }).then( (beneficiaryAddresses)=> {
+        console.log("beneficiaryAddresses[]:", beneficiaryAddresses);
+        return Promise.all(beneficiaryAddresses.map((beneficiaryAddress) => {
+          return new Promise(resolve =>
+            this.getOneBeneficiaryDataP(beneficiaryAddresses).then((returneddata) => resolve(returneddata)));
+        }));
+
+
+      }).catch(function (error) {
+        throw error;
+      })
+  };
+
+  getAllBeneficiaryGuaranties = () => {
+    return this.getAllGuaranties();
+  };
+
+
+  getBeneficiaryData = (BeneficiaryAddress?) => {
+    if (isNullOrUndefined(BeneficiaryAddress )) {
+      if (isNullOrUndefined(this.account ))
+      {
+        BeneficiaryAddress =this.web3.eth.getAccounts[0];
+
+      }
+      else
+        BeneficiaryAddress = this.account;
+    }
+    return this.getOneBeneficiaryDataP(BeneficiaryAddress);
+
+  };
+
+
+  getOneBeneficiaryDataP = (beneficiaryID):any => {
+    return new Promise((resolve, reject)=> {
+      for (var i in this.realBeneficiaries) {
+        if (this.realBeneficiaries[i].beneficiaryID == beneficiaryID) {
+          resolve(this.realBeneficiaries[i]);
+        }
+      }
+
+      this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
+        this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
+        resolve(loadBeneficiaries);
+      }).catch((error)=> {
+
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת בבלוקציין',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        reject(error);
+      });
+
+    });
+  };
+
+
+  getBeneficiaryEt =(beneficiaryAddress) => {
+    /** Gets one guarantee requests by id */
+    /** parses the data and sends to UI */
+    return Regulator.deployed()
+      .then( (instance)=> {
+
+        return instance.getBeneficiary.call(beneficiaryAddress);
+      }).then((result)=> {
+        console.log("getcustomer:", result);
+        return this.populateBeneficiaryData(beneficiaryAddress,result);
+      })
+      .catch(function(e)  {
+        console.log(e);
+      });
+  };
+
+
+  populateBeneficiaryData=(benefisiaryID,resultArr) => {
+
+
+    var ask= {
+      beneficiaryID: benefisiaryID,
+      Name: resultArr[0] ,
+      Address: resultArr[1]
+    };
+    // console.log("request data:", ask);
+
+    return ask;
+  };
+
+
+
+  /** ************************* **/
+  /**  request operations       **/
+  /** ************************* **/
+
 
 
   createRequest( userId , bankId, benefId , purpose,
@@ -253,97 +636,6 @@ export class RealService extends MockService {
             reject(error);
       });
 
-
-
-
-          // });
-        // })
-          // newItem = this.populateRequestData(
-          //   [instance.address,
-          //     userId,
-          //     bankId,
-          //     benefId,
-          //     this.web3.fromUtf8(''),
-          //     this.web3.fromUtf8(purpose),
-          //     amount,
-          //     thestartDate,
-          //     theendDate,
-          //     indexType,
-          //     indexDate,
-          //     RequestState.created,
-          //     false  ,
-          //     ''
-          //   ]
-          // );
-          // addressOfIns = instance.address;
-          // this.addRequestEt(this.account, addressOfIns).then((result) => {
-          //
-          //   console.log("addRequestEt result", instance);
-          //
-          //
-          //   this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '').then((result) => {
-          //
-          //     console.log("submitRequestEt result", instance);
-          //
-          //     newItem = this.populateRequestData(
-          //       [instance.address,
-          //         userId,
-          //         bankId,
-          //         benefId,
-          //         this.web3.fromUtf8(''),
-          //         this.web3.fromUtf8(purpose),
-          //         amount,
-          //         thestartDate,
-          //         theendDate,
-          //         indexType,
-          //         indexDate,
-          //         RequestState.waitingtobank,
-          //         false,
-          //         ''
-          //       ]
-          //     );
-          //
-          //     this.msgService.add({
-          //       severity: 'success',
-          //       summary: 'ערבות חדשה',
-          //       detail: 'בקשה לערבות חדשה נשלחה בהצלחה'
-          //     });
-          //     // console.log("newItem", newItem);
-          //     this.mockRequests = [...this.mockRequests, newItem];
-          //     resolve(newItem);
-          //
-          //   }).catch((error)=> {
-          //     console.error('error',error);
-          //     this.msgService.add({
-          //       severity: 'warn',
-          //       summary: 'ערבות חדשה',
-          //       detail: 'בקשה לערבות חדשה נכשלה חלקית'
-          //     });
-          //     this.mockRequests = [...this.mockRequests, newItem];
-          //     resolve(newItem);
-          //   })
-          // }).catch((error) => {
-          //   console.error('error',error);
-          //   this.msgService.add({
-          //     severity: '׳warn',
-          //     summary: 'ערבות חדשה',
-          //     detail: 'בקשה לערבות חדשה נכשלה חלקית'
-          //   });console.log("newItem", newItem);
-          //   this.mockRequests = [...this.mockRequests, newItem];
-          //   resolve(newItem);
-          // })
-        //
-        //
-        // }).catch((error) => {
-        //   console.error('error',error);
-        //   this.msgService.add({
-        //     severity: 'error',
-        //     summary: 'ערבות חדשה',
-        //     detail: 'בקשה לערבות חדשה נכשלה'
-        //   });
-        //   reject(error);
-        //
-        // });
     });
 
   };
@@ -501,6 +793,152 @@ export class RealService extends MockService {
       })
     })
   };
+
+
+
+
+  createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
+                     amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
+  {
+    // var StartDateEt=Math.floor((StartDate/1000));
+    // var EndDateEt=Math.floor((EndDate/1000));
+    // if (purpose === 'undefined' || purpose==null)
+    //   purpose=' ';
+    var purposeEt=this.web3.fromUtf8(purpose);
+    var fullnameEt=this.web3.fromUtf8(fullname);
+    var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
+    return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
+  };
+
+  submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
+    console.log("submitRequest:",userAccount,guaranteeRequestInstance.address);
+    return guaranteeRequestInstance.submit(comments,{from: userAccount});
+  };
+
+  withdrawalRequestEt = (guaranteeRequestInstance, comments,userAccount) => {
+    // let requestInstance = getGuaranteeRequestInstance(requestId);
+    // console.log("withdrawal:", userAccount, guaranteeRequestInstance.address);
+    return guaranteeRequestInstance.withdrawal(comments, {from: userAccount});
+  };
+
+
+  getGuaranteeRequestInstance=(requestAddress) =>
+  {
+    return GuaranteeRequest.at(requestAddress);
+  };
+
+
+
+  addRequestEt=( userAccount , reqaddress) =>
+  {
+    return Regulator.deployed().then(function(instance) {
+      return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
+    }).catch(function(error) {
+      throw error;
+    });
+  };
+
+  getRequestStateEt=( userAccount , guaranteeRequestInstance) =>{
+    return guaranteeRequestInstance.getRequestState.call({from: userAccount});
+  };
+
+
+
+
+  updateRequestEt = (guaranteeRequestInstance, comment ,state) => {
+    // עדכון של בנק
+    // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
+    return guaranteeRequestInstance.bankStateChange(comment,state,{from: this.account});
+  };
+
+  rejectRequestEt = (guaranteeRequestInstance, comment) => {
+    // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
+    return guaranteeRequestInstance.reject(comment,{from: this.account});
+  };
+
+  acceptRequestEt = (requestId) => {
+    // אישור של בנק
+    // if  (hashcode) {
+    // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
+    // return guaranteeRequestInstance.accept(comment)
+    return Regulator.deployed()
+      .then( (instance)=> {
+        // console.log("acceptRequestEt requestId",requestId)
+        return instance.acceptGuaranteeRequest(requestId,{from: this.account});
+
+      }).catch(function (error) {
+        throw error;
+      })
+
+  };
+
+
+
+
+  getRequestHistoryEt = (requestAddress) => {
+
+    return new Promise((resolve) => {
+
+
+      var requestevents = [];
+      var guaranteeRequest = GuaranteeRequest.at(requestAddress);
+      var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
+
+      if (allevents.length>0)
+        return allevents.get( (error, result) => {
+
+          // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+          for (var i = result.length - 1; i >= 0; i--) {
+            var cur_result = result[i];
+            // console.log('getRequestHistoryEt',cur_result);
+            let line = this.populateHistoryLineData(cur_result.event, cur_result.args);
+            if (!isNullOrUndefined(line))
+              requestevents.push(line);
+          }
+
+
+          var replay =
+          {
+            shortrequest: requestAddress,
+            log: requestevents
+          };
+
+          resolve(replay);
+
+        })
+      else {
+        guaranteeRequest = ChangeGuaranteeRequest.at(requestAddress);
+        allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'});
+
+        return allevents.get((error, result) => {
+
+          // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+          for (var i = result.length - 1; i >= 0; i--) {
+            var cur_result = result[i];
+            // console.log('getRequestHistoryEt',cur_result);
+            let line = this.populateHistoryLineData(cur_result.event, cur_result.args);
+            if (!isNullOrUndefined(line))
+              requestevents.push(line);
+          }
+          var replay =
+          {
+            shortrequest: requestAddress,
+            log: requestevents
+          };
+
+          resolve(replay);
+        });
+      }
+
+
+    })
+  };
+
+
+  /** ************************* **/
+  /**  guarantee operations       **/
+  /** ************************* **/
+
 
 
   guaranteeSignComplite = (requestId, comment , hashcode):any => {
@@ -749,119 +1187,15 @@ export class RealService extends MockService {
   };
 
 
-  // getCustomerData = (customerAddress?) => {
-  //   if (customerAddress == 'undefined')
-  //     customerAddress=this.account;
-  //   return this.getOneCustomerEt(customerAddress);
-  // };
 
 
 
-
-  createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
-                     amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
-  {
-    // var StartDateEt=Math.floor((StartDate/1000));
-    // var EndDateEt=Math.floor((EndDate/1000));
-    // if (purpose === 'undefined' || purpose==null)
-    //   purpose=' ';
-    var purposeEt=this.web3.fromUtf8(purpose);
-    var fullnameEt=this.web3.fromUtf8(fullname);
-    var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
-    return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
-  };
-
-  submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
-    console.log("submitRequest:",userAccount,guaranteeRequestInstance.address);
-    return guaranteeRequestInstance.submit(comments,{from: userAccount});
-  };
-
-  withdrawalRequestEt = (guaranteeRequestInstance, comments,userAccount) => {
-    // let requestInstance = getGuaranteeRequestInstance(requestId);
-    // console.log("withdrawal:", userAccount, guaranteeRequestInstance.address);
-    return guaranteeRequestInstance.withdrawal(comments, {from: userAccount});
-  };
-
-
-  getGuaranteeRequestInstance=(requestAddress) =>
-  {
-    return GuaranteeRequest.at(requestAddress);
-  };
-
-
-
-  addRequestEt=( userAccount , reqaddress) =>
-  {
-    return Regulator.deployed().then(function(instance) {
-      return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
-    }).catch(function(error) {
-      throw error;
-    });
-  };
-
-  getRequestStateEt=( userAccount , guaranteeRequestInstance) =>{
-    return guaranteeRequestInstance.getRequestState.call({from: userAccount});
-  };
 
   getGuarantyStateEt =( userAccount , guaranteeInstance) =>{
     return guaranteeInstance.getGuaranteeState.call({from: userAccount});
   };
 
 
-  // guaranteeUpdate = (guatantyId, requestId, comment, amount, date):any => {
-  //   return new Promise((resolve, reject)=> {
-  //
-  //     // find and change state of selected request
-  //     let unpdatedRequest = this.mockRequests.find((item) => {
-  //       return item.GRequestID === requestId;
-  //     });
-  //     unpdatedRequest.amount = amount;
-  //     unpdatedRequest.EndDate = date;
-  //
-  //     let updatedGuarantee = this.mockGuarantees.find((item) => {
-  //       return item.GuaranteeID === guatantyId;
-  //     });
-  //     updatedGuarantee.amount = amount;
-  //     updatedGuarantee.EndDate = date;
-  //
-  //     resolve({
-  //       request: unpdatedRequest,
-  //       guarantee: updatedGuarantee
-  //     });
-  //   });
-  // };
-
-
-
-
-
-
-  updateRequestEt = (guaranteeRequestInstance, comment ,state) => {
-    // עדכון של בנק
-    // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
-    return guaranteeRequestInstance.bankStateChange(comment,state,{from: this.account});
-  };
-
-  rejectRequestEt = (guaranteeRequestInstance, comment) => {
-    // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
-    return guaranteeRequestInstance.reject(comment,{from: this.account});
-  };
-
-  acceptRequestEt = (requestId) => {
-    // אישור של בנק
-    // if  (hashcode) {
-    // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
-    // return guaranteeRequestInstance.accept(comment)
-    return Regulator.deployed()
-      .then( (instance)=> {
-        // console.log("acceptRequestEt requestId",requestId)
-        return instance.acceptGuaranteeRequest(requestId,{from: this.account});
-
-      }).catch(function (error) {
-        throw error;
-      })
-
-  };
 
 
   guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
@@ -913,38 +1247,6 @@ export class RealService extends MockService {
   };
 
 
-  getRequestHistoryEt = (requestAddress) => {
-
-    return new Promise((resolve) => {
-
-
-      var requestevents = [];
-      var guaranteeRequest = GuaranteeRequest.at(requestAddress);
-      var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
-
-      return allevents.get( (error, result) =>{
-
-        // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
-        for (var i = result.length - 1; i >= 0; i--) {
-          var cur_result = result[i];
-          // console.log('getRequestHistoryEt',cur_result);
-          let line=this.populateHistoryLineData(cur_result.event, cur_result.args);
-          if (!isNullOrUndefined(line))
-            requestevents.push(line);
-        }
-
-        var replay=
-        {
-          shortrequest: requestAddress,
-          log: requestevents
-        };
-
-        resolve(replay);
-
-      });
-
-    })
-  };
 
 
   getGuarantyHistoryEt = (guaranteeAddress) => {
@@ -1029,18 +1331,7 @@ export class RealService extends MockService {
   // };
 
 
-  populateBeneficiaryData=(benefisiaryID,resultArr) => {
 
-
-    var ask= {
-      beneficiaryID: benefisiaryID,
-      Name: resultArr[0] ,
-      Address: resultArr[1]
-    };
-    // console.log("request data:", ask);
-
-    return ask;
-  };
 
   populateRequestDataP=(resultArr)=>  {
    return  new Promise((resolve,reject) =>
@@ -1094,45 +1385,8 @@ export class RealService extends MockService {
   });
   };
 
-  getAllBeneficiariesEt=()=> {
-    // function getAllUserRequests() {
-    /** Gets all guarantee requests for customer */
-    let customerGuaranties=[];
-    return Regulator.deployed()
-      .then( (instance)=> {
-        return instance.getBeneficiaryAddresses.call({from: this.account});
-      }).then( (beneficiaryAddresses)=> {
-        console.log("beneficiaryAddresses[]:", beneficiaryAddresses);
-        return Promise.all(beneficiaryAddresses.map((beneficiaryAddress) => {
-          return new Promise(resolve =>
-            this.getOneBeneficiaryDataP(beneficiaryAddresses).then((returneddata) => resolve(returneddata)));
-        }));
 
 
-      }).catch(function (error) {
-        throw error;
-      })
-  };
-
-  getAllIssuers=() =>{
-    // function getAllUserRequests() {
-    /** Gets all guarantee requests for customer */
-    let  issuers=[];
-    return Regulator.deployed()
-      .then( (instance)=> {
-        return instance.getIssuerAddressesList.call({from: this.account});
-      }).then( (issuersAddresses)=> {
-        console.log("issuersAddresses[]:", issuersAddresses);
-        return Promise.all(issuersAddresses.map((issuersAddress) => {
-          return new Promise(resolve =>
-            this.getOneIssuer(issuersAddresses).then((returneddata) => resolve(returneddata)));
-        }));
-
-
-      }).catch(function (error) {
-        throw error;
-      })
-  };
 
 
   getAllUserRequestsEt=(useraccount) =>{
@@ -1211,36 +1465,8 @@ export class RealService extends MockService {
   };
 
 
-  getOneIssuer= (issuerAddress) => {
-    /** Gets one guarantee requests by id */
-    /** parses the data and sends to UI */
-
-    return Regulator.deployed()
-      .then( (instance) =>{
-        return instance.getIssuer.call(issuerAddress);
-      }).then((result)=> {
-        console.log("getOneIssuer:", result);
-        return this.populateIssuerAddressData(issuerAddress,result);
-      })
-
-      .catch(function(e)  {
-        console.log(e);
-      });
-  };
-
-  populateIssuerAddressData=(issuerId,resultArr)=>  {
 
 
-    var ask= {
-      bankID: issuerId,
-      Name: resultArr[0] ,
-      Address: resultArr[1]
-    };
-
-    // console.log("request data:", ask);
-
-    return ask;
-  };
 
 
 
@@ -1311,7 +1537,7 @@ export class RealService extends MockService {
       .then( (ChangeGuaranteeRequestinstance) => {
         console.log("change  guaranteeId ChangeGuaranteeRequestinstance", ChangeGuaranteeRequestinstance.address,ChangeGuaranteeRequestinstance)
         ChangeGuaranteeRequestinstanceAddress=ChangeGuaranteeRequestinstance.address;
-        return Regulator_instance.changeGuaranteeM(ChangeGuaranteeRequestinstanceAddress,{from: userAccount});
+        return Regulator_instance.changeGuarantee(ChangeGuaranteeRequestinstanceAddress,guaranteeId,{from: userAccount});
       })
       .then( (tx) =>{
         return new Promise((resolve)=> {
@@ -1325,163 +1551,47 @@ export class RealService extends MockService {
   };
 
 
-  getOneCustomerDataP = (customerAddress):any => {
-    return new Promise((resolve, reject)=> {
-      for (var i in this.realCustomers) {
-        if (this.realCustomers[i].customerID == customerAddress) {
-          resolve(this.realCustomers[i]);
-        }
-      }
+  /** ***********************/
+  /**  Watcher Functions ****/
+  /** ***********************/
 
-      this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
-        // this.realCustomers.add(loadCustomer)
-        // console.log(this);
-        this.realCustomers = [...this.realCustomers, loadCustomer];
-        resolve(loadCustomer);
-      }).catch((error)=> {
+  startCreateListener = (callback) => {
+    callback('success!!!!');
+    // return GuaranteeRequest.deployed()
+    //   .then((instance) => {
+    //     watcherSign = instance.GuaranteeRequestCreated({}, {
+    //       fromBlock: 0,
+    //       toBlock: 'latest'
+    //     });
+    //
+    //
+    //     watcherSign.watch(function (error, event) {
+    //
+    //       if (!error) {
+    //         console.log("in watcher sig",event.args);
+    //
+    //       } else {
+    //         console.log("Unable to watch events; see log.",error);
+    //
+    //       }
+    //       //once the event has been detected, take actions as desired
+    //       //   var data = 'from: ' + response.args._from+"<br>candidateName: "+web3.toUtf8(response.args._candidateName) +"<br>";
+    //       //  assert.equal(response, 1 , "Event number should be 1");
+    //
+    //     })
+    //
+    //   }).catch(function (error) {
+    //     self.setRegisterStatus("Unable to watch events; see log.",error);
+    //
+    //   });
+  };
 
-        this.msgService.add({
-          severity: 'error',
-          summary: 'תקלת בבלוקציין',
-          detail: 'Etherium Fatal Error!!!'
-        });
-        reject(error);
-      });
-
-    });
+  stopCreateListener = () => {
+    //   if (watcherSign != null)
+    //     watcherSign.stopWatching();
   };
 
 
-
-  getOneBeneficiaryDataP = (beneficiaryID):any => {
-    return new Promise((resolve, reject)=> {
-      for (var i in this.realBeneficiaries) {
-        if (this.realBeneficiaries[i].beneficiaryID == beneficiaryID) {
-          resolve(this.realBeneficiaries[i]);
-        }
-      }
-
-      this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
-        this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
-        resolve(loadBeneficiaries);
-      }).catch((error)=> {
-
-        this.msgService.add({
-          severity: 'error',
-          summary: 'תקלת בבלוקציין',
-          detail: 'Etherium Fatal Error!!!'
-        });
-        reject(error);
-      });
-
-    });
-  };
-
-
-    getOneIssuerDataP = (bankID):any => {
-      return new Promise((resolve, reject)=> {
-        for (var i in this.realIssuers) {
-          if (this.realIssuers[i].bankID == bankID) {
-            resolve(this.realIssuers[i]);
-          }
-        }
-
-        this.getIssierEt(bankID).then((loadIssuer)=> {
-          this.realIssuers = [...this.realIssuers, loadIssuer];
-          resolve(loadIssuer);
-        }).catch((error)=> {
-
-          this.msgService.add({
-            severity: 'error',
-            summary: 'תקלת בבלוקציין',
-            detail: 'Etherium Fatal Error!!!'
-          });
-          reject(error);
-        });
-
-      });
-    };
-
-
-
-
-    getOneCustomerEt =(customerAddress) => {
-    /** Gets one guarantee requests by id */
-    /** parses the data and sends to UI */
-    return Regulator.deployed()
-      .then( (instance)=> {
-
-        return instance.getCustomer.call(customerAddress);
-      }).then((result)=> {
-        console.log("getcustomer:", result);
-        return this.populateCustomerAddressData(customerAddress,result);
-      })
-      .catch(function(e)  {
-        console.log(e);
-      });
-  };
-
-
-  getBeneficiaryEt =(beneficiaryAddress) => {
-    /** Gets one guarantee requests by id */
-    /** parses the data and sends to UI */
-    return Regulator.deployed()
-      .then( (instance)=> {
-
-        return instance.getBeneficiary.call(beneficiaryAddress);
-      }).then((result)=> {
-        console.log("getcustomer:", result);
-        return this.populateBeneficiaryData(beneficiaryAddress,result);
-      })
-      .catch(function(e)  {
-        console.log(e);
-      });
-  };
-
-    getIssierEt =(issierAddress) => {
-      /** Gets one guarantee requests by id */
-      /** parses the data and sends to UI */
-      return Regulator.deployed()
-        .then( (instance)=> {
-
-          return instance.getIssuer.call(issierAddress);
-        }).then((result)=> {
-          console.log("issier:", result);
-          return this.populateIssuerData(issierAddress,result);
-        })
-        .catch(function(e)  {
-          console.log(e);
-        });
-    };
-
-    populateIssuerData=(issierID,resultArr) => {
-
-
-      var ask= {
-        bankID: issierID,
-        Name: resultArr[0],
-        Address: resultArr[1]
-      };
-
-      // console.log("request data:", ask);
-
-      return ask;
-    };
-
-
-    populateCustomerAddressData=(customerID,resultArr) => {
-
-
-    var ask= {
-      customerID: customerID,
-      Name: resultArr[0],
-      Address: resultArr[1]
-    };
-
-    // console.log("request data:", ask);
-
-    return ask;
-  };
 
 
 

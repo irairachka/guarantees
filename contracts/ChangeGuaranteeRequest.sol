@@ -14,7 +14,7 @@ contract ChangeGuaranteeRequest is GuaranteeRequestExtender
 
     address public  changeRequestGuaranteeAdr;
 
-    event ChangeGuaranteeRequestCreated (address guaranteeExtender,uint requestAmount, uint requestEndDate,uint timestamp);
+    event ChangeGuaranteeRequestCreated (address guaranteeExtender,uint requestAmount, uint requestEndDate,RequestState   curentstatus,uint timestamp);
 
     function ChangeGuaranteeRequest(address guaranteeExtender,uint requestAmount, uint requestEndDate){
         DigitalGuaranteeBNHP ge=DigitalGuaranteeBNHP(guaranteeExtender);
@@ -26,13 +26,19 @@ contract ChangeGuaranteeRequest is GuaranteeRequestExtender
 
 
         changeOwner(GuaranteeRequestExtender(changeRequestGuaranteeAdr).getCustomer());
-        ChangeGuaranteeRequestCreated(guaranteeExtender, requestAmount,  requestEndDate,now);
+        ChangeGuaranteeRequestCreated(guaranteeExtender, requestAmount,  requestEndDate,status,now);
     }
 
     function getId() constant public returns (address _contract_id)
     {
         return this;
     }
+
+    function getAmount() constant public returns (uint )
+    {
+        return amount;
+    }
+
 
     function getBank() constant public returns (address)
     {
