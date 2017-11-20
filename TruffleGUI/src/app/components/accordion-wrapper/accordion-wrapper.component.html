@@ -1,0 +1,18 @@
+  <div *ngIf="allRequests"  class="for-treatment ui-space-tb-large">
+    <div class="section-header ui-space-tb-small text-bold">
+      <label>
+        {{title}}
+      </label>
+    </div>
+    <div class="req-for-treatment">
+      <p-accordion styleClass="red">
+        <p-accordionTab *ngFor="let req of allRequests | filterByKeyValue:'requestState':[3] "><!-- "//[therequestState.waitingtocustomer,therequestState.accepted]"> -->
+          <p-header (click)="getRequestHistory(req)">
+            <request-item [request]="req"></request-item>
+          </p-header>
+          <app-history [Rhistory]="requestHistory"></app-history>
+          <app-actions [userType]="user"  [data]="req" (updateRequest)="updateRequestsender($event)"></app-actions>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+  </div>
