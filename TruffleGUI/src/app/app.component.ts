@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, Injectable, Inject} from '@angular/core';
 
 // Interfaces, mock data and utils
 import {
@@ -7,12 +7,14 @@ import {
 
 import {GRequest, Guarantee, Beneficiary, Customer, ExpandedRequest, Bank} from "./interfaces/request";
 import {EtheriumService} from "./services/real-etherium.service";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+@Injectable()
 export class AppComponent implements OnInit, OnDestroy {
 
   // Requests and Guarantees
@@ -27,9 +29,12 @@ export class AppComponent implements OnInit, OnDestroy {
   customer: Customer;
   bank: Bank;
 
-  constructor(private truffleSRV: EtheriumService) {}
+  constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService)
+  {}
+
 
   ngOnInit() {
+
     this.watcher();
     // Get user, bank and beneficiary data
     this.truffleSRV.getCustomerData().then((res: Customer) => {
@@ -64,11 +69,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
 
   handleCreateRequest = (e) => {
-    // console.log("handleCreateRequest date",new Date(e.startDate).getTime()/1000,e.endDate);
+     console.log("handleCreateRequest ",this.customer,this.bank,this.beneficiaries);
     let newRequest = this.truffleSRV.createRequest(this.customer.customerID,
     this.bank.bankID, this.beneficiaries[0].beneficiaryID,
-    e.purpose, e.amount, new Date(e.startDate).getTime()/1000, new Date(e.endDate).getTime()/1000, 0, 0).then((newRequest)=> {
-      console.log("newRequest", newRequest)
+    e.purpose, e.amount, e.startDate, e.endDate, 0, 0).then((newRequest)=> {
+      console.log("newRequest", newRequest);
       this.addNewUserRequests(newRequest);
       this.addNewBankRequests(newRequest);
     });
@@ -94,52 +99,58 @@ export class AppComponent implements OnInit, OnDestroy {
       case 'accept':
         console.log(`accept success! id: ${e.requestId}`);
          this.truffleSRV.acceptRequest(e.requestId, '', '').then((updatedRequest)=>{
-            this.updateUserRequests(updatedRequest);
-            this.updateBankRequests(updatedRequest);
+           // debugger;
+           if(!isNullOrUndefined(updatedRequest)) {
+             console.log(`acceptRequest success! id: ${e}`, updatedRequest);
+
+             this.updateUserRequests(updatedRequest.request);
+             this.updateBankRequests(updatedRequest.request);
+
+             if (updatedRequest.terminatedguarantee != null) {
+               this.updateUserGuarantees(updatedRequest.terminatedguarantee);
+               this.updateBankGuarantees(updatedRequest.terminatedguarantee);
+               this.updateBenefGuarantees(updatedRequest.terminatedguarantee);
+             }
+           }
 
            this.truffleSRV.guaranteeSignComplite(e.requestId, '', '').then((guarantee)=>{
+             // debugger;
              this.addNewUserGuarantee(guarantee);
              this.addNewBankGuarantee(guarantee);
              this.addNewBenefGuarantee(guarantee);
            });
+
         });
 
 
         break;
       case 'reject':
-        console.log(`reject success! id: ${e.requestId} comment: ${e.details}`);
         updatedRequest = this.truffleSRV.rejectRequest(e.requestId, e.details).then((updatedRequest)=>{
-              this.updateUserRequests(updatedRequest);
-              this.updateBankRequests(updatedRequest);
-          });
-        break;
-      case 'terminate':
-        console.log(`terminate success! id: ${e.guaranteeId}`);
-        updatedRequest = this.truffleSRV.terminateGuatanty(e.guaranteeId, e.requestId, '', '').then((guarantee)=>{
-          this.updateUserGuarantees(guarantee);
-          this.updateBankGuarantees(guarantee);
-          this.updateBenefGuarantees(guarantee);
-          updatedRequest = this.truffleSRV.terminateGuatantyComplite(e.guaranteeId, e.requestId, '', '').then((updatedRequest)=> {
-
+          if(!isNullOrUndefined(updatedRequest)) {
+            console.log(`reject success! id: ${e.requestId} comment: ${e.details}`);
             this.updateUserRequests(updatedRequest);
             this.updateBankRequests(updatedRequest);
-          });
-
+          }
+        });
+        break;
+      case 'terminate':
+        updatedRequest = this.truffleSRV.terminateGuatanty(e.guaranteeId, e.requestId, '', '').then((res)=>{
+          if(!isNullOrUndefined(res)) {
+            console.log(`terminate success! id: ${e.guaranteeId}`,res);
+            this.updateUserGuarantees(res.guarantee);
+            this.updateBankGuarantees(res.guarantee);
+            this.updateBenefGuarantees(res.guarantee);
+            this.updateUserRequests(res.request);
+            this.updateBankRequests(res.request);
+          }
         });
         break;
       case 'guaranteeUpdate':
         console.log(`update success! id: ${e.guaranteeId} amount: ${e.update.amount} date: ${e.update.date}`);
-        this.truffleSRV.guaranteeUpdate(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date).then((updatedRequest)=>{
-          this.updateUserRequests(updatedRequest);
-          this.updateBankRequests(updatedRequest);
-
-          this.truffleSRV.guaranteeUpdateCommit(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date).then((guarantee)=> {
-
-            this.updateUserGuarantees(guarantee);
-            this.updateBankGuarantees(guarantee);
-            this.updateBenefGuarantees(guarantee);
+        this.truffleSRV.guaranteeUpdate(e.guaranteeId, e.requestId, '', e.update.amount, e.update.date).then((response:any)=>{
+          this.addNewUserRequests(response);
+          this.addNewBankRequests(response);
           });
-        });
         break;
       default:
         break;

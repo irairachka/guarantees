@@ -4,6 +4,7 @@ var GuaranteeExtender = artifacts.require("./GuaranteeExtender.sol");
 var GuaranteeRequestExtender = artifacts.require("./GuaranteeRequestExtender.sol");
 var DigitalGuaranteeBNHP = artifacts.require("./DigitalGuaranteeBNHP.sol");
 var GuaranteeRequest = artifacts.require("./GuaranteeRequest.sol");
+var ChangeGuaranteeRequest = artifacts.require("./ChangeGuaranteeRequest.sol");
 var Regulator = artifacts.require("./Regulator.sol");
 
 var account;
@@ -113,7 +114,7 @@ contract('Regulator', function(accounts) {
             beneficiaries=result;
             console.log("getAllBeneficiaries:",result);
             assert.equal(result.length, 1, "getAllBeneficiaries should have 1 Beneficiaries");
-            return getOneCustomer(account);
+            return getOneCustomerEt(account);
         }).then(function (result) {
             customer=result;
             console.log("getAllCustomers:",result);
@@ -132,17 +133,49 @@ contract('Regulator', function(accounts) {
     });
 
 
-    createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
+    createRequestEt1 =( userAccount , bankAccount, benefAccount ,fullname, purpose,
                        amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
     {
         var StartDateEt=Math.floor((StartDate/1000));
         var EndDateEt=Math.floor((EndDate/1000));
-        var purposeEt=web3.fromUtf8(purpose);
-        var fullnameEt=web3.fromUtf8(fullname);
+        var purposeEt=this.web3.fromUtf8(purpose);
+        var fullnameEt=this.web3.fromUtf8(fullname);
         var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
+        console.log('createRequestEt',bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt);
 
-        return (GuaranteeRequest.new(bankAccount,benefAccount,fullname,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{from: userAccount}));
+        return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{from: userAccount}));
     };
+
+
+    createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
+                       amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
+    {
+        // var StartDateEt=Math.floor((StartDate/1000));
+        // var EndDateEt=Math.floor((EndDate/1000));
+        if (purpose === 'undefined' || purpose==null)
+            purpose='';
+        var purposeEt=this.web3.fromUtf8(purpose);
+        var fullnameEt=this.web3.fromUtf8(fullname);
+        var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
+        console.log('createRequestEt',bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt);
+        return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{from: userAccount}));
+    };
+
+
+
+
+
+    // createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
+    //                    amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
+    // {
+    //     var StartDateEt=Math.floor((StartDate/1000));
+    //     var EndDateEt=Math.floor((EndDate/1000));
+    //     var purposeEt=web3.fromUtf8(purpose);
+    //     var fullnameEt=web3.fromUtf8(fullname);
+    //     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
+    //
+    //     return (GuaranteeRequest.new(bankAccount,benefAccount,fullname,purposeEt,amount,StartDateEt,EndDateEt,indexType, indexDate,proposalIPFSHashEt,{from: userAccount}));
+    // };
 
     submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
         console.log("submitRequest:",userAccount,guaranteeRequestInstance.address);
@@ -189,7 +222,7 @@ contract('Regulator', function(accounts) {
     }).then(function (regulatorAddress) {
         account=regulatorAddress;
          console.log("regulatorAddress:",account);
-        return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now()/1000,Date.now()/1000+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+        return createRequestEt(account,account,account,"full name"," purpose test",1000,Math.floor((Date.now()/1000)),Math.floor((Date.now()/1000))+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
       }).then(function (instance) {
 
@@ -311,30 +344,51 @@ contract('Regulator', function(accounts) {
     };
 
     populateRequestData=(resultArr)=>  {
+        // console.log(resultArr);
+        const startDate = this.transformDateSolToJS(resultArr[7].valueOf());
+        const endDate = this.transformDateSolToJS(resultArr[8].valueOf());
 
-        const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
-        const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
-        const proposal=web3.toUtf8( resultArr[5]);
-        const full_name=web3.toUtf8( resultArr[4]);
+        // const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
+        // const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
+        //  console.log('startDate1',resultArr[7] * 1000,startDate,'endDate1',resultArr[8] * 1000,endDate);
+        const proposal=this.web3.toUtf8( resultArr[5]);
+        const full_name=this.web3.toUtf8( resultArr[4]);
+        const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+
 
         var ask= {
             GRequestID: resultArr[0],
             customer: resultArr[1],
             beneficiary: resultArr[2],
             bank: resultArr[3],
-            beneficiaryName: getBeneficiaryData(resultArr[2]).name,
+            beneficiaryName: this.getBeneficiaryData(resultArr[2]).Name,
+            fullName:full_name,
             purpose: proposal,
-            amount: resultArr[6].valueOf(),
+            amount: parseInt(resultArr[6].valueOf()),
             StartDate: startDate,
             EndDate: endDate,
-            indexType: resultArr[9].valueOf(),
-            indexDate: resultArr[10].valueOf(),
-            requestState: resultArr[11].valueOf()
+            indexType: parseInt(resultArr[9].valueOf()),
+            indexDate: parseInt(resultArr[10].valueOf()),
+            requestState: parseInt(resultArr[11].valueOf()),
+            ischangeRequest: (resultArr[12] === 'true') ,
+            changeRequest:changeRequestId
+            // ischangeRequest: (resultArr[12] === 'true')
         };
         // console.log("request data:", ask);
 
         return ask;
+
+
+
+
     };
+
+    transformDateSolToJS = (longDate) => {
+        const date = new Date(longDate * 1000);
+        return date.toLocaleDateString('en-GB');
+    };
+
+
 
     getAllBeneficiaries=()=> {
         // function getAllUserRequests() {
@@ -421,12 +475,11 @@ contract('Regulator', function(accounts) {
 
 
 
-    getOneCustomer =(customerAddress) => {
+    getOneCustomerEt =(customerAddress) => {
         /** Gets one guarantee requests by id */
         /** parses the data and sends to UI */
         return Regulator.deployed()
             .then(function (instance) {
-
                 return instance.getCustomer.call(customerAddress);
             }).then(function(result) {
                 console.log("getcustomer:", result);
@@ -522,9 +575,10 @@ contract('Regulator', function(accounts) {
     };
 
     populateGuaranteeData=(resultArr) => {
-        // console.log("populateGuaranteeData",resultArr);
+         console.log("populateGuaranteeData",resultArr);
         const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
         const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
+        console.log("populateGuaranteeData",resultArr,startDate,endDate);
         const indexDate=resultArr[11].valueOf();
         const proposal=web3.toUtf8( resultArr[6]);
         const full_name=web3.toUtf8( resultArr[5]);
@@ -617,26 +671,58 @@ contract('Regulator', function(accounts) {
     };
 
 
+    // guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
+    //     // אישור של
+    //     // if  (hashcode) {
+    //     var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
+    //     const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
+    //
+    //
+    //     return Regulator.deployed()
+    //         .then( (instance)=> {
+    //             console.log("guaranteeSignCompliteEt",requestId,guaranteeIPFSHash);
+    //             return instance.GuaranteeSignComplite.call(requestId,hashcodeBug);
+    //         }).catch(function (error) {
+    //             console.error('error',error);
+    //             throw error;
+    //         })
+    //
+    // };
+
     guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
         // אישור של בנק
         // if  (hashcode) {
         var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
+        // const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
+
 
         return Regulator.deployed()
             .then(function (instance) {
                 console.log("guaranteeSignCompliteEt requestId",requestId)
                 return instance.GuaranteeSignComplite(requestId,guaranteeIPFSHashEt);
-
             }).catch(function (error) {
                 throw error;
             })
 
     };
 
+    // terminateGuaranteeEt = (garantyId) => {
+    //
+    //     return Regulator.deployed()
+    //         .then(function (instance) {
+    //             console.log("terminateGuaranteeEt garantyId",garantyId);
+    //             return instance.terminateGuarantee(garantyId);
+    //         }).catch(function (error) {
+    //             throw error;
+    //         })
+    //
+    // };
+
+
     terminateGuaranteeEt = (garantyId) => {
 
         return Regulator.deployed()
-            .then(function (instance) {
+            .then( (instance) =>{
                 console.log("terminateGuaranteeEt garantyId",garantyId);
                 return instance.terminateGuarantee(garantyId);
             }).catch(function (error) {
@@ -645,17 +731,44 @@ contract('Regulator', function(accounts) {
 
     };
 
-    changeGuaranteeEt = (gauranteeId,ammount,dateEnd) => {
+    changeGuaranteeEt = (guaranteeId , amount,  EndDate) => {
 
+        var EndDateEt=Math.floor((EndDate/1000));
+        var Regulator_instance,ChangeGuaranteeRequestinstanceAddress;
+        
         return Regulator.deployed()
-            .then(function (instance) {
-                console.log("acceptRequestEt requestId",gauranteeId)
-                return instance.changeGuarantee(gauranteeId,ammount,dateEnd);
-            }).catch(function (error) {
+            .then( (instance) => {
+                Regulator_instance=instance;
+                console.log("change  guaranteeId", guaranteeId)
+                return ChangeGuaranteeRequest.new(guaranteeId, amount, EndDate);
+            })
+            .then( (ChangeGuaranteeRequestinstance) => {
+                ChangeGuaranteeRequestinstanceAddress=ChangeGuaranteeRequestinstance.address;
+                return Regulator_instance.changeGuarantee(ChangeGuaranteeRequestinstanceAddress,guaranteeId);
+            })
+            .then( (tx) =>{
+                return new Promise((resolve)=> {
+                    resolve(ChangeGuaranteeRequestinstanceAddress);
+                })
+            }).catch( (error) =>{
                 throw error;
             })
 
     };
+
+   
+
+    // changeGuaranteeEt = (gauranteeChangeRequestId) => {
+    //
+    //     return Regulator.deployed()
+    //         .then(function (instance) {
+    //             console.log("acceptRequestEt requestId",gauranteeChangeRequestId)
+    //             return instance.changeGuaranteeM(gauranteeChangeRequestId);
+    //         }).catch(function (error) {
+    //             throw error;
+    //         })
+    //
+    // };
 
     terminateGuatantyEt = (guaranteeId, requestId) => {
         return Regulator.deployed().then(function(instance) {
@@ -677,7 +790,7 @@ contract('Regulator', function(accounts) {
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
             console.log("regulatorAddress:",account);
-            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Math.floor((Date.now()/1000)),Math.floor((Date.now()/1000))+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
         }).then(function (requestInstance) {
             if (requestInstance!=null) {
@@ -746,7 +859,7 @@ contract('Regulator', function(accounts) {
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
             console.log("regulatorAddress:",account);
-            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Math.floor((Date.now()/1000)),Math.floor((Date.now()/1000))+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
         }).then(function (requestInstance) {
             if (requestInstance!=null) {
@@ -815,7 +928,7 @@ contract('Regulator', function(accounts) {
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
             console.log("regulatorAddress:",account);
-            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now()/1000,Date.now()/1000+10000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Math.floor((Date.now()/1000)),Math.floor((Date.now()/1000))+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
         }).then(function (requestInstance) {
             if (requestInstance!=null) {
@@ -870,7 +983,9 @@ contract('Regulator', function(accounts) {
         }).then(function (result) {
             console.log("getAllUserGuarantees  result :",result);
             assert.equal(result[0].amount.valueOf(), 1000,
-                        'Error detected')
+                        'Error detected');
+            assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
+
 
         }).catch(function(error) {
 
@@ -885,81 +1000,90 @@ contract('Regulator', function(accounts) {
 
 
 
-    // it("should  check change  guarantee ", function() {
-    //         var Regulator_instance;
-    //         var requestInstanceTmp;
-    //         return Regulator.deployed().then(function (instance) {
-    //             Regulator_instance = instance;
-    //             return Regulator_instance.getOwner.call();
-    //         }).then(function (regulatorAddress) {
-    //             account = regulatorAddress;
-    //
-    //             // console.log("getRequestState  result :",result);
-    //             // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
-    //             return getAllUserGuarantees();
-    //         }).then(function (result) {
-    //                     console.log("guarentees list before change:", result);console.log("guarentees list: after terminate", result);
-    //                     assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
-    //
-    //             return changeGuaranteeEt(result[0].GuaranteeID, 25550,  Date.now()/1000 + 222000);
-    //         }).then(function (result) {
-    //             console.log("guarentees list after change:", result);
-    //             return getAllUserGuarantees();
-    //         }).then(function (result) {
-    //             console.log("guarentees list before change:", result);
-    //             assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
-    //             return getAllUserRequests();
-    //         }).then(function (result) {
-    //             console.log("guarentees list before change:", result);
-    //             assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
-    //
-    //         }).catch(function (error) {
-    //
-    //             console.error(error);
-    //             assert.equal(error.toString(), '',
-    //                 'Error detected')
-    //         });
-    //     });
+    it("should  check change  guarantee ", function() {
+            var Regulator_instance;
+            var requestInstanceTmp;
+            return Regulator.deployed().then(function (instance) {
+                Regulator_instance = instance;
+                return Regulator_instance.getOwner.call();
+            }).then(function (regulatorAddress) {
+                account = regulatorAddress;
 
-    it("should  terminate  guarantee ", function() {
-        var Regulator_instance;
-        var requestInstanceTmp;
-        return Regulator.deployed().then(function(instance) {
-            Regulator_instance = instance;
-            return Regulator_instance.getOwner.call();
-        }).then(function (regulatorAddress) {
-            account=regulatorAddress;
+                // console.log("getRequestState  result :",result);
+                // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
+                return getAllUserGuarantees();
+            }).then(function (result) {
+                console.log("guarentees list before change:", result);
+                assert.equal(result[0].guaranteeState.valueOf(), 1,"the state is invalid");
 
-            // console.log("getRequestState  result :",result);
-            // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
-           return  getAllUserGuarantees();
-        }).then(function (result) {
-                console.log("guarentees list before terminate:",result);
-                assert.equal(result[0].amount.valueOf(), 1000,
+                 return changeGuaranteeEt(result[0].GuaranteeID, 25550,  Date.now() + 2220000);
+            }).then(function (result) {
+                console.log("changeGuaranteeEt:", result);
+                requestInstanceTmp=getGuaranteeRequestInstance(result);
+                return requestInstanceTmp.isChangeRequest.call();
+            }).then(function(result) {
+                assert.equal(result,true,
+                    'Error in change guarantee isChangeRequest should be true');
+
+                return getRequestStateEt(account,requestInstanceTmp);
+            }).then(function(result) {
+
+                assert.equal(result.valueOf(),1,
+                        'Error in change guarantee getRequestState should be 1');
+
+               return getAllUserRequests();
+            }).then(function (result) {
+                console.log("requests list after change:", result);
+              }).catch(function (error) {
+
+                console.error(error);
+                assert.equal(error.toString(), '',
                     'Error detected')
-            return terminateGuaranteeEt(result[0].GuaranteeID);
-
-        }).then(function(result) {
-            console.log("terminateGuaranteeEt  result :", result);
-            // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
-            return getAllUserGuarantees();
-
-        }).then(function (result) {
-            console.log("guarentees list: after terminate", result);
-            assert.equal(result[0].guaranteeState.valueOf(), 3,
-                'Error detected in terminate state');
-            // var dt = (Date.now() / 1000);
-            // return changeGuaranteeEt(result[1].GuaranteeID, 25550, dt, dt + 10000);
-
-
-
-        }).catch(function(error) {
-
-            console.error(error);
-            assert.equal(error.toString(),'',
-                'Error detected')
+            });
         });
-    });
+
+    // it("should  terminate  guarantee ", function() {
+    //     var Regulator_instance;
+    //     var requestInstanceTmp;
+    //     return Regulator.deployed().then(function(instance) {
+    //         Regulator_instance = instance;
+    //         return Regulator_instance.getOwner.call();
+    //     }).then(function (regulatorAddress) {
+    //         account=regulatorAddress;
+    //
+    //         // console.log("getRequestState  result :",result);
+    //         // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
+    //        return  getAllUserGuarantees();
+    //     }).then(function (result) {
+    //             console.log("guarentees list before terminate:",result);
+    //             assert.equal(result[0].guaranteeState.valueOf(), 1,
+    //                 'Error detected in terminate state');
+    //             // var dt = (Date.now() / 1000);
+    //             // return changeGuaranteeEt(result[1].GuaranteeID, 25550, dt, dt + 10000);
+    //
+    //         return terminateGuaranteeEt(result[0].GuaranteeID);
+    //
+    //     }).then(function(result) {
+    //         console.log("terminateGuaranteeEt  result :", result);
+    //         // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
+    //         return getAllUserGuarantees();
+    //
+    //     }).then(function (result) {
+    //         console.log("guarentees list: after terminate", result);
+    //         assert.equal(result[0].guaranteeState.valueOf(), 3,
+    //             'Error detected in terminate state');
+    //         // var dt = (Date.now() / 1000);
+    //         // return changeGuaranteeEt(result[1].GuaranteeID, 25550, dt, dt + 10000);
+    //
+    //
+    //
+    //     }).catch(function(error) {
+    //
+    //         console.error(error);
+    //         assert.equal(error.toString(),'',
+    //             'Error detected')
+    //     });
+    // });
 
 
 
@@ -1019,7 +1143,7 @@ contract('Regulator', function(accounts) {
     //         // });
     //     },
 
-        getGuarantyHistoryEt = (requestAddress) => {
+        getRequestHistoryEt = (requestAddress) => {
 
         return new Promise((resolve) => {
 
@@ -1048,12 +1172,42 @@ contract('Regulator', function(accounts) {
         })
     },
 
+
+        getGuaranteeHistoryEt = (guaranteeAddress) => {
+
+            return new Promise((resolve) => {
+
+
+                var requestevents = [];
+                var guarantee = DigitalGuaranteeBNHP.at(guaranteeAddress);
+                var allevents = guarantee.allEvents({fromBlock: 0, toBlock: 'latest'})
+
+                return allevents.get(function (error, result) {
+
+                    // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+                    for (var i = result.length - 1; i >= 0; i--) {
+                        var cur_result = result[i];
+                        requestevents.push(populateHistoryLineData(cur_result.event, cur_result.args))
+                    }
+
+                    var replay=
+                    {
+                        shortguarantee: guaranteeAddress,
+                        log: requestevents
+                    };
+
+                    resolve(replay);
+
+                })
+            })
+        },
+
         // requestevents = [...requestevents, populateHistoryLineData(cur_result)];
 
 
 
 
-    it("should  check guaranty  history ", function() {
+    it("should  check request  history ", function() {
         var Regulator_instance;
         var requestInstanceTmp;
         return Regulator.deployed().then(function (instance) {
@@ -1066,7 +1220,7 @@ contract('Regulator', function(accounts) {
             // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
             return getAllUserRequests();
         }).then(function (result) {
-            return getGuarantyHistoryEt(result[0].GRequestID);
+            return getRequestHistoryEt(result[0].GRequestID);
         }).then(function (result) {
             console.log("history list ", result);
 
@@ -1078,6 +1232,30 @@ contract('Regulator', function(accounts) {
         });
     });
 
+    it("should  check guarantee  history ", function() {
+        var Regulator_instance;
+        var requestInstanceTmp;
+        return Regulator.deployed().then(function (instance) {
+            Regulator_instance = instance;
+            return Regulator_instance.getOwner.call();
+        }).then(function (regulatorAddress) {
+            account = regulatorAddress;
+
+            // console.log("getRequestState  result :",result);
+            // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
+            return getAllUserGuarantees();
+        }).then(function (result) {
+            return getGuaranteeHistoryEt(result[0].GuaranteeID);
+        }).then(function (result) {
+            console.log("history list ", result);
+
+        }).catch(function (error) {
+
+            console.error(error);
+            assert.equal(error.toString(), '',
+                'Error detected')
+        });
+    });
 
 
 

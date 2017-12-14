@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, Injectable, Inject} from '@angular/core';
 import {GRequest, Guarantee} from "../../interfaces/request";
 import {EtheriumService} from "../../services/real-etherium.service";
 
@@ -8,6 +8,7 @@ import {EtheriumService} from "../../services/real-etherium.service";
   templateUrl: './guarantee-view.component.html',
   styleUrls: ['./guarantee-view.component.scss']
 })
+@Injectable()
 export class GuaranteeViewComponent implements OnInit{
   @Input() user: string; // TODO - handle enum and convert to string
   @Input() allRequests: GRequest[];
@@ -21,11 +22,11 @@ export class GuaranteeViewComponent implements OnInit{
   //   beneficiary: 'המוטב'
   // };
   guaranteeHistory: any[];
-  index: number = 1; // accordion open index
+  index: number = 0; // accordion open index
   // therequestState: RequestState ;
   // treguaranteeState:GuaranteeState;
 
-  constructor(private truffleSRV: EtheriumService) {}
+  constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
     console.log('this.allRequests', this.allRequests);
@@ -42,11 +43,13 @@ export class GuaranteeViewComponent implements OnInit{
   }
   updateRequestsender(data){
     this.updateRequest.emit(data);
+    this.closeAccordion();
   }
 
   updateGuaranteesender(data){
     console.log('updateGuaranteesender', data);
     this.updateRequest.emit(data);
+    this.closeAccordion();
   }
 
   newRequestEmitter(e) {
@@ -54,12 +57,16 @@ export class GuaranteeViewComponent implements OnInit{
     this.newRequest.emit(e);
   }
 
+  setIndex(e) {
+    this.index = e.index;
+  }
+
   closeAccordion() {
     this.index = -1;
   }
 
-  getGuaranteeHistory(e) {
-    this.truffleSRV.getGuarantyHistory(this.allGuaranties[e.index].GRequestID).then((res: any[]) => {
+  getGuaranteeHistory(guar: Guarantee) {
+    this.truffleSRV.getGuarantyHistory(guar.GuaranteeID).then((res: any[]) => {
       this.guaranteeHistory = res;
     });
   }

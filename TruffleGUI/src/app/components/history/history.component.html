@@ -1,14 +1,10 @@
 <div class="progress-bar-container">
-  <!--<img src="../../../assets/images/progress1.jpeg">-->
   <img [src]="statusGraph">
 </div>
-
-<!--<div class="ui-layou-column">-->
-  <!--<div *ngFor="let item of myHistory" class="ui-layout">-->
-    <!--<label>{{item.state}}</label><label *ngIf="item.comment">: {{item.comment}}</label><label> &#45;&#45; {{item.date}}</label>-->
-  <!--</div>-->
-<!--</div>-->
-
+<!--<pre>{{Rhistory | json}}</pre>-->
 <ol class="history-list">
-  <li class="history-item" *ngFor="let item of history">{{item.comment}}   {{item.date}}</li>
+  <li class="history-item" *ngFor="let item of history">
+    <label>{{item}}</label>
+  </li>
+
 </ol>

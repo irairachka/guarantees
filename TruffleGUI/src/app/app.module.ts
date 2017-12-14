@@ -28,6 +28,10 @@ import {AccordionContentComponent} from "./components/accordion-content/accordio
 import {StatusIconComponent} from "./components/status-icon/status-icon.component";
 import {EtheriumService} from "./services/real-etherium.service";
 import {MockService} from "./services/mock-etherium.service";
+import {RealService} from "./services/real-etheriumwork.service";
+import {RemoteService} from "./services/remote-etherium.service";
+import {environment} from "../environments/environment";
+import { AccordionWrapperComponent } from './components/accordion-wrapper/accordion-wrapper.component';
 
 @NgModule({
   imports: [
@@ -61,12 +65,12 @@ import {MockService} from "./services/mock-etherium.service";
     HistoryComponent,
     ActionsComponent,
     AccordionContentComponent,
-    StatusIconComponent
+    StatusIconComponent,
+    AccordionWrapperComponent
   ],
   providers: [
     MessageService,
-    MockService,
-    EtheriumService
+    environment.service
   ],
   bootstrap: [AppComponent]
 })

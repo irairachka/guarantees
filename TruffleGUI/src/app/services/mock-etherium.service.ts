@@ -9,12 +9,12 @@ import {
 import {Beneficiary, Customer, Guarantee,GRequest} from "../interfaces/request";
 import {Observable} from "rxjs/Rx";
 import {GuaranteeState, RequestState} from "../interfaces/enum";
+import {_catch} from "rxjs/operator/catch";
 
 // // Import our contract artifacts and turn them into usable abstractions.
 // const GuaranteeRequest_artifact = require('../../../../build/contracts/GuaranteeRequest.json');
 // const Regulator_artifact = require('../../../../build/contracts/Regulator.json');
 // // const DigitalGuaranteeBNHP_artifact = require('../../../build/contracts/DigitalGuaranteeBNHP.json');
-
 
 @Injectable()
 export class MockService {
@@ -44,6 +44,8 @@ export class MockService {
   {
     this.mockGuarantees=mockGuarantees;
   };
+
+  
   /************************/
   /**  Get User Data   ****/
   /************************/
@@ -54,11 +56,30 @@ export class MockService {
     });
   };
 
-  getRequestHistory = (requestAddress) => {
+  getRequestHistory = (requestAddress):any => {
     console.log("getRequestHistory",requestAddress);
 
     return new Promise((resolve) => {
-      resolve(mockexpandedRequest[0].log);
+      var history;
+      try{
+        history=mockexpandedRequest[mockexpandedRequest.findIndex(item => {
+          return item.shortrequest.GRequestID === requestAddress
+        })].log
+      }
+      catch(error)
+      {
+        history= [
+        {
+          eventname:'Not_Find',
+          date: '01/01/1970',
+          state: RequestState.created,
+          comment: "hustory not exist in mock data!"
+        }
+      ];
+      }
+      resolve(
+        history
+        );
     });
   };
 
@@ -69,7 +90,7 @@ export class MockService {
   getAllRequests = ()=> {
     /** Gets all guarantee requests for customer */
     return new Promise((resolve)=> {
-      resolve(mockCustomerRequests);
+      resolve(this.mockRequests);
     });
   };
 
@@ -78,9 +99,9 @@ export class MockService {
   };
 
 
-  getAllGuaranties = () => {
+  getAllGuaranties = (customerAddress=this.account) => {
     return new Promise((resolve) => {
-      resolve(mockCustomerGuaranties);
+      resolve(this.mockGuarantees);
     });
   };
 
@@ -152,23 +173,29 @@ export class MockService {
     return new Promise((resolve, reject)=> {
       this.idmoc = this.idmoc + 1;
       this.msgService.add({severity: 'success', summary: 'ערבות חדשה', detail: 'בקשה לערבות חדשה נשלחה בהצלחה'});
-      let newItem = this.populateRequestData(
+      this.populateRequestDataP(
         ['' + this.idmoc,
           userId,
           bankId,
           benefId,
-          this.web3.fromUtf8(''),
-          this.web3.fromUtf8(purpose),
+          '',
+          purpose,
           amount,
-          StartDate,
-          EndDate,
+          this.transformDateJSToSol(StartDate),
+          this.transformDateJSToSol(EndDate),
+          // StartDate,
+          // EndDate,
           indexType,
           indexDate,
-          RequestState.waitingtobank
+          RequestState.waitingtobank,
+          false,
+          ''
         ]
-      );
-      this.mockRequests = [...mockCustomerRequests, newItem];
-      resolve(newItem);
+      ).then((newItem)=>{
+        this.mockRequests = [...this.mockRequests, newItem];
+        resolve(newItem);
+      });
+
     });
   };
 
@@ -185,7 +212,7 @@ export class MockService {
     });
   };
 
-  updateRequest = (requestId, comment) => {
+  updateRequest = (requestId, comment):any => {
     // עדכון של בנק
     return new Promise((resolve, reject)=> {
       let updatedItem = this.mockRequests.find((item) => {
@@ -207,7 +234,7 @@ export class MockService {
     });
   };
 
-  acceptRequest = (requestId, comment , hashcode) => {
+  acceptRequest = (requestId, comment , hashcode):any => {
     // אישור של בנק
     // if  (hashcode) {
     return new Promise((resolve, reject)=> {
@@ -218,7 +245,29 @@ export class MockService {
     });
     acceptedItem.requestState = RequestState.accepted;
 
-      resolve( acceptedItem);
+
+    if (acceptedItem.ischangeRequest)
+    {
+      let terminatedGuarantee = this.mockGuarantees.find((item) => {
+        return item.GRequestID === acceptedItem.changeRequest;
+      });
+      terminatedGuarantee.guaranteeState = GuaranteeState.Terminated;
+
+      // console.log('acceptRequest',acceptedItem.ischangeRequest,terminatedGuarantee,acceptedItem);
+      resolve({
+        terminatedguarantee: terminatedGuarantee,
+        request: acceptedItem
+      });
+    }
+      else
+    {
+      // console.log('acceptRequest',acceptedItem.ischangeRequest,null,acceptedItem);
+
+      resolve({
+        terminatedguarantee: null,
+        request: acceptedItem
+      });
+    }
 
     });
 
@@ -233,52 +282,38 @@ export class MockService {
           return item.GRequestID === requestId;
         });
 
+        this.getOneCustomerDataP(acceptedItem.customer)
+          .then((customer)=>{
+            let guarantee =  this.populateGuaranteeDataP(
+              [acceptedItem.GRequestID,
+                acceptedItem.GRequestID,
+                acceptedItem.GRequestID,
+                acceptedItem.GRequestID,
+                acceptedItem.GRequestID,
+                customer.Name,
+                acceptedItem.purpose,
+                acceptedItem.amount,
+                this.transformDateJSToSol(acceptedItem.StartDate),
+                this.transformDateJSToSol(acceptedItem.EndDate),
+                acceptedItem.indexType,
+                acceptedItem.indexDate,
+                GuaranteeState.Valid
+              ]
+            ).then((guarantee)=>{
+              this.mockGuarantees = [...this.mockGuarantees, guarantee];
+              resolve(guarantee);
+            });
+
+          });
         // generate new guarantee
-        let guarantee =  this.populateGuaranteeData(
-        [acceptedItem.GRequestID,
-          acceptedItem.GRequestID,
-          acceptedItem.GRequestID,
-          acceptedItem.GRequestID,
-          acceptedItem.GRequestID,
-          this.web3.fromUtf8(this.getOneCustomerData(acceptedItem.customer).Name),
-          this.web3.fromUtf8(acceptedItem.purpose),
-          acceptedItem.amount,
-          new Date(acceptedItem.StartDate).getTime()/1000,
-          new Date(acceptedItem.EndDate).getTime()/1000,
-          acceptedItem.indexType,
-          acceptedItem.indexDate,
-          GuaranteeState.Valid
-        ]
-      );
 
-
-      // {
-      //   GuaranteeID: acceptedItem.GRequestID,
-      //     GRequestID: acceptedItem.GRequestID,
-      //   customer: acceptedItem.customer,
-      //   beneficiary: acceptedItem.GRequestID,
-      //   bank: acceptedItem.GRequestID,
-      //   customerName: this.getOneCustomerData(acceptedItem.customer).Name,
-      //   StartDate: acceptedItem.StartDate,
-      //   EndDate: acceptedItem.EndDate,
-      //   amount: acceptedItem.amount,
-      //   fullName: 'ישראל ישראלי',
-      //   purpose: acceptedItem.purpose,
-      //   indexType: acceptedItem.indexType,
-      //   indexDate: acceptedItem.indexDate,
-      //   guaranteeState: GuaranteeState.Valid
-      // };
-
-
-        this.mockGuarantees = [...this.mockGuarantees, guarantee];
-        resolve(guarantee);
 
       })
     };
 
 
 
-  terminateGuatanty = (guaranteeId, requestId, comment , hashcode) => {
+  terminateGuatanty = (guaranteeId, requestId, comment , hashcode,customerAddress=this.account):any => {
     return new Promise((resolve, reject)=> {
 
       // find and change state of selected request
@@ -291,84 +326,111 @@ export class MockService {
       return item.GuaranteeID === guaranteeId;
     });
     terminatedGuarantee.guaranteeState = GuaranteeState.Terminated;
+    this.msgService.add({severity: 'success', summary: 'ביטול ערבות', detail: 'בקשה לביטול הערבות  נשלחה בהצלחה'});
 
-      resolve(terminatedGuarantee);
-    });
-  };
-
-  terminateGuatantyComplite = (guaranteeId, requestId, comment , hashcode) => {
-    return new Promise((resolve, reject)=> {
-
-      // find and change state of selected request
-      let terminatedRequest = this.mockRequests.find((item) => {
-        return item.GRequestID === requestId;
+      resolve({
+        guarantee: terminatedGuarantee,
+        request: terminatedRequest
       });
-      terminatedRequest.requestState = RequestState.terminationRequest;
-
-      resolve(terminatedRequest);
     });
   };
 
-  guaranteeUpdate = (guatantyId, requestId, comment, amount, date) => {
+  guaranteeUpdate = (guatantyId, requestId, comment, amount, date ,customerAddress=this.account):any => {
+
     return new Promise((resolve, reject)=> {
 
-      // find and change state of selected request
-    let unpdatedRequest = this.mockRequests.find((item) => {
-      return item.GRequestID === requestId;
-    });
-    unpdatedRequest.amount = amount;
-    unpdatedRequest.EndDate = date;
-
-    let updatedGuarantee = this.mockGuarantees.find((item) => {
-      return item.GuaranteeID === guatantyId;
-    });
-    updatedGuarantee.amount = amount;
-    updatedGuarantee.EndDate = date;
-
-      resolve(unpdatedRequest);
-    });
-  };
-
-  guaranteeUpdateCommit = (guatantyId, requestId, comment, amount, date) => {
-    return new Promise((resolve, reject)=> {
-
+      this.idmoc = this.idmoc + 1;
       // find and change state of selected request
       let unpdatedRequest = this.mockRequests.find((item) => {
         return item.GRequestID === requestId;
       });
-      unpdatedRequest.amount = amount;
-      unpdatedRequest.EndDate = date;
 
-      let updatedGuarantee = this.mockGuarantees.find((item) => {
-        return item.GuaranteeID === guatantyId;
+      // console.log('guaranteeUpdate',unpdatedRequest.StartDate,date , requestId);
+      if (date ==='undefined' || date =='')
+        date=unpdatedRequest.EndDate;
+      // make new request
+      this.populateRequestDataP(
+        [ '' + this.idmoc,
+          unpdatedRequest.userId,
+          unpdatedRequest.bankId,
+          unpdatedRequest.benefId,
+          '',
+          unpdatedRequest.purpose,
+          amount,
+          this.transformDateJSToSol(unpdatedRequest.StartDate),
+          this.transformDateJSToSol(date),
+          unpdatedRequest.indexType,
+          unpdatedRequest.indexDate,
+          RequestState.waitingtobank,
+          true,
+          requestId
+        ]
+      ).then((newItem)=>{
+        this.mockRequests = [...this.mockRequests, newItem];
+        this.msgService.add({severity: 'success', summary: 'שינוי ערבות', detail: 'בקשה לשינוי הערבות  נשלחה בהצלחה'});
+
+        resolve(newItem);
       });
-      updatedGuarantee.amount = amount;
-      updatedGuarantee.EndDate = date;
 
-      resolve( updatedGuarantee);
+
+
+
+    //
+    // let updatedGuarantee = this.mockGuarantees.find((item) => {
+    //   return item.GuaranteeID === guatantyId;
+    // });
+    // updatedGuarantee.amount = amount;
+    // updatedGuarantee.EndDate = date;
+    //
+    //   resolve({
+    //     request: newItem
+    //   });
     });
   };
 
-  // getGuarantyHistory = (requestId) => {
-  //   return new Promise((resolve) => {
-  //     resolve(mockexpandedRequest[0].log);
+  // guaranteeUpdateCommit = (guatantyId, requestId, comment, amount, date) => {
+  //   return new Promise((resolve, reject)=> {
+  //
+  //     // find and change state of selected request
+  //     let unpdatedRequest = this.mockRequests.find((item) => {
+  //       return item.GRequestID === requestId;
+  //     });
+  //     unpdatedRequest.amount = amount;
+  //     unpdatedRequest.EndDate = date;
+  //
+  //     let updatedGuarantee = this.mockGuarantees.find((item) => {
+  //       return item.GuaranteeID === guatantyId;
+  //     });
+  //     updatedGuarantee.amount = amount;
+  //     updatedGuarantee.EndDate = date;
+  //
+  //     resolve( updatedGuarantee);
   //   });
   // };
+
+  getGuarantyHistory = (requestId):any => {
+    return new Promise((resolve) => {
+      resolve(mockexpandedRequest[0].log);
+    });
+  };
 
   /** ***********************/
   /**  Helper Function   ****/
   /** ***********************/
 
 
-  populateRequestData=(resultArr)=>  {
+  populateRequestDataP=(resultArr)=>  {
 
-    const startDate = this.transformDateSolToJS(resultArr[7]);
+    return new Promise((resolve, reject)=> {
+
+      const startDate = this.transformDateSolToJS(resultArr[7]);
     const endDate = this.transformDateSolToJS(resultArr[8]);
     //
     // const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
     // const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
-    const proposal=this.web3.toUtf8( resultArr[5]);
-    const full_name=this.web3.toUtf8( resultArr[4]);
+    const proposal= resultArr[5];
+    const full_name= resultArr[4];
+    const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
 
     var ask= {
       GRequestID: resultArr[0],
@@ -383,103 +445,95 @@ export class MockService {
       EndDate: endDate,
       indexType: resultArr[9].valueOf(),
       indexDate: resultArr[10].valueOf(),
-      requestState: resultArr[11].valueOf()
+      requestState: resultArr[11].valueOf(),
+      ischangeRequest: (resultArr[12] == 'true'  || resultArr[12]==true) ,
+      changeRequest:changeRequestId
+
     };
     // console.log("request data:", ask);
 
-    return ask;
+      resolve(ask);
+    });
   };
 
 
-  populateGuaranteeData=(resultArr) => {
-
-    const startDatet = this.transformDateSolToJS(resultArr[7]);
-    const endDatet = this.transformDateSolToJS(resultArr[8]);
-
-    // const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
-    // const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
-    const indexDate=resultArr[11].valueOf();
-    const proposal=this.web3.toUtf8( resultArr[6]);
-    const full_name=this.web3.toUtf8( resultArr[5]);
-    const state= resultArr[12].valueOf();
-    var ask= {
-      GuaranteeID: resultArr[0],
-      GRequestID: resultArr[1],
-      customer: resultArr[2],
-      beneficiary: resultArr[4],
-      bank: resultArr[3],
-      customerName: full_name,
-      StartDate: startDatet,
-      EndDate: endDatet,
-      amount: resultArr[7].valueOf(),
-      fullName:full_name,
-      purpose: proposal,
-      indexType: resultArr[10].valueOf(),
-      indexDate: indexDate.valueOf(),
-      guaranteeState: state.valueOf()
-    };
+  populateGuaranteeDataP=(resultArr) => {
+    return new Promise((resolve, reject)=> {
 
 
+      const startDatet = this.transformDateSolToJS(resultArr[7]);
+      const endDatet = this.transformDateSolToJS(resultArr[8]);
 
-    // {
-    //   GuaranteeID: acceptedItem.GRequestID,
-    //     GRequestID: acceptedItem.GRequestID,
-    //   customer: acceptedItem.customer,
-    //   beneficiary: acceptedItem.GRequestID,
-    //   bank: acceptedItem.GRequestID,
-    //   customerName: this.getOneCustomerData(acceptedItem.customer).Name,
-    //   StartDate: acceptedItem.StartDate,
-    //   EndDate: acceptedItem.EndDate,
-    //   amount: acceptedItem.amount,
-    //   fullName: 'ישראל ישראלי',
-    //   purpose: acceptedItem.purpose,
-    //   indexType: acceptedItem.indexType,
-    //   indexDate: acceptedItem.indexDate,
-    //   guaranteeState: GuaranteeState.Valid
-    // };
+      // const startDate = (new Date(resultArr[8].valueOf() * 1000) ).toDateString();
+      // const endDate = (new Date(resultArr[9].valueOf() * 1000) ).toDateString();
+      const indexDate = resultArr[11].valueOf();
+      const proposal = resultArr[6];
+      const full_name = resultArr[5];
+      const state = resultArr[12].valueOf();
+      var ask = {
+        GuaranteeID: resultArr[0],
+        GRequestID: resultArr[1],
+        customer: resultArr[2],
+        beneficiary: resultArr[4],
+        bank: resultArr[3],
+        customerName: full_name,
+        StartDate: startDatet,
+        EndDate: endDatet,
+        amount: resultArr[7].valueOf(),
+        fullName: full_name,
+        purpose: proposal,
+        indexType: resultArr[10].valueOf(),
+        indexDate: indexDate.valueOf(),
+        guaranteeState: state.valueOf()
+      };
 
 
-    console.log("populateGuaranteeData:", ask);
+      console.log("populateGuaranteeData:", ask);
 
-    return ask;
+      resolve(ask);
+    });
   };
 
 
 
-
-  // populateRequestData = (resultArr) => {
-  //     const startDate = this.transformDateSolToJS(resultArr[6]);
-  //     const endDate = this.transformDateSolToJS(resultArr[7]);
-  //
-  //
-  //     return {
-  //       GRequestID: resultArr[0],
-  //       customer: resultArr[1],
-  //       beneficiary: resultArr[3],
-  //       bank: resultArr[2],
-  //       beneficiaryName: this.getBeneficiaryData(resultArr[3]).Name,
-  //       purpose: resultArr[4],
-  //       amount: resultArr[5].valueOf(),
-  //       StartDate: startDate,
-  //       EndDate: endDate,
-  //       indexType: resultArr[8].valueOf(),
-  //       indexDate: resultArr[9].valueOf(),
-  //       requestState: resultArr[10].valueOf()
-  //     };
-  //   };
 
   transformDateSolToJS = (longDate) => {
     const date = new Date(longDate * 1000);
     return date.toLocaleDateString('en-GB');
   };
 
-  getOneCustomerData = (customerAddress): Customer => {
-    for (var i in mockcustomers) {
-      if (mockcustomers[i].customerID==customerAddress) {
-        return mockcustomers[i];
-      }
+  transformDateJSToSol = (caldate) => {
+    var soltime = Date.parse(caldate)/1000;
+    if (isNaN(soltime) )
+    {
+      var thDate=caldate.split("/");
+      if (thDate.length<3)
+        thDate=caldate.split("-");
+      var newDate=thDate[1]+"/"+thDate[0]+"/"+thDate[2];
+      soltime = (new Date(newDate).getTime()/1000);
+
     }
-    return mockcustomers[0];
+
+    console.log('transformDateJSToSol',caldate,Date.parse(caldate),caldate.split("/"),caldate.split("-"),soltime);
+
+    return Math.floor(soltime);
+
+  };
+
+  
+  getOneCustomerDataP = (customerAddress):any => {
+    return new Promise((resolve)=> {
+      for (var i in mockcustomers) {
+        if (mockcustomers[i].customerID == customerAddress) {
+          resolve(mockcustomers[i]);
+        }
+      }
+
+      resolve(mockcustomers[0]);
+
+
+      });
+
   };
 
   /** ***********************/

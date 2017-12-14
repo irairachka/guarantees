@@ -6,6 +6,7 @@ import "./IssuerManager.sol";
 import "./BeneficiaryManager.sol";
 import "./CustomerManager.sol";
 import "./GuaranteeRequest.sol";
+import "./ChangeGuaranteeRequest.sol";
 
 //
 ////###
@@ -57,7 +58,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-        submitBeneficiary(msg.sender,"עיריית תל אביב-יפו","אבן גבירול 69 תל אביב-יפו");
+        submitBeneficiary(msg.sender,"עיריית ראשון לציון","הכרמל 20, ראשון לציון");
         submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
         submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");
         RegulatoryContractDeployed(msg.sender,"Mined",now);
@@ -84,7 +85,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-    event AAA(uint length);
+//    event AAA(uint length);
 
     function addGuaranteeRequest(address  _guaranteeRequest)  public
     {
@@ -104,8 +105,11 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         require(msg.sender == ge.getBank() && ge.isValid());
 
 
-
         if (ge.accept()) {
+            if (ge.isChangeRequest())
+            {
+                terminateGuarantee(GuaranteeRequestExtender(ge.getChangeRequestGuarantee()).getGuaranteeAddress());
+            }
             GuaranteeSign(_guaranteeRequest);
         }
         else
@@ -148,18 +152,30 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
+//    function changeGuarantee(address  _guarantee ,uint _newamount, uint _newendDate)  returns (bool)  //onlyBeneficiary
+//    {
+////        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
+////        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
+////        require( ger.getRequestState()==RequestState.accepted && msg.sender == ger.getBeneficiary() && _guarantee!= address(0));
+////
+////        ger.changeRequested( _newamount,  _newendDate);
+////        ChangeGuaranteeRequest newger=new ChangeGuaranteeRequest(ge.getGuaranteeRequest(),_newamount, _newendDate);
+////        guaranteeRequests.push(newger.getId());
+//
+////        guaranteeRequests.push( new ChangeGuaranteeRequest(ge.getGuaranteeRequest(),_newamount, _newendDate).getId());
+////        return true;
+//    }
 
-
-    function changeGuarantee(address  _guarantee ,uint _newamount, uint _newendDate)  returns (bool)  //onlyBeneficiary
+    function changeGuarantee(address  _changeGuaranteeRequest,address guarantie )  public  returns (address)//onlyBeneficiary
     {
-        GuaranteeExtender ge= GuaranteeExtender(_guarantee);
-        GuaranteeRequestExtender ger=GuaranteeRequestExtender(ge.getGuaranteeRequest());
-        require( ger.getRequestState()==RequestState.accepted && msg.sender == ger.getBeneficiary() && _guarantee!= address(0));
-
-        ger.changeRequested( _newamount,  _newendDate);
-        return true;
+        ChangeGuaranteeRequest newger=ChangeGuaranteeRequest(_changeGuaranteeRequest);
+        require(msg.sender == newger.getBeneficiary() && newger.isValid() && newger.isChangeRequest());
+        GuaranteeExtender(guarantie).changeRequest(newger.getAmount(),newger.getEndDate());
+//            .getChangeRequestGuarantee()).
+        newger.setRegulator();
+        guaranteeRequests.push(_changeGuaranteeRequest);
+        return _changeGuaranteeRequest;
     }
-
 
 
 

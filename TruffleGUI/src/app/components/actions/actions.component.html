@@ -3,7 +3,7 @@
 
   <ng-container *ngSwitchCase="'bank'">
     <div class="update ui-layout transform-buttons-container">
-      <button class="transform-buttons secondary-button" (click)="changeRequest('updateBank1')">העברה למנהל קשרי לקוחותן</button>
+      <button class="transform-buttons secondary-button" (click)="changeRequest('updateBank1')">העברה למנהל קשרי לקוחות</button>
       <button class="transform-buttons secondary-button" (click)="changeRequest('updateBank2')">העברה למח׳ המשפטית</button>
     </div>
     <button class="accept-button prime-button" (click)="changeRequest('accept')">אישור והפקת כתב ערבות דיגיטלי</button>
@@ -30,7 +30,7 @@
       <label for="reduceGuarantee">הקטנת סכום</label>
       <div class="input-button-container">
         <input placeholder="" [(ngModel)]="newValue" id="reduceGuarantee">
-        <!--<button class="prime-button" (click)="changeRequest('guaranteeUpdate')">שלח</button>-->
+        <button class="prime-button hide-btn" (click)="changeRequest('guaranteeUpdate')">שלח</button>
       </div>
     </div>
     <div class="guarantee-container">
