@@ -6,7 +6,7 @@
 #
 
 NODE_NAME=$1
-NODE_NAME=${NODE_NAME:-"ethereum-bootnode-static"}
+NODE_NAME=${NODE_NAME:-"ethereum-bootnode"}
 
 docker stop $NODE_NAME
 docker rm $NODE_NAME

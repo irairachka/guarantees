@@ -28,9 +28,10 @@
 #    $IMGNAME:$IMGVERSION --verbosity=3
 
 
-
+export nodename="ethereum-bootnode-static"
 export USE_STATIC_NODE=true
 export PRIVATE_PORT=30776
 export MINING_NODE="true"
+export CREATE_INIT_ACCOUNT="true"
 
 ./bootnode.sh
