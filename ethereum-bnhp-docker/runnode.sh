@@ -1,7 +1,7 @@
 #!/bin/bash
 set
 set -xv
-IMGVERSION="1.0"
+IMGVERSION="latest"
 #IMGVERSION="latest"
 #$(head -n 1 .IMGVERSION)
 IMGVERSION=${IMGVERSION:-"latest"}

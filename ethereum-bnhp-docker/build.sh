@@ -1,5 +1,5 @@
 #!/bin/bash
-IMGVERSION=1.1
+IMGVERSION=1.0
 #$(head -n 1 .IMGVERSION)
 IMGVERSION=${IMGVERSION:-"latest"}
 IMGNAME=bnhp/ethereum-static

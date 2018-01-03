@@ -15,16 +15,16 @@ truffle unbox webpack
 
 
 # garanties intall
-#git clone https://github.com/shdmitry2000/guarantees.git /opt/guarantees
-#npm install forever forever-monitor -g
-#cd /opt/guarantees
-#npm install
-#truffle compile
-#cd /opt/guarantees/TruffleGUI/
-#npm install
-#npm run-script build --environment=service
-#cd /opt/guarantees/ExpressServer/
-#npm install
+git clone https://github.com/shdmitry2000/guarantees.git /opt/guarantees
+npm install forever forever-monitor -g
+cd /opt/guarantees
+npm install
+truffle compile
+cd /opt/guarantees/TruffleGUI/
+npm install
+npm run-script build --environment=service
+cd /opt/guarantees/ExpressServer/
+npm install
 #sudo git pull origin newUI
 ##forever stop -c "npm start --env=service" ./
 ##forever start -c "npm start --env=service" ./
@@ -36,24 +36,30 @@ truffle unbox webpack
 mkdir /opt/simple-storage
 cd /opt/simple-storage
 truffle init
-echo "pragma solidity ^0.4.17;
+echo "
 
-      contract SimpleStorage {
-        uint myVariable;
+ pragma  solidity ^0.4.17;
 
-        function set(uint x) public {
-          myVariable = x;
-        }
 
-        function get() constant public returns (uint) {
-          return myVariable;
-        }
-      }
+contract SimpleStorage {
+  uint myVariable;
+
+  function set(uint x) public {
+    myVariable = x;
+  }
+
+  function get() constant public returns (uint) {
+    return myVariable;
+  }
+}
+
 "  > /opt/simple-storage/contracts/Store.sol
 
-echo  " var SimpleStorage = artifacts.require("SimpleStorage");
+echo  "
+var SimpleStorage = artifacts.require("SimpleStorage");
 
-     module.exports = function(deployer) {
-       deployer.deploy(SimpleStorage);
-     }; " > /opt/simple-storage/migrations/2_deploy_contracts.js
+module.exports = function(deployer) {
+  deployer.deploy(SimpleStorage);
+};
+ " > /opt/simple-storage/migrations/2_deploy_contracts.js
 
