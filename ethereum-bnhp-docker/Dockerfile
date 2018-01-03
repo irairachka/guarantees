@@ -77,6 +77,7 @@ EXPOSE 30776/udp
 
 # node
 EXPOSE 3000
+EXPOSE 8080
 
 
 #CMD ["/opt/startgeth.sh"]

@@ -10,7 +10,7 @@ NODE_NAME=${NODE_NAME:-"ethereum-bootnode"}
 
 docker stop $NODE_NAME
 docker rm $NODE_NAME
-IMGVERSION="1.0"
+IMGVERSION="latest"
 #$(head -n 1 .IMGVERSION)
 IMGVERSION=${IMGVERSION:-"latest"}
 IMGNAME="bnhp/ethereum-static"
