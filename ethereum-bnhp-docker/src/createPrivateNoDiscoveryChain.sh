@@ -65,4 +65,12 @@ echo "Running geth with arguments : $RUN_COMMAND"
 eval $RUN_COMMAND
 
 
+#start product
+cd /opt/guarantees/ExpressServer/
+npm start --env=service
+if   [  $RUN_BOOTNODE = "true" ]; then
+    npm start --env=service
+else
+
+fi
 
