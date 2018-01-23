@@ -66,11 +66,10 @@ eval $RUN_COMMAND
 
 
 #start product
-cd /opt/guarantees/ExpressServer/
-npm start --env=service
-if   [  $RUN_BOOTNODE = "true" ]; then
-    npm start --env=service
-else
-
-fi
+#cd /opt/guarantees/ExpressServer/
+#npm start --env=service
+#if   [  $RUN_BOOTNODE = "true" ]; then
+#    npm start --env=service
+#else
+#fi
 
