@@ -85,7 +85,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-//    event AAA(uint length);
+    event AAA(uint length);
 
     function addGuaranteeRequest(address  _guaranteeRequest)  public
     {
@@ -94,7 +94,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         require(msg.sender == ge.getCustomer() && ge.isValid());
         ge.setRegulator();
         guaranteeRequests.push(_guaranteeRequest);
-//        AAA(1);
+        AAA(1);
 
     }
 

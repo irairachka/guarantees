@@ -11,10 +11,30 @@ router.get('/', function(req, res, next) {
 
 router.get('/api/getAllGuarantees', function(req, res, next) {
     service.getAllUserGuarantees(req).then(response => {
-      res.send(response);
-  }).catch(error => {
+        res.send(response);
+    }).catch(error => {
         console.log('error', error);
         res.status(500).send(error);
+
+    });
+});
+
+router.get('/api/getAllRequests', function(req, res, next) {
+    service.getRequests(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send(error);
+
+    });
+});
+
+router.get('/api/getAllIssuers', function(req, res, next) {
+    service.getAllIssuers(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
 
     });
 });
@@ -22,6 +42,47 @@ router.get('/api/getAllGuarantees', function(req, res, next) {
 
 router.get('/api/getGuarantee', function(req, res, next) {
     service.getGuarantee(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+router.get('/api/getCustomer', function(req, res, next) {
+    service.getCustomer(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+
+router.get('/api/getBeneficiaryData', function(req, res, next) {
+    service.getBeneficiaryData(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+router.get('/api/getAllBeneficiaries', function(req, res, next) {
+    service.getAllBeneficiaries(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+router.get('/api/getBankData', function(req, res, next) {
+    service.getBankData(req).then(response => {
         res.send(response);
     }).catch(error => {
         console.log('error', error);
@@ -80,6 +141,10 @@ router.get('/api/getGuarantyHistory', function(req, res, next) {
 
     });
 });
+
+
+
+
 
 module.exports = router;
 

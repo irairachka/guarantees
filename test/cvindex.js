@@ -199,11 +199,16 @@ contract('Regulator', function(accounts) {
     addRequestEt=( userAccount , reqaddress) =>
     {
         return Regulator.deployed().then(function(instance) {
+            console.log('instance.addGuaranteeRequest(reqaddress,{from: userAccount})',instance.address,reqaddress,userAccount)
+
             return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
         }).catch(function(error) {
+            console.error('error',error)
             throw error;
         });
     };
+
+
 
     getRequestStateEt=( userAccount , guaranteeRequestInstance) =>{
         return guaranteeRequestInstance.getRequestState.call({from: userAccount});
@@ -246,7 +251,7 @@ contract('Regulator', function(accounts) {
         }).then(function (regulatorAddress) {
             account=regulatorAddress;
             console.log("regulatorAddress:",account);
-            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now(),Date.now()+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
+            return createRequestEt(account,account,account,"full name"," purpose test",1000,Date.now()/1000,Date.now()/1000+1000000,1,0,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2');
             // return Regulator_instance.addGuaranteeRequest(instance.address,{from: account});
         }).then(function (requestInstance) {
              if (requestInstance!=null) {
@@ -259,7 +264,21 @@ contract('Regulator', function(accounts) {
                  throw "can't create request!";
              }
         }).then(function(result) {
-            return getRequestStateEt(account,requestInstanceTmp);
+            console.log(" request result");
+            for (var i = 0; i < result.logs.length; i++) {
+                var log = result.logs[i];
+
+                if (log.event == "AAA") {
+                    // We found the event!
+                    console.log("GuarantieSigned:",log.args);
+
+                    // break;
+                    return getRequestStateEt(account,requestInstanceTmp);
+                }
+
+            }
+
+
         }).then(function(result) {
 
             assert.equal(result.valueOf(),0,
@@ -689,22 +708,42 @@ contract('Regulator', function(accounts) {
     //
     // };
 
-    guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
-        // אישור של בנק
+    // guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
+    //     // אישור של בנק
+    //     // if  (hashcode) {
+    //     var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
+    //     // const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
+    //
+    //     return Regulator.deployed()
+    //         .then(function (instance) {
+    //             console.log("guaranteeSignCompliteEt requestId",requestId)
+    //             return instance.GuaranteeSignComplite(requestId,guaranteeIPFSHashEt);
+    //         }).catch(function (error) {
+    //             throw error;
+    //         })
+    //
+    // };
+
+
+    guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash,account) => {
+        // אישור של
         // if  (hashcode) {
         var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
-        // const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
+        const hashcodeBug="0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001";
 
 
         return Regulator.deployed()
-            .then(function (instance) {
-                console.log("guaranteeSignCompliteEt requestId",requestId)
-                return instance.GuaranteeSignComplite(requestId,guaranteeIPFSHashEt);
+            .then( (instance)=> {
+                console.log("guaranteeSignCompliteEt + this.account",requestId,guaranteeIPFSHash,account);
+                return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: account});
+
             }).catch(function (error) {
+                console.error('error',error);
                 throw error;
             })
 
     };
+
 
     // terminateGuaranteeEt = (garantyId) => {
     //
@@ -959,8 +998,10 @@ contract('Regulator', function(accounts) {
             return acceptRequestEt(requestInstanceTmp.address );
         }).then(function(result2) {
             console.log("before guaranteeSignCompliteEt:",result2);
-            return guaranteeSignCompliteEt(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');
-        }).then(function(result3) {
+            return guaranteeSignCompliteEt(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001',account);
+
+
+            }).then(function(result3) {
             console.log("getRequestState  result3 :",result3);
             for (var i = 0; i < result3.logs.length; i++) {
                 var log = result3.logs[i];

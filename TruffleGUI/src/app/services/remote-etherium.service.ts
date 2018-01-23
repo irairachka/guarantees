@@ -25,9 +25,41 @@ export class RemoteService extends RealService {
   constructor(public msgService:MessageService, private http: Http) {
     super(msgService);
   }
+
   /************************/
-  /**  Get User Data   ****/
+  /**  replaced   ****/
   /************************/
+
+
+  getAllRequests = (customerAddress:string=this.account)=> {
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('customerAddress', customerAddress);
+
+
+    return this.http.get(`${this.api}/getAllRequests` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+        super.setMockRequests(res);
+        return res;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+  };
+
+
+
 
   getAllGuaranties = (customerAddress:string=this.account) => {
     // Parameters obj-
@@ -66,7 +98,6 @@ export class RemoteService extends RealService {
 
 
   terminateGuatanty = (guaranteeId, requestId, comment , hashcode,customerAddress=this.account):any => {
-
     console.log('terminateGuatanty send to server',guaranteeId, requestId, comment , hashcode,customerAddress);
     return this.http.post(`${this.api}/terminateGuarantees`, {
         guaranteeId,
@@ -163,6 +194,192 @@ export class RemoteService extends RealService {
       });
     });
   };
+
+
+
+
+
+  /************************/
+  /**  Get User Data   ****/
+  /************************/
+
+
+  getCustomerData = (customerAddress:string=this.account) => {
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('customerAddress', customerAddress);
+
+    for (var i in this.realCustomers) {
+      if (this.realCustomers[i].customerID == customerAddress) {
+        return new Promise((resolve, reject)=> {
+          resolve(this.realCustomers[i]);
+        });
+      }
+    }
+
+    return this.http.get(`${this.api}/getCustomer` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+
+        this.realCustomers = [...this.realCustomers, res];
+        return res;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+  };
+
+
+  /** ****************** **/
+  /**  Get Bank Data     **/
+  /** ****************** **/
+
+
+
+
+  getBankData = (customerAddress:string=this.account) => {
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('customerAddress', customerAddress);
+
+    for (var i in this.realIssuers) {
+      if (this.realIssuers[i].bankID == customerAddress) {
+        return new Promise((resolve, reject)=> {
+          resolve(this.realIssuers[i]);
+        });
+      }
+    }
+
+
+    return this.http.get(`${this.api}/getBankData` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+
+        this.realIssuers = [...this.realIssuers, res];
+        return this.realIssuers;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+  };
+
+
+
+
+  getAllBankRequests = () => {
+    /** Gets all guarantee requests for customer */
+    /** parses the data and sends to UI          */
+    return this.getAllRequests();
+  };
+
+
+
+  getAllBankGuaranties = () => {
+    return this.getAllGuaranties();
+  };
+
+
+
+
+
+
+  /** ************************* **/
+  /**  Get Beneficiary Data     **/
+  /** ************************* **/
+
+  getAllBeneficiaries = () => {
+    let params: URLSearchParams = new URLSearchParams();
+    // params.set('customerAddress', customerAddress);
+
+
+    return this.http.get(`${this.api}/getAllBeneficiaries` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+        // this.realBeneficiaries = [... res];
+        this.realBeneficiaries.push(res);
+        console.log("this.realBeneficiaries",this.realBeneficiaries);
+        return this.realBeneficiaries;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+  };
+
+  getAllBeneficiaryGuaranties = () => {
+    return this.getAllGuaranties();
+  };
+
+
+  getBeneficiaryData = (BeneficiaryAddress?) => {
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('beneficiaryAddress', BeneficiaryAddress);
+
+    for (var i in this.realBeneficiaries) {
+      if (this.realBeneficiaries[i].beneficiaryID == BeneficiaryAddress) {
+        return new Promise((resolve, reject)=> {
+          resolve(this.realBeneficiaries[i]);
+        });
+      }
+    }
+
+
+    return this.http.get(`${this.api}/getBeneficiaryData` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+        this.realBeneficiaries.push(res);
+        console.log("this.realBeneficiaries",this.realBeneficiaries);
+
+        // this.realBeneficiaries= [...this.realBeneficiaries, res];
+        return res;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+  };
+
+
+
 
 
 }
