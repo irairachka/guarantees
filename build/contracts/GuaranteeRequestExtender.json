@@ -64,6 +64,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -82,6 +83,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -100,6 +102,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -113,6 +116,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -130,6 +134,7 @@
       "name": "changeRequested",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -143,6 +148,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -156,6 +162,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -164,6 +171,7 @@
       "name": "close",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -172,6 +180,7 @@
       "name": "setRegulator",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -190,6 +199,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -203,6 +213,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -216,6 +227,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -229,6 +241,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -242,6 +255,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -255,6 +269,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -268,6 +283,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -281,6 +297,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -294,6 +311,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -307,6 +325,7 @@
       "name": "changeOwner",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -320,6 +339,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -333,6 +353,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -346,6 +367,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -354,6 +376,7 @@
       "name": "terminateGuarantee",
       "outputs": [],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -367,6 +390,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -385,6 +409,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -407,6 +432,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -420,6 +446,7 @@
         }
       ],
       "payable": false,
+      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -935,7 +962,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -975,7 +1002,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1344,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getBank"
                                 },
                                 "id": 1251,
@@ -1082,7 +1109,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1122,7 +1149,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1339,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getCustomer"
                                 },
                                 "id": 1263,
@@ -1229,7 +1256,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1269,7 +1296,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1349,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getBeneficiary"
                                 },
                                 "id": 1275,
@@ -1330,6 +1357,8 @@
               "name": "getRequestState",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -1472,7 +1501,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1600,6 +1629,8 @@
               "name": "getGuaranteeAddress",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -1694,6 +1725,8 @@
               "name": "setRegulator",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -1766,7 +1799,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1810,6 +1843,8 @@
               "name": "getRegulator",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -1904,6 +1939,8 @@
               "name": "getCustomer",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -1999,6 +2036,8 @@
               "name": "getBank",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2063,6 +2102,8 @@
               "name": "getBeneficiary",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2127,6 +2168,8 @@
               "name": "getId",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2191,6 +2234,8 @@
               "name": "getChangeRequestGuarantee",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2254,6 +2299,8 @@
               "name": "isChangeRequest",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2361,7 +2408,7 @@
                                         null
                                       ],
                                       "referencedDeclaration": 1359,
-                                      "type": "function () constant returns (address)",
+                                      "type": "function () view returns (address)",
                                       "value": "getChangeRequestGuarantee"
                                     },
                                     "id": 1364,
@@ -2466,6 +2513,8 @@
               "name": "getEndDate",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2530,6 +2579,8 @@
               "name": "getGuaranteeRequestData",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2936,6 +2987,8 @@
               "name": "getProposalIPFSHash",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -2999,6 +3052,8 @@
               "name": "isExpired",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -3106,7 +3161,7 @@
                                         null
                                       ],
                                       "referencedDeclaration": 1378,
-                                      "type": "function () constant returns (uint256)",
+                                      "type": "function () view returns (uint256)",
                                       "value": "getEndDate"
                                     },
                                     "id": 1419,
@@ -3124,7 +3179,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2480,
+                                  "referencedDeclaration": 2497,
                                   "type": "uint256",
                                   "value": "now"
                                 },
@@ -3168,6 +3223,8 @@
               "name": "isValid",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -3290,7 +3347,7 @@
                                             null
                                           ],
                                           "referencedDeclaration": 1344,
-                                          "type": "function () constant returns (address)",
+                                          "type": "function () view returns (address)",
                                           "value": "getBank"
                                         },
                                         "id": 1431,
@@ -3405,7 +3462,7 @@
                                             null
                                           ],
                                           "referencedDeclaration": 1349,
-                                          "type": "function () constant returns (address)",
+                                          "type": "function () view returns (address)",
                                           "value": "getBeneficiary"
                                         },
                                         "id": 1437,
@@ -3696,6 +3753,8 @@
               "name": "changeRequested",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -3888,7 +3947,7 @@
                                 null
                               ],
                               "referencedDeclaration": 1461,
-                              "type": "function (address,address,uint256,uint256,enum GuaranteeConst.RequestState,uint256) constant",
+                              "type": "function (address,address,uint256,uint256,enum GuaranteeConst.RequestState,uint256)",
                               "value": "GuarantieChangeRequested"
                             },
                             "id": 1473,
@@ -3922,7 +3981,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1474,
@@ -3996,7 +4055,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2480,
+                              "referencedDeclaration": 2497,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -4187,6 +4246,8 @@
               "name": "submit",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -4312,8 +4373,8 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2496,
-                              "type": "function (bool)",
+                              "referencedDeclaration": 2498,
+                              "type": "function (bool) pure",
                               "value": "require"
                             },
                             "id": 1505,
@@ -4508,7 +4569,7 @@
                                 null
                               ],
                               "referencedDeclaration": 1496,
-                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256) constant",
+                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256)",
                               "value": "Submitted"
                             },
                             "id": 1517,
@@ -4542,7 +4603,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1518,
@@ -4572,7 +4633,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -4619,7 +4680,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2480,
+                              "referencedDeclaration": 2497,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -4837,6 +4898,8 @@
               "name": "withdrawal",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -4962,8 +5025,8 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2496,
-                              "type": "function (bool)",
+                              "referencedDeclaration": 2498,
+                              "type": "function (bool) pure",
                               "value": "require"
                             },
                             "id": 1551,
@@ -5158,7 +5221,7 @@
                                 null
                               ],
                               "referencedDeclaration": 1542,
-                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256) constant",
+                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256)",
                               "value": "Withdrawal"
                             },
                             "id": 1563,
@@ -5192,7 +5255,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1564,
@@ -5222,7 +5285,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -5269,7 +5332,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2480,
+                              "referencedDeclaration": 2497,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -5463,6 +5526,8 @@
               "name": "terminateGuarantee",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -5518,8 +5583,8 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2496,
-                              "type": "function (bool)",
+                              "referencedDeclaration": 2498,
+                              "type": "function (bool) pure",
                               "value": "require"
                             },
                             "id": 1589,
@@ -5710,7 +5775,7 @@
                                 null
                               ],
                               "referencedDeclaration": 1586,
-                              "type": "function (address,address,enum GuaranteeConst.RequestState,uint256) constant",
+                              "type": "function (address,address,enum GuaranteeConst.RequestState,uint256)",
                               "value": "Termination"
                             },
                             "id": 1601,
@@ -5744,7 +5809,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1602,
@@ -5774,7 +5839,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -5807,7 +5872,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2480,
+                              "referencedDeclaration": 2497,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -6001,6 +6066,8 @@
               "name": "reject",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -6100,8 +6167,8 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2496,
-                              "type": "function (bool)",
+                              "referencedDeclaration": 2498,
+                              "type": "function (bool) pure",
                               "value": "require"
                             },
                             "id": 1630,
@@ -6296,7 +6363,7 @@
                                 null
                               ],
                               "referencedDeclaration": 1623,
-                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256) constant",
+                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256)",
                               "value": "Rejected"
                             },
                             "id": 1642,
@@ -6330,7 +6397,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1643,
@@ -6360,7 +6427,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -6407,7 +6474,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2480,
+                              "referencedDeclaration": 2497,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -6625,6 +6692,8 @@
               "name": "bankStateChange",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -6778,8 +6847,8 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2496,
-                              "type": "function (bool)",
+                              "referencedDeclaration": 2498,
+                              "type": "function (bool) pure",
                               "value": "require"
                             },
                             "id": 1678,
@@ -7329,7 +7398,7 @@
                                 null
                               ],
                               "referencedDeclaration": 1667,
-                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256) constant",
+                              "type": "function (address,address,enum GuaranteeConst.RequestState,string memory,uint256)",
                               "value": "BankStateChange"
                             },
                             "id": 1711,
@@ -7363,7 +7432,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1712,
@@ -7393,7 +7462,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -7440,7 +7509,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2480,
+                              "referencedDeclaration": 2497,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -7631,6 +7700,8 @@
               "name": "accept",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -7734,8 +7805,8 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2496,
-                              "type": "function (bool)",
+                              "referencedDeclaration": 2498,
+                              "type": "function (bool) pure",
                               "value": "require"
                             },
                             "id": 1741,
@@ -8137,7 +8208,7 @@
                                 null
                               ],
                               "referencedDeclaration": 1734,
-                              "type": "function (address,address,enum GuaranteeConst.RequestState,uint256) constant",
+                              "type": "function (address,address,enum GuaranteeConst.RequestState,uint256)",
                               "value": "Accepted"
                             },
                             "id": 1765,
@@ -8171,7 +8242,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1766,
@@ -8201,7 +8272,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2478,
+                                  "referencedDeclaration": 2495,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -8234,7 +8305,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2480,
+                              "referencedDeclaration": 2497,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -8553,6 +8624,8 @@
               "name": "signComplite",
               "payable": false,
               "scope": 1870,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
               "visibility": "public"
             },
             "children": [
@@ -8678,8 +8751,8 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2496,
-                              "type": "function (bool)",
+                              "referencedDeclaration": 2498,
+                              "type": "function (bool) pure",
                               "value": "require"
                             },
                             "id": 1806,
@@ -8758,7 +8831,7 @@
                                                 null
                                               ],
                                               "referencedDeclaration": 1291,
-                                              "type": "function () constant returns (enum GuaranteeConst.RequestState)",
+                                              "type": "function () view returns (enum GuaranteeConst.RequestState)",
                                               "value": "getRequestState"
                                             },
                                             "id": 1807,
@@ -8833,7 +8906,7 @@
                                             null
                                           ],
                                           "referencedDeclaration": 784,
-                                          "type": "function (bytes memory) constant returns (bool)",
+                                          "type": "function (bytes memory) view returns (bool)",
                                           "value": "_checkArray"
                                         },
                                         "id": 1812,
@@ -8897,7 +8970,7 @@
                                           "overloadedDeclarations": [
                                             null
                                           ],
-                                          "referencedDeclaration": 2478,
+                                          "referencedDeclaration": 2495,
                                           "type": "msg",
                                           "value": "msg"
                                         },
@@ -9085,7 +9158,7 @@
                                     null
                                   ],
                                   "referencedDeclaration": 1354,
-                                  "type": "function () constant returns (address)",
+                                  "type": "function () view returns (address)",
                                   "value": "getId"
                                 },
                                 "id": 1828,
@@ -9216,7 +9289,7 @@
                                   "lValueRequested": false,
                                   "member_name": "getId",
                                   "referencedDeclaration": 813,
-                                  "type": "function () constant external returns (address)"
+                                  "type": "function () view external returns (address)"
                                 },
                                 "children": [
                                   {
@@ -9337,7 +9410,7 @@
                                         null
                                       ],
                                       "referencedDeclaration": 1797,
-                                      "type": "function (address,address,enum GuaranteeConst.RequestState,uint256) constant",
+                                      "type": "function (address,address,enum GuaranteeConst.RequestState,uint256)",
                                       "value": "GuarantieChangeSigned"
                                     },
                                     "id": 1843,
@@ -9371,7 +9444,7 @@
                                             null
                                           ],
                                           "referencedDeclaration": 1354,
-                                          "type": "function () constant returns (address)",
+                                          "type": "function () view returns (address)",
                                           "value": "getId"
                                         },
                                         "id": 1844,
@@ -9412,7 +9485,7 @@
                                           "lValueRequested": false,
                                           "member_name": "getId",
                                           "referencedDeclaration": 813,
-                                          "type": "function () constant external returns (address)"
+                                          "type": "function () view external returns (address)"
                                         },
                                         "children": [
                                           {
@@ -9459,7 +9532,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 2480,
+                                      "referencedDeclaration": 2497,
                                       "type": "uint256",
                                       "value": "now"
                                     },
@@ -9525,7 +9598,7 @@
                                         null
                                       ],
                                       "referencedDeclaration": 1787,
-                                      "type": "function (address,address,enum GuaranteeConst.RequestState,uint256) constant",
+                                      "type": "function (address,address,enum GuaranteeConst.RequestState,uint256)",
                                       "value": "GuarantieSigned"
                                     },
                                     "id": 1854,
@@ -9559,7 +9632,7 @@
                                             null
                                           ],
                                           "referencedDeclaration": 1354,
-                                          "type": "function () constant returns (address)",
+                                          "type": "function () view returns (address)",
                                           "value": "getId"
                                         },
                                         "id": 1855,
@@ -9600,7 +9673,7 @@
                                           "lValueRequested": false,
                                           "member_name": "getId",
                                           "referencedDeclaration": 813,
-                                          "type": "function () constant external returns (address)"
+                                          "type": "function () view external returns (address)"
                                         },
                                         "children": [
                                           {
@@ -9647,7 +9720,7 @@
                                       "overloadedDeclarations": [
                                         null
                                       ],
-                                      "referencedDeclaration": 2480,
+                                      "referencedDeclaration": 2497,
                                       "type": "uint256",
                                       "value": "now"
                                     },
@@ -9719,7 +9792,11 @@
     "name": "SourceUnit",
     "src": "0:10628:7"
   },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
   "networks": {},
-  "schemaVersion": "1.0.0",
-  "updatedAt": "2017-11-21T05:24:38.760Z"
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-23T13:44:40.062Z"
 }

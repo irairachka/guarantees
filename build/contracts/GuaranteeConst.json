@@ -1,10 +1,10 @@
 {
   "contractName": "GuaranteeConst",
   "abi": [],
-  "bytecode": "0x60606040523415600e57600080fd5b5b603680601c6000396000f30060606040525b600080fd00a165627a7a7230582082a4199b7fa4e7e88ab9bb49335ce7a9933d1fe0ef496864e44c60486ee2e4930029",
-  "deployedBytecode": "0x60606040525b600080fd00a165627a7a7230582082a4199b7fa4e7e88ab9bb49335ce7a9933d1fe0ef496864e44c60486ee2e4930029",
-  "sourceMap": "26:2786:4:-;;;;;;;;;;;;;;;;;;",
-  "deployedSourceMap": "26:2786:4:-;;;;;;",
+  "bytecode": "0x60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820c032414b1a8c1194f9f36203e7eb6391f9dd2ced4ee80687befe7b370fdf76040029",
+  "deployedBytecode": "0x6060604052600080fd00a165627a7a72305820c032414b1a8c1194f9f36203e7eb6391f9dd2ced4ee80687befe7b370fdf76040029",
+  "sourceMap": "26:2786:4:-;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "26:2786:4:-;;;;;",
   "source": "pragma solidity ^0.4.13;\n\ncontract GuaranteeConst {\n    //guarantee request states\n    enum RequestState { created, waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest ,Expaired}\n\n\n    enum GuaranteeState { None, Valid, Expaired ,Terminated , Reissed}\n\n    //guarantee request states\n    enum IndexType { None, CPI, ConstructionMatirials }\n\n//    //    //log event for debug purwaitingtobankposes\n//    event loga(string message, address logb);\n//    //    //log event for debug purposes\n//    event log(string message, string logb);\n\n//    function getBeneficiary() constant returns (address);\n\n\n    function _checkString(string a)  constant internal returns (bool r){\n        return _checkArray(bytes(a));\n    }\n\n    function _checkArray(bytes a) constant internal returns (bool r){\n        if ( (a.length > 0)) return true;\n\n        return false;\n    }\n\n    function _checkBytes32(bytes32 a) constant internal returns (bool r){\n        if ( (a.length > 0)) return true;\n\n        return false;\n    }\n\n//    function bytes32ToString (bytes32 data) returns (string) {\n//        bytes memory bytesString = new bytes(32);\n//        for (uint j=0; j<32; j++) {\n//            byte char = byte(bytes32(uint(data) * 2 ** (8 * j)));\n//            if (char != 0) {\n//                bytesString[j] = char;\n//            }\n//        }\n//        return string(bytesString);\n//    }\n//\n//    function bytes32ToString(bytes32 x) constant returns (string) {\n//        bytes memory bytesString = new bytes(32);\n//        uint charCount = 0;\n//        for (uint j = 0; j < 32; j++) {\n//            byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));\n//            if (char != 0) {\n//                bytesString[charCount] = char;\n//                charCount++;\n//            }\n//        }\n//        bytes memory bytesStringTrimmed = new bytes(charCount);\n//        for (j = 0; j < charCount; j++) {\n//            bytesStringTrimmed[j] = bytesString[j];\n//        }\n//        return string(bytesStringTrimmed);\n//    }\n//\n//    function bytes32ArrayToString(bytes32[] data) returns (string) {\n//        bytes memory bytesString = new bytes(data.length * 32);\n//        uint urlLength;\n//        for (uint i=0; i<data.length; i++) {\n//            for (uint j=0; j<32; j++) {\n//                byte char = byte(bytes32(uint(data[i]) * 2 ** (8 * j)));\n//                if (char != 0) {\n//                    bytesString[urlLength] = char;\n//                    urlLength += 1;\n//                }\n//            }\n//        }\n//        bytes memory bytesStringTrimmed = new bytes(urlLength);\n//        for (i=0; i<urlLength; i++) {\n//            bytesStringTrimmed[i] = bytesString[i];\n//        }\n//        return string(bytesStringTrimmed);\n//    }\n\n}\n",
   "sourcePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
   "ast": {
@@ -244,6 +244,8 @@
               "name": "_checkString",
               "payable": false,
               "scope": 803,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "internal"
             },
             "children": [
@@ -347,7 +349,7 @@
                                 null
                               ],
                               "referencedDeclaration": 784,
-                              "type": "function (bytes memory) constant returns (bool)",
+                              "type": "function (bytes memory) view returns (bool)",
                               "value": "_checkArray"
                             },
                             "id": 759,
@@ -438,6 +440,8 @@
               "name": "_checkArray",
               "payable": false,
               "scope": 803,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "internal"
             },
             "children": [
@@ -678,6 +682,8 @@
               "name": "_checkBytes32",
               "payable": false,
               "scope": 803,
+              "stateMutability": "view",
+              "superFunction": null,
               "visibility": "internal"
             },
             "children": [
@@ -917,7 +923,11 @@
     "name": "SourceUnit",
     "src": "0:2813:4"
   },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
+  },
   "networks": {},
-  "schemaVersion": "1.0.0",
-  "updatedAt": "2017-11-21T05:24:43.155Z"
+  "schemaVersion": "1.0.1",
+  "updatedAt": "2018-01-23T13:45:14.057Z"
 }
