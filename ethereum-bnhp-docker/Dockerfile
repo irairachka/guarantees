@@ -23,12 +23,14 @@ RUN chmod +x /opt/*.sh && \
 
 #npm
 RUN apt update && \
-    apt install curl -y && \
+    apt-get install curl -y && \
     curl -sL https://deb.nodesource.com/setup_6.x | bash -  && \
     apt-get install  git -y && \
     apt install -y nodejs
 
-RUN ./opt/truffle-ins.sh
+#    apt-get install ethstats
+
+#RUN ./opt/truffle-ins.sh
 
 
 
@@ -77,6 +79,7 @@ EXPOSE 30776/udp
 
 # node
 EXPOSE 3000
+EXPOSE 8080
 
 
 #CMD ["/opt/startgeth.sh"]

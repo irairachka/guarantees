@@ -1,7 +1,7 @@
 #!/bin/bash
 set
 set -xv
-IMGVERSION="1.0"
+IMGVERSION="latest"
 #IMGVERSION="latest"
 #$(head -n 1 .IMGVERSION)
 IMGVERSION=${IMGVERSION:-"latest"}
@@ -10,7 +10,7 @@ IMGNAME="bnhp/ethereum-static"
 NODE_NAME=$1
 NODE_NAME=${NODE_NAME:-"node1"}
 CONTAINER_NAME="ethereum-$NODE_NAME"
-DATA_ROOT=${DATA_ROOT:-$(pwd)}
+#DATA_ROOT=${DATA_ROOT:-"$(pwd)/.ether-$NODE_NAME"}
 echo "Destroying old container $CONTAINER_NAME..."
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
@@ -32,7 +32,8 @@ USE_STATIC_NODE_ARG="-e USE_STATIC_NODE=false"
 #[[ ! -z $BOOTNODE_URL ]] && BOOTNODE_URL="enode://52499373e92bbc7edc8a2e0e06f9dc83d5cbd9cb31ee0dcdd555e04a06f9f2fb08e27f4d827a19f6f0c68cd534e1a41e92895fea26637b917fd6f4fb0b910e7c@35.158.33.72:30776"
 BOOTNODE_URL=${BOOTNODE_URL:-$(./getbootnodeurl.sh)}
 echo "Running new container $CONTAINER_NAME..."
-DATA_ROOT=${DATA_ROOT:-$(pwd)}
+DATA_ROOT=${DATA_ROOT:-"$(pwd)/.ether-$NODE_NAME"}
+DATA_HASH=${DATA_HASH:-"$(pwd)/.ethash"}
 #docker run -d --name $CONTAINER_NAME \
 #    -e "BOOTNODE_URL=$BOOTNODE_URL" \
 #    -e "USE_STATIC_NODE=true" \
@@ -42,6 +43,8 @@ DATA_ROOT=${DATA_ROOT:-$(pwd)}
 
 docker run -d --name $CONTAINER_NAME \
     -e "BOOTNODE_URL=$BOOTNODE_URL" \
+    -v $DATA_ROOT:/root/.ethereum \
+    -v $DATA_HASH:/root/.ethash \
     $USE_STATIC_NODE_ARG \
     $USE_MINING_NODE_ARG \
     $NET_ARG $GEN_ARG $RPC_PORTMAP $NPM_PORTMAP $UDP_PORTMAP \
