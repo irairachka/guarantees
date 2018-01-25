@@ -28,9 +28,9 @@ RUN apt update && \
     apt-get install  git -y && \
     apt install -y nodejs
 
-#    apt-get install ethstats
+    apt-get install ethstats
 
-#RUN ./opt/truffle-ins.sh
+RUN ./opt/truffle-ins.sh
 
 
 
