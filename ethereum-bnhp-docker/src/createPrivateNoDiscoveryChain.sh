@@ -3,10 +3,15 @@
 set
 set -vx
 DATA_DIR=${DATA_DIR:-"/root/.ethereum"}
-#FIRST_ACCOUNT="0x0000000000000000000000000000000000000001"
+BOOTNODE_URL_STR=" --nodiscover"
+
 echo "private CHAIN_TYPE '$CHAIN_TYPE' with DATA_DIR='$DATA_DIR', contents:"
 ls -la $DATA_DIR
-if [ ! -d "$DATA_DIR" ] || [ -d "ls -A $DATA_DIR" ]; then
+
+CHK_DIR=$(ls -A $DATA_DIR/geth.ipc)
+  echo "CHK_DIR '$CHK_DIR'"
+
+  if [ "$CHK_DIR" = "" ]; then
    echo "DATA_DIR '$DATA_DIR' non existant or empty. Initializing DATA_DIR..."
    echo  " '--datadir $DATA_DIR init /opt/genesis.json' "
    /usr/local/bin/geth --datadir "$DATA_DIR" init /opt/genesis.json
@@ -31,7 +36,7 @@ if [ ! -d "$DATA_DIR" ] || [ -d "ls -A $DATA_DIR" ]; then
 
 
 if  [ $MINING_NODE = "true" ]; then
-    BOOTNODE_URL_STR=" --mine --minerthreads=1 --etherbase=$FIRST_ACCOUNT"
+    BOOTNODE_URL_STR="$BOOTNODE_URL_STR  --mine --minerthreads=1 --etherbase=$FIRST_ACCOUNT"
 fi
 
 
@@ -55,8 +60,8 @@ if   [ ! $RUN_BOOTNODE = "true" ]; then
     echo '"'"$BOOTNODE_URL"'"'    >>  $DATA_DIR/static-nodes.json
     echo ' ] '         >>  $DATA_DIR/static-nodes.json
     tail $DATA_DIR/static-nodes.json
-    BOOTNODE_URL_STR="$BOOTNODE_URL_STR --nodiscover"
 fi
+
 
 set +vx
 

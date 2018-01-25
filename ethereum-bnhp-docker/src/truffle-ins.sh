@@ -26,6 +26,7 @@ npm install
 cd /opt/guarantees/ExpressServer/
 npm install
 #sudo git pull origin newUI
+#forever stop -c "npm start --env=service" ./
 ##forever stop -c "npm start --env=service" ./
 ##forever start -c "npm start --env=service" ./
 
