@@ -14,5 +14,5 @@ module.exports = function(deployer) {
   // deployer.deploy(GuaranteeRequestExtender);
   // deployer.deploy(DigitalGuaranteeBNHP);
   // deployer.deploy(GuaranteeRequest);
-  deployer.deploy(Regulator ,{gas:6000000});
+  deployer.deploy(Regulator ,{gas: 5918507});
 };

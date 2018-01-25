@@ -10,7 +10,6 @@ IMGNAME="bnhp/ethereum-static"
 NODE_NAME=$1
 NODE_NAME=${NODE_NAME:-"node1"}
 CONTAINER_NAME="ethereum-$NODE_NAME"
-#DATA_ROOT=${DATA_ROOT:-"$(pwd)/.ether-$NODE_NAME"}
 echo "Destroying old container $CONTAINER_NAME..."
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
@@ -41,14 +40,14 @@ DATA_HASH=${DATA_HASH:-"$(pwd)/.ethash"}
 #    $IMGNAME:$IMGVERSION $RPC_ARG --identity=$NODE_NAME --mine --minerthreads=1 --verbosity=3 ${@:2}
 
 
-docker run -d --name $CONTAINER_NAME --net=ETH \
+docker run -d --name $CONTAINER_NAME \
     -e "BOOTNODE_URL=$BOOTNODE_URL" \
+    -e "PRIVATE_PORT=30776" \
     -v $DATA_ROOT:/root/.ethereum \
-    -v $DATA_HASH:/root/.ethash \
     $USE_STATIC_NODE_ARG \
     $USE_MINING_NODE_ARG \
     $NET_ARG $GEN_ARG $RPC_PORTMAP $NPM_PORTMAP $UDP_PORTMAP \
     $IMGNAME:$IMGVERSION $RPC_ARG --identity=$NODE_NAME  --verbosity=3 ${@:2}
 
 #    -v $DATA_ROOT/.ether-$NODE_NAME:/root \
-
+#-e "PRIVATE_PORT=$PRIVATE_PORT" \

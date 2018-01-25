@@ -1,0 +1,6 @@
+#!/bin/bash
+export BOOTNODE_URL="enode://bd329ae9c675f486bb30dd62a8768d592c9bdc4f9928f391165d436286c198cc03af828c6f4bfc4fe0107a9648ef3caed61eca4e50e6559244d9936a5614d524@52.59.221.203:30301"
+export MINING_NODE=true
+export RPC_PORT="8545"
+export NPM_PORT="3000"
+./runnode.sh $1
