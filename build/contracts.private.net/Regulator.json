@@ -5817,17 +5817,12 @@
     "version": "0.4.18+commit.9cf6e910.Emscripten.clang"
   },
   "networks": {
-    "17": {
-      "events": {},
-      "links": {},
-      "address": "0x29b67999bb07c447887d74b9613705b044ab3d61"
-    },
     "777": {
       "events": {},
       "links": {},
-      "address": "0xddefd14ac40f89417707c35dbf5b9634bb673849"
+      "address": "0xf9928cc99770f540a6630f8f17d432cb7139f24a"
     }
   },
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-01-25T13:20:33.501Z"
+  "updatedAt": "2018-01-23T13:45:14.077Z"
 }
