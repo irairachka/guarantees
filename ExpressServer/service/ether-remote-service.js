@@ -201,6 +201,45 @@ onReady () {
 
 
 
+    getAllRequests  (customerAddress=this.account) {
+
+        /** Gets all guarantee requests for customer */
+        return new Promise((resolve, reject)=> {
+            console.log("getAllUserRequestsEt in getAllRequests()",this.account);
+            // debugger;
+            this.getAllUserRequestsEt(customerAddress).then((requestsEt)=> {
+                console.log("getBeneficiaryEt " ,requestsEt);
+                let realRequests=[ ...requestsEt];
+                resolve(realRequests);
+            }).catch(function (error) {
+                console.error(error);
+                throw error;
+            })
+
+        });
+
+    };
+
+    getAllUserRequestsEt(useraccount) {
+        /** Gets all guarantee requests for customer */
+        // let customerGuarantie=[];
+        return Regulator.deployed()
+            .then( (instance)=> {
+                console.log('instance.getRequestAddressList.call({from: useraccount} from acc:',instance.address,useraccount);
+                return instance.getRequestAddressList.call({from: useraccount});
+            }).then( (guaranteeAddresses)=> {
+                console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
+                return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
+                    return new Promise(resolve =>
+                        this.getOneRequest(guaranteeAddress).then((returneddata) => resolve(returneddata)));
+                }));
+
+            }).catch(function (error) {
+                console.error(error);
+                throw error;
+            })
+    };
+
     getAllUserGuarantees(customerAddress=this.account) {
         /** Gets all guarantee requests for customer */
         let customerGuaranties=[];
@@ -540,7 +579,7 @@ onReady () {
             const proposal=this.web3.toUtf8( resultArr[5]);
             const full_name=this.web3.toUtf8( resultArr[4]);
             const ischangeRequest=(resultArr[12] === 'true' || resultArr[12] == true);
-            const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+            const changeRequestId=((resultArr[12] == true && resultArr[13] !== undefined )? resultArr[13] : '') ;
 
             this.getOneCustomerDataP(resultArr[2]).then((beneficiary)=> {
 
@@ -581,6 +620,225 @@ onReady () {
 
 
 
+
+    /************************/
+    /**  Get User Data   ****/
+    /************************/
+
+    getCustomerData (customerAddress=this.account) {
+
+        return new Promise((resolve, reject)=> {
+
+
+            this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
+                // this.realCustomers.add(loadCustomer)
+                // console.log(this);
+                resolve( loadCustomer);
+            })
+                .catch(function (error) {
+                    console.error(error);
+                    reject(error);
+                });
+        })
+    };
+
+
+
+
+
+
+
+    /** ****************** **/
+    /**  Get Bank Data     **/
+    /** ****************** **/
+
+    getBankData  (customerAddress=this.account)  {
+        // debugger;
+        return new Promise((resolve, reject)=> {
+
+            console.log('customerAddress and this.account is undefined', customerAddress, this.account);
+
+            this.getIssierEt(customerAddress).then((loadCustomer)=> {
+                // console.log(this);
+                resolve( loadCustomer);
+            }).catch(function(error)  {
+                console.error(error);
+                reject(error);
+            });
+
+        });
+    };
+
+
+    getAllIssuers  ()  {
+
+        /** Gets all guarantee requests for customer */
+        return new Promise((resolve, reject)=> {
+            console.log("getAllIssuers in getAllRequests()",this.account);
+            // debugger;
+            this.getAllIssuersEt().then((issuersEt)=> {
+                console.log("getBeneficiaryEt " ,issuersEt);
+                let realissuers=[ ...issuersEt];
+                resolve(realissuers);
+            }).catch(function (error) {
+                console.error(error);
+                throw error;
+            })
+
+        });
+
+
+    }
+
+
+    getAllIssuersEt(){
+        // function getAllUserRequests() {
+        /** Gets all guarantee requests for customer */
+        let  issuers=[];
+        return Regulator.deployed()
+            .then( (instance)=> {
+                return instance.getIssuerAddressesList.call({from: this.account});
+            }).then( (issuersAddresses)=> {
+                console.log("issuersAddresses[]:", issuersAddresses);
+                return Promise.all(issuersAddresses.map((issuersAddress) => {
+                    return new Promise(resolve =>
+                        this.getBankData(issuersAddresses).then((returneddata) => resolve(returneddata)));
+                }));
+
+
+            }).catch(function (error) {
+                reject(error);
+            })
+    };
+
+
+
+    getIssierEt (issierAddress)  {
+        /** Gets one guarantee requests by id */
+        /** parses the data and sends to UI */
+        return Regulator.deployed()
+            .then( (instance)=> {
+
+                return instance.getIssuer.call(issierAddress, {from: this.account});
+            }).then((result)=> {
+                console.log("issier:", result);
+                return this.populateIssuerData(issierAddress,result);
+            })
+            .catch((e)  =>{
+                console.log(e);
+            });
+    };
+
+    populateIssuerData(issierID,resultArr) {
+
+
+        var ask= {
+            bankID: issierID,
+            Name: resultArr[0],
+            Address: resultArr[1]
+        };
+
+        // console.log("request data:", ask);
+
+        return ask;
+    };
+
+
+    /** ************************* **/
+    /**  Get Beneficiary Data     **/
+    /** ************************* **/
+
+    getAllBeneficiaries  ()  {
+        return this.getAllBeneficiariesEt();
+    };
+
+    getAllBeneficiariesEt() {
+        // function getAllUserRequests() {
+        /** Gets all guarantee requests for customer */
+        // let customerGuaranties=[];
+        return Regulator.deployed()
+            .then( (instance)=> {
+                return instance.getBeneficiaryAddresses.call({from: this.account});
+            }).then( (beneficiaryAddresses)=> {
+                console.log("beneficiaryAddresses[]:", beneficiaryAddresses);
+                return Promise.all(beneficiaryAddresses.map((beneficiaryAddress) => {
+                    return new Promise(resolve =>
+                        this.getOneBeneficiaryDataP(beneficiaryAddresses).then((returneddata) => resolve(returneddata)));
+                }));
+
+
+            }).catch(function (error) {
+                throw error;
+            })
+    };
+
+    // getAllBeneficiaryGuaranties  ()  {
+    //     return this.getAllGuaranties();
+    // };
+
+
+    getBeneficiaryData  (BeneficiaryAddress=this.account) {
+        return this.getOneBeneficiaryDataP(BeneficiaryAddress);
+
+    };
+
+
+    getOneBeneficiaryDataP  (beneficiaryID )  {
+        return new Promise((resolve, reject)=> {
+            // for (var i in this.realBeneficiaries) {
+            //     if (this.realBeneficiaries[i].beneficiaryID == beneficiaryID) {
+            //         resolve(this.realBeneficiaries[i]);
+            //     }
+            // }
+
+            this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
+                console.log("getOneBeneficiaryDataP 3" ,loadBeneficiaries);
+                // this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
+                resolve(loadBeneficiaries);
+            }).catch((error)=> {
+
+                reject(error);
+            });
+
+        });
+    };
+
+
+    // getBeneficiaryEt (beneficiaryAddress)  {
+    //     /** Gets one guarantee requests by id */
+    //     /** parses the data and sends to UI */
+    //     return Regulator.deployed()
+    //         .then( (instance)=> {
+    //             console.log("getBeneficiaryEt " ,beneficiaryAddress);
+    //             return instance.getBeneficiary.call(beneficiaryAddress);
+    //         }).then((result)=> {
+    //             console.log("getBeneficiary:", result);
+    //             return this.populateBeneficiaryData(beneficiaryAddress,result);
+    //         })
+    //         .catch(function(e)  {
+    //             console.log(e);
+    //         });
+    // };
+
+
+    // populateBeneficiaryData (benefisiaryID,resultArr)  {
+    //
+    //     if (Array.isArray(benefisiaryID)) benefisiaryID=benefisiaryID[0];
+    //     var ask= {
+    //         beneficiaryID: benefisiaryID,
+    //         Name: resultArr[0] ,
+    //         Address: resultArr[1]
+    //     };
+    //     // console.log("request data:", ask);
+    //
+    //     return ask;
+    // };
+
+
+
+
+
+
 }
 
 
@@ -594,6 +852,14 @@ module.exports = {
         if (typeof(customerAddress) === "undefined")
             customerAddress=account;
         return realService.getAllGuaranties(customerAddress);
+
+    },
+
+    getRequests: (request) => {
+        let customerAddress = request.query.customerAddress;
+        if (typeof(customerAddress) === "undefined")
+            customerAddress = account;
+        return realService.getAllRequests(customerAddress);
 
     },
 
@@ -617,8 +883,40 @@ module.exports = {
 
     },
 
+    getAllIssuers: (request) => {
+        return realService.getAllIssuers();
+    },
 
-getCheck: (request) => {
+
+    getCustomer: (request) => {
+        let customerAddress = request.query.customerAddress;
+        if (typeof(customerAddress) === "undefined")
+            customerAddress = account;
+        return realService.getCustomerData(customerAddress);
+    },
+
+    getAllBeneficiaries: (request) => {
+        return realService.getAllBeneficiaries();
+    },
+
+
+    getBankData: (request) => {
+        let customerAddress = request.query.customerAddress;
+        if (typeof(customerAddress) === "undefined")
+            customerAddress = account;
+        return realService.getBankData(customerAddress);
+    },
+
+    getBeneficiaryData: (request) => {
+        let BeneficiaryAddress = request.query.beneficiaryAddress;
+        if (typeof(BeneficiaryAddress) === "undefined")
+            BeneficiaryAddress = account;
+        return realService.getBeneficiaryData(BeneficiaryAddress);
+    },
+
+
+
+    getCheck: (request) => {
         return new Promise(resolve => {
 
             let customerAddress= request.query.customerAddress;

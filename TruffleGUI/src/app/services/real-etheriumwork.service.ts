@@ -583,12 +583,13 @@ export class RealService extends MockService {
         );
       }).then((newItem)=> {
 
-          addressOfIns = instance.address;
+          console.log("addRequestEt call",this.account, addressOfIns);
           return this.addRequestEt(this.account, addressOfIns);
       }).then((result) => {
           // requestAddr=result;
-          // console.log("addRequestEt result", instance);
-          
+           console.log("addRequestEt result", result);
+
+
           return this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '');
       }).then((result) => {
 
@@ -801,11 +802,12 @@ export class RealService extends MockService {
   {
     // var StartDateEt=Math.floor((StartDate/1000));
     // var EndDateEt=Math.floor((EndDate/1000));
-    // if (purpose === 'undefined' || purpose==null)
-    //   purpose=' ';
+    if (purpose === 'undefined' || purpose==null)
+      purpose='';
     var purposeEt=this.web3.fromUtf8(purpose);
     var fullnameEt=this.web3.fromUtf8(fullname);
     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
+    console.log('createRequestEt',bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt);
     return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
   };
 
@@ -831,8 +833,11 @@ export class RealService extends MockService {
   addRequestEt=( userAccount , reqaddress) =>
   {
     return Regulator.deployed().then(function(instance) {
+      console.log('instance.addGuaranteeRequest(reqaddress,{from: userAccount})',instance.address,reqaddress,userAccount)
+
       return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
     }).catch(function(error) {
+      console.error('error',error)
       throw error;
     });
   };
@@ -1206,11 +1211,12 @@ export class RealService extends MockService {
 
     return Regulator.deployed()
       .then( (instance)=> {
-        console.log("guaranteeSignCompliteEt",requestId,guaranteeIPFSHash);
+        console.log("guaranteeSignCompliteEt + this.account",requestId,guaranteeIPFSHash,this.account);
         return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: this.account});
       }).then( (tx)=> {
         console.log('guaranteeSignCompliteEt tx',tx);
         var guaranteeRequest = GuaranteeRequest.at(requestId);
+        console.log('guaranteeSignCompliteEt guaranteeRequest',guaranteeRequest);
         return guaranteeRequest.getGuaranteeAddress.call();
 
 
@@ -1345,7 +1351,7 @@ export class RealService extends MockService {
       const proposal=this.web3.toUtf8( resultArr[5]);
       const full_name=this.web3.toUtf8( resultArr[4]);
       const ischangeRequest=(resultArr[12] === 'true' || resultArr[12] == true);
-      const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+      const changeRequestId=((resultArr[12] == true && resultArr[13] !== undefined )? resultArr[13] : '') ;
 
       this.getOneCustomerDataP(resultArr[2]).then((beneficiary)=> {
 
@@ -1391,9 +1397,10 @@ export class RealService extends MockService {
   getAllUserRequestsEt=(useraccount) =>{
     // function getAllUserRequests() {
     /** Gets all guarantee requests for customer */
-    let customerGuaranties=[];
+    // let customerGuarantie=[];
     return Regulator.deployed()
       .then( (instance)=> {
+        console.log('instance.getRequestAddressList.call({from: useraccount} from acc:',useraccount)
         return instance.getRequestAddressList.call({from: useraccount});
       }).then( (guaranteeAddresses)=> {
         console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
@@ -1404,6 +1411,7 @@ export class RealService extends MockService {
 
 
       }).catch(function (error) {
+        console.error(error);
         throw error;
       })
   };
