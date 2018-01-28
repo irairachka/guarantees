@@ -19,13 +19,14 @@ git clone https://github.com/shdmitry2000/guarantees.git /opt/guarantees
 npm install forever forever-monitor -g
 cd /opt/guarantees
 npm install
-truffle compile
-cd /opt/guarantees/TruffleGUI/
-npm install
-npm run-script build --environment=service
+#truffle compile
+#cd /opt/guarantees/TruffleGUI/
+#npm install
+#npm run-script build --environment=service
 cd /opt/guarantees/ExpressServer/
 npm install
 #sudo git pull origin newUI
+#forever stop -c "npm start --env=service" ./
 ##forever stop -c "npm start --env=service" ./
 ##forever start -c "npm start --env=service" ./
 

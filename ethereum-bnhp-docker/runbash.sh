@@ -1,5 +1,6 @@
 #!/bin/bash
-IMGVERSION="1.0"
+set -xv
+IMGVERSION="latest"
 #$(head -n 1 .IMGVERSION)
 IMGVERSION=${IMGVERSION:-"latest"}
 IMGNAME="bnhp/ethereum-static"

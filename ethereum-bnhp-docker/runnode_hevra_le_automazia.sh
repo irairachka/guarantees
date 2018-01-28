@@ -1,0 +1,9 @@
+#!/bin/bash
+export BOOTNODE_URL="enode://619f9bbb4245502c8877d239e7bb75bc6da11cd9367da67a54b61712baffb992c5a308ab64203c4fb415813760c407950edf1bf0f81dd8e1742b479d9d882e3f@172.31.200.6:30776"
+export MINING_NODE=true
+export RPC_PORT="8545"
+export NPM_PORT="3000"
+export USE_STATIC_NODE=true
+export PRIVATE_PORT=30776
+export NODE_NAME=ladpc
+./runnodestatic.sh $NODE_NAME
