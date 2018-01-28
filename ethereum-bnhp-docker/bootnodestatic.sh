@@ -37,4 +37,4 @@ docker run -d --name $NODE_NAME \
     $RPC_PORTMAP $NPM_PORTMAP $UDP_PORTMAP \
     $NET_ARG \
     $GEN_ARG \
-    $IMGNAME:$IMGVERSION $RPC_ARG --verbosity=3
+    $IMGNAME:$IMGVERSION $RPC_ARG --verbosity=2
