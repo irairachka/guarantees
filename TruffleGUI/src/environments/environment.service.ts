@@ -13,7 +13,8 @@ export const environment = {
   //server:'35.158.139.208',
   // apiserver:'',
   server:'localhost',
-  apiserver:'http://localhost:3000',
+  // apiserver:'http://localhost:3000',
+  apiserver:'',
   service: {
     provide: EtheriumService,
     //useClass: RemoteService

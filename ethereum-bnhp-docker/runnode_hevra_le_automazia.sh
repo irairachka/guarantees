@@ -5,5 +5,5 @@ export RPC_PORT="8545"
 export NPM_PORT="3000"
 export USE_STATIC_NODE=true
 export PRIVATE_PORT=30776
-export NODE_NAME=adpc
+export NODE_NAME=ladpc
 ./runnodestatic.sh $NODE_NAME

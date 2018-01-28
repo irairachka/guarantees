@@ -47,7 +47,7 @@ docker run -d --name $CONTAINER_NAME \
     $USE_STATIC_NODE_ARG \
     $USE_MINING_NODE_ARG \
     $NET_ARG $GEN_ARG $RPC_PORTMAP $NPM_PORTMAP $UDP_PORTMAP \
-    $IMGNAME:$IMGVERSION $RPC_ARG --identity=$NODE_NAME  --verbosity=3 ${@:2}
+    $IMGNAME:$IMGVERSION $RPC_ARG --identity=$NODE_NAME  --verbosity=1 ${@:2}
 
 #    -v $DATA_ROOT/.ether-$NODE_NAME:/root \
 #-e "PRIVATE_PORT=$PRIVATE_PORT" \
