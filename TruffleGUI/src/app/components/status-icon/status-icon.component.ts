@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output, } from '@angular/core';
 import {RequestState, GuaranteeState} from "../../interfaces/enum";
 
-
 @Component({
   selector: 'status-icon',
   templateUrl: './status-icon.component.html',

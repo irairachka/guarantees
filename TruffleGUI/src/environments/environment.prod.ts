@@ -9,5 +9,4 @@ export const environment = {
     provide: EtheriumService,
     useClass: RealService
   }
-
 };

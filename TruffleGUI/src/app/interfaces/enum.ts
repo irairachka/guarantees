@@ -12,5 +12,6 @@ export enum RequestState {
   rejected,
   terminationRequest }
 
+
 export enum GuaranteeState {  None,  Valid, Expired ,Terminated , Reissued}
 

@@ -108,8 +108,7 @@ export class MockService {
   /** ****************** **/
   /**  Get Bank Data     **/
   /** ****************** **/
-
-
+  
 
   getBankData = (requestAddress?) => {
     return new Promise((resolve) => {

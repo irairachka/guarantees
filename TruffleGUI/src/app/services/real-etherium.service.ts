@@ -23,7 +23,6 @@ let DigitalGuaranteeBNHP= contract(DigitalGuaranteeBNHP_artifact);
 let GuaranteeExtender = contract(GuaranteeExtender_artifact);
 let GuaranteeRequestExtender = contract(GuaranteeRequestExtender_artifact);
 
-
 @Injectable()
 export class EtheriumService extends MockService {
   

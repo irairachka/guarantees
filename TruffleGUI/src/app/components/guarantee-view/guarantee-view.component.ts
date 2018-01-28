@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, OnInit, Output, Injectable, Inject} from
 import {GRequest, Guarantee} from "../../interfaces/request";
 import {EtheriumService} from "../../services/real-etherium.service";
 
-
 @Component({
   selector: 'app-guarantee-view',
   templateUrl: './guarantee-view.component.html',

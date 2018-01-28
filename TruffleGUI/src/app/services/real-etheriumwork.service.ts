@@ -588,8 +588,7 @@ export class RealService extends MockService {
       }).then((result) => {
           // requestAddr=result;
           // console.log("addRequestEt result", instance);
-
-
+          
           return this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '');
       }).then((result) => {
 

@@ -3,18 +3,21 @@
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
-import {MockService} from "../app/services/mock-etherium.service";
 import {EtheriumService} from "../app/services/real-etherium.service";
+import {MockService} from "../app/services/mock-etherium.service";
 import {RemoteService} from "../app/services/remote-etherium.service";
+import {RealService} from "../app/services/real-etheriumwork.service";
 
 export const environment = {
   production: false,
-  server:'35.158.139.208',
+  //server:'35.158.139.208',
   // apiserver:'',
-  // server:'localhost',
+  server:'localhost',
   apiserver:'',
   service: {
     provide: EtheriumService,
-    useClass: RemoteService
+    //useClass: RemoteService
+    //useClass: MockService
+    useClass: RealService
   }
 };
