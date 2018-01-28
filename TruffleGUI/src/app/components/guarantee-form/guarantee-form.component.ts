@@ -66,7 +66,6 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-
   }
 
   testDisplayAction() {

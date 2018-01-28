@@ -18,6 +18,7 @@ export interface GRequest {
   changeRequest:string;
 }
 
+
 export interface ExpandedRequest {
   shortrequest: GRequest;
   log: RequestFlowLog[] ;

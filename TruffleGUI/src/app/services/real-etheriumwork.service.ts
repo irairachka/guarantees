@@ -38,7 +38,7 @@ export class RealService extends MockService {
   realBeneficiaries=[];
   realIssuers=[];
 
-  accounts:any ;
+  accounts:any;
   account:any;
   // ready:boolean=false;
 
@@ -90,18 +90,12 @@ export class RealService extends MockService {
       this.accounts = accs;
       this.account = this.accounts[0];
       // this.ready=true;
-      console.log('this.account',this.account)
       console.log('this.accounts',this.accounts)
       /** Part of original truffle **/
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       // this._ngZone.run(() => {
-        this.getCustomerData(this.account);
-        this.getBeneficiaryData(this.account);
-        this.getBankData(this.account);
-        this.getAllRequests();
-        this.getAllGuaranties();
-
+      //   this.getAllUserRequests();
       // });
     });
   };
@@ -139,10 +133,7 @@ export class RealService extends MockService {
      // {
       /** Gets all guarantee requests for customer */
       return new Promise((resolve, reject)=> {
-        console.log("getAllUserRequestsEt in getAllRequests()",this.account);
-        // debugger;
         this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
-          console.log("getAllRequests " ,requestsEt);
           this.realRequests=[ ...requestsEt];
           super.setMockRequests(this.realRequests);
           resolve(this.realRequests);
@@ -491,16 +482,13 @@ export class RealService extends MockService {
 
   getOneBeneficiaryDataP = (beneficiaryID):any => {
     return new Promise((resolve, reject)=> {
-      console.log("getOneBeneficiaryDataP 1");
       for (var i in this.realBeneficiaries) {
         if (this.realBeneficiaries[i].beneficiaryID == beneficiaryID) {
           resolve(this.realBeneficiaries[i]);
         }
       }
-      console.log("getOneBeneficiaryDataP 2");
 
       this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
-        console.log("getOneBeneficiaryDataP 3" ,loadBeneficiaries);
         this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
         resolve(loadBeneficiaries);
       }).catch((error)=> {
@@ -522,10 +510,10 @@ export class RealService extends MockService {
     /** parses the data and sends to UI */
     return Regulator.deployed()
       .then( (instance)=> {
-        console.log("getBeneficiaryEt " ,beneficiaryAddress);
+
         return instance.getBeneficiary.call(beneficiaryAddress);
       }).then((result)=> {
-        console.log("getBeneficiary:", result);
+        console.log("getcustomer:", result);
         return this.populateBeneficiaryData(beneficiaryAddress,result);
       })
       .catch(function(e)  {
@@ -536,7 +524,7 @@ export class RealService extends MockService {
 
   populateBeneficiaryData=(benefisiaryID,resultArr) => {
 
-    if (Array.isArray(benefisiaryID)) benefisiaryID=benefisiaryID[0];
+
     var ask= {
       beneficiaryID: benefisiaryID,
       Name: resultArr[0] ,
@@ -570,17 +558,14 @@ export class RealService extends MockService {
       console.log("createRequest ",userId, bankId, benefId, "full name", purpose,
         amount, thestartDate, theendDate, indexType, indexDate);
 
-      //debugger;
+      // debugger;
       return this.createRequestEt(userId, bankId, benefId, "full name", purpose,
         amount, thestartDate, theendDate, indexType, indexDate, 'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2')
         .then((theinstance) => {
-          addressOfIns = theinstance.address;
-          console.log("createRequest result",addressOfIns);
-
           instance=theinstance;
 
         return this.populateRequestDataP(
-          [addressOfIns,
+          [instance.address,
             userId,
             bankId,
             benefId,
@@ -597,7 +582,7 @@ export class RealService extends MockService {
           ]
         );
       }).then((newItem)=> {
-          
+
           console.log("addRequestEt call",this.account, addressOfIns);
           return this.addRequestEt(this.account, addressOfIns);
       }).then((result) => {
@@ -811,6 +796,7 @@ export class RealService extends MockService {
 
 
 
+
   createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
                      amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
   {
@@ -824,19 +810,6 @@ export class RealService extends MockService {
     console.log('createRequestEt',bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt);
     return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
   };
-
-  // createRequestEt =( userAccount , bankAccount, benefAccount ,fullname, purpose,
-  //                    amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) =>
-  // {
-  //   // var StartDateEt=Math.floor((StartDate/1000));
-  //   // var EndDateEt=Math.floor((EndDate/1000));
-  //   // if (purpose === 'undefined' || purpose==null)
-  //   //   purpose=' ';
-  //   var purposeEt=this.web3.fromUtf8(purpose);
-  //   var fullnameEt=this.web3.fromUtf8(fullname);
-  //   var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
-  //   return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
-  // };
 
   submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
     console.log("submitRequest:",userAccount,guaranteeRequestInstance.address);
@@ -1233,7 +1206,7 @@ export class RealService extends MockService {
     // אישור של
     // if  (hashcode) {
     var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
-    const hashcodeBug="0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001";
+    const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
 
 
     return Regulator.deployed()
@@ -1435,6 +1408,7 @@ export class RealService extends MockService {
           return new Promise(resolve =>
             this.getOneRequest(guaranteeAddress).then((returneddata) => resolve(returneddata)));
         }));
+
 
       }).catch(function (error) {
         console.error(error);

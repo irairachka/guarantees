@@ -11,8 +11,8 @@ router.get('/', function(req, res, next) {
 
 router.get('/api/getAllGuarantees', function(req, res, next) {
     service.getAllUserGuarantees(req).then(response => {
-        res.send(response);
-    }).catch(error => {
+      res.send(response);
+  }).catch(error => {
         console.log('error', error);
         res.status(500).send(error);
 
@@ -91,6 +91,7 @@ router.get('/api/getBankData', function(req, res, next) {
     });
 });
 
+
 router.get('/api/getRequestStatus', function(req, res, next) {
     service.getRequestStatus(req).then(response => {
         res.send(response);
@@ -141,10 +142,6 @@ router.get('/api/getGuarantyHistory', function(req, res, next) {
 
     });
 });
-
-
-
-
 
 module.exports = router;
 

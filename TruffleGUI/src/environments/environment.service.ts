@@ -12,8 +12,8 @@ export const environment = {
   production: false,
   //server:'35.158.139.208',
   // apiserver:'',
-  server:'localhost',
   // apiserver:'http://localhost:3000',
+  server:'localhost',
   apiserver:'',
   service: {
     provide: EtheriumService,

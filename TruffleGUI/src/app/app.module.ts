@@ -75,5 +75,4 @@ import { AccordionWrapperComponent } from './components/accordion-wrapper/accord
   bootstrap: [AppComponent]
 })
 
-
 export class AppModule { }

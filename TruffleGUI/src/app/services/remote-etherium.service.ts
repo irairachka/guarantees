@@ -20,14 +20,12 @@ export class RemoteService extends RealService {
   // private  server: string =environment.server;
   // private api: string =  '/api';
   // private api: string =  'http://localhost:3000/api';
-
-
+  
   constructor(public msgService:MessageService, private http: Http) {
     super(msgService);
   }
-
   /************************/
-  /**  replaced   ****/
+  /**  Get User Data   ****/
   /************************/
 
 
@@ -65,8 +63,7 @@ export class RemoteService extends RealService {
     // Parameters obj-
     let params: URLSearchParams = new URLSearchParams();
     params.set('customerAddress', customerAddress);
-
-
+    
     return this.http.get(`${this.api}/getAllGuarantees` ,{
       search: params
     }).map(res => {
@@ -98,6 +95,7 @@ export class RemoteService extends RealService {
 
 
   terminateGuatanty = (guaranteeId, requestId, comment , hashcode,customerAddress=this.account):any => {
+
     console.log('terminateGuatanty send to server',guaranteeId, requestId, comment , hashcode,customerAddress);
     return this.http.post(`${this.api}/terminateGuarantees`, {
         guaranteeId,

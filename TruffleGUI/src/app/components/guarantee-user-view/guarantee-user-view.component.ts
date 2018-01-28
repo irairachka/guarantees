@@ -60,8 +60,7 @@ export class GuaranteeUserViewComponent implements OnInit{
       this.requestHistory = res;
     });
   }
-
-
+  
   getGuaranteeHistory(guar: Guarantee) {
     this.truffleSRV.getGuarantyHistory(guar.GuaranteeID).then((res: any[]) => {
       this.guaranteeHistory = res;

@@ -31,8 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService)
   {}
-
-
+  
   ngOnInit() {
 
     this.watcher();

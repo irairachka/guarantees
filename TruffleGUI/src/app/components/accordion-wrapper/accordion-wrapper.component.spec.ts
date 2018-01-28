@@ -10,7 +10,7 @@ describe('AccordionWrapperComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ AccordionWrapperComponent ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
