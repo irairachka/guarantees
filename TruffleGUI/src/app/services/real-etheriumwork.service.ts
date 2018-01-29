@@ -90,12 +90,18 @@ export class RealService extends MockService {
       this.accounts = accs;
       this.account = this.accounts[0];
       // this.ready=true;
+      console.log('this.account',this.account)
       console.log('this.accounts',this.accounts)
       /** Part of original truffle **/
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       // this._ngZone.run(() => {
-      //   this.getAllUserRequests();
+        this.getCustomerData(this.account);
+        this.getBeneficiaryData(this.account);
+        this.getBankData(this.account);
+        this.getAllRequests();
+        this.getAllGuaranties();
+
       // });
     });
   };
@@ -133,7 +139,10 @@ export class RealService extends MockService {
      // {
       /** Gets all guarantee requests for customer */
       return new Promise((resolve, reject)=> {
+        console.log("getAllUserRequestsEt in getAllRequests()",this.account);
+        // debugger;
         this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
+          console.log("getAllRequests " ,requestsEt);
           this.realRequests=[ ...requestsEt];
           super.setMockRequests(this.realRequests);
           resolve(this.realRequests);
@@ -524,7 +533,7 @@ export class RealService extends MockService {
 
   populateBeneficiaryData=(benefisiaryID,resultArr) => {
 
-
+    if (Array.isArray(benefisiaryID)) benefisiaryID=benefisiaryID[0];
     var ask= {
       beneficiaryID: benefisiaryID,
       Name: resultArr[0] ,
@@ -551,7 +560,7 @@ export class RealService extends MockService {
 
 
       // let  requestAddr;
-      let instance ;
+      // let instance ;
       let addressOfIns;
       const thestartDate =  this.transformDateJSToSol(StartDate);
       const theendDate = this.transformDateJSToSol(EndDate) ;
@@ -562,10 +571,10 @@ export class RealService extends MockService {
       return this.createRequestEt(userId, bankId, benefId, "full name", purpose,
         amount, thestartDate, theendDate, indexType, indexDate, 'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2')
         .then((theinstance) => {
-          instance=theinstance;
-
-        return this.populateRequestDataP(
-          [instance.address,
+          // instance=theinstance;
+          addressOfIns=theinstance.address;
+          return this.populateRequestDataP(
+            [addressOfIns,
             userId,
             bankId,
             benefId,
@@ -587,8 +596,7 @@ export class RealService extends MockService {
           return this.addRequestEt(this.account, addressOfIns);
       }).then((result) => {
           // requestAddr=result;
-           console.log("addRequestEt result", result);
-
+          // console.log("addRequestEt result", instance);
 
           return this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '');
       }).then((result) => {
@@ -807,7 +815,6 @@ export class RealService extends MockService {
     var purposeEt=this.web3.fromUtf8(purpose);
     var fullnameEt=this.web3.fromUtf8(fullname);
     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
-    console.log('createRequestEt',bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt);
     return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
   };
 
@@ -833,11 +840,8 @@ export class RealService extends MockService {
   addRequestEt=( userAccount , reqaddress) =>
   {
     return Regulator.deployed().then(function(instance) {
-      console.log('instance.addGuaranteeRequest(reqaddress,{from: userAccount})',instance.address,reqaddress,userAccount)
-
       return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
     }).catch(function(error) {
-      console.error('error',error)
       throw error;
     });
   };
@@ -949,7 +953,7 @@ export class RealService extends MockService {
     return new Promise((resolve, reject)=> {
 
        console.log("before guaranteeSignComplite res",requestId, comment , hashcode);
-      this.guaranteeSignCompliteEt(requestId, hashcode).then((result2) => {
+      this.guaranteeSignCompliteEt(requestId, hashcode,this.account).then((result2) => {
         console.log("after guaranteeSignComplite result2",result2);
 
         if (result2 =='0x0000000000000000000000000000000000000000')
@@ -1201,31 +1205,62 @@ export class RealService extends MockService {
 
 
 
+  guaranteeAddressFromRequestEt = (requestId) => {
 
-  guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
+    var guaranteeRequest = GuaranteeRequest.at(requestId);
+    return guaranteeRequest.getGuaranteeAddress.call();
+
+
+  };
+
+
+  guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash,account) => {
     // אישור של
     // if  (hashcode) {
     var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
-    const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
+    const hashcodeBug="0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001";
 
 
     return Regulator.deployed()
       .then( (instance)=> {
-        console.log("guaranteeSignCompliteEt + this.account",requestId,guaranteeIPFSHash,this.account);
-        return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: this.account});
+        console.log("guaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
+        // requestId='0x7e228709e104d55932bc61de79bac564724d0a89';
+        // console.log("new in testguaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
+        return instance.GuaranteeSignComplite(requestId, hashcodeBug, {gas: 5918507 ,from: account});
       }).then( (tx)=> {
-        console.log('guaranteeSignCompliteEt tx',tx);
-        var guaranteeRequest = GuaranteeRequest.at(requestId);
-        console.log('guaranteeSignCompliteEt guaranteeRequest',guaranteeRequest);
-        return guaranteeRequest.getGuaranteeAddress.call();
-
-
+        console.log("testguaranteeSignCompliteEt  resault", tx);
+        return this.guaranteeAddressFromRequestEt(requestId);
       }).catch(function (error) {
         console.error('error',error);
         throw error;
       })
 
   };
+
+
+  // guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
+  //   // אישור של
+  //   // if  (hashcode) {
+  //   var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
+  //   const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
+  //
+  //
+  //   return Regulator.deployed()
+  //     .then( (instance)=> {
+  //       console.log("guaranteeSignCompliteEt",requestId,guaranteeIPFSHash);
+  //       return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: this.account});
+  //     }).then( (tx)=> {
+  //       console.log('guaranteeSignCompliteEt tx',tx);
+  //       var guaranteeRequest = GuaranteeRequest.at(requestId);
+  //       return guaranteeRequest.getGuaranteeAddress.call();
+  //
+  //
+  //     }).catch(function (error) {
+  //       console.error('error',error);
+  //       throw error;
+  //     })
+  //
+  // };
 
 
   terminateGuaranteeEt = (userAccount,garantyId) => {

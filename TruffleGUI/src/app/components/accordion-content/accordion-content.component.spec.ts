@@ -22,4 +22,4 @@ describe('WizardComponent', () => {
   it('should be created', () => {
     expect(component).toBeTruthy();
   });
-}); 
+});

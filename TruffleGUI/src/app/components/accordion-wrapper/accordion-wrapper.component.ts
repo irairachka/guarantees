@@ -28,6 +28,7 @@ export class AccordionWrapperComponent implements OnInit {
     });
   }
 
+  
   updateRequestsender(data){
     this.updateRequest.emit(data);
   }

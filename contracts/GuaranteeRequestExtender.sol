@@ -1,4 +1,4 @@
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.18;
 
 import "./GuaranteeConst.sol";
 import "./DigitalGuaranteeBNHP.sol";
@@ -63,12 +63,12 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
         _;
     }
 
-    address  regulator;
-    address  guarantee;
+    address  public regulator;
+    address  public guaranteel;
 
     function getGuaranteeAddress() public returns (address)
     {
-        return guarantee;
+        return guaranteel;
     }
 
     function setRegulator() public
@@ -146,7 +146,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     {
         //        changeRequestGuaranteeAdr=guarantee;
         status=RequestState.changeRequested;
-        GuarantieChangeRequested(getId(),guarantee,_newamount,_newendDate,   status,now);
+        GuarantieChangeRequested(getId(),guaranteel,_newamount,_newendDate,   status,now);
 
     }
 
@@ -240,7 +240,7 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     function accept() onlyRegulator public returns (bool result)
     {
 
-        require((status==RequestState.waitingtobank || status==RequestState.handling )  && guarantee==address(0));
+        require((status==RequestState.waitingtobank || status==RequestState.handling )  && guaranteel==address(0));
 
         status=RequestState.accepted;
         Accepted(getId(),msg.sender,   status,now);
@@ -265,22 +265,23 @@ contract GuaranteeRequestExtender is Ownable,GuaranteeConst {
     event GuarantieSigned(address indexed requestId,address indexed  guarantieId,RequestState   curentstatus,uint timestamp);
     event GuarantieChangeSigned(address indexed requestId,address indexed  guarantieId,RequestState   curentstatus,uint timestamp);
 
-    function signComplite(bytes _guaranteeIPFSHash) onlyRegulator public returns (address)
+    function signComplite(bytes _guaranteeIPFSHash) public returns (address) //onlyRegulator public returns (address)
     {
         require( getRequestState()==RequestState.accepted && _checkArray(_guaranteeIPFSHash) && msg.sender == getRegulator());
-        GuaranteeExtender gr= new DigitalGuaranteeBNHP(getId(),getRegulator(),_guaranteeIPFSHash);
-        guarantee=gr.getId();
+        GuaranteeExtender gr= new DigitalGuaranteeBNHP(address(this),getRegulator(),_guaranteeIPFSHash);
+        guaranteel=address(gr);
+
         if (isChangeRequest())
         {
-            GuarantieChangeSigned(getId(),gr.getId(),   status,now);
-//            GuaranteeExtender(getChangeRequestGuarantee()).terminateGuarantee();
+            GuarantieChangeSigned(address(this) ,guaranteel,   status,now);
         }
         else
         {
-            GuarantieSigned(getId(),gr.getId(),   status,now);
+            GuarantieSigned(address(this) ,guaranteel,   status,now);
         }
 
-        return guarantee;
+        return guaranteel;
+
     }
 
 

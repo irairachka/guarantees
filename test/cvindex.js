@@ -268,15 +268,17 @@ contract('Regulator', function(accounts) {
             for (var i = 0; i < result.logs.length; i++) {
                 var log = result.logs[i];
 
-                if (log.event == "AAA") {
-                    // We found the event!
-                    console.log("GuarantieSigned:",log.args);
-
-                    // break;
-                    return getRequestStateEt(account,requestInstanceTmp);
-                }
+                // if (log.event == "AAA") {
+                //     // We found the event!
+                //     console.log("GuarantieSigned:",log.args);
+                //
+                //     // break;
+                //     return getRequestStateEt(account,requestInstanceTmp);
+                // }
 
             }
+
+            return getRequestStateEt(account,requestInstanceTmp);
 
 
         }).then(function(result) {
@@ -724,24 +726,36 @@ contract('Regulator', function(accounts) {
     //
     // };
 
+    
+
+
+    guaranteeAddressFromRequestEt = (requestId) => {
+        
+                var guaranteeRequest = GuaranteeRequest.at(requestId);
+                return guaranteeRequest.getGuaranteeAddress.call();
+        
+
+    };
+
 
     guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash,account) => {
         // אישור של
         // if  (hashcode) {
         var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
         const hashcodeBug="0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001";
-
-
+    
+    
         return Regulator.deployed()
             .then( (instance)=> {
-                console.log("guaranteeSignCompliteEt + this.account",requestId,guaranteeIPFSHash,account);
-                return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: account});
-
+                console.log("guaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
+                return instance.GuaranteeSignComplite(requestId, hashcodeBug, {from: account});
+            }).then( (tx)=> {
+                return guaranteeAddressFromRequestEt(requestId);
             }).catch(function (error) {
                 console.error('error',error);
                 throw error;
             })
-
+    
     };
 
 
@@ -1002,21 +1016,23 @@ contract('Regulator', function(accounts) {
 
 
             }).then(function(result3) {
-            console.log("getRequestState  result3 :",result3);
-            for (var i = 0; i < result3.logs.length; i++) {
-                var log = result3.logs[i];
+            // console.log("getRequestState  result3 :",result3);
+            // for (var i = 0; i < result3.logs.length; i++) {
+            //     var log = result3.logs[i];
+            //
+            //     if (log.event == "GuarantieSigned") {
+            //         // We found the event!
+            //         console.log("GuarantieSigned:",log.args);
+            //
+            //         // break;
+            //         return   getAllUserGuarantees();
+            //     }
+            //
+            // }
 
-                if (log.event == "GuarantieSigned") {
-                    // We found the event!
-                    console.log("GuarantieSigned:",log.args);
+            // assert.equal(0,1,"guaranteeSignCompliteEt error!");
 
-                    // break;
-                    return   getAllUserGuarantees();
-                }
-
-            }
-
-            return   getAllUserGuarantees();
+             return   getAllUserGuarantees();
 
             // console.log("getRequestState  result :",result);
             // return aaa(requestInstanceTmp.address,'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001');

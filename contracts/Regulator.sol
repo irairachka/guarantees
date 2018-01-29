@@ -1,4 +1,4 @@
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.18;
 
 import "./Ownable.sol";
 import "./GuaranteeConst.sol";
@@ -85,7 +85,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 
 
 
-    event AAA(uint length);
+//    event AAA(uint length);
 
     function addGuaranteeRequest(address  _guaranteeRequest)  public
     {
@@ -94,7 +94,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
         require(msg.sender == ge.getCustomer() && ge.isValid());
         ge.setRegulator();
         guaranteeRequests.push(_guaranteeRequest);
-        AAA(1);
+
 
     }
 
@@ -119,10 +119,11 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
     function GuaranteeSignComplite(address  _guaranteeRequest,bytes _guaranteeIPFSHash)  public  returns (address)
     {
         GuaranteeRequestExtender ge=GuaranteeRequestExtender(_guaranteeRequest);
-        require( ge.getRequestState()==RequestState.accepted && _checkArray(_guaranteeIPFSHash) && msg.sender == ge.getBank());
-
+//        require( ge.getRequestState()==RequestState.accepted &&  msg.sender == ge.getBank());
 
         address gra=ge.signComplite(_guaranteeIPFSHash);
+//        address gra=this;
+//        AAA(1);
         guarantees.push(gra);
 
         return gra;
