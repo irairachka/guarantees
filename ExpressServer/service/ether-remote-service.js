@@ -44,7 +44,7 @@ class RealService {
             this.web3 = new Web3(this.web3.currentProvider);
         } else {
             console.warn("No web3 detected. Falling back to http://localhost:8545. You should remove this fallback when you deploy live, as it's inherently insecure. Consider switching to Metamask for development. More info here: http://truffleframework.com/tutorials/truffle-and-metamask");
-            this.web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+            this.web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:8545"));
         }
     };
 
@@ -59,13 +59,15 @@ onReady () {
 
     this.web3.eth.getAccounts(function(err, accs)  {
         if (err != null) {
+            console.error("error getting accounts:",err);
             return;
         }
 
         if (accs.length === 0) {
-            alert(
-                'Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.'
-            );
+            console.error("error getting accounts:No accounts found");
+            // alert(
+            //     'Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.'
+            // );
             return;
         }
         
@@ -136,7 +138,7 @@ onReady () {
 
     populateBeneficiaryData (benefisiaryID,resultArr)  {
 
-
+        if (Array.isArray(benefisiaryID)) benefisiaryID=benefisiaryID[0];
         var ask= {
             beneficiaryID: benefisiaryID,
             Name: resultArr[0] ,
@@ -816,7 +818,7 @@ onReady () {
                 console.log("beneficiaryAddresses[]:", beneficiaryAddresses);
                 return Promise.all(beneficiaryAddresses.map((beneficiaryAddress) => {
                     return new Promise(resolve =>
-                        this.getOneBeneficiaryDataP(beneficiaryAddresses).then((returneddata) => resolve(returneddata)));
+                        this.getOneBeneficiaryDataP(beneficiaryAddress).then((returneddata) => resolve(returneddata)));
                 }));
 
 
@@ -1011,14 +1013,15 @@ module.exports = {
     },
 
     signComplite: (request) => {
-
         let requestId = request.body.requestId;
         let comment = request.body.comment;
+         if (typeof(comment) === "undefined")
+            comment="";
         let hashcode= request.body.hashcode;
         let customerAddress= request.body.customerAddress;
-        if (typeof(customerAddress) === "undefined")
+         if (typeof(customerAddress) === "undefined")
             customerAddress=account;
-        console.log('request', guaranteeId, requestId, comment, amount, date,customerAddress);
+        console.log('request',  requestId, comment, hashcode ,customerAddress);
         return realService.guaranteeSignComplite(requestId, comment , hashcode,customerAddress)
     },
 

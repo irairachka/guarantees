@@ -133,6 +133,7 @@ router.post('/api/updateGuarantees', function(req, res, next) {
 });
 
 router.post('/api/guaranteeSignComplite', function(req, res, next) {
+    console.log('guaranteeSignComplite begin ');
     service.signComplite(req).then(response => {
         res.send(response);
     }).catch(error => {

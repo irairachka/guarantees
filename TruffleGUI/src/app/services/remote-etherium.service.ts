@@ -9,6 +9,7 @@ import {RealService} from "./real-etheriumwork.service";
 import {environment} from "../../environments/environment";
 
 @Injectable()
+
 export class RemoteService extends RealService {
   web3:any;
 
@@ -197,6 +198,7 @@ export class RemoteService extends RealService {
 
 
   guaranteeSignComplite =  (requestId, comment , hashcode,customerAddress=this.account):any => {
+    console.log ("guaranteeSignComplite",requestId, comment , hashcode,customerAddress)
     return new Promise((resolve, reject) => {
       this.http.post(`${this.api}/guaranteeSignComplite`, {
         requestId,
@@ -322,6 +324,7 @@ export class RemoteService extends RealService {
     for (var i in this.realIssuers) {
       if (this.realIssuers[i].bankID == customerAddress) {
         return new Promise((resolve, reject)=> {
+          console.log(this.realIssuers[i]);
           resolve(this.realIssuers[i]);
         });
       }
@@ -336,7 +339,7 @@ export class RemoteService extends RealService {
       if(res) {
 
         this.realIssuers = [...this.realIssuers, res];
-        return this.realIssuers;
+        return res;
       }
       else
       {
@@ -386,7 +389,7 @@ export class RemoteService extends RealService {
       //todo check is it right
       if(res) {
         // this.realBeneficiaries = [... res];
-        this.realBeneficiaries.push(res);
+        this.realBeneficiaries= res;
         console.log("this.realBeneficiaries",this.realBeneficiaries);
         return this.realBeneficiaries;
       }

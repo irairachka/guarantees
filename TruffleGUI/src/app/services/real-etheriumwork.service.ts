@@ -35,7 +35,7 @@ export class RealService extends MockService {
   realRequests =[];
   realGuarantees =[];
   realCustomers =[];
-  realBeneficiaries=[];
+  realBeneficiaries:any=[];
   realIssuers=[];
 
   accounts:any;
@@ -96,12 +96,7 @@ export class RealService extends MockService {
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       // this._ngZone.run(() => {
-        this.getCustomerData(this.account);
-        this.getBeneficiaryData(this.account);
-        this.getBankData(this.account);
-        this.getAllRequests();
-        this.getAllGuaranties();
-
+      //   this.getAllUserRequests();
       // });
     });
   };
@@ -142,7 +137,6 @@ export class RealService extends MockService {
         console.log("getAllUserRequestsEt in getAllRequests()",this.account);
         // debugger;
         this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
-          console.log("getAllRequests " ,requestsEt);
           this.realRequests=[ ...requestsEt];
           super.setMockRequests(this.realRequests);
           resolve(this.realRequests);
@@ -460,7 +454,7 @@ export class RealService extends MockService {
         console.log("beneficiaryAddresses[]:", beneficiaryAddresses);
         return Promise.all(beneficiaryAddresses.map((beneficiaryAddress) => {
           return new Promise(resolve =>
-            this.getOneBeneficiaryDataP(beneficiaryAddresses).then((returneddata) => resolve(returneddata)));
+            this.getOneBeneficiaryDataP(beneficiaryAddress).then((returneddata) => resolve(returneddata)));
         }));
 
 
@@ -594,11 +588,10 @@ export class RealService extends MockService {
         );
       }).then((newItem)=> {
 
-          console.log("addRequestEt call",this.account, addressOfIns);
           return this.addRequestEt(this.account, addressOfIns);
       }).then((result) => {
           // requestAddr=result;
-          console.log("addRequestEt result", result);
+          // console.log("addRequestEt result", instance);
 
           return this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '');
       }).then((result) => {
@@ -1220,7 +1213,7 @@ export class RealService extends MockService {
     // אישור של
     // if  (hashcode) {
     var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
-    const hashcodeBug="0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001";
+    const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
 
 
     return Regulator.deployed()
@@ -1238,31 +1231,6 @@ export class RealService extends MockService {
       })
 
   };
-
-
-  // guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
-  //   // אישור של
-  //   // if  (hashcode) {
-  //   var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
-  //   const hashcodeBug='0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2';
-  //
-  //
-  //   return Regulator.deployed()
-  //     .then( (instance)=> {
-  //       console.log("guaranteeSignCompliteEt",requestId,guaranteeIPFSHash);
-  //       return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: this.account});
-  //     }).then( (tx)=> {
-  //       console.log('guaranteeSignCompliteEt tx',tx);
-  //       var guaranteeRequest = GuaranteeRequest.at(requestId);
-  //       return guaranteeRequest.getGuaranteeAddress.call();
-  //
-  //
-  //     }).catch(function (error) {
-  //       console.error('error',error);
-  //       throw error;
-  //     })
-  //
-  // };
 
 
   terminateGuaranteeEt = (userAccount,garantyId) => {
@@ -1437,7 +1405,6 @@ export class RealService extends MockService {
     // let customerGuarantie=[];
     return Regulator.deployed()
       .then( (instance)=> {
-        console.log('instance.getRequestAddressList.call({from: useraccount} from acc:',useraccount)
         return instance.getRequestAddressList.call({from: useraccount});
       }).then( (guaranteeAddresses)=> {
         console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
