@@ -133,6 +133,18 @@ router.post('/api/updateGuarantees', function(req, res, next) {
 });
 
 
+router.post('/api/guaranteeSignComplite', function(req, res, next) {
+    service.signComplite(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+
+
 router.get('/api/getGuarantyHistory', function(req, res, next) {
     service.getGuarantyHistory(req).then(response => {
         res.send(response);

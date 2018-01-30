@@ -573,6 +573,8 @@ export class RealService extends MockService {
         .then((theinstance) => {
           // instance=theinstance;
           addressOfIns=theinstance.address;
+          console.log("Request created with address",addressOfIns);
+
           return this.populateRequestDataP(
             [addressOfIns,
             userId,
@@ -596,7 +598,7 @@ export class RealService extends MockService {
           return this.addRequestEt(this.account, addressOfIns);
       }).then((result) => {
           // requestAddr=result;
-          // console.log("addRequestEt result", instance);
+          console.log("addRequestEt result", result);
 
           return this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '');
       }).then((result) => {

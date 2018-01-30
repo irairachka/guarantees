@@ -619,6 +619,58 @@ onReady () {
     };
 
 
+    guaranteeSignComplite  (requestId, comment , hashcode ,customerAddress=this.account) {
+        return new Promise((resolve, reject)=> {
+
+            console.log("before guaranteeSignComplite res",requestId, comment , hashcode);
+            this.guaranteeSignCompliteEt(requestId, hashcode,customerAddress).then((result2) => {
+                    console.log("after guaranteeSignComplite result2",result2);
+
+                    if (result2 =='0x0000000000000000000000000000000000000000')
+                    {
+                        reject('בקשה להוצאת האישור ערבות  נכשלה');
+                    }
+                    else {
+                        resolve(result2);
+                    }
+
+                }).catch((error)=> {
+                    reject(error);
+                });
+            });
+    };
+
+    guaranteeAddressFromRequestEt  (requestId,customerAddress) {
+
+        var guaranteeRequest = GuaranteeRequest.at(requestId);
+        return guaranteeRequest.getGuaranteeAddress.call({from:customerAddress});
+
+
+    };
+
+
+    guaranteeSignCompliteEt  (requestId,guaranteeIPFSHash,customerAddress)  {
+        // אישור של
+        // if  (hashcode) {
+        var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
+        const hashcodeBug="0xe04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f00001";
+
+
+        return Regulator.deployed()
+            .then( (instance)=> {
+                console.log("guaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, customerAddress);
+                // requestId='0x7e228709e104d55932bc61de79bac564724d0a89';
+                // console.log("new in testguaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
+                return instance.GuaranteeSignComplite(requestId, hashcodeBug, {gas: 5918507 ,from: customerAddress});
+            }).then( (tx)=> {
+                console.log("testguaranteeSignCompliteEt  resault", tx);
+                return this.guaranteeAddressFromRequestEt(requestId,customerAddress);
+            }).catch(function (error) {
+                console.error('error',error);
+                throw error;
+            })
+
+    };
 
 
     /************************/
@@ -956,6 +1008,21 @@ module.exports = {
         console.log('request', guaranteeId, requestId, comment, amount, date,customerAddress);
         return realService.guaranteeUpdate(guaranteeId, requestId, comment, amount, date,customerAddress)
     },
+
+    signComplite: (request) => {
+
+        let requestId = request.body.requestId;
+        let comment = request.body.comment;
+        let hashcode= request.body.hashcode;
+        let customerAddress= request.body.customerAddress;
+        if (typeof(customerAddress) === "undefined")
+            customerAddress=account;
+        console.log('request', guaranteeId, requestId, comment, amount, date,customerAddress);
+        return realService.guaranteeSignComplite(requestId, comment , hashcode,customerAddress)
+    },
+
+
+    
 
 
     getGuarantyHistory: (request) => {
