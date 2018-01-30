@@ -17,6 +17,8 @@ export class AccordionContentComponent implements OnChanges{
     this.updateRequest.emit(data);
   }
 
+
+
   ngOnChanges(){
      // console.log('-----' , this.todel_state ,this.userType);
     if(this.todel_state==1)
@@ -25,5 +27,6 @@ export class AccordionContentComponent implements OnChanges{
       this.statusGraph="../../../assets/images/progress2.png";
 
   }
+
 
 }
