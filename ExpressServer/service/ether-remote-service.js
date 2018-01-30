@@ -68,6 +68,7 @@ onReady () {
             );
             return;
         }
+        
         accounts = accs;
         account = accounts[0];
         console.log('this.accounts',accounts)
