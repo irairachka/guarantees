@@ -527,7 +527,7 @@ onReady () {
             .then( (instance) => {
                 Regulator_instance=instance;
                 console.log("change  guaranteeId", guaranteeId);
-                return ChangeGuaranteeRequest.new(guaranteeId, amount, EndDate,{gas:5900000,from: userAccount});
+                return ChangeGuaranteeRequest.new(guaranteeId, amount, EndDate,{gas:5700000,from: userAccount});
             })
             .then( (ChangeGuaranteeRequestinstance) => {
                 // console.log("change  guaranteeId ChangeGuaranteeRequestinstance", ChangeGuaranteeRequestinstance.address,ChangeGuaranteeRequestinstance)
@@ -662,9 +662,9 @@ onReady () {
         return Regulator.deployed()
             .then( (instance)=> {
                 console.log("guaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, customerAddress);
-                // requestId='0x7e228709e104d55932bc61de79bac564724d0a89';
+                // requestId='0x7e228709e104d5570000032bc61de79bac564724d0a89';
                 // console.log("new in testguaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
-                return instance.GuaranteeSignComplite(requestId, hashcodeBug, {gas: 5918507 ,from: customerAddress});
+                return instance.GuaranteeSignComplite(requestId, hashcodeBug, {gas: 5700000 ,from: customerAddress});
             }).then( (tx)=> {
                 console.log("testguaranteeSignCompliteEt  resault", tx);
                 return this.guaranteeAddressFromRequestEt(requestId,customerAddress);

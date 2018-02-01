@@ -96,7 +96,12 @@ export class RealService extends MockService {
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       // this._ngZone.run(() => {
-      //   this.getAllUserRequests();
+        this.getCustomerData(this.account);
+        this.getBeneficiaryData(this.account);
+        this.getBankData(this.account);
+        this.getAllRequests();
+        this.getAllGuaranties();
+
       // });
     });
   };
@@ -810,7 +815,7 @@ export class RealService extends MockService {
     var purposeEt=this.web3.fromUtf8(purpose);
     var fullnameEt=this.web3.fromUtf8(fullname);
     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
-    return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5900000,from: userAccount}));
+    return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5700000,from: userAccount}));
   };
 
   submitRequestEt =( userAccount ,guaranteeRequestInstance ,comments) => {
@@ -1221,7 +1226,7 @@ export class RealService extends MockService {
         console.log("guaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
         // requestId='0x7e228709e104d55932bc61de79bac564724d0a89';
         // console.log("new in testguaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
-        return instance.GuaranteeSignComplite(requestId, hashcodeBug, {gas: 5918507 ,from: account});
+        return instance.GuaranteeSignComplite(requestId, hashcodeBug, {gas: 5700000 ,from: account});
       }).then( (tx)=> {
         console.log("testguaranteeSignCompliteEt  resault", tx);
         return this.guaranteeAddressFromRequestEt(requestId);
@@ -1543,7 +1548,7 @@ export class RealService extends MockService {
       .then( (instance) => {
         Regulator_instance=instance;
         console.log("change  guaranteeId", guaranteeId)
-        return ChangeGuaranteeRequest.new(guaranteeId, amount, EndDate,{gas:5900000,from: userAccount});
+        return ChangeGuaranteeRequest.new(guaranteeId, amount, EndDate,{gas:5700000,from: userAccount});
       })
       .then( (ChangeGuaranteeRequestinstance) => {
         console.log("change  guaranteeId ChangeGuaranteeRequestinstance", ChangeGuaranteeRequestinstance.address,ChangeGuaranteeRequestinstance)
