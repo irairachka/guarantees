@@ -10,6 +10,6 @@ var Regulator = artifacts.require("./Regulator.sol");
 module.exports = function(deployer) {
 
   
-  deployer.deploy(Regulator ,{gas:5900000});
+  deployer.deploy(Regulator ,{gas:5700000});
 
 };
