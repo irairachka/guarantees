@@ -35,7 +35,7 @@ export class RealService extends MockService {
   realRequests =[];
   realGuarantees =[];
   realCustomers =[];
-  realBeneficiaries=[];
+  realBeneficiaries:any=[];
   realIssuers=[];
 
   accounts:any;
@@ -460,7 +460,7 @@ export class RealService extends MockService {
         console.log("beneficiaryAddresses[]:", beneficiaryAddresses);
         return Promise.all(beneficiaryAddresses.map((beneficiaryAddress) => {
           return new Promise(resolve =>
-            this.getOneBeneficiaryDataP(beneficiaryAddresses).then((returneddata) => resolve(returneddata)));
+            this.getOneBeneficiaryDataP(beneficiaryAddress).then((returneddata) => resolve(returneddata)));
         }));
 
 
@@ -573,6 +573,8 @@ export class RealService extends MockService {
         .then((theinstance) => {
           // instance=theinstance;
           addressOfIns=theinstance.address;
+          console.log("Request created with address",addressOfIns);
+
           return this.populateRequestDataP(
             [addressOfIns,
             userId,

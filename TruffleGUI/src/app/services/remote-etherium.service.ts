@@ -13,8 +13,8 @@ import {environment} from "../../environments/environment";
 export class RemoteService extends RealService {
   web3:any;
 
-  accounts:any;
-  account:any;
+  // accounts:any;
+  // account:any;
 
   private api:string =environment.apiserver+"/api";
   // private  server: string =environment.server;
@@ -63,7 +63,7 @@ export class RemoteService extends RealService {
     // Parameters obj-
     let params: URLSearchParams = new URLSearchParams();
     params.set('customerAddress', customerAddress);
-    
+
     return this.http.get(`${this.api}/getAllGuarantees` ,{
       search: params
     }).map(res => {
@@ -194,7 +194,74 @@ export class RemoteService extends RealService {
   };
 
 
+  guaranteeSignComplite =  (requestId, comment , hashcode,customerAddress=this.account):any => {
+    console.log ("guaranteeSignComplite",requestId, comment , hashcode,customerAddress)
+    return new Promise((resolve, reject) => {
+      this.http.post(`${this.api}/guaranteeSignComplite`, {
+        requestId,
+        comment ,
+        hashcode,
+        customerAddress
+      }).subscribe(res => {
+        console.log('res is',res);
+        let result2 = res.text();
+  
+        if (result2) {
+          // find and change state of selected request
+          let acceptedItem = this.mockRequests.find((item) => {
+            return item.GRequestID === requestId;
+          });
+          acceptedItem.requestState = RequestState.accepted;
 
+
+          const startDatet=this.transformDateJSToSol(acceptedItem.StartDate);
+          // new Date(newstartDate).getTime()/1000;
+          const endDatet=this.transformDateJSToSol(acceptedItem.EndDate);
+          // new Date(newsendDate).getTime()/1000;
+          // console.log("guaranteeSignComplite ",acceptedItem.StartDate,startDatet,acceptedItem.EndDate,endDatet);
+
+          this.getOneCustomerDataP(acceptedItem.customer).then((customer)=> {
+
+
+            // generate new guarantee
+            let guarantee = this.populateGuaranteeDataP(
+              [result2,
+                requestId,
+                acceptedItem.customer,
+                acceptedItem.bank,
+                acceptedItem.beneficiary,
+                this.web3.fromUtf8(customer.Name),
+                this.web3.fromUtf8(acceptedItem.purpose),
+                acceptedItem.amount,
+                startDatet,
+                endDatet,
+                acceptedItem.indexType,
+                acceptedItem.indexDate,
+                GuaranteeState.Valid
+              ]
+            ).then((guarantee)=> {
+              this.mockGuarantees = [...this.mockGuarantees, guarantee];
+              this.msgService.add({
+                severity: 'success',
+                summary: 'ערבות חדשה',
+                detail: 'בוצע חשיפה לערבות חדשה בהצלחה'
+              });
+              resolve(guarantee);
+            });
+          })
+
+
+        } else {
+            this.msgService.add({
+              severity: 'error',
+              summary: 'ערבות חדשה',
+              detail: 'בקשה להוצאת האישור ערבות  נכשלה'
+            });
+          reject('error');
+        }
+      });
+    });
+  };
 
 
   /************************/
@@ -253,6 +320,7 @@ export class RemoteService extends RealService {
     for (var i in this.realIssuers) {
       if (this.realIssuers[i].bankID == customerAddress) {
         return new Promise((resolve, reject)=> {
+          console.log(this.realIssuers[i]);
           resolve(this.realIssuers[i]);
         });
       }
@@ -267,7 +335,7 @@ export class RemoteService extends RealService {
       if(res) {
 
         this.realIssuers = [...this.realIssuers, res];
-        return this.realIssuers;
+        return res;
       }
       else
       {
@@ -317,7 +385,7 @@ export class RemoteService extends RealService {
       //todo check is it right
       if(res) {
         // this.realBeneficiaries = [... res];
-        this.realBeneficiaries.push(res);
+        this.realBeneficiaries= res;
         console.log("this.realBeneficiaries",this.realBeneficiaries);
         return this.realBeneficiaries;
       }
