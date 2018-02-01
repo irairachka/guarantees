@@ -128,6 +128,7 @@ contract('Regulator', function(accounts) {
         return Regulator.deployed().then(function(instance) {
             return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
         }).catch(function(error) {
+            console.error('error',error)
             throw error;
         });
     };
