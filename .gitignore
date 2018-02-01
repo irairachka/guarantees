@@ -56,3 +56,14 @@ typings/
 
 # dotenv environment variables file
 .env
+ethereum-bnhp-docker.zip
+.DS_Store
+.idea/jsLibraryMappings.xml
+.idea/libraries/truffle_eth_bnhp_node_modules.xml
+.idea/modules.xml
+.idea/truffle_eth_bnhp.iml
+.idea/typescript-compiler.xml
+.idea/watcherTasks.xml
+.idea/workspace.xml
+npm_global_list.txt
+npm_lis_ver.txt

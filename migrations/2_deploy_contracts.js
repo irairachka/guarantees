@@ -8,6 +8,8 @@ var Regulator = artifacts.require("./Regulator.sol");
 // var Registry = artifacts.require("./Registry.sol");
 
 module.exports = function(deployer) {
+
   
   deployer.deploy(Regulator ,{gas:5900000});
+
 };

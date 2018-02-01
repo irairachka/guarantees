@@ -35,7 +35,7 @@ export class RealService extends MockService {
   realRequests =[];
   realGuarantees =[];
   realCustomers =[];
-  realBeneficiaries=[];
+  realBeneficiaries:any=[];
   realIssuers=[];
 
   accounts:any;
@@ -90,6 +90,7 @@ export class RealService extends MockService {
       this.accounts = accs;
       this.account = this.accounts[0];
       // this.ready=true;
+      console.log('this.account',this.account)
       console.log('this.accounts',this.accounts)
       /** Part of original truffle **/
       // This is run from window:load and ZoneJS is not aware of it we
@@ -133,6 +134,8 @@ export class RealService extends MockService {
      // {
       /** Gets all guarantee requests for customer */
       return new Promise((resolve, reject)=> {
+        console.log("getAllUserRequestsEt in getAllRequests()",this.account);
+        // debugger;
         this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
           this.realRequests=[ ...requestsEt];
           super.setMockRequests(this.realRequests);
@@ -451,7 +454,7 @@ export class RealService extends MockService {
         console.log("beneficiaryAddresses[]:", beneficiaryAddresses);
         return Promise.all(beneficiaryAddresses.map((beneficiaryAddress) => {
           return new Promise(resolve =>
-            this.getOneBeneficiaryDataP(beneficiaryAddresses).then((returneddata) => resolve(returneddata)));
+            this.getOneBeneficiaryDataP(beneficiaryAddress).then((returneddata) => resolve(returneddata)));
         }));
 
 
@@ -524,7 +527,7 @@ export class RealService extends MockService {
 
   populateBeneficiaryData=(benefisiaryID,resultArr) => {
 
-
+    if (Array.isArray(benefisiaryID)) benefisiaryID=benefisiaryID[0];
     var ask= {
       beneficiaryID: benefisiaryID,
       Name: resultArr[0] ,
@@ -551,7 +554,7 @@ export class RealService extends MockService {
 
 
       // let  requestAddr;
-      let instance ;
+      // let instance ;
       let addressOfIns;
       const thestartDate =  this.transformDateJSToSol(StartDate);
       const theendDate = this.transformDateJSToSol(EndDate) ;
@@ -562,10 +565,12 @@ export class RealService extends MockService {
       return this.createRequestEt(userId, bankId, benefId, "full name", purpose,
         amount, thestartDate, theendDate, indexType, indexDate, 'e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2')
         .then((theinstance) => {
-          instance=theinstance;
+          // instance=theinstance;
+          addressOfIns=theinstance.address;
+          console.log("Request created with address",addressOfIns);
 
-        return this.populateRequestDataP(
-          [instance.address,
+          return this.populateRequestDataP(
+            [addressOfIns,
             userId,
             bankId,
             benefId,
@@ -583,12 +588,11 @@ export class RealService extends MockService {
         );
       }).then((newItem)=> {
 
-          addressOfIns = instance.address;
           return this.addRequestEt(this.account, addressOfIns);
       }).then((result) => {
           // requestAddr=result;
           // console.log("addRequestEt result", instance);
-          
+
           return this.submitRequestEt(this.account, this.getGuaranteeRequestInstance(addressOfIns), '');
       }).then((result) => {
 
@@ -801,8 +805,8 @@ export class RealService extends MockService {
   {
     // var StartDateEt=Math.floor((StartDate/1000));
     // var EndDateEt=Math.floor((EndDate/1000));
-    // if (purpose === 'undefined' || purpose==null)
-    //   purpose=' ';
+    if (purpose === 'undefined' || purpose==null)
+      purpose='';
     var purposeEt=this.web3.fromUtf8(purpose);
     var fullnameEt=this.web3.fromUtf8(fullname);
     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
@@ -944,7 +948,7 @@ export class RealService extends MockService {
     return new Promise((resolve, reject)=> {
 
        console.log("before guaranteeSignComplite res",requestId, comment , hashcode);
-      this.guaranteeSignCompliteEt(requestId, hashcode).then((result2) => {
+      this.guaranteeSignCompliteEt(requestId, hashcode,this.account).then((result2) => {
         console.log("after guaranteeSignComplite result2",result2);
 
         if (result2 =='0x0000000000000000000000000000000000000000')
@@ -1196,8 +1200,16 @@ export class RealService extends MockService {
 
 
 
+  guaranteeAddressFromRequestEt = (requestId) => {
 
-  guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash) => {
+    var guaranteeRequest = GuaranteeRequest.at(requestId);
+    return guaranteeRequest.getGuaranteeAddress.call();
+
+
+  };
+
+
+  guaranteeSignCompliteEt = (requestId,guaranteeIPFSHash,account) => {
     // אישור של
     // if  (hashcode) {
     var guaranteeIPFSHashEt='0x'.concat(guaranteeIPFSHash);
@@ -1206,14 +1218,13 @@ export class RealService extends MockService {
 
     return Regulator.deployed()
       .then( (instance)=> {
-        console.log("guaranteeSignCompliteEt",requestId,guaranteeIPFSHash);
-        return instance.GuaranteeSignComplite(requestId,hashcodeBug,{from: this.account});
+        console.log("guaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
+        // requestId='0x7e228709e104d55932bc61de79bac564724d0a89';
+        // console.log("new in testguaranteeSignCompliteEt + this.account", requestId, guaranteeIPFSHash, account);
+        return instance.GuaranteeSignComplite(requestId, hashcodeBug, {gas: 5918507 ,from: account});
       }).then( (tx)=> {
-        console.log('guaranteeSignCompliteEt tx',tx);
-        var guaranteeRequest = GuaranteeRequest.at(requestId);
-        return guaranteeRequest.getGuaranteeAddress.call();
-
-
+        console.log("testguaranteeSignCompliteEt  resault", tx);
+        return this.guaranteeAddressFromRequestEt(requestId);
       }).catch(function (error) {
         console.error('error',error);
         throw error;
@@ -1345,7 +1356,7 @@ export class RealService extends MockService {
       const proposal=this.web3.toUtf8( resultArr[5]);
       const full_name=this.web3.toUtf8( resultArr[4]);
       const ischangeRequest=(resultArr[12] === 'true' || resultArr[12] == true);
-      const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+      const changeRequestId=((resultArr[12] == true && resultArr[13] !== undefined )? resultArr[13] : '') ;
 
       this.getOneCustomerDataP(resultArr[2]).then((beneficiary)=> {
 
@@ -1391,7 +1402,7 @@ export class RealService extends MockService {
   getAllUserRequestsEt=(useraccount) =>{
     // function getAllUserRequests() {
     /** Gets all guarantee requests for customer */
-    let customerGuaranties=[];
+    // let customerGuarantie=[];
     return Regulator.deployed()
       .then( (instance)=> {
         return instance.getRequestAddressList.call({from: useraccount});
@@ -1404,6 +1415,7 @@ export class RealService extends MockService {
 
 
       }).catch(function (error) {
+        console.error(error);
         throw error;
       })
   };
