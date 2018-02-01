@@ -65,7 +65,8 @@ contract GuaranteeRequest is GuaranteeRequestExtender{
 
     function getId() constant public returns (address _contract_id)
     {
-        return this;
+        _contract_id=this;
+//        return this;
     }
 
 

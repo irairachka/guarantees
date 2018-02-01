@@ -33,5 +33,7 @@ export USE_STATIC_NODE=true
 export PRIVATE_PORT=30776
 export MINING_NODE="true"
 export CREATE_INIT_ACCOUNT="true"
-
-./bootnode.sh
+export RPC_PORT="8545"
+#export NPM_PORT="3000"
+export PRODUCT_SHARE='-v $DATA_ROOT/guarantees:/opt/guarantees'
+./bootnodestatic.sh $nodename

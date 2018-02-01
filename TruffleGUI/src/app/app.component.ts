@@ -31,19 +31,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService)
   {}
-  
+
   ngOnInit() {
 
     this.watcher();
     // Get user, bank and beneficiary data
     this.truffleSRV.getCustomerData().then((res: Customer) => {
       this.customer = res;
+      console.log("this.customer=",this.customer);
     });
     this.truffleSRV.getBankData().then((res: Bank) => {
       this.bank = res;
+      console.log("this.bank=",this.bank);
     });
     this.truffleSRV.getAllBeneficiaries().then((res: Beneficiary[]) => {
       this.beneficiaries = res;
+      console.log("this.beneficiaries=",this.beneficiaries);
     });
 
     // get requests and guarantee data

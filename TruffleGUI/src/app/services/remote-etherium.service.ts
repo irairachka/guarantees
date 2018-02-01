@@ -13,16 +13,19 @@ import {environment} from "../../environments/environment";
 export class RemoteService extends RealService {
   web3:any;
 
-  accounts:any;
-  account:any;
+  // accounts:any;
+  // account:any;
 
   private api:string =environment.apiserver+"/api";
   // private  server: string =environment.server;
   // private api: string =  '/api';
   // private api: string =  'http://localhost:3000/api';
-  
+
   constructor(public msgService:MessageService, private http: Http) {
     super(msgService);
+    // this.getCustomerData(this.account);
+    // this.getBeneficiaryData(this.account);
+    // this.getBankData(this.account);
   }
   /************************/
   /**  Get User Data   ****/
@@ -63,7 +66,7 @@ export class RemoteService extends RealService {
     // Parameters obj-
     let params: URLSearchParams = new URLSearchParams();
     params.set('customerAddress', customerAddress);
-    
+
     return this.http.get(`${this.api}/getAllGuarantees` ,{
       search: params
     }).map(res => {
