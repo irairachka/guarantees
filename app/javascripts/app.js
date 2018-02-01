@@ -6,8 +6,8 @@ import { default as Web3} from 'web3';
 import { default as contract } from 'truffle-contract';
 
 // Import our contract artifacts and turn them into usable abstractions.
-import  GuaranteeRequest_artifact from '../../build/contracts/GuaranteeRequest.json'
-import  Regulator_artifact from '../../build/contracts/Regulator.json'
+import  GuaranteeRequest_artifact from '../../build/contracts.old/GuaranteeRequest.json'
+import  Regulator_artifact from '../../build/contracts.old/Regulator.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 
