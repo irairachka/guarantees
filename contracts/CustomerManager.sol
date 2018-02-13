@@ -9,6 +9,7 @@ contract CustomerManager  is Ownable{
     struct Customer {
     string name;
     string localAddress;
+    bool isdefined;
 //    address []   guaranteeRequests;
     //    string id;
     }
@@ -19,11 +20,17 @@ contract CustomerManager  is Ownable{
     event AddCustomer (address msgSender,string msgstr,uint timestamp);
     function submitCustomer(address _addr , string _name, string _localAddres ) onlyOwner public {
         Customer  customer=customers[_addr];
+        if(customer.isdefined == false){
+            AddCustomer(msg.sender,_name,block.timestamp);
+            customer.isdefined=true;
+        }
+
         customer.name   = _name;
         customer.localAddress    = _localAddres;
+
         //        customer.id = _id;
 
-        AddCustomer(msg.sender,_name,block.timestamp);
+
     }
 
     function getCustomer(address _addr) constant public returns(string _name, string _localAddress) //, string  _id)

@@ -34,7 +34,15 @@
         <!--<div class="ui-layout double-input ui-space-b-small">-->
           <div class="input-container">
             <label for="beneficiary">המוטב</label>
-            <input placeholder="המוטב" formControlName="beneficiary" id="beneficiary" value="{{beneficiary.Name}}">
+            <select id="beneficiary" class="form-control" formControlName="beneficiary" ng-model="beneficiary" required>
+              <option value="">נא לבחור מוטב</option>
+              <option ng-value="onebeneficiary" *ngFor="let onebeneficiary of beneficiaries" value="{{ onebeneficiary.beneficiaryID }}">{{ onebeneficiary.Name }} </option>
+              <!--<label  class="beneficiary-id-name beneficiary-id" placeholder="חפ / תז">חפ / תז: ...{{onebeneficiary.beneficiaryID | fourDigits }}</label>-->
+            </select>
+
+
+            <!--<input placeholder="המוטב" formControlName="beneficiary" id="beneficiary" value="{{beneficiaries[1].Name}}">-->
+            <!--<label  class="beneficiary-id-name beneficiary-id" placeholder="חפ / תז">חפ / תז: ...{{beneficiaries[1].beneficiaryID | fourDigits}}</label>-->
           </div>
           <div class="input-container">
           <label for="purpose">מטרות הערבות</label>

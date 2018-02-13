@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {isNullOrUndefined} from "util";
 import {userData,beneficiaryData} from "../../../../tempData/mockData";
 import {Http} from "@angular/http";
+import {Beneficiary, Customer} from "../../interfaces/request";
 
 @Component({
   selector: 'guarantee-form',
@@ -12,9 +13,12 @@ import {Http} from "@angular/http";
 export class GuaranteeFormComponent implements OnInit, OnChanges {
   @Input() data: any;
   @Input() modalType: string;
-  // @Input() userDetails: Customer;
+  @Input() beneficiaries: any = [];
+  // @Input() userDetails: any ;
+  @Input() userDetails: Customer;
   @Output() postNewRequest: EventEmitter<any> = new EventEmitter();
-  @Output() updateRequest: EventEmitter<any> = new EventEmitter();
+  // @Output() updateRequest: EventEmitter<any> = new EventEmitter();
+
   newGuarantee: FormGroup;
   uploadurl:string='http://35.158.139.208:9080/uploadpdfwhash';
   // state: any[] = [
@@ -32,62 +36,67 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   //   },
   // ];
   displayActions: boolean = false;
-  userDetails: any = userData;
+
+  // beneficiary: Beneficiary ;
+
   // bank dropdown options
   requestsStates: any[];
-  selectedRequestsStates: string;
-  cancelReason: string;
-  terminateReason: string;
-  newValue: number;
-  newDate: string;
-  beneficiary: any=beneficiaryData;
+  // selectedRequestsStates: string;
+  // cancelReason: string;
+  // terminateReason: string;
+  // newValue: number;
+  // newDate: string;
+
 
   constructor(private fb: FormBuilder,
               private http: Http) {
-    this.createForm();
-    this.requestsStates = [
-      {
-        label: 'בחר גורם מטפל',
-        value: null
-      },
-      {
-        label: 'יעוץ משפטי',
-        value: 'יעוץ משפטי'
-      },
-      {
-        label: 'ניהול אשראי שוטף',
-        value: 'ניהול אשראי שוטף'
-      },
-      {
-        label: 'מנהל קשרי לרקוחות',
-        value: 'מנהל קשרי לרקוחות'
-      }
-    ];
+    // this.createForm();
+    // this.requestsStates = [
+    //   {
+    //     label: 'בחר גורם מטפל',
+    //     value: null
+    //   },
+    //   {
+    //     label: 'יעוץ משפטי',
+    //     value: 'יעוץ משפטי'
+    //   },
+    //   {
+    //     label: 'ניהול אשראי שוטף',
+    //     value: 'ניהול אשראי שוטף'
+    //   },
+    //   {
+    //     label: 'מנהל קשרי לרקוחות',
+    //     value: 'מנהל קשרי לרקוחות'
+    //   }
+    // ];
   }
 
   ngOnInit() {
+    // console.log("garanti ngOnInit",this.userDetails ,this.beneficiaries);
+    // this.beneficiary = this.beneficiaries[1];
   }
 
-  testDisplayAction() {
-    if(isNullOrUndefined(this.data)) {
-      return false;
-    }
-    if(this.modalType === 'beneficiary') {
-      return true;
-    } else if (this.data.hasOwnProperty('GuaranteeID')) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  // testDisplayAction() {
+  //   if(isNullOrUndefined(this.data)) {
+  //     return false;
+  //   }
+  //   if(this.modalType === 'beneficiary') {
+  //     return true;
+  //   } else if (this.data.hasOwnProperty('GuaranteeID')) {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
   createForm() {
+    console.log("garanti createForm")
     this.newGuarantee = this.fb.group({
       userName: this.userDetails.Name,
       userId: this.userDetails.customerID,
       userAddress: this.userDetails.Address,
-      beneficiary: '',
-      beneficiaryAddress: '',
+      beneficiary: ['', Validators.required],
+      // beneficiaryAddress: ['', Validators.required],
       purpose: ['', Validators.required],
       amount: ['', Validators.required],
       startDate: ['', Validators.required],
@@ -106,18 +115,20 @@ export class GuaranteeFormComponent implements OnInit, OnChanges {
   }
 
   submitGuarantee() {
-    console.log('this.newGuarantee', this.newGuarantee);
+    
     let formValues = Object.assign({}, this.newGuarantee.value);
+    console.log('this.newGuarantee', formValues);
     this.postNewRequest.emit(formValues);
+    this.newGuarantee.reset();
     this.ngOnChanges();
   }
 
   ngOnChanges() {
     // this.newGuarantee.reset();
     this.createForm();
-    this.selectedRequestsStates = '';
-    this.cancelReason = '';
-    this.terminateReason = '';
-    this.displayActions = this.testDisplayAction();
+    // this.selectedRequestsStates = '';
+    // this.cancelReason = '';
+    // this.terminateReason = '';
+    // this.displayActions = this.testDisplayAction();
   }
 }

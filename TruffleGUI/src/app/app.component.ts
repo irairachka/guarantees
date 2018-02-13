@@ -30,31 +30,41 @@ export class AppComponent implements OnInit, OnDestroy {
   bank: Bank;
 
   constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService)
-  {}
+  {
+    let account;
+    truffleSRV.lasyInit().then((account));
+  }
 
   ngOnInit() {
 
     this.watcher();
-    // Get user, bank and beneficiary data
-    this.truffleSRV.getCustomerData().then((res: Customer) => {
-      this.customer = res;
-      console.log("this.customer=",this.customer);
-    });
-    this.truffleSRV.getBankData().then((res: Bank) => {
-      this.bank = res;
-      console.log("this.bank=",this.bank);
-    });
+
+
+
     this.truffleSRV.getAllBeneficiaries().then((res: Beneficiary[]) => {
       this.beneficiaries = res;
       console.log("this.beneficiaries=",this.beneficiaries);
     });
 
+    this.truffleSRV.getBankData().then((res: Bank) => {
+      this.bank = res;
+      console.log("this.bank=",this.bank);
+    });
+
+    // Get user, bank and beneficiary data
+    this.truffleSRV.getCustomerData().then((res: Customer) => {
+      this.customer = res;
+      console.log("this.customer=",this.customer);
+    });
+
     // get requests and guarantee data
     this.truffleSRV.getAllUserRequests().then((res: GRequest[]) => {
       this.customerRequests = res;
+      console.log("this.customerRequests=",this.customerRequests);
     });
     this.truffleSRV.getAllCustomerGuaranties().then((res: Guarantee[]) => {
       this.customerGuaranties = res;
+      console.log("this.customerGuaranties=",this.customerGuaranties);
     });
     this.truffleSRV.getAllBankRequests().then((res: GRequest[]) => {
       this.bankRequests = res;
@@ -64,17 +74,19 @@ export class AppComponent implements OnInit, OnDestroy {
       this.bankGuaranties = res;
       console.log("this.bankGuaranties",this.bankGuaranties);
     });
-    this.truffleSRV.getAllBeneficiaryGuaranties().then((res: Guarantee[]) => {
+    this.truffleSRV.getAllBeneficiaryGuarantees().then((res: Guarantee[]) => {
       this.beneficiaryGuaranties = res;
+      console.log("this.beneficiaryGuaranties",this.beneficiaryGuaranties);
+
     });
+    // console.log("user app comp ngOnInit end");
   }
 
 
   handleCreateRequest = (e) => {
-     console.log("handleCreateRequest ",this.customer,this.bank,this.beneficiaries);
-    let newRequest = this.truffleSRV.createRequest(this.customer.customerID,
-    this.bank.bankID, this.beneficiaries[0].beneficiaryID,
-    e.purpose, e.amount, e.startDate, e.endDate, 0, 0).then((newRequest)=> {
+     console.log("handleCreateRequest ",e.userId, this.bank.bankID, e.beneficiary, e.purpose, e.amount, e.startDate, e.endDate, 0, 0);
+    let newRequest = this.truffleSRV.createRequest(e.userId, this.bank.bankID, e.beneficiary, e.purpose, e.amount,
+      e.startDate, e.endDate, 0, 0).then((newRequest)=> {
       console.log("newRequest", newRequest);
       this.addNewUserRequests(newRequest);
       this.addNewBankRequests(newRequest);

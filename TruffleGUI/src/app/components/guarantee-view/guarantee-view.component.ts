@@ -10,7 +10,7 @@ import {EtheriumService} from "../../services/real-etherium.service";
 @Injectable()
 export class GuaranteeViewComponent implements OnInit{
   @Input() user: string; // TODO - handle enum and convert to string
-  @Input() allRequests: GRequest[];
+  // @Input() allRequests: GRequest[];
   @Input() allGuaranties: Guarantee[];
   @Output() triggerModal: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
@@ -28,8 +28,8 @@ export class GuaranteeViewComponent implements OnInit{
   constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService) {}
 
   ngOnInit() {
-    console.log('this.allRequests', this.allRequests);
-    console.log('this.allGuaranties', this.allGuaranties);
+    // console.log('this.allRequests', this.allRequests);
+    // console.log('this.allGuaranties', this.allGuaranties);
   }
 
   openModal(e) {

@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output, Injectable, Inject} from '@angular/core';
-import {GRequest, Guarantee} from "../../interfaces/request";
+import {GRequest, Guarantee, Beneficiary, Customer} from "../../interfaces/request";
 import {EtheriumService} from "../../services/real-etherium.service";
 
 
@@ -13,6 +13,8 @@ export class GuaranteeUserViewComponent implements OnInit{
   @Input() user: string; // TODO - handle enum and convert to string
   @Input() allRequests: GRequest[];
   @Input() allGuaranties: Guarantee[];
+  @Input() beneficiaries: Beneficiary[] = [];
+  @Input() customerDetails: Customer;
   @Output() triggerModal: EventEmitter<any> = new EventEmitter();
   @Output() updateRequest: EventEmitter<any> = new EventEmitter();
   @Output() newRequest: EventEmitter<any> = new EventEmitter();
@@ -26,6 +28,7 @@ export class GuaranteeUserViewComponent implements OnInit{
   constructor(@Inject(EtheriumService) private truffleSRV: EtheriumService){ }
 
   ngOnInit() {
+    // console.log("user view comp ngOnInit",this.customerDetails);
     // console.log('this.allRequests', this.allRequests);
     // console.log('this.allGuaranties', this.allGuaranties);
   }
@@ -60,7 +63,7 @@ export class GuaranteeUserViewComponent implements OnInit{
       this.requestHistory = res;
     });
   }
-  
+
   getGuaranteeHistory(guar: Guarantee) {
     this.truffleSRV.getGuarantyHistory(guar.GuaranteeID).then((res: any[]) => {
       this.guaranteeHistory = res;

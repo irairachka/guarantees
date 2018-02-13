@@ -1,15 +1,15 @@
 {
   "contractName": "GuaranteeConst",
   "abi": [],
-  "bytecode": "0x60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820fc7e08fe7caafff100703e566468012c28753cd59599d3f1ed894c0163b99ed60029",
-  "deployedBytecode": "0x6060604052600080fd00a165627a7a72305820fc7e08fe7caafff100703e566468012c28753cd59599d3f1ed894c0163b99ed60029",
+  "bytecode": "0x60606040523415600e57600080fd5b603580601b6000396000f3006060604052600080fd00a165627a7a72305820c032414b1a8c1194f9f36203e7eb6391f9dd2ced4ee80687befe7b370fdf76040029",
+  "deployedBytecode": "0x6060604052600080fd00a165627a7a72305820c032414b1a8c1194f9f36203e7eb6391f9dd2ced4ee80687befe7b370fdf76040029",
   "sourceMap": "26:2786:4:-;;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "26:2786:4:-;;;;;",
   "source": "pragma solidity ^0.4.13;\n\ncontract GuaranteeConst {\n    //guarantee request states\n    enum RequestState { created, waitingtobank, handling,waitingtocustomer,waitingtobeneficiery, withdrawed, accepted,changeRequested, rejected ,terminationRequest ,Expaired}\n\n\n    enum GuaranteeState { None, Valid, Expaired ,Terminated , Reissed}\n\n    //guarantee request states\n    enum IndexType { None, CPI, ConstructionMatirials }\n\n//    //    //log event for debug purwaitingtobankposes\n//    event loga(string message, address logb);\n//    //    //log event for debug purposes\n//    event log(string message, string logb);\n\n//    function getBeneficiary() constant returns (address);\n\n\n    function _checkString(string a)  constant internal returns (bool r){\n        return _checkArray(bytes(a));\n    }\n\n    function _checkArray(bytes a) constant internal returns (bool r){\n        if ( (a.length > 0)) return true;\n\n        return false;\n    }\n\n    function _checkBytes32(bytes32 a) constant internal returns (bool r){\n        if ( (a.length > 0)) return true;\n\n        return false;\n    }\n\n//    function bytes32ToString (bytes32 data) returns (string) {\n//        bytes memory bytesString = new bytes(32);\n//        for (uint j=0; j<32; j++) {\n//            byte char = byte(bytes32(uint(data) * 2 ** (8 * j)));\n//            if (char != 0) {\n//                bytesString[j] = char;\n//            }\n//        }\n//        return string(bytesString);\n//    }\n//\n//    function bytes32ToString(bytes32 x) constant returns (string) {\n//        bytes memory bytesString = new bytes(32);\n//        uint charCount = 0;\n//        for (uint j = 0; j < 32; j++) {\n//            byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));\n//            if (char != 0) {\n//                bytesString[charCount] = char;\n//                charCount++;\n//            }\n//        }\n//        bytes memory bytesStringTrimmed = new bytes(charCount);\n//        for (j = 0; j < charCount; j++) {\n//            bytesStringTrimmed[j] = bytesString[j];\n//        }\n//        return string(bytesStringTrimmed);\n//    }\n//\n//    function bytes32ArrayToString(bytes32[] data) returns (string) {\n//        bytes memory bytesString = new bytes(data.length * 32);\n//        uint urlLength;\n//        for (uint i=0; i<data.length; i++) {\n//            for (uint j=0; j<32; j++) {\n//                byte char = byte(bytes32(uint(data[i]) * 2 ** (8 * j)));\n//                if (char != 0) {\n//                    bytesString[urlLength] = char;\n//                    urlLength += 1;\n//                }\n//            }\n//        }\n//        bytes memory bytesStringTrimmed = new bytes(urlLength);\n//        for (i=0; i<urlLength; i++) {\n//            bytesStringTrimmed[i] = bytesString[i];\n//        }\n//        return string(bytesStringTrimmed);\n//    }\n\n}\n",
-  "sourcePath": "/Users/dmitryshlymovich/Downloads/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
+  "sourcePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/Users/dmitryshlymovich/Downloads/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
+      "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
       "exportedSymbols": {
         "GuaranteeConst": [
           803
@@ -929,5 +929,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-02-01T11:50:56.865Z"
+  "updatedAt": "2018-02-12T07:02:34.672Z"
 }

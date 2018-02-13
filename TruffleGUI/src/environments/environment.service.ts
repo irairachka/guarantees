@@ -17,7 +17,7 @@ export const environment = {
   service: {
     provide: EtheriumService,
      useClass: RemoteService
-    //useClass: MockService
+    // useClass: MockService
     // useClass: RealService
   }
 };

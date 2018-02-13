@@ -27,6 +27,8 @@ export class RemoteService extends RealService {
     // this.getBeneficiaryData(this.account);
     // this.getBankData(this.account);
   }
+
+  
   /************************/
   /**  Get User Data   ****/
   /************************/
@@ -61,6 +63,42 @@ export class RemoteService extends RealService {
 
 
 
+  getAllUserRequests(customerAddress=this.account)
+  {
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('customerAddress', customerAddress);
+
+
+    return this.http.get(`${this.api}/getAllUserRequests` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+        super.setMockRequests(res);
+        return res;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+  };
+
+
+  getAllBankRequests( bankAddress=this.account)
+  {
+
+      return this.getAllRequests();
+  };
+
+
 
   getAllGuaranties = (customerAddress:string=this.account) => {
     // Parameters obj-
@@ -87,6 +125,90 @@ export class RemoteService extends RealService {
       }
     }).toPromise();
   };
+
+  getAllCustomerGuaranties(customerAddress=this.account) {
+// Parameters obj-
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('customerAddress', customerAddress);
+
+    return this.http.get(`${this.api}/getAllCustomerGuaranties` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+        super.setMockGuarantee(res);
+        return res;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+
+  };
+
+  getAllBeneficiaryGuarantees(beneficiaryAddress=this.account) {
+// Parameters obj-
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('beneficiaryAddress', beneficiaryAddress);
+
+    return this.http.get(`${this.api}/getAllBeneficiaryGuarantees` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+        super.setMockGuarantee(res);
+        return res;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+
+  };
+
+  getAllBankGuaranties(bankAddress=this.account) {
+
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('bankAddress', bankAddress);
+
+    return this.http.get(`${this.api}/getAllBankGuaranties` ,{
+      search: params
+    }).map(res => {
+      res = res.json();
+      //todo check is it right
+      if(res) {
+        super.setMockGuarantee(res);
+        return res;
+      }
+      else
+      {
+        this.msgService.add({
+          severity: 'error',
+          summary: 'תקלת תקשורת',
+          detail: 'Etherium Fatal Error!!!'
+        });
+        return;
+      }
+    }).toPromise();
+
+  };
+
+
+
 
   // getAllGuaranties = () => {
   //   return this.http.get(`${this.api}/getAllGuarantees`).map(res => {
@@ -356,17 +478,17 @@ export class RemoteService extends RealService {
 
 
 
-  getAllBankRequests = () => {
-    /** Gets all guarantee requests for customer */
-    /** parses the data and sends to UI          */
-    return this.getAllRequests();
-  };
-
-
-
-  getAllBankGuaranties = () => {
-    return this.getAllGuaranties();
-  };
+  // getAllBankRequests = () => {
+  //   /** Gets all guarantee requests for customer */
+  //   /** parses the data and sends to UI          */
+  //   return this.getAllRequests();
+  // };
+  //
+  //
+  //
+  // getAllBankGuaranties = () => {
+  //   return this.getAllGuaranties();
+  // };
 
 
 
@@ -390,7 +512,7 @@ export class RemoteService extends RealService {
       if(res) {
         // this.realBeneficiaries = [... res];
         this.realBeneficiaries= res;
-        console.log("this.realBeneficiaries",this.realBeneficiaries);
+        // console.log("this.realBeneficiaries",this.realBeneficiaries);
         return this.realBeneficiaries;
       }
       else
@@ -447,9 +569,5 @@ export class RemoteService extends RealService {
       }
     }).toPromise();
   };
-
-
-
-
 
 }
