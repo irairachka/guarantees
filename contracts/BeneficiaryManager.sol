@@ -31,7 +31,7 @@ contract BeneficiaryManager is Ownable{
         beneficiary.localAddress    = _localAddres;
 
 
-        AddBeneficiary(_addr,_name,block.timestamp);
+//        AddBeneficiary(_addr,_name,block.timestamp);
     }
 
 

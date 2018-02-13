@@ -57,7 +57,7 @@ contract Regulator is Ownable,IssuerManager,BeneficiaryManager,CustomerManager,G
 //        owner = msg.sender;
 
 
-
+        submitBeneficiary(0xd0f2997b8e503f80ba4bd907cd2daf16a23f036c,"ערית ראשון לציון","הכרמל 20, ראשון לציון");
         submitBeneficiary(msg.sender,"עיריית תל-אביב","אבן גבירול 69");
         submitCustomer(msg.sender,"ישראל ישראלי","הרצל 11 ראשון לציון");
         submitIssuer(msg.sender,"בנק הפועלים","הנגב 11 תל אביב");

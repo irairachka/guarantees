@@ -36,14 +36,14 @@ contract('Regulator', function(accounts) {
         }).then(function (result) {
             console.log("getIssuer:",result);
             assert.equal(result.length, 1, "getIssuer should have 1 parameter");
-            createBeneficiaryEt('0x8964301e15d91cb68537221e8de5db98f459c7ba',"ערית ראשון לציון","הכרמל 20, ראשון לציון");
+            createBeneficiaryEt('0xd0f2997b8e503f80ba4bd907cd2daf16a23f036c',"ערית ראשון לציון","הכרמל 20, ראשון לציון");
 
             return getAllBeneficiaries()
         }).then(function (result) {
             beneficiaries=result;
             console.log("getAllBeneficiaries:",result);
             assert.equal(result.length, 2, "getAllBeneficiaries should have 2 Beneficiaries");
-            createCustomerEt('0x8964301e15d91cb68537221e8de5db98f459c7ba',"ישראל ישראלי","הרצל 11 ראשון לציון");
+            // createCustomerEt('0xd0f2997b8e503f80ba4bd907cd2daf16a23f036c',"ישראל ישראלי","הרצל 11 ראשון לציון");
             return getOneCustomerEt(account);
         }).then(function (result) {
             customer=result;

@@ -25,7 +25,7 @@ npm install
 #npm run-script build --environment=service
 cd /opt/guarantees/ExpressServer/
 npm install
-#sudo git pull origin newUI
+sudo git pull origin hevra_le_automazia_test
 #forever stop -c "npm start --env=service" ./
 ##forever stop -c "npm start --env=service" ./
 ##forever start -c "npm start --env=service" ./
