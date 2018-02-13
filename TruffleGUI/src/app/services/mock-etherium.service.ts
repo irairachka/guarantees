@@ -20,7 +20,7 @@ import {_catch} from "rxjs/operator/catch";
 export class MockService {
   idmoc: number = 1000;
   web3:any;
-  mockRequests ;
+  mockRequests  ;
   mockGuarantees ;
   // Regulator = contract(Regulator_artifact);
   // GuaranteeRequest = contract(GuaranteeRequest_artifact);
@@ -45,7 +45,16 @@ export class MockService {
     this.mockGuarantees=mockGuarantees;
   };
 
-  
+
+  lasyInit=()=>{
+    return new Promise((resolve, reject)=> {
+        resolve(this.account);
+
+      
+    })
+  };
+
+
   /************************/
   /**  Get User Data   ****/
   /************************/
@@ -83,20 +92,38 @@ export class MockService {
     });
   };
 
-  getAllUserRequests = () => {
-    return this.getAllRequests();
-  };
 
-  getAllRequests = ()=> {
-    /** Gets all guarantee requests for customer */
+  getAllRequests = (customerAddress=this.account) =>{
+      /** Gets all guarantee requests for customer */
     return new Promise((resolve)=> {
       resolve(this.mockRequests);
     });
   };
 
-  getAllCustomerGuaranties = () => {
-    return this.getAllGuaranties();
+
+  getAllUserRequests(customerAddress=this.account)
+  {
+
+     // return new Promise((resolve, reject)=> {
+
+    return this.getAllRequests();
+
   };
+
+  getAllBankRequests( bankAddress=this.account)
+  {
+
+    // return new Promise((resolve, reject)=> {
+
+    return this.getAllRequests();
+
+  };
+
+  getAllCustomerGuaranties(customerAddress=this.account) {
+
+    return this.getAllGuaranties(customerAddress);
+  };
+
 
 
   getAllGuaranties = (customerAddress=this.account) => {
@@ -108,7 +135,7 @@ export class MockService {
   /** ****************** **/
   /**  Get Bank Data     **/
   /** ****************** **/
-  
+
 
   getBankData = (requestAddress?) => {
     return new Promise((resolve) => {
@@ -116,9 +143,9 @@ export class MockService {
     });
   };
 
-  getAllBankRequests = () => {
-    return this.getAllRequests();
-  };
+  // getAllBankRequests = () => {
+  //   return this.getAllRequests();
+  // };
 
   // getAllBankRequests = () => {
   //   /** Gets all guarantee requests for customer */
@@ -129,9 +156,15 @@ export class MockService {
   // };
 
 
-  getAllBankGuaranties = () => {
-    return this.getAllGuaranties();
+  getAllBankGuaranties  (bankAddress=this.account)  {
+
+    return this.getAllGuaranties(bankAddress);
   };
+
+
+  // getAllBankGuaranties = () => {
+  //   return this.getAllGuaranties();
+  // };
 
   // getAllBankGuaranties = () => {
   //   return new Promise((resolve) => {
@@ -149,9 +182,12 @@ export class MockService {
     });
   };
 
-  getAllBeneficiaryGuaranties = () => {
-    return this.getAllGuaranties();
-  }
+
+
+  getAllBeneficiaryGuarantees(beneficiaryAddress=this.account) {
+
+    return this.getAllGuaranties(beneficiaryAddress);
+  };
 
   // getAllBeneficiaryGuaranties = () => {
   //   return new Promise((resolve) => {
@@ -519,7 +555,7 @@ export class MockService {
 
   };
 
-  
+
   getOneCustomerDataP = (customerAddress):any => {
     return new Promise((resolve)=> {
       for (var i in mockcustomers) {

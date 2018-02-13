@@ -21,7 +21,7 @@
        (click)="selected = 0" [class.selected]="selected === 0">
     <label class="title">לקוח</label>
     <guarantee-user-view class="content" user="user" *ngIf="selected === 0"
-                        [allRequests]="customerRequests" [allGuaranties]="customerGuaranties"
+                        [allRequests]="customerRequests" [allGuaranties]="customerGuaranties" [beneficiaries]="beneficiaries" [customerDetails]="customer"
                         (triggerModal)="openModal($event)"
                         (updateRequest)="handleRequestUpdate($event)"
                         (newRequest)="handleCreateRequest($event)"></guarantee-user-view>

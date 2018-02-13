@@ -10,6 +10,7 @@ contract IssuerManager  is Ownable {
     string name;
     string localAddress;
     address addr;
+    bool isdefined;
 //    issuerStatus status;
 //    address []   guaranteeRequests;
     }
@@ -23,13 +24,20 @@ contract IssuerManager  is Ownable {
     function submitIssuer(address _addr , string _name, string _localAddres) onlyOwner public {
 
         Issuer  issuer = issuers[_addr];
+        if(issuer.isdefined == false){
+            issuerList.push(_addr);
+
+            AddIssuer(msg.sender, _addr ,_name,block.timestamp);
+            issuer.isdefined =true;
+        }
+
         issuer.name   = _name;
         issuer.localAddress    = _localAddres;
         issuer.addr = _addr;
-//        issuer.status = issuerStatus.accepted;
-        issuerList.push(_addr);
 
-        AddIssuer(msg.sender, _addr ,_name,block.timestamp);
+
+//        issuer.status = issuerStatus.accepted;
+
     }
 
 //    event UpdateIssuersStatus(address msgSender,string msgstr,uint timestamp);

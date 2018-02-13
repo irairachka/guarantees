@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/api/getAllGuarantees', function(req, res, next) {
-    service.getAllUserGuarantees(req).then(response => {
+    service.getAllGuarantees(req).then(response => {
       res.send(response);
   }).catch(error => {
         console.log('error', error);
@@ -18,6 +18,39 @@ router.get('/api/getAllGuarantees', function(req, res, next) {
 
     });
 });
+
+
+router.get('/api/getAllCustomerGuaranties', function(req, res, next) {
+    service.getAllCustomerGuaranties(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send(error);
+
+    });
+});
+
+router.get('/api/getAllBeneficiaryGuarantees', function(req, res, next) {
+    service.getAllBeneficiaryGuarantees(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send(error);
+
+    });
+});
+
+router.get('/api/getAllBankGuaranties', function(req, res, next) {
+    service.getAllBankGuaranties(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send(error);
+
+    });
+});
+
+
 
 router.get('/api/getAllRequests', function(req, res, next) {
     service.getRequests(req).then(response => {
@@ -28,6 +61,17 @@ router.get('/api/getAllRequests', function(req, res, next) {
 
     });
 });
+
+router.get('/api/getAllUserRequests', function(req, res, next) {
+    service.getUserRequests(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send(error);
+
+    });
+});
+
 
 router.get('/api/getAllIssuers', function(req, res, next) {
     service.getAllIssuers(req).then(response => {
@@ -147,6 +191,27 @@ router.post('/api/guaranteeSignComplite', function(req, res, next) {
 
 router.get('/api/getGuarantyHistory', function(req, res, next) {
     service.getGuarantyHistory(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+
+router.put('/api/createBeneficiary', function(req, res, next) {
+    service.createBeneficiary(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+router.put('/api/createCustomer', function(req, res, next) {
+    service.createBeneficiary(req).then(response => {
         res.send(response);
     }).catch(error => {
         console.log('error', error);

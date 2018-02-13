@@ -47,6 +47,7 @@ export class RealService extends MockService {
     super(msgService);
       this.checkAndInstantiateWeb3();
       this.onReady();
+    console.log("end of constructor");
   }
 
   /** ******************** **/
@@ -96,11 +97,14 @@ export class RealService extends MockService {
       // This is run from window:load and ZoneJS is not aware of it we
       // need to use _ngZone.run() so that the UI updates on promise resolution
       // this._ngZone.run(() => {
-        this.getCustomerData(this.account);
-        this.getBeneficiaryData(this.account);
-        this.getBankData(this.account);
-        this.getAllRequests();
-        this.getAllGuaranties();
+
+      this.getAllBeneficiaries();
+      this.getBankData(this.account);
+      this.getCustomerData(this.account);
+
+
+        // this.getAllRequests();
+        // this.getAllGuaranties();
 
       // });
     });
@@ -132,60 +136,195 @@ export class RealService extends MockService {
   /**  replaced   ****/
   /************************/
 
+  getAllRequests = (customerAddress=this.account) =>{
 
-  getAllRequests = ()=> {
-
-     // if (this.realRequests==null)
-     // {
-      /** Gets all guarantee requests for customer */
-      return new Promise((resolve, reject)=> {
-        console.log("getAllUserRequestsEt in getAllRequests()",this.account);
-        // debugger;
-        this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
-          this.realRequests=[ ...requestsEt];
-          super.setMockRequests(this.realRequests);
-          resolve(this.realRequests);
-        }).catch((error)=> {
-
-          this.msgService.add({
-            severity: 'error',
-            summary: 'תקלת בבלוקציין',
-            detail: 'Etherium Fatal Error!!!'
-          });
-          reject(error);
-        });
-
+    // /** Gets all guarantee requests for customer */
+    // return new Promise((resolve, reject)=> {
+    //     console.log("getAllUserRequestsEt in getAllRequests()",this.account);
+    // debugger;
+    return Regulator.deployed()
+      .then( (instance)=> {
+        console.log('instance.getRequestAddressList.call({from: useraccount} from acc:',instance.address,customerAddress);
+        return instance.getRequestAddressList.call({from: customerAddress});
+      }).then( (guaranteeAddresses)=> {
+        console.log("guaranteeRequestAddresses[]:", guaranteeAddresses);
+        return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
+          return new Promise(resolve =>
+            this.getOneRequest(guaranteeAddress).then((returneddata) => resolve(returneddata)));
+        }))
+      }).then((requestsEt)=> {
+        this.realRequests=[ ...requestsEt];
+        super.setMockRequests(this.realRequests);
+        return this.realRequests;
+      }).catch(function (error) {
+        console.error(error);
+        throw error;
       });
-     // }
-    // else
-    //   new Promise((resolve, reject)=> {
-    //     resolve(this.mockRequests);
-    //   });
+
   };
 
-  getAllGuaranties = (customerAddress=this.account) => {
-    // if (this.realGuarantees==null) {
-      return new Promise((resolve, reject)=> {
-        this.getAllUserGuarantees(this.account).then((GuarantiesEt)=> {
-          this.realGuarantees = [ ...GuarantiesEt];
-          super.setMockGuarantee(this.realGuarantees);
-          resolve(this.realGuarantees);
-        }).catch((error)=> {
-          this.msgService.add({
-            severity: 'error',
-            summary: 'תקלת בבלוקציין',
-            detail: 'Etherium Fatal Error!!!'
-          });
-          reject(error);
+
+  // getAllRequests = ()=> {
+  //
+  //    // if (this.realRequests==null)
+  //    // {
+  //     /** Gets all guarantee requests for customer */
+  //     return new Promise((resolve, reject)=> {
+  //       console.log("getAllUserRequestsEt in getAllRequests()",this.account);
+  //       // debugger;
+  //       this.getAllUserRequestsEt(this.account).then((requestsEt)=> {
+  //         this.realRequests=[ ...requestsEt];
+  //         super.setMockRequests(this.realRequests);
+  //         resolve(this.realRequests);
+  //       }).catch((error)=> {
+  //
+  //         this.msgService.add({
+  //           severity: 'error',
+  //           summary: 'תקלת בבלוקציין',
+  //           detail: 'Etherium Fatal Error!!!'
+  //         });
+  //         reject(error);
+  //       });
+  //
+  //     });
+  //    // }
+  //   // else
+  //   //   new Promise((resolve, reject)=> {
+  //   //     resolve(this.mockRequests);
+  //   //   });
+  // };
+
+
+  getAllUserRequests(customerAddress=this.account)
+  {
+
+    // return new Promise((resolve, reject)=> {
+
+    return this.getAllRequests( ).then((realRequests)=> {
+      return realRequests
+        .filter(function (element) {
+          return (element.customer === customerAddress);
+
         });
-      });
-    // }
-    // else
-    //   new Promise((resolve, reject)=> {
-    //     resolve(this.mockGuarantees);
-    //   });
+    }).catch(function (error) {
+      console.error(error);
+      throw error;
+    })
 
   };
+
+  getAllBankRequests( bankAddress=this.account)
+  {
+
+    // return new Promise((resolve, reject)=> {
+
+    return this.getAllRequests(bankAddress).then((realRequests)=> {
+      return realRequests
+        .filter(function (element) {
+          return (element.bank === bankAddress);
+
+        });
+    }).catch(function (error) {
+      console.error(error);
+      throw error;
+    })
+
+  };
+
+  getAllGuaranties = (customerAddress = this.account) => {
+    return Regulator.deployed()
+      .then((instance)=> {
+        console.log('instance.getRequestAddressList.call({from: useraccount} from acc:', instance.address, customerAddress ,this.account);
+        return instance.getGuaranteeAddressesList.call({from: customerAddress});
+      }).then((guaranteeAddresses)=> {
+        console.log("guaranteeAddresses[]:", guaranteeAddresses);
+        return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
+          return new Promise(resolve =>
+            this.getOneGuarantee(guaranteeAddress).then((returneddata) => resolve(returneddata)));
+        }))
+      }).then((guaranteeEt)=> {
+        //     console.log("getBeneficiaryEt " ,requestsEt);
+        this.realGuarantees = [ ...guaranteeEt];
+        super.setMockGuarantee(this.realGuarantees);
+        return this.realGuarantees;
+      }).catch(function (error) {
+        console.error(error);
+        throw error;
+      });
+
+  };
+
+  getAllCustomerGuaranties(customerAddress=this.account) {
+
+    return this.getAllGuaranties(customerAddress).then((realRequests)=> {
+      return realRequests
+        .filter(function (element) {
+          return (element.customer === customerAddress);
+
+        });
+    }).catch(function (error) {
+      console.error(error);
+      throw error;
+    })
+
+  };
+
+  getAllBeneficiaryGuarantees(beneficiaryAddress=this.account) {
+
+    return this.getAllGuaranties(beneficiaryAddress).then((realRequests)=> {
+      return realRequests
+        .filter(function (element) {
+          return (element.beneficiary === beneficiaryAddress);
+
+        });
+    }).catch(function (error) {
+      console.error(error);
+      throw error;
+    })
+
+  };
+
+  getAllBankGuaranties (bankAddress=this.account)
+  {
+
+
+    return this.getAllGuaranties(bankAddress).then((realRequests)=> {
+      return realRequests
+        .filter(function (element) {
+          return (element.bank === bankAddress);
+
+        });
+    }).catch(function (error) {
+      console.error(error);
+      throw error;
+    })
+
+  };
+
+
+  // getAllGuaranties = (customerAddress=this.account) => {
+  //   // if (this.realGuarantees==null) {
+  //     return new Promise((resolve, reject)=> {
+  //       this.getAllUserGuarantees(this.account).then((GuarantiesEt)=> {
+  //         this.realGuarantees = [ ...GuarantiesEt];
+  //         super.setMockGuarantee(this.realGuarantees);
+  //         resolve(this.realGuarantees);
+  //       }).catch((error)=> {
+  //         this.msgService.add({
+  //           severity: 'error',
+  //           summary: 'תקלת בבלוקציין',
+  //           detail: 'Etherium Fatal Error!!!'
+  //         });
+  //         reject(error);
+  //       });
+  //     });
+  //   // }
+  //   // else
+  //   //   new Promise((resolve, reject)=> {
+  //   //     resolve(this.mockGuarantees);
+  //   //   });
+  //
+  // };
 
 
   /************************/
@@ -202,14 +341,9 @@ export class RealService extends MockService {
         else {
           console.log('customerAddress and this.account is undefined', customerAddress, this.account);
           //todo to delete
-          return this.lasyInit().then((customerAddress)=> {
+          return this.lasyInit().then((customerAddress2)=> {
             // console.log('lasyInit done :',customerAddress);
-            return this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
-              // this.realCustomers.add(loadCustomer)
-              // console.log(this);
-              this.realCustomers = [...this.realCustomers, loadCustomer];
-              resolve(loadCustomer);
-            });
+            customerAddress = this.account;
           });
         }
       }
@@ -288,14 +422,15 @@ export class RealService extends MockService {
         else {
           console.log('customerAddress and this.account is undefined', customerAddress, this.account);
           //todo to delete
-          return this.lasyInit().then((customerAddress)=> {
+          return this.lasyInit().then((customerAddress1)=> {
+            customerAddress = this.account;
             // console.log('lasyInit done :',customerAddress);
-            return this.getIssierEt(customerAddress).then((loadCustomer)=> {
-              // this.realCustomers.add(loadCustomer)
-              // console.log(this);
-              this.realIssuers = [...this.realIssuers, loadCustomer];
-              resolve(loadCustomer);
-            });
+            // return this.getIssierEt(customerAddress).then((loadCustomer)=> {
+            //   // this.realCustomers.add(loadCustomer)
+            //   // console.log(this);
+            //   this.realIssuers = [...this.realIssuers, loadCustomer];
+            //   resolve(loadCustomer);
+            // });
           });
         }
       }
@@ -349,18 +484,18 @@ export class RealService extends MockService {
   //
   //
   // };
+  //
+  // getAllBankRequests = () => {
+  //   /** Gets all guarantee requests for customer */
+  //   /** parses the data and sends to UI          */
+  //   return this.getAllRequests();
+  // };
 
-  getAllBankRequests = () => {
-    /** Gets all guarantee requests for customer */
-    /** parses the data and sends to UI          */
-    return this.getAllRequests();
-  };
 
 
-
-  getAllBankGuaranties = () => {
-    return this.getAllGuaranties();
-  };
+  // getAllBankGuaranties = () => {
+  //   return this.getAllGuaranties();
+  // };
 
 
 
@@ -451,7 +586,7 @@ export class RealService extends MockService {
   getAllBeneficiariesEt=()=> {
     // function getAllUserRequests() {
     /** Gets all guarantee requests for customer */
-    let customerGuaranties=[];
+    // let customerGuaranties=[];
     return Regulator.deployed()
       .then( (instance)=> {
         return instance.getBeneficiaryAddresses.call({from: this.account});
@@ -461,16 +596,18 @@ export class RealService extends MockService {
           return new Promise(resolve =>
             this.getOneBeneficiaryDataP(beneficiaryAddress).then((returneddata) => resolve(returneddata)));
         }));
-
-
+      }).then((returneddata)=> {
+        console.log("this.realBeneficiaries= " ,this.realBeneficiaries);
+        this.realBeneficiaries = [ ...returneddata];
+        return this.realBeneficiaries;
       }).catch(function (error) {
         throw error;
       })
   };
 
-  getAllBeneficiaryGuaranties = () => {
-    return this.getAllGuaranties();
-  };
+  // getAllBeneficiaryGuaranties = () => {
+  //   return this.getAllGuaranties();
+  // };
 
 
   getBeneficiaryData = (BeneficiaryAddress?) => {
@@ -492,12 +629,15 @@ export class RealService extends MockService {
     return new Promise((resolve, reject)=> {
       for (var i in this.realBeneficiaries) {
         if (this.realBeneficiaries[i].beneficiaryID == beneficiaryID) {
+          console.log("getOneBeneficiaryDataP check :",typeof(this.realBeneficiaries[i].beneficiaryID),typeof(beneficiaryID),this.realBeneficiaries[i].beneficiaryID , beneficiaryID , this.realBeneficiaries[i].beneficiaryID == beneficiaryID ,this.realBeneficiaries[i].beneficiaryID === beneficiaryID);
+
           resolve(this.realBeneficiaries[i]);
         }
       }
-
+      console.log("getOneBeneficiaryDataP b not found :",beneficiaryID , typeof(beneficiaryID) , " in ", this.realBeneficiaries);
       this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
         this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
+        console.log("this.realBeneficiaries :",this.realBeneficiaries);
         resolve(loadBeneficiaries);
       }).catch((error)=> {
 
@@ -521,7 +661,7 @@ export class RealService extends MockService {
 
         return instance.getBeneficiary.call(beneficiaryAddress);
       }).then((result)=> {
-        console.log("getcustomer:", result);
+        console.log("getBeneficiaryEt:", beneficiaryAddress,result);
         return this.populateBeneficiaryData(beneficiaryAddress,result);
       })
       .catch(function(e)  {
@@ -538,7 +678,7 @@ export class RealService extends MockService {
       Name: resultArr[0] ,
       Address: resultArr[1]
     };
-    // console.log("request data:", ask);
+     // console.log("populateBeneficiaryData :", ask,resultArr);
 
     return ask;
   };
@@ -815,6 +955,7 @@ export class RealService extends MockService {
     var purposeEt=this.web3.fromUtf8(purpose);
     var fullnameEt=this.web3.fromUtf8(fullname);
     var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
+    console.log( "createRequestEt",bankAccount,benefAccount);
     return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5700000,from: userAccount}));
   };
 
@@ -1363,13 +1504,15 @@ export class RealService extends MockService {
       const ischangeRequest=(resultArr[12] === 'true' || resultArr[12] == true);
       const changeRequestId=((resultArr[12] == true && resultArr[13] !== undefined )? resultArr[13] : '') ;
 
-      this.getOneCustomerDataP(resultArr[2]).then((beneficiary)=> {
+      // console.log("populateRequestDataP",resultArr);
+
+      this.getOneBeneficiaryDataP(resultArr[3]).then((beneficiary)=> {
 
         var ask = {
           GRequestID: resultArr[0],
           customer: resultArr[1],
-          beneficiary: resultArr[2],
-          bank: resultArr[3],
+          bank: resultArr[2],
+          beneficiary: resultArr[3],
           beneficiaryName: beneficiary.Name,
           fullName: full_name,
           purpose: proposal,
@@ -1442,27 +1585,6 @@ export class RealService extends MockService {
   // };
 
 
-
-
-
-  getAllUserGuarantees=(userAccount) =>{
-     /** Gets all guarantee requests for customer */
-    let customerGuaranties=[];
-    return Regulator.deployed()
-      .then( (instance)=> {
-        return instance.getGuaranteeAddressesList.call({from: userAccount});
-      }).then( (guaranteeAddresses) =>{
-        console.log("guaranteeAddresses[]:", guaranteeAddresses);
-        return Promise.all(guaranteeAddresses.map((guaranteeAddress) => {
-          return new Promise(resolve =>
-            this.getOneGuarantee(guaranteeAddress).then((returneddata) => resolve(returneddata)));
-        }));
-
-
-      }).catch(function (error) {
-        throw error;
-      })
-  };
 
   getOneGuarantee =(requestAddress) => {
     /** Gets one guarantee requests by id */

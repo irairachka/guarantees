@@ -9,7 +9,7 @@
                    styleClass="green bgGrey" [style.width]="'100%'">
         <p-accordionTab header="בקשה לערבות חדשה">
           <button class="accordion-tab-close" (click)="closeAccordion()"><i class="fa fa-times-circle" aria-hidden="true"></i></button>
-          <guarantee-form (postNewRequest)="newRequestEmitter($event)"></guarantee-form>
+          <guarantee-form [beneficiaries]="beneficiaries" [userDetails]="customerDetails" (postNewRequest)="newRequestEmitter($event)"></guarantee-form>
         </p-accordionTab>
       </p-accordion>
     </div>

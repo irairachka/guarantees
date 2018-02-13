@@ -8,8 +8,7 @@ contract BeneficiaryManager is Ownable{
     struct Beneficiary {
     string name;
     string localAddress;
-//    address []   guarantees;
-    //    string id;
+    bool isdefined;
     }
     //holds all the benefiieries by their address
     mapping (address=>Beneficiary) public beneficiaries;
@@ -21,12 +20,18 @@ contract BeneficiaryManager is Ownable{
 
     function submitBeneficiary(address _addr , string _name, string _localAddres ) public  onlyOwner {
         Beneficiary beneficiary=beneficiaries[_addr];
+        if(beneficiary.isdefined == false){
+            beneficiaryList.push(_addr);
+
+            AddBeneficiary(_addr,_name,block.timestamp);
+
+            beneficiary.isdefined = true;
+        }
         beneficiary.name   = _name;
         beneficiary.localAddress    = _localAddres;
-        beneficiaryList.push(_addr);
-        //        beneficiary.id = _id;
 
-        AddBeneficiary(_addr,_name,block.timestamp);
+
+//        AddBeneficiary(_addr,_name,block.timestamp);
     }
 
 

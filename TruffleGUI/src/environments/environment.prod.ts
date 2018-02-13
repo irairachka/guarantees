@@ -1,5 +1,6 @@
 import {EtheriumService} from "../app/services/real-etherium.service";
 import {RealService} from "../app/services/real-etheriumwork.service";
+import {RemoteService} from "../app/services/remote-etherium.service";
 
 export const environment = {
   production: true,
@@ -7,6 +8,7 @@ export const environment = {
   apiserver:'',
   service: {
     provide: EtheriumService,
-    useClass: RealService
+    // useClass: RealService
+    useClass: RemoteService
   }
 };

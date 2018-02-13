@@ -241,10 +241,10 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.4.11;\n\nimport \"./GuaranteeConst.sol\";\n\ncontract GuaranteeExtender is GuaranteeConst {\n\n    function getId() constant public returns (address _contract_id);\n    // function getCustomer() constant returns (address);\n    // function getBank() constant returns (address);\n    function getBeneficiary() constant public returns (address);\n\n    //premissions modifier for beneficiary functions\n    modifier onlyBeneficiary() {\n        if ( msg.sender != getBeneficiary() ) {\n            // loga(\"###ERROR-not performd by BENEFICIERY address\",msg.sender);\n            throw;\n        }\n        // loga(\"#pass BENEFICIERY action check\",msg.sender);\n        _;\n    }\n\n\n    //    function getPurpose() constant returns (string);\n    //    function getAmount() constant returns (uint);\n    //    function getStartDate() constant returns (uint);\n    function getEndDate() constant public returns (uint);\n    //    function getIndexType() constant returns (IndexType);\n    //    function getIndexDate() constant returns (uint);\n\n    function getGuaranteeData() constant public returns (address _contract_id,address _guaranteeRequest,address _customer,address _bank ,address _beneficiary,bytes32 _full_name, bytes32 _purpose,uint _amount,uint _startDate,uint _endDate,IndexType _indexType,uint _indexDate , GuaranteeState _gState);\n    function getGuaranteeIPFSHash() constant public returns (bytes);\n\n\n    // function endRequest(string comment) onlyBeneficiary returns (bool);\n//    event AAA (uint nowtime,uint enddate,bool isExpired);\n    function isExpired() constant public returns (bool) {\n//        AAA(now,getEndDate(),getEndDate()<now);\n        return (getEndDate()<now);\n    }\n\n    function getState() constant public returns (GuaranteeState );\n\n    function getGuaranteeRequest() constant public returns (address requestExtender);\n\n\n    function terminateGuarantee()  public ;\n\n\n    event ChangeRequested(address  _requestId,address  _guaranteeId,address _msgSender,uint amount, uint endDate,string commentline,GuaranteeState   curentstatus,uint timestamp);\n\n    function changeRequest(uint _amount, uint _endDate)\n    {\n        ChangeRequested(getId(),this,msg.sender,_amount,  _endDate, '' ,getState(),now);\n    }\n\n\n}\n",
-  "sourcePath": "/Users/dmitryshlymovich/Downloads/truffle_eth_bnhp/contracts/GuaranteeExtender.sol",
+  "sourcePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeExtender.sol",
   "ast": {
     "attributes": {
-      "absolutePath": "/Users/dmitryshlymovich/Downloads/truffle_eth_bnhp/contracts/GuaranteeExtender.sol",
+      "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeExtender.sol",
       "exportedSymbols": {
         "GuaranteeExtender": [
           935
@@ -268,7 +268,7 @@
       {
         "attributes": {
           "SourceUnit": 804,
-          "absolutePath": "/Users/dmitryshlymovich/Downloads/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
+          "absolutePath": "/Users/dmitryshlymovich/workspace/ethereum-garanties/truffle_eth_bnhp/contracts/GuaranteeConst.sol",
           "file": "./GuaranteeConst.sol",
           "scope": 936,
           "symbolAliases": [
@@ -508,7 +508,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2487,
+                                  "referencedDeclaration": 2409,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -1250,7 +1250,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2489,
+                                  "referencedDeclaration": 2411,
                                   "type": "uint256",
                                   "value": "now"
                                 },
@@ -1894,7 +1894,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2504,
+                              "referencedDeclaration": 2426,
                               "type": "contract GuaranteeExtender",
                               "value": "this"
                             },
@@ -1920,7 +1920,7 @@
                                   "overloadedDeclarations": [
                                     null
                                   ],
-                                  "referencedDeclaration": 2487,
+                                  "referencedDeclaration": 2409,
                                   "type": "msg",
                                   "value": "msg"
                                 },
@@ -2023,7 +2023,7 @@
                               "overloadedDeclarations": [
                                 null
                               ],
-                              "referencedDeclaration": 2489,
+                              "referencedDeclaration": 2411,
                               "type": "uint256",
                               "value": "now"
                             },
@@ -2067,5 +2067,5 @@
   },
   "networks": {},
   "schemaVersion": "1.0.1",
-  "updatedAt": "2018-02-01T11:35:54.715Z"
+  "updatedAt": "2018-02-12T05:56:05.031Z"
 }
