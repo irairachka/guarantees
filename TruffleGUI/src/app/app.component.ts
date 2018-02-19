@@ -66,11 +66,11 @@ export class AppComponent implements OnInit, OnDestroy {
       this.customerGuaranties = res;
       console.log("this.customerGuaranties=",this.customerGuaranties);
     });
-    this.truffleSRV.getAllBankRequests().then((res: GRequest[]) => {
+    this.truffleSRV.getAllRequests().then((res: GRequest[]) => {
       this.bankRequests = res;
       console.log("this.bankRequests",this.bankRequests);
     });
-    this.truffleSRV.getAllBankGuaranties().then((res: Guarantee[]) => {
+    this.truffleSRV.getAllGuaranties().then((res: Guarantee[]) => {
       this.bankGuaranties = res;
       console.log("this.bankGuaranties",this.bankGuaranties);
     });

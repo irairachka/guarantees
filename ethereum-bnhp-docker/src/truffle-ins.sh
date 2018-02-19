@@ -13,19 +13,18 @@ npm install keythereum -g
 git clone https://github.com/trufflesuite/truffle-init-webpack.git
 truffle unbox webpack
 
-
 # garanties intall
 git clone https://github.com/shdmitry2000/guarantees.git /opt/guarantees
 npm install forever forever-monitor -g
 cd /opt/guarantees
 npm install
 #truffle compile
-#cd /opt/guarantees/TruffleGUI/
-#npm install
-#npm run-script build --environment=service
+cd /opt/guarantees/TruffleGUI/
+npm install
+npm run-script build --environment=service
 cd /opt/guarantees/ExpressServer/
 npm install
-sudo git pull origin hevra_le_automazia_test
+#sudo git pull origin hevra_le_automazia_test
 #forever stop -c "npm start --env=service" ./
 ##forever stop -c "npm start --env=service" ./
 ##forever start -c "npm start --env=service" ./
