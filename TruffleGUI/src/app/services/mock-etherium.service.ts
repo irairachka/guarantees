@@ -55,6 +55,10 @@ export class MockService {
   };
 
 
+  isNullOrUndefined(object) {
+    return ( (object === undefined)  || (typeof( object) === 'undefined')  || (null == object));
+  }
+
   /************************/
   /**  Get User Data   ****/
   /************************/

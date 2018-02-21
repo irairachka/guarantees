@@ -39,6 +39,10 @@ export class RemoteService  extends MockService {
     // this.getBankData(this.account);
   }
 
+  isNullOrUndefined(object) {
+    return ( (object === undefined)  || (typeof( object) === 'undefined')  || (null == object));
+  }
+
 
   /************************/
   /**  Get User Data   ****/
@@ -481,35 +485,45 @@ export class RemoteService  extends MockService {
       let params: URLSearchParams = new URLSearchParams();
       params.set('customerAddress', customerAddress);
 
-      for (var i in this.realCustomers) {
-        if (this.realCustomers[i].customerID == customerAddress) {
-            resolve(this.realCustomers[i]);
-        }
+
+      let customerItem = this.realCustomers.find((item) => {
+        // console.log('item.beneficiaryID === beneficiaryID',beneficiaryID , item ,item.beneficiaryID == beneficiaryID,item.beneficiaryID === beneficiaryID);
+
+        return item.customerID == customerAddress;
+      });
+
+      if (!this.isNullOrUndefined(customerItem)  )
+      {
+        resolve ( customerItem );
       }
+      else {
 
-      console.log('getCustomerData send to server' ,this.realCustomers);
 
-      this.http.get(apiURL,{
-        search: params
-      })
-        .toPromise()
-        .then(
-          res => { // Success
-            res = res.json();
-            if(res) {
-              this.realCustomers = [...this.realCustomers, res];
-              resolve( res);
+        console.log('getCustomerData send to server', this.realCustomers);
+
+        this.http.get(apiURL, {
+          search: params
+        })
+          .toPromise()
+          .then(
+            res => { // Success
+              res = res.json();
+              // if (res) {
+                this.realCustomers.push(res);
+                // this.realCustomers = [...this.realCustomers, res];
+                resolve(res);
+              // }
+            },
+            err => { // Error
+              this.msgService.add({
+                severity: 'error',
+                summary: 'תקלת תקשורת',
+                detail: err.statusText
+              });
+              reject(err.statusText);
             }
-          },
-          err => { // Error
-            this.msgService.add({
-              severity: 'error',
-              summary: 'תקלת תקשורת',
-              detail: err.statusText
-            });
-            reject(err.statusText);
-          }
-        );
+          );
+      };
     });
   };
 
@@ -528,37 +542,41 @@ export class RemoteService  extends MockService {
       let params: URLSearchParams = new URLSearchParams();
       params.set('customerAddress', customerAddress);
 
-      for (var i in this.realIssuers) {
-        if (this.realIssuers[i].bankID == customerAddress) {
-           console.log(this.realIssuers[i]);
-            resolve(this.realIssuers[i]);
+      let IssuerItem = this.realIssuers.find((item) => {
 
-        }
+        return item.bankID == customerAddress;
+      });
+
+      if (!this.isNullOrUndefined(IssuerItem)  )
+      {
+        resolve ( IssuerItem );
       }
+      else {
 
-      this.http.get(apiURL,{
-        search: params
-      })
-        .toPromise()
-        .then(
-          res => { // Success
-            res = res.json();
-            if(res) {
 
-              this.realIssuers = [...this.realIssuers, res];
-              resolve( res);
+        this.http.get(apiURL, {
+          search: params
+        })
+          .toPromise()
+          .then(
+            res => { // Success
+              res = res.json();
+              // if (res) {
+                this.realIssuers.push(res);
+                resolve(res);
+              // }
+
+            },
+            err => { // Error
+              this.msgService.add({
+                severity: 'error',
+                summary: 'תקלת תקשורת',
+                detail: err.statusText
+              });
+              reject(err.statusText);
             }
-
-          },
-          err => { // Error
-            this.msgService.add({
-              severity: 'error',
-              summary: 'תקלת תקשורת',
-              detail: err.statusText
-            });
-            reject(err.statusText);
-          }
-        );
+          );
+      }
     });
   };
 
@@ -608,8 +626,7 @@ export class RemoteService  extends MockService {
   };
 
 
-  getBeneficiaryData = (BeneficiaryAddress?) => {
-
+  getBeneficiaryData = (BeneficiaryAddress=this.account) => {
 
     return  new Promise((resolve, reject) => {
       let apiURL = `${this.api}/getBeneficiaryData` ;
@@ -618,44 +635,48 @@ export class RemoteService  extends MockService {
 
       // for (var i in this.realBeneficiaries) {
 
-        let beneficioryItem = this.realBeneficiaries.find((item) => {
-          return item.beneficiaryID === BeneficiaryAddress;
-        });
+      let beneficiaryItem = this.realBeneficiaries.find((item) => {
+        console.log('item.beneficiaryID === beneficiaryID',BeneficiaryAddress , item ,item.beneficiaryID == BeneficiaryAddress,item.beneficiaryID === BeneficiaryAddress);
 
-        if (beneficioryItem !== undefined )
-        {
-          resolve( beneficioryItem);
-        }
+        return item.beneficiaryID == BeneficiaryAddress;
+      });
+
+      if (!this.isNullOrUndefined(beneficiaryItem)  )
+      {
+        resolve ( beneficiaryItem );
+      }
+      else {
 
         // if (this.realBeneficiaries[i].beneficiaryID === BeneficiaryAddress) {
         //    resolve(this.realBeneficiaries[i]);
         // }
-      // }
+        // }
 
-      console.log('getBeneficiaryData send to server',beneficioryItem,BeneficiaryAddress ,this.realBeneficiaries ,apiURL);
+        console.log('getBeneficiaryData send to server', beneficiaryItem, BeneficiaryAddress, this.realBeneficiaries, apiURL);
 
-      this.http.get(apiURL)
-        .toPromise()
-        .then(
-          res => { // Success
-            res = res.json();
-            if(res) {
+        this.http.get(apiURL)
+          .toPromise()
+          .then(
+            res => { // Success
+              res = res.json();
+              // if(res) {
               this.realBeneficiaries.push(res);
-              console.log("this.realBeneficiaries",this.realBeneficiaries);
+              // console.log("this.realBeneficiaries",this.realBeneficiaries);
 
               // this.realBeneficiaries= [...this.realBeneficiaries, res];
-              resolve (res);
+              resolve(res);
+              // }
+            },
+            err => { // Error
+              this.msgService.add({
+                severity: 'error',
+                summary: 'תקלת תקשורת',
+                detail: err.statusText
+              });
+              reject(err.statusText);
             }
-          },
-          err => { // Error
-            this.msgService.add({
-              severity: 'error',
-              summary: 'תקלת תקשורת',
-              detail: err.statusText
-            });
-            reject(err.statusText);
-          }
-        );
+          );
+      };
     });
   };
 

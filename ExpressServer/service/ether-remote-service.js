@@ -98,7 +98,7 @@ class RealService {
     };
 
     isNullOrUndefined(object) {
-        return (object == null || object === undefined);
+        return ( (object === undefined)  || (typeof( object) === 'undefined')  || (null == object));
     }
 
     checkService(customerAddress = this.account) {
@@ -315,26 +315,42 @@ class RealService {
         return new Promise((resolve, reject)=> {
 
             let customerItem = realCustomers.find((item) => {
-                return item.customerID === customerAddress;
+                // console.log('item.customerID === customerAddress',customerAddress , item ,item.customerID == customerAddress,item.customerID === customerAddress);
+                return item.customerID == customerAddress;
             });
 
-            if (customerItem !== undefined )
+            if (!this.isNullOrUndefined(customerItem)  )
             {
                 resolve ( customerItem );
             }
+            else {
 
-            // console.log('not found Customer',customerAddress ,realCustomers);
+                // console.log('not found Customer',customerAddress , customerItem );
 
-            this.getOneCustomerEt(customerAddress).then((loadedCustomer)=> {
-                console.log('loadedCustomer',customerAddress,loadedCustomer );
-                if (!realCustomers.includes(loadedCustomer))
-                    realCustomers = [...realCustomers, loadedCustomer];
-                resolve(loadedCustomer);
-            }).catch((error)=> {
-                console.error(error);
+                this.getOneCustomerEt(customerAddress).then((loadedCustomer)=> {
 
-                reject(error);
-            });
+                    let customerItem = realCustomers.find((item) => {
+                        // console.log('item.customerID === customerAddress',customerAddress , item ,item.customerID == customerAddress,item.customerID === customerAddress);
+                        return item.customerID == customerAddress;
+                    });
+
+                    if (this.isNullOrUndefined(customerItem)) {
+                        realCustomers.push(loadedCustomer);
+                    }
+
+                    // console.log('loadedCustomer',customerAddress,loadedCustomer ,realCustomers.length);
+                    // if (realCustomers.indexOf(loadedCustomer) === -1) realCustomers.push(loadedCustomer);
+                    // if (!realCustomers.includes(loadedCustomer))
+                    //     realCustomers.push(loadedCustomer);
+                    // realCustomers = [...realCustomers, loadedCustomer];
+                    resolve(loadedCustomer);
+                }).catch((error)=> {
+                    console.error(error);
+
+                    reject(error);
+                });
+            
+            };
 
         });
     };
@@ -894,20 +910,20 @@ class RealService {
     /************************/
 
     getCustomerData (customerAddress=this.account) {
-
-        return new Promise((resolve, reject)=> {
-
-
-            this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
-                // this.realCustomers.add(loadCustomer)
-                // console.log(this);
-                resolve( loadCustomer);
-            })
-                .catch(function (error) {
-                    console.error(error);
-                    reject(error);
-                });
-        })
+        return this.getOneCustomerDataP(customerAddress);
+        // return new Promise((resolve, reject)=> {
+        //
+        //
+        //     this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
+        //         // this.realCustomers.add(loadCustomer)
+        //         // console.log(this);
+        //         resolve( loadCustomer);
+        //     })
+        //         .catch(function (error) {
+        //             console.error(error);
+        //             reject(error);
+        //         });
+        // })
     };
 
 
@@ -1055,23 +1071,40 @@ class RealService {
         return new Promise((resolve, reject)=> {
 
             let beneficiaryItem = realBeneficiaries.find((item) => {
-                return item.beneficiaryID === beneficiaryID;
+                console.log('item.beneficiaryID === beneficiaryID',beneficiaryID , item ,item.beneficiaryID == beneficiaryID,item.beneficiaryID === beneficiaryID);
+
+                return item.beneficiaryID == beneficiaryID;
             });
 
-            if (beneficiaryItem !== undefined )
+            if (! this.isNullOrUndefined(beneficiaryItem)  )
             {
                 resolve( beneficiaryItem);
             }
-            
-            
-            this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
-                console.log("getOneBeneficiaryDataP 3" ,loadBeneficiaries);
-                // this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
-                resolve(loadBeneficiaries);
-            }).catch((error)=> {
+            else {
 
-                reject(error);
-            });
+
+                console.log('benef not found', beneficiaryItem, beneficiaryItem === undefined, (typeof( beneficiaryItem) === 'undefined' ), null == beneficiaryItem, !this.isNullOrUndefined(beneficiaryItem))
+
+
+                this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
+                    let beneficiaryItem = realBeneficiaries.find((item) => {
+                        // console.log('item.customerID === customerAddress',customerAddress , item ,item.customerID == customerAddress,item.customerID === customerAddress);
+                        return item.beneficiaryID == beneficiaryID;
+                    });
+
+                    if (this.isNullOrUndefined(beneficiaryItem)) {
+                        realBeneficiaries.push(loadBeneficiaries);
+                    }
+
+                    // console.log("getOneBeneficiaryDataP 3" ,loadBeneficiaries);
+                    // this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
+                    resolve(loadBeneficiaries);
+
+                }).catch((error)=> {
+
+                    reject(error);
+                });
+            }
 
         });
     };
