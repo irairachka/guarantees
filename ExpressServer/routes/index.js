@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const service = require('../service/ether-remote-service');
-
+// const bodyParser = require('body-parser');
 
 
 /* GET home page. */
@@ -13,8 +13,8 @@ router.get('/api/getAllGuarantees', function(req, res, next) {
     service.getAllGuarantees(req).then(response => {
       res.send(response);
   }).catch(error => {
-        console.log('error', error);
-        res.status(500).send(error);
+        // console.log('error is', error);
+        res.status(500).send({ error: error.message });
 
     });
 });
@@ -24,8 +24,8 @@ router.get('/api/getAllCustomerGuaranties', function(req, res, next) {
     service.getAllCustomerGuaranties(req).then(response => {
         res.send(response);
     }).catch(error => {
-        console.log('error', error);
-        res.status(500).send(error);
+        // console.log('error', error);
+        res.status(500).send({ error: error.message });
 
     });
 });
@@ -34,8 +34,8 @@ router.get('/api/getAllBeneficiaryGuarantees', function(req, res, next) {
     service.getAllBeneficiaryGuarantees(req).then(response => {
         res.send(response);
     }).catch(error => {
-        console.log('error', error);
-        res.status(500).send(error);
+        // console.log('error', error);
+        res.status(500).send({ error: error.message });
 
     });
 });
@@ -45,7 +45,7 @@ router.get('/api/getAllBankGuaranties', function(req, res, next) {
         res.send(response);
     }).catch(error => {
         console.log('error', error);
-        res.status(500).send(error);
+        res.status(500).send({ error: error.message });
 
     });
 });
@@ -57,7 +57,7 @@ router.get('/api/getAllRequests', function(req, res, next) {
         res.send(response);
     }).catch(error => {
         console.log('error', error);
-        res.status(500).send(error);
+        res.status(500).send({ error: error.message });
 
     });
 });
@@ -67,7 +67,7 @@ router.get('/api/getAllUserRequests', function(req, res, next) {
         res.send(response);
     }).catch(error => {
         console.log('error', error);
-        res.status(500).send(error);
+        res.status(500).send({ error: error.message });
 
     });
 });
@@ -219,6 +219,77 @@ router.put('/api/createCustomer', function(req, res, next) {
 
     });
 });
+
+
+
+router.post('/api/createRequest', function(req, res, next) {
+    console.log('createRequest requested');
+    service.createRequest(req)
+        .then(response => {
+            res.send(response);
+        })
+        .catch(error => {
+            console.log('error is ', error);
+            res.status(500).send({ error: error.message });
+
+    });
+});
+
+router.post('/api/acceptRequest', function(req, res, next) {
+    service.acceptRequest(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+
+router.post('/api/rejectRequest', function(req, res, next) {
+    service.rejectRequest(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+
+router.post('/api/updateRequest', function(req, res, next) {
+    service.updateRequest(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+router.post('/api/withdrawalRequest', function(req, res, next) {
+    service.withdrawalRequest(req).then(response => {
+        res.send(response);
+    }).catch(error => {
+        console.log('error', error);
+        res.status(500).send({ error: error.message });
+
+    });
+});
+
+
+router.get('/api/getRequestHistory', function(req, res, next) {
+        service.getRequestHistory(req)
+            .then(response => {
+                res.send(response);
+            })
+            .catch(error => {
+                console.log('error is', error);
+                res.status(500).send({error: error.message});
+            });
+});
+
+    
 
 module.exports = router;
 

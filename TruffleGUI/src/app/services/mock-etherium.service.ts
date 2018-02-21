@@ -19,7 +19,7 @@ import {_catch} from "rxjs/operator/catch";
 @Injectable()
 export class MockService {
   idmoc: number = 1000;
-  web3:any;
+  // web3:any=new Web3();
   mockRequests  ;
   mockGuarantees ;
   // Regulator = contract(Regulator_artifact);
@@ -50,10 +50,14 @@ export class MockService {
     return new Promise((resolve, reject)=> {
         resolve(this.account);
 
-      
+
     })
   };
 
+
+  isNullOrUndefined(object) {
+    return ( (object === undefined)  || (typeof( object) === 'undefined')  || (null == object));
+  }
 
   /************************/
   /**  Get User Data   ****/
@@ -195,9 +199,15 @@ export class MockService {
   //   });
   // };
 
-  getBeneficiaryData = (id) => {
-    return mockbeneficiaries[0];
-  };
+  // getBeneficiaryData = (id) => {
+  //   return mockbeneficiaries[0];
+  // };
+
+  // getBeneficiaryData = (BeneficiaryAddress?) => {
+  //   return  new Promise((resolve, reject) => {
+  //     resolve( mockbeneficiaries[0]);
+  //   })
+  // };
 
   /** ************************/
   /**    Update requests  ****/
@@ -455,41 +465,103 @@ export class MockService {
 
 
   populateRequestDataP=(resultArr)=>  {
+    return  new Promise((resolve,reject) =>
+    {
 
-    return new Promise((resolve, reject)=> {
+      const startDate = this.transformDateSolToJS(resultArr[7].valueOf());
+      const endDate = this.transformDateSolToJS(resultArr[8].valueOf());
 
-      const startDate = this.transformDateSolToJS(resultArr[7]);
-    const endDate = this.transformDateSolToJS(resultArr[8]);
-    //
-    // const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
-    // const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
-    const proposal= resultArr[5];
-    const full_name= resultArr[4];
-    const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+      // const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
+      // const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
+      //  console.log('startDate1',resultArr[7] * 1000,startDate,'endDate1',resultArr[8] * 1000,endDate);
+      const proposal= resultArr[5];
+      const full_name= resultArr[4];
+      const ischangeRequest=(resultArr[12] === 'true' || resultArr[12] == true);
+      const changeRequestId=((resultArr[12] == true && resultArr[13] !== undefined )? resultArr[13] : '') ;
 
-    var ask= {
-      GRequestID: resultArr[0],
-      customer: resultArr[1],
-      beneficiary: resultArr[2],
-      bank: resultArr[3],
-      beneficiaryName: this.getBeneficiaryData(resultArr[2]).Name,
-      fullName:full_name,
-      purpose: proposal,
-      amount: resultArr[6].valueOf(),
-      StartDate: startDate,
-      EndDate: endDate,
-      indexType: resultArr[9].valueOf(),
-      indexDate: resultArr[10].valueOf(),
-      requestState: resultArr[11].valueOf(),
-      ischangeRequest: (resultArr[12] == 'true'  || resultArr[12]==true) ,
-      changeRequest:changeRequestId
+      // console.log("populateRequestDataP",resultArr);
 
-    };
-    // console.log("request data:", ask);
+      this.getOneBeneficiaryDataP(resultArr[3]).then((beneficiary)=> {
 
-      resolve(ask);
+        var ask = {
+          GRequestID: resultArr[0],
+          customer: resultArr[1],
+          bank: resultArr[2],
+          beneficiary: resultArr[3],
+          beneficiaryName: beneficiary.Name,
+          fullName: full_name,
+          purpose: proposal,
+          amount: parseInt(resultArr[6].valueOf()),
+          StartDate: startDate,
+          EndDate: endDate,
+          indexType: parseInt(resultArr[9].valueOf()),
+          indexDate: parseInt(resultArr[10].valueOf()),
+          requestState: parseInt(resultArr[11].valueOf()),
+          ischangeRequest: ischangeRequest,
+          changeRequest: changeRequestId
+          // ischangeRequest: (resultArr[12] === 'true')
+        };
+        // console.log("request data:", ask);
+
+
+        resolve(ask) ;
+      }).catch((error)=> {
+
+        // this.msgService.add({
+        //   severity: 'error',
+        //   summary: 'תקלת בבלוקציין',
+        //   detail: 'Etherium Fatal Error!!!'
+        // });
+        reject(error);
+      });
+
     });
   };
+
+
+  getOneBeneficiaryDataP = (beneficiaryID):any => {
+    return  new Promise((resolve, reject) => {
+      resolve( mockbeneficiaries[0]);
+    })
+  };
+
+
+  // populateRequestDataP=(resultArr)=>  {
+  //
+  //   return new Promise((resolve, reject)=> {
+  //
+  //     const startDate = this.transformDateSolToJS(resultArr[7]);
+  //   const endDate = this.transformDateSolToJS(resultArr[8]);
+  //   //
+  //   // const startDate = (new Date(resultArr[6] * 1000) ).toDateString();
+  //   // const endDate = (new Date(resultArr[7] * 1000) ).toDateString();
+  //   const proposal= resultArr[5];
+  //   const full_name= resultArr[4];
+  //   const changeRequestId=(resultArr[13] !== undefined ? resultArr[13] : '') ;
+  //
+  //   var ask= {
+  //     GRequestID: resultArr[0],
+  //     customer: resultArr[1],
+  //     beneficiary: resultArr[2],
+  //     bank: resultArr[3],
+  //     beneficiaryName: this.getBeneficiaryData(resultArr[2]).Name,
+  //     fullName:full_name,
+  //     purpose: proposal,
+  //     amount: resultArr[6].valueOf(),
+  //     StartDate: startDate,
+  //     EndDate: endDate,
+  //     indexType: resultArr[9].valueOf(),
+  //     indexDate: resultArr[10].valueOf(),
+  //     requestState: resultArr[11].valueOf(),
+  //     ischangeRequest: (resultArr[12] == 'true'  || resultArr[12]==true) ,
+  //     changeRequest:changeRequestId
+  //
+  //   };
+  //   // console.log("request data:", ask);
+  //
+  //     resolve(ask);
+  //   });
+  // };
 
 
   populateGuaranteeDataP=(resultArr) => {

@@ -25,6 +25,20 @@ let web3;
 let realCustomers = [];
 let realBeneficiaries=[];
 let realIssuers=[];
+
+
+const RequestState = {
+        created:0,
+        waitingtobank:1,
+        handling:2,
+        waitingtocustomer:3,
+        waitingtobeneficiery:4,
+        withdrawed:5,
+        accepted:6,
+        changeRequested:7,
+        rejected:8,
+        terminationRequest:9
+};
  
 class RealService {
 
@@ -84,7 +98,7 @@ class RealService {
     };
 
     isNullOrUndefined(object) {
-        return (object == null || object === undefined);
+        return ( (object === undefined)  || (typeof( object) === 'undefined')  || (null == object));
     }
 
     checkService(customerAddress = this.account) {
@@ -109,15 +123,39 @@ class RealService {
                 }))
             }).then((guaranteeEt)=> {
                 //     console.log("getBeneficiaryEt " ,requestsEt);
-                return guaranteeEt;
+                 return guaranteeEt;
             }).catch(function (error) {
-                console.error(error);
+                console.error("the error was ewcived:",error);
                 throw error;
             });
 
     };
 
     getAllCustomerGuaranties(customerAddress=this.account) {
+
+        // return new Promise((resolve, reject)=> {
+        //
+        //     return this.getAllGuaranties(customerAddress).then((realRequests)=> {
+        //         resolve( realRequests
+        //             .filter(function (element) {
+        //                 return (element.customer === customerAddress);
+        //
+        //             }));
+        //     }).catch(function (error) {
+        //         console.error(error);
+        //         reject(error);
+        //     })
+        // })
+            //
+            // this.getAllUserGuarantees(customerAddress).then((GuarantiesEt)=> {
+            //     // this.realGuarantees = [...mockCustomerGuaranties, ...GuarantiesEt];
+            //     // super.setMockGuarantee(this.realGuarantees);
+            //     resolve([ ...GuarantiesEt]);
+            // }).catch((error)=> {
+            //     console.error(error);
+            //     throw error;
+            // });
+
 
         return this.getAllGuaranties(customerAddress).then((realRequests)=> {
             return realRequests
@@ -275,21 +313,44 @@ class RealService {
 
     getOneCustomerDataP  (customerAddress)  {
         return new Promise((resolve, reject)=> {
-            for (var i in realCustomers) {
-                if (realCustomers[i].customerID == customerAddress) {
-                    resolve(realCustomers[i]);
-                }
-            }
 
-            this.getOneCustomerEt(customerAddress).then((loadedCustomer)=> {
-                console.log('loadedCustomer',loadedCustomer);
-                realCustomers = [...realCustomers, loadedCustomer];
-                resolve(loadedCustomer);
-            }).catch((error)=> {
-                console.error(error);
-
-                reject(error);
+            let customerItem = realCustomers.find((item) => {
+                // console.log('item.customerID === customerAddress',customerAddress , item ,item.customerID == customerAddress,item.customerID === customerAddress);
+                return item.customerID == customerAddress;
             });
+
+            if (!this.isNullOrUndefined(customerItem)  )
+            {
+                resolve ( customerItem );
+            }
+            else {
+
+                // console.log('not found Customer',customerAddress , customerItem );
+
+                this.getOneCustomerEt(customerAddress).then((loadedCustomer)=> {
+
+                    let customerItem = realCustomers.find((item) => {
+                        // console.log('item.customerID === customerAddress',customerAddress , item ,item.customerID == customerAddress,item.customerID === customerAddress);
+                        return item.customerID == customerAddress;
+                    });
+
+                    if (this.isNullOrUndefined(customerItem)) {
+                        realCustomers.push(loadedCustomer);
+                    }
+
+                    // console.log('loadedCustomer',customerAddress,loadedCustomer ,realCustomers.length);
+                    // if (realCustomers.indexOf(loadedCustomer) === -1) realCustomers.push(loadedCustomer);
+                    // if (!realCustomers.includes(loadedCustomer))
+                    //     realCustomers.push(loadedCustomer);
+                    // realCustomers = [...realCustomers, loadedCustomer];
+                    resolve(loadedCustomer);
+                }).catch((error)=> {
+                    console.error(error);
+
+                    reject(error);
+                });
+            
+            };
 
         });
     };
@@ -718,11 +779,11 @@ class RealService {
     getOneRequest (requestAddress,customerAddress=this.account)  {
         /** Gets one guarantee requests by id */
         /** parses the data and sends to UI */
-        console.log('test');
+        // console.log('test');
         return GuaranteeRequest.at(requestAddress)
             .then((guaranteeRequestinstance)=>  {
                 // console.log("getOneRequest:get data");
-                console.log('test1');
+                // console.log('test1');
                 return guaranteeRequestinstance.getGuaranteeRequestData.call({from:customerAddress});
             }).then((result) =>{
                 // console.log("getOneRequest:", result[7].valueOf(),result[8].valueOf());
@@ -790,7 +851,7 @@ class RealService {
     };
 
 
-    guaranteeSignComplite  (requestId, comment , hashcode ,customerAddress=this.account) {
+    guaranteeSignComplite  (requestId, comment , hashcode ,customerAddress=account) {
         return new Promise((resolve, reject)=> {
 
             console.log("before guaranteeSignComplite res",requestId, comment , hashcode);
@@ -849,20 +910,20 @@ class RealService {
     /************************/
 
     getCustomerData (customerAddress=this.account) {
-
-        return new Promise((resolve, reject)=> {
-
-
-            this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
-                // this.realCustomers.add(loadCustomer)
-                // console.log(this);
-                resolve( loadCustomer);
-            })
-                .catch(function (error) {
-                    console.error(error);
-                    reject(error);
-                });
-        })
+        return this.getOneCustomerDataP(customerAddress);
+        // return new Promise((resolve, reject)=> {
+        //
+        //
+        //     this.getOneCustomerEt(customerAddress).then((loadCustomer)=> {
+        //         // this.realCustomers.add(loadCustomer)
+        //         // console.log(this);
+        //         resolve( loadCustomer);
+        //     })
+        //         .catch(function (error) {
+        //             console.error(error);
+        //             reject(error);
+        //         });
+        // })
     };
 
 
@@ -1008,20 +1069,42 @@ class RealService {
 
     getOneBeneficiaryDataP  (beneficiaryID )  {
         return new Promise((resolve, reject)=> {
-            // for (var i in this.realBeneficiaries) {
-            //     if (this.realBeneficiaries[i].beneficiaryID == beneficiaryID) {
-            //         resolve(this.realBeneficiaries[i]);
-            //     }
-            // }
 
-            this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
-                console.log("getOneBeneficiaryDataP 3" ,loadBeneficiaries);
-                // this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
-                resolve(loadBeneficiaries);
-            }).catch((error)=> {
+            let beneficiaryItem = realBeneficiaries.find((item) => {
+                console.log('item.beneficiaryID === beneficiaryID',beneficiaryID , item ,item.beneficiaryID == beneficiaryID,item.beneficiaryID === beneficiaryID);
 
-                reject(error);
+                return item.beneficiaryID == beneficiaryID;
             });
+
+            if (! this.isNullOrUndefined(beneficiaryItem)  )
+            {
+                resolve( beneficiaryItem);
+            }
+            else {
+
+
+                console.log('benef not found', beneficiaryItem, beneficiaryItem === undefined, (typeof( beneficiaryItem) === 'undefined' ), null == beneficiaryItem, !this.isNullOrUndefined(beneficiaryItem))
+
+
+                this.getBeneficiaryEt(beneficiaryID).then((loadBeneficiaries)=> {
+                    let beneficiaryItem = realBeneficiaries.find((item) => {
+                        // console.log('item.customerID === customerAddress',customerAddress , item ,item.customerID == customerAddress,item.customerID === customerAddress);
+                        return item.beneficiaryID == beneficiaryID;
+                    });
+
+                    if (this.isNullOrUndefined(beneficiaryItem)) {
+                        realBeneficiaries.push(loadBeneficiaries);
+                    }
+
+                    // console.log("getOneBeneficiaryDataP 3" ,loadBeneficiaries);
+                    // this.realBeneficiaries = [...this.realBeneficiaries, loadBeneficiaries];
+                    resolve(loadBeneficiaries);
+
+                }).catch((error)=> {
+
+                    reject(error);
+                });
+            }
 
         });
     };
@@ -1088,11 +1171,289 @@ class RealService {
     // };
 
 
+    /** ************************* **/
+    /**  request operations       **/
+    /** ************************* **/
+
+    createRequest( userId , bankId, benefId , purpose, fullName='full name',
+                   amount, StartDate, EndDate, indexType, indexDate ,hashcode='e04dd1aa138b7ba680bc410524ce034bd53c190f0dcb4926d0cd63ab57f0fdc2') {
 
 
+        return new Promise((resolve, reject)=> {
+
+
+            // let  requestAddr;
+            // let instance ;
+            let addressOfIns;
+            const thestartDate =  this.transformDateJSToSol(StartDate);
+            const theendDate = this.transformDateJSToSol(EndDate) ;
+            console.log("createRequest ",userId, bankId, benefId, fullName, purpose,
+                amount, thestartDate, theendDate, indexType, indexDate);
+
+            // debugger;
+            return this.createRequestEt(userId, bankId, benefId, fullName, purpose,
+                amount, thestartDate, theendDate, indexType, indexDate, hashcode)
+                .then((theinstance) => {
+                    // instance=theinstance;
+                    addressOfIns=theinstance.address;
+                    console.log("Request created with address",addressOfIns);
+                    
+                    return this.addRequestEt(account, addressOfIns);
+                }).then((result) => {
+                     // requestAddr=result;
+                     // console.log("requestAddr = result", requestAddr);
+
+                    return this.submitRequestEt(account, this.getGuaranteeRequestInstance(addressOfIns), '');
+                }).then((result) => {
+
+                    console.log("submitRequestEt result", result, addressOfIns, " <> ",
+                        userId," <> ",
+                        bankId," <> ",
+                        benefId);
+
+                    resolve( addressOfIns);
+
+                }).catch(function(error)  {
+                    console.error(error);
+                    reject(error);
+                });
+
+        });
+
+    };
+
+    withdrawalRequest  (requestId, comment)  {
+        return new Promise((resolve, reject)=> {
+            this.withdrawalRequestEt(this.getGuaranteeRequestInstance(requestId), '', account).then((result) => {
+                resolve(result);
+            }).catch(function(error)  {
+                console.error(error);
+                reject(error);
+            });
+
+
+
+        });
+    };
+
+
+
+    updateRequest  (requestId, comment)  {
+        return new Promise((resolve, reject)=> {
+
+            this.updateRequestEt(this.getGuaranteeRequestInstance(requestId), comment, RequestState.handling).then((result) => {
+                resolve(result);
+
+            }).catch(function(error)  {
+                console.error(error);
+                reject(error);
+            });
+
+        });
+    };
+
+
+
+
+    rejectRequest  (requestId, comment)  {
+        return new Promise((resolve, reject)=> {
+            // console.log('rejectRequest',requestId);
+            if(comment == null) comment="NaN";
+            this.rejectRequestEt(this.getGuaranteeRequestInstance(requestId), comment).then((result) => {
+
+                resolve(result);
+
+            }).catch(function(error)  {
+                console.error(error);
+                reject(error);
+            });
+
+
+
+        });
+    };
+
+
+
+
+
+    acceptRequest  (requestId, comment , hashcode)  {
+        return new Promise((resolve, reject)=> {
+            console.log('acceptRequest',requestId);
+            this.acceptRequestEt(requestId).then((result) => {
+
+            resolve(true);
+            }).catch(function(error)  {
+                console.error(error);
+                reject(error);
+            });
+        })
+    };
+
+
+
+    createRequestEt ( userAccount , bankAccount, benefAccount ,fullname, purpose,
+                       amount, StartDate, EndDate, indexType, indexDate,proposalIPFSHash) 
+    {
+        // var StartDateEt=Math.floor((StartDate/1000));
+        // var EndDateEt=Math.floor((EndDate/1000));
+        if (purpose === 'undefined' || purpose==null)
+            purpose='';
+        var purposeEt=this.web3.fromUtf8(purpose);
+        var fullnameEt=this.web3.fromUtf8(fullname);
+        var proposalIPFSHashEt='0x'.concat(proposalIPFSHash);
+        console.log( "createRequestEt",bankAccount,benefAccount);
+        return (GuaranteeRequest.new(bankAccount,benefAccount,fullnameEt,purposeEt,amount,StartDate,EndDate,indexType, indexDate,proposalIPFSHashEt,{gas:5700000,from: userAccount}));
+    };
+
+    submitRequestEt ( userAccount ,guaranteeRequestInstance ,comments)  {
+        console.log("submitRequest:",userAccount,guaranteeRequestInstance.address);
+        return guaranteeRequestInstance.submit(comments,{from: userAccount});
+    };
+
+    withdrawalRequestEt  (guaranteeRequestInstance, comments,userAccount)  {
+        // let requestInstance = getGuaranteeRequestInstance(requestId);
+         console.log("withdrawal:", userAccount, guaranteeRequestInstance.address ,comments);
+        return guaranteeRequestInstance.withdrawal(comments, {from: userAccount});
+    };
+
+
+    getGuaranteeRequestInstance (requestAddress) 
+    {
+        console.log(this.getGuaranteeRequestInstance ,requestAddress);
+        return GuaranteeRequest.at(requestAddress);
+    };
+
+
+
+    addRequestEt( userAccount , reqaddress) 
+    {
+        return Regulator.deployed().then(function(instance) {
+            return instance.addGuaranteeRequest(reqaddress,{from: userAccount});
+        }).catch(function(error) {
+            console.error(error);
+            throw error;
+        });
+    };
+
+    getRequestStateEt ( userAccount , guaranteeRequestInstance) {
+        return guaranteeRequestInstance.getRequestState.call({from: userAccount});
+    };
+
+
+
+
+    updateRequestEt  (guaranteeRequestInstance, comment ,state)  {
+        // עדכון של בנק
+        // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
+        return guaranteeRequestInstance.bankStateChange(comment,state,{from: account});
+    };
+
+    rejectRequestEt  (guaranteeRequestInstance, comment)  {
+        // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
+        return guaranteeRequestInstance.reject(comment,{from: account});
+    };
+
+    acceptRequestEt  (requestId) {
+        // אישור של בנק
+        // if  (hashcode) {
+        // let guaranteeRequestInstance=getGuaranteeRequestInstance(requestId);
+        // return guaranteeRequestInstance.accept(comment)
+        return Regulator.deployed()
+            .then( (instance)=> {
+                // console.log("acceptRequestEt requestId",requestId)
+                return instance.acceptGuaranteeRequest(requestId,{from: account});
+
+            }).catch(function (error) {
+                throw error;
+            })
+
+    };
+
+    getRequestHistory (requestAddress ) {
+
+        return new Promise((resolve, reject)=> {
+            this.getRequestHistoryEt(requestAddress ).then((history)=> {
+                console.log(history);
+                resolve(history);
+
+            }).catch(function(error)  {
+                console.error(error);
+                reject(error);
+            });
+
+        });
+    };
+
+
+
+    getRequestHistoryEt  (requestAddress )  {
+
+        return new Promise((resolve) => {
+
+
+            var requestevents = [];
+            var guaranteeRequest = GuaranteeRequest.at(requestAddress);
+            var allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'})
+
+            if (allevents.length>0)
+                return allevents.get( (error, result) => {
+
+                    // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+                    for (var i = result.length - 1; i >= 0; i--) {
+                        var cur_result = result[i];
+                        // console.log('getRequestHistoryEt',cur_result);
+                        let line = this.populateHistoryLineData(cur_result.event, cur_result.args);
+                        if (!this.isNullOrUndefined(line))
+                            requestevents.push(line);
+                    }
+
+
+                    var replay =
+                    {
+                        shortrequest: requestAddress,
+                        log: requestevents
+                    };
+
+                    resolve(replay);
+
+                })
+            else {
+                guaranteeRequest = ChangeGuaranteeRequest.at(requestAddress);
+                allevents = guaranteeRequest.allEvents({fromBlock: 0, toBlock: 'latest'});
+
+                return allevents.get((error, result) => {
+
+                    // RegulatoryContractDeployed({}, {fromBlock: 0, toBlock: 'latest'}).get(function (error, result) {
+                    for (var i = result.length - 1; i >= 0; i--) {
+                        var cur_result = result[i];
+                        // console.log('getRequestHistoryEt',cur_result);
+                        let line = this.populateHistoryLineData(cur_result.event, cur_result.args);
+                        if (!this.isNullOrUndefined(line))
+                            requestevents.push(line);
+                    }
+                    var replay =
+                    {
+                        shortrequest: requestAddress,
+                        log: requestevents
+                    };
+
+                    resolve(replay);
+                });
+            }
+
+
+        })
+    };
+    
 
 
 }
+
+
+
+
+
 
 
 let realService = new RealService();
@@ -1101,83 +1462,96 @@ module.exports = {
 
 
     getAllCustomerGuaranties: (request) => {
-        let customerAddress= request.query.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress=account;
-        return realService.getAllCustomerGuaranties(customerAddress);
-
+        return new Promise((resolve, reject)=> {
+            let customerAddress = request.query.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            resolve( realService.getAllCustomerGuaranties(customerAddress));
+        });
     },
 
     getAllGuarantees: (request) => {
-        let customerAddress= request.query.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress=account;
-        return realService.getAllGuaranties(customerAddress);
 
+        return new Promise((resolve, reject)=> {
+            let customerAddress = request.query.customerAddress;
+            console.log("getAllGuarantees",customerAddress, request.query,customerAddress,request.body , request.search);
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            resolve( realService.getAllGuaranties(customerAddress));
+        });
     },
 
     getAllBeneficiaryGuarantees: (request) => {
-        let beneficiaryAddress= request.query.beneficiaryAddress;
-        if (typeof(beneficiaryAddress) === "undefined")
-            beneficiaryAddress=account;
-        return realService.getAllBeneficiaryGuarantees(beneficiaryAddress);
-
+        return new Promise((resolve, reject)=> {
+            let beneficiaryAddress = request.query.beneficiaryAddress;
+            if (typeof(beneficiaryAddress) === "undefined")
+                beneficiaryAddress = account;
+            resolve(realService.getAllBeneficiaryGuarantees(beneficiaryAddress));
+        });
     },
 
 
     getAllBankGuaranties: (request) => {
-        let bankAddress= request.query.bankAddress;
-        if (typeof(bankAddress) === "undefined")
-            bankAddress=account;
-        return realService.getAllBankGuaranties(bankAddress);
-
+        return new Promise((resolve, reject)=> {
+            let bankAddress = request.query.bankAddress;
+            if (typeof(bankAddress) === "undefined")
+                bankAddress = account;
+            resolve( realService.getAllBankGuaranties(bankAddress));
+        });
     },
-    
-    
-    
+
 
     getRequests: (request) => {
-        let customerAddress = request.query.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress = account;
-        return realService.getAllRequests(customerAddress);
-
+        return new Promise((resolve, reject)=> {
+            let customerAddress = request.query.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            resolve(realService.getAllRequests(customerAddress));
+        });
     },
 
     getUserRequests: (request) => {
-        let customerAddress = request.query.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress = account;
-        return realService.getAllUserRequests(customerAddress);
-
+        return new Promise((resolve, reject)=> {
+            // throw new Error ("error test");
+            let customerAddress = request.query.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            resolve(realService.getAllUserRequests(customerAddress));
+        });
     },
 
     getBankRequests: (request) => {
-        let bankAddress = request.query.bankAddress;
-        if (typeof(bankAddress) === "undefined")
-            bankAddress = account;
-        return realService.getBankRequests(bankAddress);
+        return new Promise((resolve, reject)=> {
 
+            let bankAddress = request.query.bankAddress;
+            if (typeof(bankAddress) === "undefined")
+                bankAddress = account;
+            resolve( realService.getBankRequests(bankAddress));
+        });
     },
 
     getGuarantee: (request) => {
-        let customerAddress= request.query.customerAddress;
-        let guaranteeId= request.query.guaranteeId;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress=account;
-        return realService.getOneGuarantee(guaranteeId,customerAddress);
+        return new Promise((resolve, reject)=> {
+            let customerAddress = request.query.customerAddress;
+            let guaranteeId = request.query.guaranteeId;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            resolve(realService.getOneGuarantee(guaranteeId, customerAddress));
+        });
 
     },
 
-    getRequestStatus:(request) => {
-        let customerAddress= request.query.customerAddress;
-        let requestId= request.query.requestId;
-        if (typeof(customerAddress) === "undefined") {
-            customerAddress=account;
-        }
-        return realService.getOneRequest(requestId,customerAddress);
+    getRequestStatus: (request) => {
+        return new Promise((resolve, reject)=> {
 
+            let customerAddress = request.query.customerAddress;
+            let requestId = request.query.requestId;
+            if (typeof(customerAddress) === "undefined") {
+                customerAddress = account;
+            }
+            resolve(realService.getOneRequest(requestId, customerAddress));
 
+        });
     },
 
     getAllIssuers: (request) => {
@@ -1186,10 +1560,13 @@ module.exports = {
 
 
     getCustomer: (request) => {
-        let customerAddress = request.query.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress = account;
-        return realService.getCustomerData(customerAddress);
+        return new Promise((resolve, reject)=> {
+
+            let customerAddress = request.query.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            resolve(realService.getCustomerData(customerAddress));
+        });
     },
 
     getAllBeneficiaries: (request) => {
@@ -1198,109 +1575,343 @@ module.exports = {
 
 
     getBankData: (request) => {
-        let customerAddress = request.query.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress = account;
-        return realService.getBankData(customerAddress);
+        return new Promise((resolve, reject)=> {
+
+            let customerAddress = request.query.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            resolve( realService.getBankData(customerAddress));
+        });
     },
 
     getBeneficiaryData: (request) => {
-        let BeneficiaryAddress = request.query.beneficiaryAddress;
-        if (typeof(BeneficiaryAddress) === "undefined")
-            BeneficiaryAddress = account;
-        return realService.getBeneficiaryData(BeneficiaryAddress);
-    },
+        return new Promise((resolve, reject)=> {
 
+            let BeneficiaryAddress = request.query.beneficiaryAddress;
+            if (typeof(BeneficiaryAddress) === "undefined")
+                BeneficiaryAddress = account;
+                resolve( realService.getBeneficiaryData(BeneficiaryAddress));
+        });
+    },
 
 
     getCheck: (request) => {
         return new Promise(resolve => {
 
-            let customerAddress= request.query.customerAddress;
+            let customerAddress = request.query.customerAddress;
             console.log(customerAddress);
             if (typeof(customerAddress) === "undefined")
-                customerAddress=account;
-             resolve(
+                customerAddress = account;
+            resolve(
                 // aspectType.test);
-                "connection check for account :"+customerAddress +  " "+realService.checkService(customerAddress));
+                "connection check for account :" + customerAddress + " " + realService.checkService(customerAddress));
         })
     },
 
     terminateGuarantees: (request) => {
+        return new Promise((resolve, reject)=> {
 
-        let guaranteeId = request.body.guaranteeId;
-        let requestId = request.body.requestId;
-        let comment = request.body.comment;
-        let hashcode = request.body.hashcode;
-        let customerAddress= request.body.customerAddress;
-        // if (typeof(customerAddress) === "undefined")
-            customerAddress=account;
-        console.log("terminateGuarantees",guaranteeId, requestId, comment, hashcode,customerAddress);
-        return realService.terminateGuatanty(guaranteeId, requestId, comment, hashcode,customerAddress);
+            let guaranteeId = request.body.guaranteeId;
+            let requestId = request.body.requestId;
+            let comment = request.body.comment;
+            let hashcode = request.body.hashcode;
+            let customerAddress = request.body.customerAddress;
+
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+
+            console.log('getRequestHistory', requestId);
+            if (typeof(guaranteeId ) === "undefined" ||
+                typeof(requestId ) === "undefined"
+            ) {
+                console.log('errror created', requestId);
+                throw ( new Error("arguments can't be undefined"));
+            }
+
+            console.log("terminateGuarantees", guaranteeId, requestId, comment, hashcode, customerAddress);
+            resolve(realService.terminateGuatanty(guaranteeId, requestId, comment, hashcode, customerAddress));
+        });
     },
 
 
     updateGuarantees: (request) => {
 
-        let guaranteeId = request.body.guaranteeId;
-        let requestId = request.body.requestId;
-        let comment = request.body.comment;
-        let amount= request.body.amount;
-        let date= request.body.date;
-        let customerAddress= request.body.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress=account;
-        console.log('request', guaranteeId, requestId, comment, amount, date,customerAddress);
-        return realService.guaranteeUpdate(guaranteeId, requestId, comment, amount, date,customerAddress)
+        return new Promise((resolve, reject)=> {
+            let guaranteeId = request.body.guaranteeId;
+            let requestId = request.body.requestId;
+            let comment = request.body.comment;
+            let amount = request.body.amount;
+            let date = request.body.date;
+            let customerAddress = request.body.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+
+
+            if (typeof(guaranteeId ) === "undefined" ||
+                typeof(requestId ) === "undefined" ||
+                typeof(date ) === "undefined" ||
+                typeof(amount ) === "undefined"
+            ) {
+                console.log('errror created', requestId);
+                throw ( new Error("arguments can't be undefined"));
+            }
+
+
+            console.log('request', guaranteeId, requestId, comment, amount, date, customerAddress);
+            resolve(realService.guaranteeUpdate(guaranteeId, requestId, comment, amount, date, customerAddress));
+        });
     },
 
     signComplite: (request) => {
-        let requestId = request.body.requestId;
-        let comment = request.body.comment;
-         if (typeof(comment) === "undefined")
-            comment="";
-        let hashcode= request.body.hashcode;
-        let customerAddress= request.body.customerAddress;
-         if (typeof(customerAddress) === "undefined")
-            customerAddress=account;
-        console.log('request',  requestId, comment, hashcode ,customerAddress);
-        return realService.guaranteeSignComplite(requestId, comment , hashcode,customerAddress)
+        return new Promise((resolve, reject)=> {
+            let requestId = request.body.requestId;
+            let comment = request.body.comment;
+            if (typeof(comment) === "undefined")
+                comment = "";
+            let hashcode = request.body.hashcode;
+            let customerAddress = request.body.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+
+            if (typeof(requestId ) === "undefined" ||
+                typeof(hashcode ) === "undefined"
+            ) {
+                console.log('errror created', requestId);
+                throw ( new Error("arguments can't be undefined"));
+            }
+
+
+            console.log('request', requestId, comment, hashcode, customerAddress);
+            resolve(realService.guaranteeSignComplite(requestId, comment, hashcode, customerAddress));
+        });
     },
 
 
     
 
-
-    getGuarantyHistory: (request) => {
-
-        let guaranteeId = request.query.guaranteeId;
-        let customerAddress= request.query.customerAddress;
-        if (typeof(customerAddress) === "undefined")
-            customerAddress=account;
-        console.log('request', guaranteeId);
-        return realService.getGuarantyHistory(guaranteeId,customerAddress);
-    },
-
-
     createBeneficiary: (request) => {
+        return new Promise((resolve, reject)=> {
 
-        let beneficiaryAccount = request.query.beneficiaryAccount;
-        let fullname= request.query.fullname;
-        let fullAddress= request.query.fullAddress;
 
-        console.log('createBeneficiar', beneficiaryAccount , fullname, fullAddress);
-        return realService.createBeneficiaryEt(beneficiaryAccount , fullname, fullAddress);
+            let beneficiaryAccount = request.body.beneficiaryAccount;
+            let fullname = request.body.fullname;
+            let fullAddress = request.body.fullAddress;
+
+            if (typeof(beneficiaryAccount) === "undefined" ||
+                typeof(fullname) === "undefined" ||
+                typeof(fullAddress) === "undefined"
+            ) {
+                throw Error("arguments can't be undefined");
+            }
+
+
+            console.log('createBeneficiar', beneficiaryAccount, fullname, fullAddress);
+            resolve( realService.createBeneficiaryEt(beneficiaryAccount, fullname, fullAddress));
+        });
     },
 
     createCustomer: (request) => {
 
-        let customerAccount = request.query.customerAccount;
-        let fullname= request.query.fullname;
-        let fullAddress= request.query.fullAddress;
+        return new Promise((resolve, reject)=> {
 
-        console.log('createCustomer', customerAccount , fullname, fullAddress);
-        return realService.createCustomerEt ( customerAccount , fullname, fullAddress);
+
+            let customerAccount = request.body.customerAccount;
+            let fullname = request.body.fullname;
+            let fullAddress = request.body.fullAddress;
+
+            if (typeof(customerAccount) === "undefined" ||
+                typeof(fullname) === "undefined" ||
+                typeof(fullAddress) === "undefined"
+            ) {
+                throw Error("arguments can't be undefined");
+            }
+
+
+            console.log('createCustomer', customerAccount, fullname, fullAddress);
+            resolve(realService.createCustomerEt(customerAccount, fullname, fullAddress));
+        });
     },
 
 
-}
+    createRequest: (request) => {
+
+
+        return new Promise((resolve, reject)=> {
+
+
+            let userAccount = request.body.userAccount;
+            let bankAccount = request.body.bankAccount;
+            let beneficiaryAccount = request.body.beneficiaryAccount;
+            let purpose = request.body.purpose;
+            let fullName = request.body.fullName;
+            let amount = request.body.amount;
+            let StartDate = request.body.StartDate;
+            let EndDate = request.body.EndDate;
+            let indexType = request.body.indexType;
+            let indexDate = request.body.indexDate;
+            let hashcode = request.body.hashcode;
+
+            console.log('createRequest',   userAccount ,bankAccount , beneficiaryAccount , purpose , fullName ,
+                amount , StartDate , EndDate ,indexType , indexDate , hashcode );
+
+            if (typeof(userAccount) === "undefined" ||
+                typeof(bankAccount) === "undefined" ||
+                typeof(beneficiaryAccount) === "undefined" ||
+                typeof(purpose) === "undefined" ||
+                typeof(fullName) === "undefined" ||
+                typeof(amount) === "undefined" ||
+                typeof(StartDate) === "undefined" ||
+                typeof(EndDate) === "undefined" ||
+                typeof(indexType) === "undefined" ||
+                typeof(indexDate) === "undefined" ||
+                typeof(hashcode) === "undefined"
+            )
+            {
+                throw Error("arguments can't be undefined");
+            }
+
+
+
+        console.log('createRequest', userAccount, bankAccount, beneficiaryAccount, purpose, fullName,
+            amount, StartDate, EndDate, indexType, indexDate, hashcode);
+
+        resolve( realService.createRequest(userAccount, bankAccount, beneficiaryAccount, purpose, fullName,
+            amount, StartDate, EndDate, indexType, indexDate, hashcode));
+    });
+
+    },
+
+
+    acceptRequest: (request) => {
+
+        return new Promise((resolve, reject)=> {
+
+
+            let requestId = request.body.requestId;
+            let comment = request.body.comment;
+            let hashcode = request.body.hashcode;
+
+            if (typeof(requestId) === "undefined" ||
+                typeof(hashcode) === "undefined"
+            ) {
+                throw Error("arguments can't be undefined");
+            }
+
+            console.log('acceptRequest', requestId, comment, hashcode);
+
+            resolve(realService.acceptRequest(requestId, comment, hashcode));
+        });
+    },
+
+
+    rejectRequest: (request) => {
+        return new Promise((resolve, reject)=> {
+
+
+            let requestId = request.body.requestId;
+            let comment = request.body.comment;
+
+            if (typeof(requestId) === "undefined"
+            ) {
+                throw Error("arguments can't be undefined");
+            }
+
+
+            console.log('rejectRequest', requestId, comment);
+
+            resolve(realService.rejectRequest(requestId, comment));
+        });
+    },
+
+    updateRequest: (request) => {
+        return new Promise((resolve, reject)=> {
+
+        let requestId = request.body.requestId;
+        let comment = request.body.comment;
+
+        if (typeof(requestId) === "undefined"
+        ) {
+            throw Error("arguments can't be undefined");
+        }
+
+
+        console.log('updateRequest', requestId, comment);
+            realService.updateRequest(requestId, comment).then((resault) =>{
+                resolve (requestId);
+            }).catch((error)=>
+            {
+                reject(error);
+            })
+
+    });
+    },
+
+    withdrawalRequest: (request) => {
+
+        return new Promise((resolve, reject)=> {
+            let requestId = request.body.requestId;
+            let comment = request.body.comment;
+
+            console.log('withdrawalRequest', requestId);
+            if (typeof(requestId ) === "undefined"
+            ) {
+                console.log('errror created', requestId);
+                throw ( new Error("argument requestId can't be undefined"));
+            }
+            if (typeof(comment ) === "undefined"
+            ) {
+                comment='';
+            }
+
+            console.log('withdrawalRequest', requestId, comment);
+            resolve( realService.withdrawalRequest(requestId, comment));
+        });
+
+    },
+
+
+
+
+    getGuarantyHistory: (request) => {
+
+        return new Promise((resolve, reject)=> {
+            let guaranteeId = request.query.guaranteeId;
+            let customerAddress = request.query.customerAddress;
+            if (typeof(customerAddress) === "undefined")
+                customerAddress = account;
+            console.log('getRequestHistory', guaranteeId);
+            if (typeof(guaranteeId ) === "undefined"
+            ) {
+                console.log('errror created', guaranteeId);
+                throw ( new Error("arguments can't be undefined"));
+            }
+
+
+            resolve
+            (realService.getGuarantyHistory(guaranteeId, customerAddress));
+        });
+    },
+
+    
+    getRequestHistory: (request) => {
+        return new Promise((resolve, reject)=> {
+            let requestId = request.query.requestId;
+            console.log('getRequestHistory',requestId , request.query , request.params, request._body , request.search);
+            if (typeof(requestId ) === "undefined"
+            )
+            {
+                console.log('errror created',requestId);
+                throw ( new Error( "arguments can't be undefined"));
+            }
+
+                console.log('getRequestHistory', request.query,request.params ,request.body,requestId);
+                resolve ( realService.getRequestHistory(requestId));
+
+
+        });
+
+
+    }
+
+
+};
